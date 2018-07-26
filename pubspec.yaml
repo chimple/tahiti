@@ -10,6 +10,7 @@ dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
+  audio_recorder: ^0.0.4
 
 # The following section is specific to Flutter.
 flutter:
