@@ -114,12 +114,13 @@ final Map<String, List<String>> Stickers = {
 
 class SelectSticker extends StatelessWidget {
   final OnUserPress onUserPress;
-
-  const SelectSticker({this.onUserPress});
+  final String show;
+  const SelectSticker({this.show,this.onUserPress});
 
   @override
   Widget build(BuildContext context) {
     return PopupGridView(
+      show: show,
       onUserPress: (text) {
         print(text);
       },
