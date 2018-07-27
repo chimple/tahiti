@@ -52,7 +52,7 @@ class PopupGridViewState extends State<PopupGridView> {
           child: SizedBox(
             height: 100.0,
             child: GridView.count(
-                crossAxisCount: 1,
+                crossAxisCount: 2,
                 scrollDirection: Axis.horizontal,
                 children: widget.items[highlightedItem]
                     .map((itemName) => Container(
