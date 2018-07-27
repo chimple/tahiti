@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tahiti/categorized_scroller.dart';
+import 'package:tahiti/popup_grid_view.dart';
 
 final Map<String, List<String>> Stickers = {
   'assets/stickers/emoguy/happy.png': [
@@ -119,8 +119,10 @@ class SelectSticker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CategorizedScroller(
-      onUserPress: onUserPress,
+    return PopupGridView(
+      onUserPress: (text) {
+        print(text);
+      },
       items: Stickers,
       itemCrossAxisCount: 2,
       buildItem: buildItem,
