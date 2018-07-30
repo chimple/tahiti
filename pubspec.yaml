@@ -14,6 +14,7 @@ dependencies:
   audio_recorder: ^0.0.4
   audioplayer: ^0.4.0
   path_provider: ^0.4.1
+  image_picker:
 
 # The following section is specific to Flutter.
 flutter:

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tahiti/camera.dart';
 import 'package:tahiti/popup_grid_view.dart';
+import 'package:image_picker/image_picker.dart';
 
 final Map<String, List<String>> bottomStickers = {
   'assets/stickers/emoguy/happy.png': [
@@ -131,23 +133,14 @@ final Map<String, List<String>> topStickers = {
   'assets/stickers/drawing/roller.png': [],
 };
 
-class SelectSticker extends StatelessWidget {
+class SelectSticker extends StatefulWidget {
   final OnUserPress onUserPress;
   final DisplaySide side;
   const SelectSticker({this.side, this.onUserPress});
+
   @override
-  Widget build(BuildContext context) {
-    return PopupGridView(
-      side: side,
-      onUserPress: (text) {
-        print(text);
-      },
-      bottomItems: bottomStickers,
-      topItems: topStickers,
-      itemCrossAxisCount: 2,
-      buildItem: buildItem,
-      buildIndexItem: buildIndexItem,
-    );
+  SelectStickerState createState() {
+    return new SelectStickerState();
   }
 
   Widget buildItem(String text, bool enabled) {
@@ -156,5 +149,33 @@ class SelectSticker extends StatelessWidget {
 
   Widget buildIndexItem(String text, bool enabled) {
     return Image.asset(text);
+  }
+}
+
+class SelectStickerState extends State<SelectSticker> {
+  @override
+  Widget build(BuildContext context) {
+    return PopupGridView(
+      side: widget.side,
+      onUserPress: (text) {
+        print(text);
+        switch (text) {
+          case 'assets/stickers/camera/camera1.png':
+            new Camera().openCamera();
+            break;
+          case 'assets/stickers/camera/gallery.png':
+            new Camera().pickImage();
+            break;
+          case 'assets/stickers/camera/video.png':
+            new Camera().vidoeRecorder();
+            break;
+        }
+      },
+      bottomItems: bottomStickers,
+      topItems: topStickers,
+      itemCrossAxisCount: 2,
+      buildItem: widget.buildItem,
+      buildIndexItem: widget.buildIndexItem,
+    );
   }
 }
