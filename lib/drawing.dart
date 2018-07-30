@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
+<<<<<<< HEAD
 class Drawing extends StatefulWidget {
   final PainterController painterController;
 
@@ -71,6 +72,9 @@ class _DrawingState extends State<Drawing> {
     widget.painterController._notifyListeners();
   }
 }
+=======
+
+>>>>>>> refs/remotes/origin/master
 
 class _PainterPainter extends CustomPainter {
   final _PathHistory _path;
@@ -161,4 +165,48 @@ class PainterController extends ChangeNotifier {
   void _notifyListeners() {
     notifyListeners();
   }
+}
+
+
+
+
+class DrawPainter  extends CustomPainter {
+  List<Offset> points = [];
+  Canvas _lastCanvas;
+  Size _lastSize;
+  DrawPainter (points){
+
+    this.points = points;
+  }
+
+  void paint(Canvas canvas, Size size) {
+   // print({"the main paint is called .... ": {"size" : size}});
+    _lastCanvas = canvas;
+    _lastSize = size;
+
+
+    Paint paint = new Paint()
+      ..color = Colors.black
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 8.0;
+
+
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != null &&
+          points[i + 1] != null &&
+          (points[i].dx >= 0 &&
+              points[i].dy >= 0 &&
+              points[i].dx < size.width &&
+              points[i].dy < size.height) &&
+          (points[i + 1].dx >= 0 &&
+              points[i + 1].dy >= 0 &&
+              points[i + 1].dx < size.width &&
+              points[i + 1].dy < size.height)){
+        canvas.drawLine(points[i], points[i + 1], paint);
+      }
+
+    }
+  }
+
+  bool shouldRepaint(DrawPainter  other) => other.points != points;
 }

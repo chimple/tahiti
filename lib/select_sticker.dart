@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/popup_grid_view.dart';
 
-final Map<String, List<String>> Stickers = {
+final Map<String, List<String>> bottomStickers = {
   'assets/stickers/emoguy/happy.png': [
     'assets/stickers/emoguy/angry.gif',
     'assets/stickers/emoguy/cold.gif',
@@ -112,18 +112,38 @@ final Map<String, List<String>> Stickers = {
   ],
 };
 
+final Map<String, List<String>> topStickers = {
+  'assets/stickers/mic/mic.png': [
+    'assets/stickers/mic/mic.png',
+    'assets/stickers/mic/play.png',
+    'assets/stickers/mic/stop.png'
+  ],
+  'assets/stickers/camera/camera.png': [
+    'assets/stickers/camera/camera1.png',
+    'assets/stickers/camera/gallery.png',
+    'assets/stickers/camera/video.png'
+  ],
+  'assets/stickers/drawing/pencil.png': [],
+  'assets/stickers/drawing/eraser.png': [],
+  'assets/stickers/drawing/brush.png': [],
+  'assets/stickers/drawing/brush1.png': [],
+  'assets/stickers/drawing/bucket.png': [],
+  'assets/stickers/drawing/roller.png': [],
+};
+
 class SelectSticker extends StatelessWidget {
   final OnUserPress onUserPress;
-
-  const SelectSticker({this.onUserPress});
-
+  final DisplaySide side;
+  const SelectSticker({this.side, this.onUserPress});
   @override
   Widget build(BuildContext context) {
     return PopupGridView(
+      side: side,
       onUserPress: (text) {
         print(text);
       },
-      items: Stickers,
+      bottomItems: bottomStickers,
+      topItems: topStickers,
       itemCrossAxisCount: 2,
       buildItem: buildItem,
       buildIndexItem: buildIndexItem,
