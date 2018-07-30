@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tahiti/drawing.dart';
+import 'package:tahiti/image_template.dart';
 
 class Paper extends StatelessWidget {
   @override
@@ -33,6 +34,6 @@ class PaperPageState extends State<PaperPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[Drawing(_controller)]);
+    return Stack(children: <Widget>[ImageTemplate(),Drawing(_controller)]);
   }
 }
