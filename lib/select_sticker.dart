@@ -133,30 +133,15 @@ final Map<String, List<String>> topStickers = {
   'assets/stickers/drawing/roller.png': [],
 };
 
-class SelectSticker extends StatefulWidget {
+class SelectSticker extends StatelessWidget {
   final OnUserPress onUserPress;
   final DisplaySide side;
   const SelectSticker({this.side, this.onUserPress});
 
   @override
-  SelectStickerState createState() {
-    return new SelectStickerState();
-  }
-
-  Widget buildItem(String text, bool enabled) {
-    return Image.asset(text);
-  }
-
-  Widget buildIndexItem(String text, bool enabled) {
-    return Image.asset(text);
-  }
-}
-
-class SelectStickerState extends State<SelectSticker> {
-  @override
   Widget build(BuildContext context) {
     return PopupGridView(
-      side: widget.side,
+      side: side,
       onUserPress: (text) {
         print(text);
         switch (text) {
@@ -174,8 +159,16 @@ class SelectStickerState extends State<SelectSticker> {
       bottomItems: bottomStickers,
       topItems: topStickers,
       itemCrossAxisCount: 2,
-      buildItem: widget.buildItem,
-      buildIndexItem: widget.buildIndexItem,
+      buildItem: buildItem,
+      buildIndexItem: buildIndexItem,
     );
+  }
+
+  Widget buildItem(String text, bool enabled) {
+    return Image.asset(text);
+  }
+
+  Widget buildIndexItem(String text, bool enabled) {
+    return Image.asset(text);
   }
 }
