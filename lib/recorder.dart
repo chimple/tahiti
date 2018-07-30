@@ -17,18 +17,17 @@ class Recorder extends StatefulWidget{
 
 class RecorderState extends State<Recorder>{
   Recording _recording = new Recording();
-  AudioPlayer audioPlayer;
-  var btnicon = Icons.mic;
-  var btnclr = Colors.white;
-  var playMusic = Icons.play_arrow, playMusicColor = Colors.white;
+  AudioPlayer _audioPlayer;
+  var _btnIcon = Icons.mic, _btnClr = Colors.white;
+  var _playMusic = Icons.play_arrow, _playMusicColor = Colors.white;
   bool _isRecorded = false;
   bool _isRecording = false;
-  Duration duration;
-  String filePath = "";
+  Duration _duration;
+  String _filePath = "";
 
-  PlayerState playerState = PlayerState.stopped;
-  get isPlaying => playerState == PlayerState.playing;
-  get isPaused => playerState == PlayerState.paused;
+  PlayerState _playerState = PlayerState.stopped;
+  get isPlaying => _playerState == PlayerState.playing;
+  get isPaused => _playerState == PlayerState.paused;
 
   @override
   void initState() {
@@ -37,7 +36,7 @@ class RecorderState extends State<Recorder>{
   }
 
   void _initAudioPlayer() {
-    audioPlayer = new AudioPlayer();
+    _audioPlayer = new AudioPlayer();
   }
 
   @override
@@ -52,8 +51,8 @@ class RecorderState extends State<Recorder>{
           child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-        FloatingActionButton(onPressed: _isRecorded ?  _playaudio : _stopaudio, child: Icon(playMusic, color: playMusicColor,), ),
-        FloatingActionButton(onPressed: _isRecording ? _stop : _start, child: Icon(btnicon, color: btnclr,), ),
+        FloatingActionButton(onPressed: _isRecorded ?  _playaudio : _stopaudio, child: Icon(_playMusic, color: _playMusicColor,), ),
+        FloatingActionButton(onPressed: _isRecording ? _stop : _start, child: Icon(_btnIcon, color: _btnClr,), ),
           ]),
     );
   }
@@ -61,24 +60,24 @@ class RecorderState extends State<Recorder>{
   _start() async {
     try {
       if (await AudioRecorder.hasPermissions) {
-          String path = "recorder.m4a";
-          Directory appDocDirectory = await getExternalStorageDirectory();
-          String filepath = appDocDirectory.path + '/' + path;
-          print("Start recording: $filepath");
-          File file = new File(filepath);
-          if(file.exists() != null){
+          String _path = "recorder.m4a";
+          Directory _appDocDirectory = await getExternalStorageDirectory();
+          String _filePath = _appDocDirectory.path + '/' + _path;
+          print("Start recording: $_filePath");
+          File _file = new File(_filePath);
+          if(_file.exists() != null){
             print("Deleted the fie in the path");
-              file.delete();
+              _file.delete();
           }
-          await AudioRecorder.start(path: filepath, audioOutputFormat: AudioOutputFormat.AAC);
+          await AudioRecorder.start(path: _filePath, audioOutputFormat: AudioOutputFormat.AAC);
         
-        bool isRecording = await AudioRecorder.isRecording;
+        bool _isRecord = await AudioRecorder.isRecording;
         setState(() {
           _isRecorded = false;
-          btnicon = Icons.stop;
-          btnclr = Colors.red;
+          _btnIcon = Icons.stop;
+          _btnClr = Colors.red;
           _recording = new Recording(duration: new Duration(), path: "");
-          _isRecording = isRecording;
+          _isRecording = _isRecord;
         });
       } else {
         Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("You must accept permissions")));
@@ -89,43 +88,43 @@ class RecorderState extends State<Recorder>{
   }
 
   _stop() async {
-    var recording = await AudioRecorder.stop();
-    print("Stop recording: ${recording.path}");
-    bool isRecording = await AudioRecorder.isRecording;
-    File file = new File(recording.path);
-    print("  File length: ${await file.length()}");
+    var _record = await AudioRecorder.stop();
+    print("Stop recording: ${_record.path}");
+    bool _isRecord = await AudioRecorder.isRecording;
+    File _file = new File(_record.path);
+    print("  File length: ${await _file.length()}");
     setState(() {
       _isRecorded = true;
-      btnicon = Icons.mic;
-      btnclr = Colors.white;
-      _recording = recording;
-      _isRecording = isRecording;
-      duration = recording.duration;
+      _btnIcon = Icons.mic;
+      _btnClr = Colors.white;
+      _recording = _record;
+      _isRecording = _isRecord;
+      _duration = _record.duration;
     });
-    filePath = recording.path;
+    _filePath = _record.path;
   }
 
   Future _playaudio() async {
-    await audioPlayer.play(filePath, isLocal: true);
+    await _audioPlayer.play(_filePath, isLocal: true);
     setState(() {
       _isRecorded = false;
-      playMusicColor = Colors.red;
-      playMusic = Icons.stop;
-      playerState = PlayerState.playing;
+      _playMusicColor = Colors.red;
+      _playMusic = Icons.stop;
+      _playerState = PlayerState.playing;
       });
-      new Future.delayed(duration, () {
+      new Future.delayed(_duration, () {
               _stopaudio();
             });
   }
 
   Future _stopaudio() async {
-    await audioPlayer.stop();
+    await _audioPlayer.stop();
     print("Music is stopped and finished");
     setState(() {
       _isRecorded = true;
-      playMusicColor = Colors.white;
-      playMusic = Icons.play_arrow;
-      playerState = PlayerState.stopped;
+      _playMusicColor = Colors.white;
+      _playMusic = Icons.play_arrow;
+      _playerState = PlayerState.stopped;
     });
   }
 }
