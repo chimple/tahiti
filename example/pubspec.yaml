@@ -169,18 +169,9 @@ flutter:
         - asset: assets/fonts/PatrickHand-Regular.ttf
     - family: Roboto
       fonts:
-        - asset: assets/fonts/Roboto-Black.ttf
-        - asset: assets/fonts/Roboto-BlackItalic.ttf
         - asset: assets/fonts/Roboto-Bold.ttf
-        - asset: assets/fonts/Roboto-BoldItalic.ttf
         - asset: assets/fonts/Roboto-Italic.ttf
-        - asset: assets/fonts/Roboto-Light.ttf
-        - asset: assets/fonts/Roboto-LightItalic.ttf
-        - asset: assets/fonts/Roboto-Medium.ttf
-        - asset: assets/fonts/Roboto-MediumItalic.ttf
         - asset: assets/fonts/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto-Thin.ttf
-        - asset: assets/fonts/Roboto-ThinItalic.ttf
     - family: Rock salt
       fonts:
         - asset: assets/fonts/RockSalt-Regular.ttf

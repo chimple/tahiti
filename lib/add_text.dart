@@ -7,10 +7,9 @@ class AddText extends StatefulWidget {
   }
 }
 
-String fontType = "";
-
 class AddTextState extends State<AddText> {
-  List<String> color_val = [
+
+  List<String> _fontFamily = [
     "Bungee",
     "Chela one",
     "Gloria Hallelujah",
@@ -32,31 +31,31 @@ class AddTextState extends State<AddText> {
       margin: new EdgeInsets.all(10.0),
       child: new ListView(
         scrollDirection: Axis.horizontal,
-        children: color_val
+        children: _fontFamily
             .map(
-              (colorValue) => Center(
-                  child: Container(
-                child: new FlatButton(
-                  onPressed: () => _multiColor(colorValue),
-                  child: Text(
-                    "AaBb",
-                    style: TextStyle(
-                        fontFamily: colorValue,
-                        fontWeight: FontWeight.w900,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 20.0),
-                  ),
-                ),
-              )),
+              (fontValue) => Center(
+                      child: Container(
+                    child: new FlatButton(
+                      onPressed: () => _multiFonts(fontValue),
+                      child: Text(
+                        "AaBb",
+                        style: new TextStyle(
+                            fontSize: 30.0,
+                            color: const Color(0xFF000000),
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontFamily: fontValue),
+                      ),
+                    ),
+                  )),
             )
             .toList(growable: false),
       ),
     );
   }
 
-  _multiColor(colorValue) {
+  _multiFonts(fontValue) {
     // print({"this is _multiWidth methode": widthValue});
-    print({"Family type: ": colorValue});
-    
+    print({"Family type: ": fontValue});
   }
 }
