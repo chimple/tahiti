@@ -34,6 +34,6 @@ class PaperPageState extends State<PaperPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[Drawing(_controller)]);
+    return Stack(children: <Widget>[ImageTemplate(),Drawing(_controller)]);
   }
 }
