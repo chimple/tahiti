@@ -7,7 +7,8 @@ homepage:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.5.1
+  material_design_icons_flutter: 2.3.50  
+
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
   audio_recorder: ^0.0.4

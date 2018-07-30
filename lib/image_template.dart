@@ -5,9 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageTemplate extends StatelessWidget {
   String _assetName = 'assets/templates/LionSA1.svg';
-  double _dimension = 0.0;
+  
   @override
   Widget build(BuildContext context) {
+    double _dimension;
     _dimension = MediaQuery.of(context).size.width;
     return AspectRatio(
       aspectRatio: 1.0,
