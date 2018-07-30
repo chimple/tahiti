@@ -1,22 +1,25 @@
 import 'dart:collection';
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 typedef Widget BuildItem(String text, bool enabled);
 typedef void OnUserPress(String text);
+enum DisplaySide { top, bottom }
 
 class PopupGridView extends StatefulWidget {
   final OnUserPress onUserPress;
-  final LinkedHashMap<String, List<String>> items;
+  final LinkedHashMap<String, List<String>> bottomItems;
+  final LinkedHashMap<String, List<String>> topItems;
   final itemCrossAxisCount;
   final BuildItem buildItem;
   final BuildItem buildIndexItem;
-  final String show;
+  final DisplaySide side;
+
   const PopupGridView(
       {this.onUserPress,
-      this.items,
-      this.show,
+      this.topItems,
+      this.bottomItems,
+      this.side,
       this.itemCrossAxisCount = 5,
       this.buildItem,
       this.buildIndexItem});
@@ -28,12 +31,15 @@ class PopupGridView extends StatefulWidget {
 }
 
 class PopupGridViewState extends State<PopupGridView> {
-  String highlightedItem;
+  String highlightedTopItem;
+  String highlightedBottomItem;
+
   bool popped = false;
   @override
   void initState() {
     super.initState();
-    highlightedItem = widget.items.keys.first;
+    highlightedBottomItem = widget.bottomItems.keys.first;
+    highlightedTopItem = widget.topItems.keys.first;
   }
 
   @override
@@ -44,48 +50,37 @@ class PopupGridViewState extends State<PopupGridView> {
         Container(
           height: 200.0,
         ),
-        widget.show == 'bottom'
-            ? AnimatedPositioned(
-                bottom: popped ? 80.0 : 0.0,
-                left: 0.0,
-                right: 0.0,
-                duration: Duration(milliseconds: 1000),
-                curve: Curves.elasticOut,
-                child: SizedBox(
-                  height: 70.0,
-                  child: GridView.count(
-                      crossAxisCount: 1,
-                      scrollDirection: Axis.horizontal,
-                      children: widget.items[highlightedItem]
-                          .map((itemName) => Container(
-                                child: InkWell(
-                                    onTap: () => widget.onUserPress(itemName),
-                                    child: widget.buildItem(itemName, true)),
-                              ))
-                          .toList(growable: false)),
-                ),
-              )
-            : AnimatedPositioned(
-                top: popped ? 80.0 : 0.0,
-                left: 0.0,
-                right: 0.0,
-                duration: Duration(milliseconds: 1000),
-                curve: Curves.elasticOut,
-                child: SizedBox(
-                  height: 70.0,
-                  child: GridView.count(
-                      crossAxisCount: 1,
-                      scrollDirection: Axis.horizontal,
-                      children: widget.items[highlightedItem]
-                          .map((itemName) => Container(
-                                child: InkWell(
-                                    onTap: () => widget.onUserPress(itemName),
-                                    child: widget.buildItem(itemName, true)),
-                              ))
-                          .toList(growable: false)),
-                ),
-              ),
-        widget.show == 'bottom'
+        AnimatedPositioned(
+          bottom:
+              widget.side == DisplaySide.bottom ? popped ? 80.0 : 0.0 : null,
+          top: widget.side == DisplaySide.top ? popped ? 80.0 : 0.0 : null,
+          left: 0.0,
+          right: 0.0,
+          duration: Duration(milliseconds: 1000),
+          curve: Curves.elasticOut,
+          child: SizedBox(
+            height: 70.0,
+            child: GridView.count(
+                crossAxisCount: 1,
+                scrollDirection: Axis.horizontal,
+                children: widget.side == DisplaySide.bottom
+                    ? widget.bottomItems[highlightedBottomItem]
+                        .map((itemName) => Container(
+                              child: InkWell(
+                                  onTap: () => widget.onUserPress(itemName),
+                                  child: widget.buildItem(itemName, true)),
+                            ))
+                        .toList(growable: false)
+                    : widget.topItems[highlightedTopItem]
+                        .map((itemName) => Container(
+                              child: InkWell(
+                                  onTap: () => widget.onUserPress(itemName),
+                                  child: widget.buildItem(itemName, true)),
+                            ))
+                        .toList(growable: false)),
+          ),
+        ),
+        widget.side == DisplaySide.bottom
             ? Positioned(
                 bottom: 0.0,
                 left: 0.0,
@@ -96,21 +91,21 @@ class PopupGridViewState extends State<PopupGridView> {
                     color: Color(0XFFF4F4F4),
                     child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: widget.items.keys
+                        children: widget.bottomItems.keys
                             .map((k) => Container(
                                   alignment: Alignment.center,
-                                  color: popped && highlightedItem == k
+                                  color: popped && highlightedBottomItem == k
                                       ? Colors.grey
                                       : Colors.white,
                                   padding: const EdgeInsets.all(4.0),
                                   child: InkWell(
                                       onTap: () => setState(() {
                                             if (popped &&
-                                                highlightedItem == k) {
+                                                highlightedBottomItem == k) {
                                               popped = false;
                                             } else {
                                               popped = true;
-                                              highlightedItem = k;
+                                              highlightedBottomItem = k;
                                             }
                                           }),
                                       child: widget.buildIndexItem(k, true)),
@@ -129,41 +124,26 @@ class PopupGridViewState extends State<PopupGridView> {
                     color: Color(0XFFF4F4F4),
                     child: ListView(
                         scrollDirection: Axis.horizontal,
-                        padding: new EdgeInsets.all(4.0),
-                        children: [
-                          new IconButton(
-                            icon: new Icon(Icons.mic),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(Icons.camera_alt),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(Icons.create),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.eraser),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.brush),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.formatPaint),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.broom),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.bitbucket),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                        ]),
+                        children: widget.topItems.keys
+                            .map((k) => Container(
+                                  alignment: Alignment.center,
+                                  color: popped && highlightedTopItem == k
+                                      ? Colors.grey
+                                      : Colors.white,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: InkWell(
+                                      onTap: () => setState(() {
+                                            if (popped &&
+                                                highlightedTopItem == k) {
+                                              popped = false;
+                                            } else {
+                                              popped = true;
+                                              highlightedTopItem = k;
+                                            }
+                                          }),
+                                      child: widget.buildIndexItem(k, true)),
+                                ))
+                            .toList(growable: false)),
                   ),
                 ),
               ),

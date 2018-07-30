@@ -26,7 +26,7 @@ Widget build(BuildContext context) {
           },
           onPanEnd: (DragEndDetails details) =>_points.add(null),
           child: new CustomPaint(
-            painter: new DrawPainting(_points),
+            painter: new DrawPainter (_points),
 
           ),
         ),
@@ -38,11 +38,11 @@ Widget build(BuildContext context) {
 
 
 
-class DrawPainting extends CustomPainter {
+class DrawPainter  extends CustomPainter {
   List<Offset> points = [];
   Canvas _lastCanvas;
   Size _lastSize;
-  DrawPainting(points){
+  DrawPainter (points){
 
     this.points = points;
   }
@@ -76,5 +76,5 @@ class DrawPainting extends CustomPainter {
     }
   }
 
-  bool shouldRepaint(DrawPainting other) => other.points != points;
+  bool shouldRepaint(DrawPainter  other) => other.points != points;
 }
