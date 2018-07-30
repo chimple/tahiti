@@ -4,7 +4,7 @@ description: Demonstrates how to use the tahiti plugin.
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_svg: ^0.5.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -145,6 +145,9 @@ flutter:
     - assets/stickers/mic/stop.png
     
 
+
+    # template
+    - assets/templates/LionSA1.svg
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.io/assets-and-images/#from-packages
