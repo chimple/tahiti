@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tahiti/paper.dart';
+import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/tool_picker.dart';
 
 class ActivityBoard extends StatefulWidget {
@@ -24,7 +25,16 @@ class ActivityBoardState extends State<ActivityBoard> {
             ),
           ),
         ),
-        Positioned(bottom: 0.0, left: 0.0, right: 0.0, child: ToolPicker()),
+        Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: ToolPicker(DisplaySide.top)),
+        Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: ToolPicker(DisplaySide.bottom)),
       ],
     );
   }
