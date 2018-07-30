@@ -41,6 +41,7 @@ class RecorderState extends State<Recorder>{
 
   @override
   void dispose() {
+    _audioPlayer.stop();
     super.dispose();
   }
 
@@ -60,24 +61,24 @@ class RecorderState extends State<Recorder>{
   _start() async {
     try {
       if (await AudioRecorder.hasPermissions) {
-          String _path = "recorder.m4a";
-          Directory _appDocDirectory = await getExternalStorageDirectory();
-          String _filePath = _appDocDirectory.path + '/' + _path;
-          print("Start recording: $_filePath");
-          File _file = new File(_filePath);
-          if(_file.exists() != null){
+          String path = "recorder.m4a";
+          Directory appDocDirectory = await getExternalStorageDirectory();
+          String filePath = appDocDirectory.path + '/' + path;
+          print("Start recording: $filePath");
+          File file = new File(filePath);
+          if(file.length() != null){
             print("Deleted the fie in the path");
-              _file.delete();
+              await file.delete();
           }
-          await AudioRecorder.start(path: _filePath, audioOutputFormat: AudioOutputFormat.AAC);
+          await AudioRecorder.start(path: filePath, audioOutputFormat: AudioOutputFormat.AAC);
         
-        bool _isRecord = await AudioRecorder.isRecording;
+        bool isRecord = await AudioRecorder.isRecording;
         setState(() {
           _isRecorded = false;
           _btnIcon = Icons.stop;
           _btnClr = Colors.red;
           _recording = new Recording(duration: new Duration(), path: "");
-          _isRecording = _isRecord;
+          _isRecording = isRecord;
         });
       } else {
         Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("You must accept permissions")));
@@ -88,20 +89,20 @@ class RecorderState extends State<Recorder>{
   }
 
   _stop() async {
-    var _record = await AudioRecorder.stop();
-    print("Stop recording: ${_record.path}");
-    bool _isRecord = await AudioRecorder.isRecording;
-    File _file = new File(_record.path);
-    print("  File length: ${await _file.length()}");
+    var record = await AudioRecorder.stop();
+    print("Stop recording: ${record.path}");
+    bool isRecord = await AudioRecorder.isRecording;
+    File file = new File(record.path);
+    print(" File length: ${await file.length()}");
     setState(() {
       _isRecorded = true;
       _btnIcon = Icons.mic;
       _btnClr = Colors.white;
-      _recording = _record;
-      _isRecording = _isRecord;
-      _duration = _record.duration;
+      _recording = record;
+      _isRecording = isRecord;
+      _duration = record.duration;
     });
-    _filePath = _record.path;
+    _filePath = record.path;
   }
 
   Future _playaudio() async {
