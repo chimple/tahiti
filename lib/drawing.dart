@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-<<<<<<< HEAD
 class Drawing extends StatefulWidget {
   final PainterController painterController;
 
@@ -72,9 +71,6 @@ class _DrawingState extends State<Drawing> {
     widget.painterController._notifyListeners();
   }
 }
-=======
-
->>>>>>> refs/remotes/origin/master
 
 class _PainterPainter extends CustomPainter {
   final _PathHistory _path;
