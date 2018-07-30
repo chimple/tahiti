@@ -8,13 +8,13 @@ class ImageTemplate extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    double _dimension;
-    _dimension = MediaQuery.of(context).size.width;
+    double dimension;
+    dimension = MediaQuery.of(context).size.width;
     return AspectRatio(
       aspectRatio: 1.0,
       child: SvgPicture.asset(
         _assetName,
-        height: _dimension,
+        height: dimension,
       ),
     );
   }
