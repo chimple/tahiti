@@ -103,6 +103,18 @@ class _PathHistory {
   void setBackgroundColor(Color backgroundColor) {
     _backgroundPaint.color = backgroundColor;
   }
+   void undo() {
+    if (!_inDrag) {
+      _paths.removeLast();
+      print("the path is : $_paths");
+    }
+  }
+
+  void clear(){
+    if(!_inDrag){
+      _paths.clear();
+    }
+  }
 
   void add(Offset startPoint) {
     if (!_inDrag) {
@@ -135,7 +147,7 @@ class PainterController extends ChangeNotifier {
   // Color _drawColor = new Color(0xff000000);
   Color _backgroundColor = new Color(0xffffff00);
 
-  // double _thickness = 1.0;
+   double _thickness = 1.0;
   _PathHistory _pathHistory;
   ValueGetter<Size> _widgetFinish;
 
@@ -149,16 +161,34 @@ class PainterController extends ChangeNotifier {
     _updatePaint();
   }
 
+  double get thickness => _thickness;
+  set thickness(double t){
+    _thickness=t;
+    _updatePaint();
+  }
+
   void _updatePaint() {
     Paint paint = new Paint();
     paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 3.0;
+    paint.strokeWidth = _thickness;
     _pathHistory.currentPaint = paint;
     _pathHistory.setBackgroundColor(Color(0xffffff00));
     notifyListeners();
+  }
+   void undo(){
+      _pathHistory.undo();
+      notifyListeners();
+    
+  }
+  void clear(){
+      _pathHistory.clear();
+      notifyListeners();
   }
 
   void _notifyListeners() {
     notifyListeners();
   }
+   
 }
+
+  

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tahiti/drawing.dart';
 import 'package:tahiti/popup_grid_view.dart';
+import 'package:tahiti/paper.dart';
 
 final Map<String, List<String>> bottomStickers = {
   'assets/stickers/emoguy/happy.png': [
@@ -125,22 +127,42 @@ final Map<String, List<String>> topStickers = {
   ],
   'assets/stickers/drawing/pencil.png': [],
   'assets/stickers/drawing/eraser.png': [],
-  'assets/stickers/drawing/brush.png': [],
+  'assets/stickers/drawing/brush.png': [
+    'assets/stickers/drawing/pencil.png',
+    'assets/stickers/drawing/brush.png',
+    'assets/stickers/drawing/brush1.png'
+  ],
   'assets/stickers/drawing/brush1.png': [],
   'assets/stickers/drawing/bucket.png': [],
   'assets/stickers/drawing/roller.png': [],
 };
 
 class SelectSticker extends StatelessWidget {
+
   final OnUserPress onUserPress;
   final DisplaySide side;
-  const SelectSticker({this.side, this.onUserPress});
+  PainterController controller;
+  SelectSticker({this.side, this.onUserPress, this.controller});
   @override
   Widget build(BuildContext context) {
     return PopupGridView(
       side: side,
       onUserPress: (text) {
         print(text);
+        switch(text){
+          case 'assets/stickers/drawing/pencil.png':
+            print({"i am in switch: ": "hurry up"});
+            controller.thickness = 5.0;
+            break;
+            case 'assets/stickers/drawing/brush.png':
+            print({"i am in switch: ": "hurry up"});
+            controller.thickness = 8.0;
+            break;
+            case 'assets/stickers/drawing/brush1.png':
+            print({"i am in switch: ": "hurry up"});
+            controller.thickness = 15.0;
+            break;
+        }
       },
       bottomItems: bottomStickers,
       topItems: topStickers,
