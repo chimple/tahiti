@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/popup_grid_view.dart';
-import 'package:tahiti/paper.dart';
 
 final Map<String, List<String>> bottomStickers = {
   'assets/stickers/emoguy/happy.png': [
@@ -151,15 +150,12 @@ class SelectSticker extends StatelessWidget {
         print(text);
         switch(text){
           case 'assets/stickers/drawing/pencil.png':
-            print({"i am in switch: ": "hurry up"});
             controller.thickness = 5.0;
             break;
             case 'assets/stickers/drawing/brush.png':
-            print({"i am in switch: ": "hurry up"});
             controller.thickness = 8.0;
             break;
             case 'assets/stickers/drawing/brush1.png':
-            print({"i am in switch: ": "hurry up"});
             controller.thickness = 15.0;
             break;
         }

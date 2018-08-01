@@ -30,12 +30,6 @@ class PaperPageState extends State<PaperPage> {
     _finished = false;
   }
 
-  // PainterController _newController() {
-  //   PainterController controller = new PainterController();
-  //   controller.backgroundColor = Colors.grey;
-  //   return controller;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
