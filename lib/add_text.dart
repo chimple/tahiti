@@ -28,6 +28,7 @@ class AddTextState extends State<AddText> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
+      height: 70.0,
       margin: new EdgeInsets.all(10.0),
       child: new ListView(
         scrollDirection: Axis.horizontal,
