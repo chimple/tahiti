@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:tahiti/activity_board.dart';
+import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/popup_grid_view.dart';
 
 final Map<String, List<String>> bottomStickers = {
@@ -143,7 +143,7 @@ class SelectSticker extends StatelessWidget {
   SelectSticker({this.side, this.onUserPress});
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MyScopedModel>(
+    return ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) => PopupGridView(
               side: side,
               onUserPress: (text) {

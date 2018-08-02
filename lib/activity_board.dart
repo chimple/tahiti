@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tahiti/drawing.dart';
+import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/paper.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/tool_picker.dart';
@@ -16,8 +16,8 @@ class ActivityBoard extends StatefulWidget {
 class ActivityBoardState extends State<ActivityBoard> {
   @override
   Widget build(BuildContext context) {
-    return new ScopedModel<MyScopedModel>(
-        model: new MyScopedModel(),
+    return new ScopedModel<ActivityModel>(
+        model: new ActivityModel(),
         child: Stack(
           children: <Widget>[
             Center(
@@ -42,22 +42,4 @@ class ActivityBoardState extends State<ActivityBoard> {
           ],
         ));
   }
-}
-
-class MyScopedModel extends Model {
-  PainterController _controller;
- 
-  MyScopedModel() {
-    this._controller = this.newController();
-  }
-
-  PainterController get controller => this._controller;
-
-  PainterController newController() {
-    PainterController controller = new PainterController();
-    controller.backgroundColor = Colors.grey;
-    controller.thickness = 3.0;
-    return controller;
-  }
-  //notifyListeners();
 }

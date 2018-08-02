@@ -56,19 +56,19 @@ class _DrawingState extends State<Drawing> {
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(start.globalPosition);
     widget.painterController._pathHistory.add(pos);
-    widget.painterController.triggerNotifyListeners();
+    widget.painterController._notifyListeners();
   }
 
   void _onPanUpdate(DragUpdateDetails update) {
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(update.globalPosition);
     widget.painterController._pathHistory.updateCurrent(pos);
-    widget.painterController.triggerNotifyListeners();
+    widget.painterController._notifyListeners();
   }
 
   void _onPanEnd(DragEndDetails end) {
     widget.painterController._pathHistory.endCurrent();
-    widget.painterController.triggerNotifyListeners();
+    widget.painterController._notifyListeners();
   }
 }
 
@@ -154,6 +154,8 @@ class PainterController extends ChangeNotifier {
 
   PainterController() {
     _pathHistory = new _PathHistory();
+    _thickness = 3.0;
+    _updatePaint();
   }
 
   Color get backgroundColor => _backgroundColor;
@@ -187,7 +189,7 @@ class PainterController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void triggerNotifyListeners() {
+  void _notifyListeners() {
     notifyListeners();
   }
 }
