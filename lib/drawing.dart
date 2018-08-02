@@ -56,19 +56,19 @@ class _DrawingState extends State<Drawing> {
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(start.globalPosition);
     widget.painterController._pathHistory.add(pos);
-    widget.painterController._notifyListeners();
+    widget.painterController.triggerNotifyListeners();
   }
 
   void _onPanUpdate(DragUpdateDetails update) {
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(update.globalPosition);
     widget.painterController._pathHistory.updateCurrent(pos);
-    widget.painterController._notifyListeners();
+    widget.painterController.triggerNotifyListeners();
   }
 
   void _onPanEnd(DragEndDetails end) {
     widget.painterController._pathHistory.endCurrent();
-    widget.painterController._notifyListeners();
+    widget.painterController.triggerNotifyListeners();
   }
 }
 
@@ -103,15 +103,16 @@ class _PathHistory {
   void setBackgroundColor(Color backgroundColor) {
     _backgroundPaint.color = backgroundColor;
   }
-   void undo() {
+
+  void undo() {
     if (!_inDrag) {
       _paths.removeLast();
       print("the path is : $_paths");
     }
   }
 
-  void clear(){
-    if(!_inDrag){
+  void clear() {
+    if (!_inDrag) {
       _paths.clear();
     }
   }
@@ -147,7 +148,7 @@ class PainterController extends ChangeNotifier {
   // Color _drawColor = new Color(0xff000000);
   Color _backgroundColor = new Color(0xffffff00);
 
-   double _thickness = 1.0;
+  double _thickness = 1.0;
   _PathHistory _pathHistory;
   ValueGetter<Size> _widgetFinish;
 
@@ -162,8 +163,8 @@ class PainterController extends ChangeNotifier {
   }
 
   double get thickness => _thickness;
-  set thickness(double t){
-    _thickness=t;
+  set thickness(double t) {
+    _thickness = t;
     _updatePaint();
   }
 
@@ -175,20 +176,18 @@ class PainterController extends ChangeNotifier {
     _pathHistory.setBackgroundColor(Color(0xffffff00));
     notifyListeners();
   }
-   void undo(){
-      _pathHistory.undo();
-      notifyListeners();
-    
-  }
-  void clear(){
-      _pathHistory.clear();
-      notifyListeners();
-  }
 
-  void _notifyListeners() {
+  void undo() {
+    _pathHistory.undo();
     notifyListeners();
   }
-   
-}
 
-  
+  void clear() {
+    _pathHistory.clear();
+    notifyListeners();
+  }
+
+  void triggerNotifyListeners() {
+    notifyListeners();
+  }
+}

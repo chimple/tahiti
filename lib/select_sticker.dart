@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tahiti/drawing.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/activity_board.dart';
 import 'package:tahiti/popup_grid_view.dart';
 
 final Map<String, List<String>> bottomStickers = {
@@ -137,35 +138,35 @@ final Map<String, List<String>> topStickers = {
 };
 
 class SelectSticker extends StatelessWidget {
-
   final OnUserPress onUserPress;
   final DisplaySide side;
-  PainterController controller;
-  SelectSticker({this.side, this.onUserPress, this.controller});
+  SelectSticker({this.side, this.onUserPress});
   @override
   Widget build(BuildContext context) {
-    return PopupGridView(
-      side: side,
-      onUserPress: (text) {
-        print(text);
-        switch(text){
-          case 'assets/stickers/drawing/pencil.png':
-            controller.thickness = 5.0;
-            break;
-            case 'assets/stickers/drawing/brush.png':
-            controller.thickness = 8.0;
-            break;
-            case 'assets/stickers/drawing/brush1.png':
-            controller.thickness = 15.0;
-            break;
-        }
-      },
-      bottomItems: bottomStickers,
-      topItems: topStickers,
-      itemCrossAxisCount: 2,
-      buildItem: buildItem,
-      buildIndexItem: buildIndexItem,
-    );
+    return ScopedModelDescendant<MyScopedModel>(
+        builder: (context, child, model) => PopupGridView(
+              side: side,
+              onUserPress: (text) {
+                print(text);
+                switch (text) {
+                  // TODO: later change static image base code into index base
+                  case 'assets/stickers/drawing/pencil.png':
+                    model.controller.thickness = 5.0;
+                    break;
+                  case 'assets/stickers/drawing/brush.png':
+                    model.controller.thickness = 10.0;
+                    break;
+                  case 'assets/stickers/drawing/brush1.png':
+                    model.controller.thickness = 20.0;
+                    break;
+                }
+              },
+              bottomItems: bottomStickers,
+              topItems: topStickers,
+              itemCrossAxisCount: 2,
+              buildItem: buildItem,
+              buildIndexItem: buildIndexItem,
+            ));
   }
 
   Widget buildItem(String text, bool enabled) {
