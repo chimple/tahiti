@@ -107,6 +107,7 @@ class PopupGridViewState extends State<PopupGridView> {
                   child: Container(
                     color: Color(0XFFF4F4F4),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Container(
                           height: 100.0,
@@ -139,9 +140,7 @@ class PopupGridViewState extends State<PopupGridView> {
                             ),
                           ),
                         ),
-                        Container(
-                          height: 100.0,
-                          width: 500.0,
+                        Expanded(
                           child: ListView(
                               scrollDirection: Axis.horizontal,
                               children: widget.bottomItems.keys
