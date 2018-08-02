@@ -71,7 +71,7 @@ class PopupGridViewState extends State<PopupGridView> {
             right: 0.0,
             duration: Duration(milliseconds: 1000),
             curve: Curves.elasticOut,
-            child: poppedtext == true || popped == false
+            child: poppedtext == true || popped == false && widget.side == DisplaySide.bottom
                 ? new AddText()
                 : new SizedBox(
                     height: 70.0,
@@ -198,8 +198,7 @@ class PopupGridViewState extends State<PopupGridView> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: InkWell(
                                       onTap: () => setState(() {
-                                            if (popped &&
-                                                highlightedBottomItem == k) {
+                                            if (popped && highlightedTopItem == k) {
                                               popped = false;
                                             } else {
                                               popped = true;
