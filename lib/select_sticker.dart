@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/popup_grid_view.dart';
+import 'package:tahiti/recorder.dart';
 
 final Map<String, List<String>> bottomStickers = {
   'assets/stickers/emoguy/happy.png': [
@@ -132,6 +133,7 @@ final Map<String, List<String>> topStickers = {
 };
 
 class SelectSticker extends StatelessWidget {
+  static Recorder recorder = new Recorder();
   final OnUserPress onUserPress;
   final DisplaySide side;
   const SelectSticker({this.side, this.onUserPress});
@@ -141,6 +143,21 @@ class SelectSticker extends StatelessWidget {
       side: side,
       onUserPress: (text) {
         print(text);
+        switch(text){
+          case 'assets/stickers/mic/mic.png':
+          if(!recorder.isRecording){
+            recorder.start();
+          }else{
+          recorder.stop();
+          }
+          break;
+          case 'assets/stickers/mic/play.png':
+          recorder.playaudio();
+          break;
+          case 'assets/stickers/mic/stop.png':
+          recorder.stopaudio();
+          break;
+        }
       },
       bottomItems: bottomStickers,
       topItems: topStickers,
