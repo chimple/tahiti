@@ -115,9 +115,10 @@ final Map<String, List<String>> bottomStickers = {
 
 final Map<String, List<String>> topStickers = {
   'assets/stickers/mic/mic.png': [
-    'assets/stickers/mic/mic.png',
-    'assets/stickers/mic/play.png',
-    'assets/stickers/mic/stop.png'
+    // 'assets/stickers/mic/mic.png',
+    'assets/stickers/mic/stop.png',
+    'assets/stickers/mic/play.png'
+    
   ],
   'assets/stickers/camera/camera.png': [
     'assets/stickers/camera/camera1.png',
@@ -144,19 +145,26 @@ class SelectSticker extends StatelessWidget {
       onUserPress: (text) {
         print(text);
         switch(text){
-          case 'assets/stickers/mic/mic.png':
+          // case 'assets/stickers/mic/mic.png':
+          // if(!recorder.isRecording){
+          //   recorder.start();
+          // }
+          // break;
+          case 'assets/stickers/mic/stop.png':
           if(!recorder.isRecording){
-            recorder.start();
+          recorder.start();
           }else{
-          recorder.stop();
+            recorder.stop();
           }
           break;
           case 'assets/stickers/mic/play.png':
+          if(recorder.isRecorded){
           recorder.playaudio();
+          }else{
+            recorder.stopaudio();
+          }
           break;
-          case 'assets/stickers/mic/stop.png':
-          recorder.stopaudio();
-          break;
+          
         }
       },
       bottomItems: bottomStickers,
