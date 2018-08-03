@@ -48,9 +48,8 @@ class RecorderState extends State<Recorder>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: new EdgeInsets.all(20.0),
-          child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
         FloatingActionButton(onPressed: _isRecorded ?  _playaudio : _stopaudio, child: Icon(_playMusic, color: _playMusicColor,), ),
         FloatingActionButton(onPressed: _isRecording ? _stop : _start, child: Icon(_btnIcon, color: _btnClr,), ),
@@ -66,7 +65,7 @@ class RecorderState extends State<Recorder>{
           String filePath = appDocDirectory.path + '/' + path;
           print("Start recording: $filePath");
           File file = new File(filePath);
-          if(file.length() != null){
+          if(await file.exists() != null){
             print("Deleted the fie in the path");
               await file.delete();
           }
