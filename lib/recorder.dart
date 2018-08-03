@@ -77,16 +77,16 @@ class Recorder {
     filePath = record.path;
   }
 
-  Future playaudio() async {
+  Future playAudio() async {
     await audioPlayer.play(filePath, isLocal: true);
     isRecorded = false;
     playerState = PlayerState.playing;
     new Future.delayed(duration, () {
-      stopaudio();
+      stopAudio();
     });
   }
 
-  Future stopaudio() async {
+  Future stopAudio() async {
     await audioPlayer.stop();
     print("Music is stopped and finished");
     isRecorded = true;

@@ -170,9 +170,9 @@ class SelectSticker extends StatelessWidget {
                     break;
                   case 'assets/stickers/mic/play.png':
                     if (recorder.isRecorded) {
-                      recorder.playaudio();
+                      recorder.playAudio();
                     } else {
-                      recorder.stopaudio();
+                      recorder.stopAudio();
                     }
                     break;
                 }
