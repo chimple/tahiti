@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+
 typedef Widget BuildItem(String text, bool enabled);
 typedef void OnUserPress(String text);
 enum DisplaySide { top, bottom }
@@ -85,43 +86,47 @@ class PopupGridViewState extends State<PopupGridView> {
                 right: 0.0,
                 child: SizedBox(
                     height: 70.0,
-                    child: Row(
-                      children: <Widget>[
-                        InkWell(
-                          child: Container(
-                            color: Colors.white,
-                            child: new Image.asset('assets/stickers/text.png'),
-                            height: 70.0,
+                    child: Container(
+                      color: Color(0XFFF4F4F4),
+                      child: Row(
+                        children: <Widget>[
+                          InkWell(
+                            child: Container(
+                              color: Colors.white,
+                              child:
+                                  new Image.asset('assets/stickers/text.png'),
+                              height: 70.0,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: widget.bottomItems.keys
-                                  .map((k) => Container(
-                                        alignment: Alignment.center,
-                                        color:
-                                            popped && highlightedBottomItem == k
-                                                ? Colors.grey
-                                                : Colors.white,
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: InkWell(
-                                            onTap: () => setState(() {
-                                                  if (popped &&
-                                                      highlightedBottomItem ==
-                                                          k) {
-                                                    popped = false;
-                                                  } else {
-                                                    popped = true;
-                                                    highlightedBottomItem = k;
-                                                  }
-                                                }),
-                                            child:
-                                                widget.buildIndexItem(k, true)),
-                                      ))
-                                  .toList(growable: false)),
-                        ),
-                      ],
+                          Expanded(
+                            child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: widget.bottomItems.keys
+                                    .map((k) => Container(
+                                          alignment: Alignment.center,
+                                          color: popped &&
+                                                  highlightedBottomItem == k
+                                              ? Colors.grey
+                                              : Colors.white,
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: InkWell(
+                                              onTap: () => setState(() {
+                                                    if (popped &&
+                                                        highlightedBottomItem ==
+                                                            k) {
+                                                      popped = false;
+                                                    } else {
+                                                      popped = true;
+                                                      highlightedBottomItem = k;
+                                                    }
+                                                  }),
+                                              child: widget.buildIndexItem(
+                                                  k, true)),
+                                        ))
+                                    .toList(growable: false)),
+                          ),
+                        ],
+                      ),
                     )))
             : Positioned(
                 top: 0.0,
