@@ -148,6 +148,7 @@ class SelectSticker extends StatelessWidget {
               side: side,
               onUserPress: (text) {
                 print(text);
+                model.getSticker(text);
                 switch (text) {
                   // TODO: later change static image base code into index base
                   case 'assets/stickers/drawing/pencil.png':
