@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/popup_grid_view.dart';
 
 final Map<String, List<String>> bottomStickers = {
@@ -125,7 +127,11 @@ final Map<String, List<String>> topStickers = {
   ],
   'assets/stickers/drawing/pencil.png': [],
   'assets/stickers/drawing/eraser.png': [],
-  'assets/stickers/drawing/brush.png': [],
+  'assets/stickers/drawing/brush.png': [
+    'assets/stickers/drawing/pencil.png',
+    'assets/stickers/drawing/brush.png',
+    'assets/stickers/drawing/brush1.png'
+  ],
   'assets/stickers/drawing/brush1.png': [],
   'assets/stickers/drawing/bucket.png': [],
   'assets/stickers/drawing/roller.png': [],
@@ -134,20 +140,33 @@ final Map<String, List<String>> topStickers = {
 class SelectSticker extends StatelessWidget {
   final OnUserPress onUserPress;
   final DisplaySide side;
-  const SelectSticker({this.side, this.onUserPress});
+  SelectSticker({this.side, this.onUserPress});
   @override
   Widget build(BuildContext context) {
-    return PopupGridView(
-      side: side,
-      onUserPress: (text) {
-        print(text);
-      },
-      bottomItems: bottomStickers,
-      topItems: topStickers,
-      itemCrossAxisCount: 2,
-      buildItem: buildItem,
-      buildIndexItem: buildIndexItem,
-    );
+    return ScopedModelDescendant<ActivityModel>(
+        builder: (context, child, model) => PopupGridView(
+              side: side,
+              onUserPress: (text) {
+                print(text);
+                switch (text) {
+                  // TODO: later change static image base code into index base
+                  case 'assets/stickers/drawing/pencil.png':
+                    model.controller.thickness = 5.0;
+                    break;
+                  case 'assets/stickers/drawing/brush.png':
+                    model.controller.thickness = 10.0;
+                    break;
+                  case 'assets/stickers/drawing/brush1.png':
+                    model.controller.thickness = 20.0;
+                    break;
+                }
+              },
+              bottomItems: bottomStickers,
+              topItems: topStickers,
+              itemCrossAxisCount: 2,
+              buildItem: buildItem,
+              buildIndexItem: buildIndexItem,
+            ));
   }
 
   Widget buildItem(String text, bool enabled) {

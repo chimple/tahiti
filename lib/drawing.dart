@@ -104,6 +104,19 @@ class _PathHistory {
     _backgroundPaint.color = backgroundColor;
   }
 
+  void undo() {
+    if (!_inDrag) {
+      _paths.removeLast();
+      print("the path is : $_paths");
+    }
+  }
+
+  void clear() {
+    if (!_inDrag) {
+      _paths.clear();
+    }
+  }
+
   void add(Offset startPoint) {
     if (!_inDrag) {
       _inDrag = true;
@@ -135,12 +148,14 @@ class PainterController extends ChangeNotifier {
   // Color _drawColor = new Color(0xff000000);
   Color _backgroundColor = new Color(0xffffff00);
 
-  // double _thickness = 1.0;
+  double _thickness = 1.0;
   _PathHistory _pathHistory;
   ValueGetter<Size> _widgetFinish;
 
   PainterController() {
     _pathHistory = new _PathHistory();
+    _thickness = 3.0;
+    _updatePaint();
   }
 
   Color get backgroundColor => _backgroundColor;
@@ -149,60 +164,32 @@ class PainterController extends ChangeNotifier {
     _updatePaint();
   }
 
+  double get thickness => _thickness;
+  set thickness(double t) {
+    _thickness = t;
+    _updatePaint();
+  }
+
   void _updatePaint() {
     Paint paint = new Paint();
     paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 3.0;
+    paint.strokeWidth = _thickness;
     _pathHistory.currentPaint = paint;
     _pathHistory.setBackgroundColor(Color(0xffffff00));
+    notifyListeners();
+  }
+
+  void undo() {
+    _pathHistory.undo();
+    notifyListeners();
+  }
+
+  void clear() {
+    _pathHistory.clear();
     notifyListeners();
   }
 
   void _notifyListeners() {
     notifyListeners();
   }
-}
-
-
-
-
-class DrawPainter  extends CustomPainter {
-  List<Offset> points = [];
-  Canvas _lastCanvas;
-  Size _lastSize;
-  DrawPainter (points){
-
-    this.points = points;
-  }
-
-  void paint(Canvas canvas, Size size) {
-   // print({"the main paint is called .... ": {"size" : size}});
-    _lastCanvas = canvas;
-    _lastSize = size;
-
-
-    Paint paint = new Paint()
-      ..color = Colors.black
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 8.0;
-
-
-    for (int i = 0; i < points.length - 1; i++) {
-      if (points[i] != null &&
-          points[i + 1] != null &&
-          (points[i].dx >= 0 &&
-              points[i].dy >= 0 &&
-              points[i].dx < size.width &&
-              points[i].dy < size.height) &&
-          (points[i + 1].dx >= 0 &&
-              points[i + 1].dy >= 0 &&
-              points[i + 1].dx < size.width &&
-              points[i + 1].dy < size.height)){
-        canvas.drawLine(points[i], points[i + 1], paint);
-      }
-
-    }
-  }
-
-  bool shouldRepaint(DrawPainter  other) => other.points != points;
 }
