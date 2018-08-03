@@ -1,16 +1,26 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 
-typedef Widget BuildItem(String text, bool enabled);
+enum ItemType { text, png }
+
+class Iconf {
+  ItemType type;
+  String data;
+  Iconf({this.type, this.data});
+}
+
+typedef Widget BuildItem(Iconf text, bool enabled);
 typedef void OnUserPress(String text);
 enum DisplaySide { top, bottom }
 
 class PopupGridView extends StatefulWidget {
   final OnUserPress onUserPress;
-  final LinkedHashMap<String, List<String>> bottomItems;
-  final LinkedHashMap<String, List<String>> topItems;
+  final LinkedHashMap<String, List<Iconf>> bottomItems;
+  final LinkedHashMap<String, List<Iconf>> topItems;
+  final LinkedHashMap<String, List<Iconf>> fixedTextItems;
   final itemCrossAxisCount;
   final BuildItem buildItem;
+  final Iconf iconf;
   final BuildItem buildIndexItem;
   final DisplaySide side;
 
@@ -18,6 +28,8 @@ class PopupGridView extends StatefulWidget {
       {this.onUserPress,
       this.topItems,
       this.bottomItems,
+      this.fixedTextItems,
+      this.iconf,
       this.side,
       this.itemCrossAxisCount = 5,
       this.buildItem,
@@ -66,14 +78,16 @@ class PopupGridViewState extends State<PopupGridView> {
                     ? widget.bottomItems[highlightedBottomItem]
                         .map((itemName) => Container(
                               child: InkWell(
-                                  onTap: () => widget.onUserPress(itemName),
+                                  onTap: () =>
+                                      widget.onUserPress(itemName.data),
                                   child: widget.buildItem(itemName, true)),
                             ))
                         .toList(growable: false)
                     : widget.topItems[highlightedTopItem]
                         .map((itemName) => Container(
                               child: InkWell(
-                                  onTap: () => widget.onUserPress(itemName),
+                                  onTap: () =>
+                                      widget.onUserPress(itemName.data),
                                   child: widget.buildItem(itemName, true)),
                             ))
                         .toList(growable: false)),
@@ -90,13 +104,39 @@ class PopupGridViewState extends State<PopupGridView> {
                       color: Color(0XFFF4F4F4),
                       child: Row(
                         children: <Widget>[
-                          InkWell(
-                            child: Container(
-                              color: Colors.white,
-                              child:
-                                  new Image.asset('assets/stickers/text.png'),
-                              height: 70.0,
-                            ),
+                          Container(
+                            height: 70.0,
+                            width: 80.0,
+                            child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: widget.fixedTextItems.keys
+                                    .map((k) => Container(
+                                          height: 70.0,
+                                          width: 80.0,
+                                          alignment: Alignment.center,
+                                          color: popped &&
+                                                  highlightedBottomItem == k
+                                              ? Colors.grey
+                                              : Colors.white,
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: InkWell(
+                                              onTap: () => setState(() {
+                                                    if (popped &&
+                                                        highlightedBottomItem ==
+                                                            k) {
+                                                      popped = false;
+                                                    } else {
+                                                      popped = true;
+                                                      highlightedBottomItem = k;
+                                                    }
+                                                  }),
+                                              child: widget.buildIndexItem(
+                                                  Iconf(
+                                                      type: ItemType.png,
+                                                      data: k),
+                                                  true)),
+                                        ))
+                                    .toList(growable: false)),
                           ),
                           Expanded(
                             child: ListView(
@@ -121,7 +161,10 @@ class PopupGridViewState extends State<PopupGridView> {
                                                     }
                                                   }),
                                               child: widget.buildIndexItem(
-                                                  k, true)),
+                                                  Iconf(
+                                                      type: ItemType.png,
+                                                      data: k),
+                                                  true)),
                                         ))
                                     .toList(growable: false)),
                           ),
@@ -155,7 +198,9 @@ class PopupGridViewState extends State<PopupGridView> {
                                               highlightedTopItem = k;
                                             }
                                           }),
-                                      child: widget.buildIndexItem(k, true)),
+                                      child: widget.buildIndexItem(
+                                          Iconf(type: ItemType.png, data: k),
+                                          true)),
                                 ))
                             .toList(growable: false)),
                   ),
