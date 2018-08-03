@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/popup_grid_view.dart';
+import 'package:tahiti/recorder.dart';
 
 final Map<String, List<String>> bottomStickers = {
   'assets/stickers/emoguy/happy.png': [
@@ -116,9 +117,9 @@ final Map<String, List<String>> bottomStickers = {
 
 final Map<String, List<String>> topStickers = {
   'assets/stickers/mic/mic.png': [
-    'assets/stickers/mic/mic.png',
-    'assets/stickers/mic/play.png',
-    'assets/stickers/mic/stop.png'
+    // 'assets/stickers/mic/mic.png',
+    'assets/stickers/mic/stop.png',
+    'assets/stickers/mic/play.png'
   ],
   'assets/stickers/camera/camera.png': [
     'assets/stickers/camera/camera1.png',
@@ -138,6 +139,7 @@ final Map<String, List<String>> topStickers = {
 };
 
 class SelectSticker extends StatelessWidget {
+  static Recorder recorder = new Recorder();
   final OnUserPress onUserPress;
   final DisplaySide side;
   SelectSticker({this.side, this.onUserPress});
@@ -158,6 +160,20 @@ class SelectSticker extends StatelessWidget {
                     break;
                   case 'assets/stickers/drawing/brush1.png':
                     model.controller.thickness = 20.0;
+                    break;
+                  case 'assets/stickers/mic/stop.png':
+                    if (!recorder.isRecording) {
+                      recorder.start();
+                    } else {
+                      recorder.stop();
+                    }
+                    break;
+                  case 'assets/stickers/mic/play.png':
+                    if (recorder.isRecorded) {
+                      recorder.playAudio();
+                    } else {
+                      recorder.stopAudio();
+                    }
                     break;
                 }
               },
