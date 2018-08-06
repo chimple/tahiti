@@ -204,9 +204,12 @@ class SelectSticker extends StatelessWidget {
   }
 
   Widget buildItem(Iconf conf, bool enabled) {
+    if(conf.type==ItemType.text)
+        return new Text(conf.data);
+   else
     return Image.asset(conf.data);
   }
-
+  
   Widget buildIndexItem(Iconf conf, bool enabled) {
     return Image.asset(conf.data);
   }

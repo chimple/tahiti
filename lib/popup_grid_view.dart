@@ -20,7 +20,6 @@ class PopupGridView extends StatefulWidget {
   final LinkedHashMap<String, List<Iconf>> fixedTextItems;
   final itemCrossAxisCount;
   final BuildItem buildItem;
-  final Iconf iconf;
   final BuildItem buildIndexItem;
   final DisplaySide side;
 
@@ -29,7 +28,6 @@ class PopupGridView extends StatefulWidget {
       this.topItems,
       this.bottomItems,
       this.fixedTextItems,
-      this.iconf,
       this.side,
       this.itemCrossAxisCount = 5,
       this.buildItem,
@@ -44,13 +42,16 @@ class PopupGridView extends StatefulWidget {
 class PopupGridViewState extends State<PopupGridView> {
   String highlightedTopItem;
   String highlightedBottomItem;
+  String highlightedfixedItem;
 
   bool popped = false;
+  bool textp = false;
   @override
   void initState() {
     super.initState();
     highlightedBottomItem = widget.bottomItems.keys.first;
     highlightedTopItem = widget.topItems.keys.first;
+    highlightedfixedItem = widget.fixedTextItems.keys.first;
   }
 
   @override
@@ -75,14 +76,23 @@ class PopupGridViewState extends State<PopupGridView> {
                 crossAxisCount: 1,
                 scrollDirection: Axis.horizontal,
                 children: widget.side == DisplaySide.bottom
-                    ? widget.bottomItems[highlightedBottomItem]
-                        .map((itemName) => Container(
-                              child: InkWell(
-                                  onTap: () =>
-                                      widget.onUserPress(itemName.data),
-                                  child: widget.buildItem(itemName, true)),
-                            ))
-                        .toList(growable: false)
+                    ? textp == true
+                        ? widget.fixedTextItems[highlightedfixedItem]
+                            .map((itemName) => Container(
+                                  child: InkWell(
+                                      onTap: () =>
+                                          widget.onUserPress(itemName.data),
+                                      child: widget.buildItem(itemName, true)),
+                                ))
+                            .toList(growable: false)
+                        : widget.bottomItems[highlightedBottomItem]
+                            .map((itemName) => Container(
+                                  child: InkWell(
+                                      onTap: () =>
+                                          widget.onUserPress(itemName.data),
+                                      child: widget.buildItem(itemName, true)),
+                                ))
+                            .toList(growable: false)
                     : widget.topItems[highlightedTopItem]
                         .map((itemName) => Container(
                               child: InkWell(
@@ -115,24 +125,24 @@ class PopupGridViewState extends State<PopupGridView> {
                                           width: 80.0,
                                           alignment: Alignment.center,
                                           color: popped &&
-                                                  highlightedBottomItem == k
+                                                  highlightedfixedItem == k &&
+                                                  textp
                                               ? Colors.grey
                                               : Colors.white,
                                           padding: const EdgeInsets.all(4.0),
                                           child: InkWell(
                                               onTap: () => setState(() {
-                                                    if (popped &&
-                                                        highlightedBottomItem ==
-                                                            k) {
+                                                    if (popped) {
                                                       popped = false;
                                                     } else {
                                                       popped = true;
-                                                      highlightedBottomItem = k;
+                                                      textp = true;
+                                                      highlightedfixedItem = k;
                                                     }
                                                   }),
                                               child: widget.buildIndexItem(
                                                   Iconf(
-                                                      type: ItemType.png,
+                                                      type: ItemType.text,
                                                       data: k),
                                                   true)),
                                         ))
@@ -145,12 +155,14 @@ class PopupGridViewState extends State<PopupGridView> {
                                     .map((k) => Container(
                                           alignment: Alignment.center,
                                           color: popped &&
-                                                  highlightedBottomItem == k
+                                                  highlightedBottomItem == k &&
+                                                  !textp
                                               ? Colors.grey
                                               : Colors.white,
                                           padding: const EdgeInsets.all(4.0),
                                           child: InkWell(
                                               onTap: () => setState(() {
+                                                    textp = false;
                                                     if (popped &&
                                                         highlightedBottomItem ==
                                                             k) {
@@ -190,6 +202,7 @@ class PopupGridViewState extends State<PopupGridView> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: InkWell(
                                       onTap: () => setState(() {
+                                            textp = false;
                                             if (popped &&
                                                 highlightedTopItem == k) {
                                               popped = false;
