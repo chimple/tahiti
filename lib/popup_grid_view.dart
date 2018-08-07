@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:tahiti/color_picker.dart';
 
 enum ItemType { text, png }
 
@@ -71,36 +72,46 @@ class PopupGridViewState extends State<PopupGridView> {
           duration: Duration(milliseconds: 1000),
           curve: Curves.elasticOut,
           child: SizedBox(
-            height: 70.0,
-            child: GridView.count(
-                crossAxisCount: 1,
-                scrollDirection: Axis.horizontal,
-                children: widget.side == DisplaySide.bottom
-                    ? textp == true
-                        ? widget.fixedTextItems[highlightedfixedItem]
+            height: 80.0,
+            child: Column(children: <Widget>[
+              SizedBox(
+                child: new ColorPicker(),
+              ),
+              SizedBox(
+                height: 60.0,
+                child: GridView.count(
+                    crossAxisCount: 1,
+                    scrollDirection: Axis.horizontal,
+                    children: widget.side == DisplaySide.bottom
+                        ? textp == true
+                            ? widget.fixedTextItems[highlightedfixedItem]
+                                .map((itemName) => Container(
+                                      child: InkWell(
+                                          onTap: () =>
+                                              widget.onUserPress(itemName.data),
+                                          child:
+                                              widget.buildItem(itemName, true)),
+                                    ))
+                                .toList(growable: false)
+                            : widget.bottomItems[highlightedBottomItem]
+                                .map((itemName) => Container(
+                                      child: InkWell(
+                                          onTap: () =>
+                                              widget.onUserPress(itemName.data),
+                                          child:
+                                              widget.buildItem(itemName, true)),
+                                    ))
+                                .toList(growable: false)
+                        : widget.topItems[highlightedTopItem]
                             .map((itemName) => Container(
                                   child: InkWell(
                                       onTap: () =>
                                           widget.onUserPress(itemName.data),
                                       child: widget.buildItem(itemName, true)),
                                 ))
-                            .toList(growable: false)
-                        : widget.bottomItems[highlightedBottomItem]
-                            .map((itemName) => Container(
-                                  child: InkWell(
-                                      onTap: () =>
-                                          widget.onUserPress(itemName.data),
-                                      child: widget.buildItem(itemName, true)),
-                                ))
-                            .toList(growable: false)
-                    : widget.topItems[highlightedTopItem]
-                        .map((itemName) => Container(
-                              child: InkWell(
-                                  onTap: () =>
-                                      widget.onUserPress(itemName.data),
-                                  child: widget.buildItem(itemName, true)),
-                            ))
-                        .toList(growable: false)),
+                            .toList(growable: false)),
+              ),
+            ]),
           ),
         ),
         widget.side == DisplaySide.bottom
@@ -109,7 +120,7 @@ class PopupGridViewState extends State<PopupGridView> {
                 left: 0.0,
                 right: 0.0,
                 child: SizedBox(
-                    height: 70.0,
+                    height: 80.0,
                     child: Container(
                       color: Color(0XFFF4F4F4),
                       child: Row(
@@ -188,7 +199,7 @@ class PopupGridViewState extends State<PopupGridView> {
                 left: 0.0,
                 right: 0.0,
                 child: SizedBox(
-                  height: 70.0,
+                  height: 80.0,
                   child: Container(
                     color: Color(0XFFF4F4F4),
                     child: ListView(
