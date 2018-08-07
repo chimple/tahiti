@@ -205,7 +205,7 @@ class SelectSticker extends StatelessWidget {
 
   Widget buildItem(Iconf conf, bool enabled) {
     if(conf.type==ItemType.text)
-        return new Text(conf.data);
+        return Container(child: Center(child: new Text("abc", style: TextStyle(fontFamily: conf.data, fontSize: 30.0), )),color: Colors.blueAccent[100],);
    else
     return Image.asset(conf.data);
   }
