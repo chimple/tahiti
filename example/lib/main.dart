@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:simple_permissions/simple_permissions.dart';
 import 'package:tahiti/tahiti.dart';
 
 void main() => runApp(new MyApp());
@@ -15,6 +15,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    setPermission();
+  }
+
+  void setPermission() async {
+    await SimplePermissions.requestPermission(Permission.RecordAudio);
+    await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
+    await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
   }
 
   @override

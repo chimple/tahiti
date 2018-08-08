@@ -34,4 +34,13 @@ class ActivityModel extends Model {
     _sticker = t;
     notifyListeners();
   }
+
+  String _fontProvider;
+  
+  void getFont(String str) {
+    _fontProvider = str;
+    notifyListeners();
+  }
+
+  String get fontProvider => _fontProvider;
 }
