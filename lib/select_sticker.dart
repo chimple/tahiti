@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/camera.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
 
@@ -192,6 +193,23 @@ class SelectSticker extends StatelessWidget {
                     } else {
                       recorder.stopAudio();
                     }
+                    break;
+                    case 'assets/stickers/camera/camera1.png':
+                    new Camera().openCamera().then((p) {
+                      if(p!=null)
+                      model.setImagePath(p);
+                    });
+                    break;
+                  case 'assets/stickers/camera/gallery.png':
+                    new Camera().pickImage().then((p) {
+                      if(p!=null)
+                      model.setImagePath(p);
+                    });
+                    break;
+                    case  'assets/stickers/camera/video.png':
+                    new Camera().vidoeRecorder().then((p){
+                      //model.setVideoPath(p);
+                    });
                     break;
                 }
               },

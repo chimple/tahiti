@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/edit_text_view.dart';
+import 'package:tahiti/image_scaling.dart';
 import 'package:tahiti/image_template.dart';
 import 'package:tahiti/add_sticker.dart';
 
@@ -15,6 +16,7 @@ class Paper extends StatelessWidget {
               children: <Widget>[
                 ImageTemplate(),
                 Drawing(model.controller),
+                ImageScaling(imagePath: model.getImagePath),
                 AddSticker(sticker: model.sticker),
                 EditTextView(fontType: model.fontProvider),
                 // TODO: Undo and Clear button added fo temp , later need to remove
