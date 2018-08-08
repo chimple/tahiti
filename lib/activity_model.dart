@@ -12,11 +12,11 @@ class ActivityModel extends Model {
   }
 
   List<String> _imagePath = [];
-  File _videoPath;
+  String _videoPath;
 
   PainterController get controller => this._controller;
   List<String> get getImagePath => _imagePath;
-  File get getVideoPath => _videoPath;
+  String get getVideoPath => _videoPath;
   String get sticker => _sticker;
 
   void setImagePath(String str) {
@@ -26,7 +26,7 @@ class ActivityModel extends Model {
   }
 
   void setVideoPath(File str) {
-    _videoPath = str;
+    _videoPath = str.path;
     notifyListeners();
   }
 

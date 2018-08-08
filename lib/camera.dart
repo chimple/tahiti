@@ -29,7 +29,7 @@ class Camera {
     print("video:");
     var videoPath = await ImagePicker.pickVideo(source: ImageSource.camera);
     if(videoPath!=null)
-    return _cameraPath;
+    return videoPath;
     else return null;
   }
 }
