@@ -1,5 +1,9 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/edit_text_view.dart';
+import 'package:tahiti/paper.dart';
 
 enum ItemType { text, png }
 
@@ -56,7 +60,8 @@ class PopupGridViewState extends State<PopupGridView> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return ScopedModelDescendant<ActivityModel>(
+        builder: (context, child, model) => Stack(
       overflow: Overflow.visible,
       children: <Widget>[
         Container(
@@ -80,8 +85,10 @@ class PopupGridViewState extends State<PopupGridView> {
                         ? widget.fixedTextItems[highlightedfixedItem]
                             .map((itemName) => Container(
                                   child: InkWell(
-                                      onTap: () =>
-                                          widget.onUserPress(itemName.data),
+                                      onTap: () {
+                                        widget.onUserPress(itemName.data);
+                                        model.getFont(itemName.data);
+                                      },
                                       child: widget.buildItem(itemName, true)),
                                 ))
                             .toList(growable: false)
@@ -220,6 +227,6 @@ class PopupGridViewState extends State<PopupGridView> {
                 ),
               ),
       ],
-    );
+    ));
   }
 }
