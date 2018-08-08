@@ -5,10 +5,10 @@ class AddSticker extends StatefulWidget {
   AddSticker({this.sticker}) : super();
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _AddStickerState createState() => new _AddStickerState();
 }
 
-class _MyHomePageState extends State<AddSticker> {
+class _AddStickerState extends State<AddSticker> {
   @override
   Widget build(BuildContext context) {
     if (widget.sticker == null)
