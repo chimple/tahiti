@@ -87,8 +87,10 @@ class PopupGridViewState extends State<PopupGridView> {
                               ? widget.fixedTextItems[highlightedfixedItem]
                                   .map((itemName) => Container(
                                         child: InkWell(
-                                            onTap: () => widget
-                                                .onUserPress(itemName.data),
+                                            onTap: () {
+                                              widget.onUserPress(itemName.data);
+                                              model.getFont(itemName.data);
+                                            },
                                             child: widget.buildItem(
                                                 itemName, true)),
                                       ))
