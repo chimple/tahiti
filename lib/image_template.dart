@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 
 class ImageTemplate extends StatelessWidget {
-  String _assetName = 'assets/templates/LionSA1.svg';
+  final String _assetName = 'assets/templates/LionSA1.svg';
   
   @override
   Widget build(BuildContext context) {
