@@ -4,10 +4,11 @@ description: Demonstrates how to use the tahiti plugin.
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_svg: ^0.5.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  simple_permissions: 0.1.5
 
 dev_dependencies:
   flutter_test:
@@ -130,6 +131,25 @@ flutter:
     - assets/stickers/emoguy/thumbup.gif
     - assets/stickers/emoguy/workingout.gif
     - assets/stickers/emoguy/yummy.gif
+    - assets/stickers/camera/camera.png
+    - assets/stickers/camera/camera1.png
+    - assets/stickers/camera/gallery.png
+    - assets/stickers/camera/video.png
+    - assets/stickers/drawing/brush.png
+    - assets/stickers/drawing/brush1.png
+    - assets/stickers/drawing/bucket.png
+    - assets/stickers/drawing/eraser.png
+    - assets/stickers/drawing/pencil.png
+    - assets/stickers/drawing/roller.png
+    - assets/stickers/mic/mic.png
+    - assets/stickers/mic/play.png
+    - assets/stickers/mic/stop.png
+    - assets/stickers/text.png
+    
+
+
+    # template
+    - assets/templates/LionSA1.svg
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.io/assets-and-images/#from-packages
@@ -137,19 +157,48 @@ flutter:
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+  # list giving the asset and other descriptors for the font.
+
+  fonts:
+    - family: Bungee
+      fonts:
+        - asset: assets/fonts/Bungee-Regular.ttf
+    - family: Chela one
+      fonts:
+        - asset: assets/fonts/ChelaOne-Regular.ttf
+    - family: Gloria Hallelujah
+      fonts:
+        - asset: assets/fonts/GloriaHallelujah.ttf
+    - family: Great vibes
+      fonts:
+        - asset: assets/fonts/GreatVibes-Regular.ttf
+    - family: Homemade apple
+      fonts:
+        - asset: assets/fonts/HomemadeApple-Regular.ttf
+    - family: Indie Flower
+      fonts:
+        - asset: assets/fonts/IndieFlower.ttf
+    - family: Kirang Haerang
+      fonts:
+        - asset: assets/fonts/KirangHaerang-Regular.ttf
+    - family: Pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
+    - family: Patrick Hand
+      fonts:
+        - asset: assets/fonts/PatrickHand-Regular.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto-Italic.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
+    - family: Rock salt
+      fonts:
+        - asset: assets/fonts/RockSalt-Regular.ttf
+    - family: Shadows into light
+      fonts:
+        - asset: assets/fonts/ShadowsIntoLight.ttf
+    
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

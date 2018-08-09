@@ -11,7 +11,12 @@ dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
-
+  flutter_svg: ^0.5.1
+  audio_recorder: ^0.0.4
+  audioplayer: ^0.4.0
+  path_provider: ^0.4.1
+  scoped_model: ^0.2.0
+  image_picker: ^0.4.6
 # The following section is specific to Flutter.
 flutter:
   plugin:

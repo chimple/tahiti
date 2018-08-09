@@ -1,22 +1,38 @@
 import 'dart:collection';
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/edit_text_view.dart';
+import 'package:tahiti/paper.dart';
 
-typedef Widget BuildItem(String text, bool enabled);
+enum ItemType { text, png }
+
+class Iconf {
+  ItemType type;
+  String data;
+  Iconf({this.type, this.data});
+}
+
+typedef Widget BuildItem(Iconf text, bool enabled);
 typedef void OnUserPress(String text);
+enum DisplaySide { top, bottom }
 
 class PopupGridView extends StatefulWidget {
   final OnUserPress onUserPress;
-  final LinkedHashMap<String, List<String>> items;
+  final LinkedHashMap<String, List<Iconf>> bottomItems;
+  final LinkedHashMap<String, List<Iconf>> topItems;
+  final LinkedHashMap<String, List<Iconf>> fixedTextItems;
   final itemCrossAxisCount;
   final BuildItem buildItem;
   final BuildItem buildIndexItem;
-  final String show;
+  final DisplaySide side;
+
   const PopupGridView(
       {this.onUserPress,
-      this.items,
-      this.show,
+      this.topItems,
+      this.bottomItems,
+      this.fixedTextItems,
+      this.side,
       this.itemCrossAxisCount = 5,
       this.buildItem,
       this.buildIndexItem});
@@ -28,25 +44,35 @@ class PopupGridView extends StatefulWidget {
 }
 
 class PopupGridViewState extends State<PopupGridView> {
-  String highlightedItem;
+  String highlightedTopItem;
+  String highlightedBottomItem;
+  String highlightedfixedItem;
+
   bool popped = false;
+  bool textp = false;
   @override
   void initState() {
     super.initState();
-    highlightedItem = widget.items.keys.first;
+    highlightedBottomItem = widget.bottomItems.keys.first;
+    highlightedTopItem = widget.topItems.keys.first;
+    highlightedfixedItem = widget.fixedTextItems.keys.first;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      overflow: Overflow.visible,
-      children: <Widget>[
-        Container(
-          height: 200.0,
-        ),
-        widget.show == 'bottom'
-            ? AnimatedPositioned(
-                bottom: popped ? 80.0 : 0.0,
+    return ScopedModelDescendant<ActivityModel>(
+      builder: (context, child, model) => Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Container(
+                height: 200.0,
+              ),
+              AnimatedPositioned(
+                bottom: widget.side == DisplaySide.bottom
+                    ? popped ? 80.0 : 0.0
+                    : null,
+                top:
+                    widget.side == DisplaySide.top ? popped ? 80.0 : 0.0 : null,
                 left: 0.0,
                 right: 0.0,
                 duration: Duration(milliseconds: 1000),
@@ -56,118 +82,172 @@ class PopupGridViewState extends State<PopupGridView> {
                   child: GridView.count(
                       crossAxisCount: 1,
                       scrollDirection: Axis.horizontal,
-                      children: widget.items[highlightedItem]
-                          .map((itemName) => Container(
-                                child: InkWell(
-                                    onTap: () => widget.onUserPress(itemName),
-                                    child: widget.buildItem(itemName, true)),
-                              ))
-                          .toList(growable: false)),
-                ),
-              )
-            : AnimatedPositioned(
-                top: popped ? 80.0 : 0.0,
-                left: 0.0,
-                right: 0.0,
-                duration: Duration(milliseconds: 1000),
-                curve: Curves.elasticOut,
-                child: SizedBox(
-                  height: 70.0,
-                  child: GridView.count(
-                      crossAxisCount: 1,
-                      scrollDirection: Axis.horizontal,
-                      children: widget.items[highlightedItem]
-                          .map((itemName) => Container(
-                                child: InkWell(
-                                    onTap: () => widget.onUserPress(itemName),
-                                    child: widget.buildItem(itemName, true)),
-                              ))
-                          .toList(growable: false)),
-                ),
-              ),
-        widget.show == 'bottom'
-            ? Positioned(
-                bottom: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: SizedBox(
-                  height: 70.0,
-                  child: Container(
-                    color: Color(0XFFF4F4F4),
-                    child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: widget.items.keys
-                            .map((k) => Container(
-                                  alignment: Alignment.center,
-                                  color: popped && highlightedItem == k
-                                      ? Colors.grey
-                                      : Colors.white,
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: InkWell(
-                                      onTap: () => setState(() {
-                                            if (popped &&
-                                                highlightedItem == k) {
-                                              popped = false;
-                                            } else {
-                                              popped = true;
-                                              highlightedItem = k;
-                                            }
-                                          }),
-                                      child: widget.buildIndexItem(k, true)),
-                                ))
-                            .toList(growable: false)),
-                  ),
-                ),
-              )
-            : Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: SizedBox(
-                  height: 70.0,
-                  child: Container(
-                    color: Color(0XFFF4F4F4),
-                    child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        padding: new EdgeInsets.all(4.0),
-                        children: [
-                          new IconButton(
-                            icon: new Icon(Icons.mic),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(Icons.camera_alt),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(Icons.create),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.eraser),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.brush),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.formatPaint),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.broom),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                          new IconButton(
-                            icon: new Icon(MdiIcons.bitbucket),
-                            onPressed: () => widget.onUserPress('a'),
-                          ),
-                        ]),
-                  ),
+                      children: widget.side == DisplaySide.bottom
+                          ? textp == true
+                              ? widget.fixedTextItems[highlightedfixedItem]
+                                  .map((itemName) => Container(
+                                        child: InkWell(
+                                            onTap: () {
+                                              widget.onUserPress(itemName.data);
+                                              model.getFont(itemName.data);
+                                            },
+                                            child: widget.buildItem(
+                                                itemName, true)),
+                                      ))
+                                  .toList(growable: false)
+                              : widget.bottomItems[highlightedBottomItem]
+                                  .map((itemName) => Container(
+                                        child: InkWell(
+                                            onTap: () {
+                                              print(itemName.data);
+                                              model.getSticker(itemName.data);
+                                              widget.onUserPress(itemName.data);
+                                            },
+                                            child: widget.buildItem(
+                                                itemName, true)),
+                                      ))
+                                  .toList(growable: false)
+                          : widget.topItems[highlightedTopItem]
+                              .map((itemName) => Container(
+                                    child: InkWell(
+                                        onTap: () =>
+                                            widget.onUserPress(itemName.data),
+                                        child:
+                                            widget.buildItem(itemName, true)),
+                                  ))
+                              .toList(growable: false)),
                 ),
               ),
-      ],
+              widget.side == DisplaySide.bottom
+                  ? Positioned(
+                      bottom: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: SizedBox(
+                          height: 70.0,
+                          child: Container(
+                            color: Color(0XFFF4F4F4),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  height: 70.0,
+                                  width: 80.0,
+                                  child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      children: widget.fixedTextItems.keys
+                                          .map((k) => Container(
+                                                height: 70.0,
+                                                width: 80.0,
+                                                alignment: Alignment.center,
+                                                color: popped &&
+                                                        highlightedfixedItem ==
+                                                            k &&
+                                                        textp
+                                                    ? Colors.grey
+                                                    : Colors.white,
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: InkWell(
+                                                    onTap: () => setState(() {
+                                                          if (popped) {
+                                                            popped = false;
+                                                          } else {
+                                                            popped = true;
+                                                            textp = true;
+                                                            highlightedfixedItem =
+                                                                k;
+                                                          }
+                                                        }),
+                                                    child:
+                                                        widget.buildIndexItem(
+                                                            Iconf(
+                                                                type: ItemType
+                                                                    .text,
+                                                                data: k),
+                                                            true)),
+                                              ))
+                                          .toList(growable: false)),
+                                ),
+                                Expanded(
+                                  child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      children: widget.bottomItems.keys
+                                          .map((k) => Container(
+                                                alignment: Alignment.center,
+                                                color: popped &&
+                                                        highlightedBottomItem ==
+                                                            k &&
+                                                        !textp
+                                                    ? Colors.grey
+                                                    : Colors.white,
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: InkWell(
+                                                    onTap: () => setState(() {
+                                                          textp = false;
+                                                          if (popped &&
+                                                              highlightedBottomItem ==
+                                                                  k) {
+                                                            popped = false;
+                                                          } else {
+                                                            popped = true;
+                                                            highlightedBottomItem =
+                                                                k;
+                                                          }
+                                                        }),
+                                                    child:
+                                                        widget.buildIndexItem(
+                                                            Iconf(
+                                                                type: ItemType
+                                                                    .png,
+                                                                data: k),
+                                                            true)),
+                                              ))
+                                          .toList(growable: false)),
+                                ),
+                              ],
+                            ),
+                          )))
+                  : Positioned(
+                      top: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: SizedBox(
+                        height: 70.0,
+                        child: Container(
+                          color: Color(0XFFF4F4F4),
+                          child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: widget.topItems.keys
+                                  .map((k) => Container(
+                                        alignment: Alignment.center,
+                                        color: popped && highlightedTopItem == k
+                                            ? Colors.grey
+                                            : Colors.white,
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: InkWell(
+                                            onTap: () => setState(() {
+                                                  textp = false;
+                                                  if (popped &&
+                                                      highlightedTopItem == k) {
+                                                    popped = false;
+                                                  } else {
+                                                    popped = true;
+                                                    highlightedTopItem = k;
+                                                  }
+                                                }),
+                                            child: widget.buildIndexItem(
+                                                Iconf(
+                                                    type: ItemType.png,
+                                                    data: k),
+                                                true)),
+                                      ))
+                                  .toList(growable: false)),
+                        ),
+                      ),
+                    ),
+            ],
+          ),
     );
   }
 }
