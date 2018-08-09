@@ -5,16 +5,19 @@ import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/edit_text_view.dart';
 import 'package:tahiti/image_scaling.dart';
-import 'package:tahiti/image_template.dart';
 import 'package:tahiti/add_sticker.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Paper extends StatelessWidget {
+  final String image;
+  Paper({Key key, @required this.image}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    print('image got at paper $image');
     return ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) => Stack(
               children: <Widget>[
-                ImageTemplate(),
+                AspectRatio(aspectRatio: 1.0, child: SvgPicture.asset(image)),
                 Drawing(model.controller),
                 ImageScaling(imagePath: model.getImagePath),
                 AddSticker(sticker: model.sticker),
