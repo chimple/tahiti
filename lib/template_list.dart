@@ -30,6 +30,8 @@ class TemplateListState extends State<TemplateList> {
     print('hii   ${widget.topicId}');
     // activity = await ActivityRepo().getActivitiesByTopicId(widget.activityId);
     setState(() => _isLoading = false);
+    Navigator.of(context).pop();
+    _showDialog();
   }
 
   Widget _buildTile(int index) {
