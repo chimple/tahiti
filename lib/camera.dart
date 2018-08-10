@@ -25,7 +25,7 @@ class Camera {
     else return null;
   }
 
-  Future<File> vidoeRecorder() async {
+  Future<File> videoRecorder() async {
     print("video:");
     var videoPath = await ImagePicker.pickVideo(source: ImageSource.camera);
     if(videoPath!=null)

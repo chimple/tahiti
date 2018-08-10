@@ -11,17 +11,16 @@ class ActivityModel extends Model {
     _controller = new PainterController();
   }
 
-  List<String> _imagePath = [];
+  String _imagePath;
   String _videoPath;
 
   PainterController get controller => this._controller;
-  List<String> get getImagePath => _imagePath;
+  String get getImagePath => _imagePath;
   String get getVideoPath => _videoPath;
   String get sticker => _sticker;
 
   void setImagePath(String str) {
-    _imagePath.add(str);
-    print('list of images::$_imagePath');
+    _imagePath = str;
     notifyListeners();
   }
 
@@ -36,7 +35,7 @@ class ActivityModel extends Model {
   }
 
   String _fontProvider;
-  
+
   void getFont(String str) {
     _fontProvider = str;
     notifyListeners();
