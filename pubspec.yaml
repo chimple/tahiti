@@ -17,6 +17,7 @@ dependencies:
   path_provider: ^0.4.1
   scoped_model: ^0.2.0
   image_picker: ^0.4.6
+  video_player:
 # The following section is specific to Flutter.
 flutter:
   plugin:
