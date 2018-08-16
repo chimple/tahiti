@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
+import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
+    as rotate;
 
 class EditTextView extends StatefulWidget {
   final String fontType;
@@ -68,40 +71,89 @@ class DragTextView extends StatefulWidget {
 }
 
 class DragTextViewState extends State<DragTextView> {
-  Offset offset = Offset(0.0, 0.0);
+  Offset _offset = new Offset(0.0, 0.0);
+  double _scale = 0.0;
+  Offset _position;
+  double _rotation;
+  double _rotationBefore;
+
+  @override
+  void initState() {
+    super.initState();
+    _position = Offset.zero;
+    _rotation = 0.0;
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "BUILD => height : ${MediaQuery.of(context).size.height} ; width : ${MediaQuery.of(context).size.width}");
+    // var matrix = new Matrix4.identity()
+    //   ..translate(_position.dx, _position.dy)
+    //   ..scale(scaleTypeAwareScale());
+
+    var rotationMatrix = new Matrix4.identity()..rotateZ(_rotation);
     // TODO: implement build
-    return GestureDetector(
-        onScaleStart: _onScaleStart,
-        onScaleUpdate: _onScaleUpdate,
+    return RotateGestureDetector(
+        onScaleStart: onScaleStart,
+        onScaleUpdate: onScaleUpdate,
         child: Stack(children: <Widget>[
           Positioned(
-            left: offset.dx == 0.0 ? offset.dx : offset.dx - 100.0,
-            top: offset.dy == 0.0 ? offset.dy : offset.dy - 300.0,
-            child: Center( 
-                child: Text(
-              widget.str,
-              style: TextStyle(fontFamily: widget.fontType, fontSize: 50.0),
-            )),
+            left: _offset.dx == 0.0 ? _offset.dx : _offset.dx - 200.0,
+            top: _offset.dy == 0.0 ? _offset.dy : _offset.dy - 250.0,
+            child: Transform(
+              child: Transform(
+                child: Container(
+                  color: Colors.blue,
+                                  child: Text(
+                    widget.str,
+                    style: TextStyle(fontFamily: widget.fontType, fontSize: _scale < 1.0 ? 100.0 : _scale * 100.0),
+                  ),
+                ),
+                transform: rotationMatrix,
+                origin: Offset(_offset.dx*_scale/2.0, _offset.dy-100.0),
+              ),
+              transform: Matrix4.rotationZ(0.0),
+              alignment: Alignment.center,
+            ),
           )
         ]));
   }
 
-  void _onScaleStart(ScaleStartDetails details) {
+  void onScaleStart(rotate.ScaleStartDetails details) {
+    _rotationBefore = _rotation;
+    // _scaleBefore = scaleTypeAwareScale();
+    // _normalizedPosition = (details.focalPoint - _position);
+    // _scaleAnimationController.stop();
+    // _positionAnimationController.stop();
+    // _rotationAnimationController.stop();
     print("_onScaleStart : $details");
     setState(() {
-      offset = details.focalPoint;
+      _offset = details.focalPoint;
     });
   }
 
-  void _onScaleUpdate(ScaleUpdateDetails details) {
-    print("_onScaleUpdate : $details");
+  void onScaleUpdate(rotate.ScaleUpdateDetails details) {
+    // final double newScale = (_scaleBefore * details.scale);
+    // final Offset delta = (details.focalPoint - _normalizedPosition);
+    // if (details.scale != 1.0) {
+    //   widget.onStartPanning();
+    // }
     setState(() {
-      offset = details.focalPoint;
+      _offset = details.focalPoint;
+      _scale = details.scale;
+      // _position = clampPosition(delta * details.scale);
+      _rotation = _rotationBefore + details.rotation;
+      // _rotationFocusPoint = details.focalPoint/2.0;
     });
   }
+
+  // void onScaleEnd(rotate.ScaleEndDetails details) {
+  //animate back to maxScale if gesture exceeded the maxscale specified
+  // if ((widget.maxScale != null) && (this._scale > widget.maxScale)) {
+  //   double scaleComebackRatio = widget.maxScale / this._scale;
+  //   print(scaleComebackRatio);
+
+  //   animateScale(_scale, widget.maxScale);
+  //   animatePosition(_position, clampPosition(_position * scaleComebackRatio));
+  //   return;
+  // }
 }

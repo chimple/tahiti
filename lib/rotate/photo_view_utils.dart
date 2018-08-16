@@ -1,3 +1,9 @@
+//library photo_view;
+//A simple zoomable image widget for Flutter projects
+//PhotoView is useful in full screen exibition cases.
+//Resolves a image provider and show the result with useful gestures support, such as pinch to zoom and pan.
+//Resource flile URL: https://github.com/renancaraujo/photo_view/tree/4bf597fdee1e46fd3b4aab22159f73557948c4f9
+
 import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 import 'package:tahiti/rotate/photo_view_scale_type.dart';
