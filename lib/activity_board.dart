@@ -15,15 +15,14 @@ class ActivityBoard extends StatefulWidget {
 }
 
 class ActivityBoardState extends State<ActivityBoard> {
-  String name;
-  bool flag = false;
-  String image = '';
+  bool _displayPaper = false;
+  String template = '';
   String topicId = 'lion';
 
-  void _onPress(String activity, String image) {
+  void _onPress(String activity, String template) {
     setState(() {
-      flag = true;
-      this.image = image;
+      _displayPaper = true;
+      this.template = template;
       print('data is   $activity');
     });
   }
@@ -39,8 +38,8 @@ class ActivityBoardState extends State<ActivityBoard> {
                 color: Colors.grey,
                 child: AspectRatio(
                     aspectRatio: 1.0,
-                    child: flag
-                        ? Paper(image: image)
+                    child: _displayPaper
+                        ? Paper(template: template)
                         : TemplateList(
                             topicId: topicId,
                             onPress: _onPress,
