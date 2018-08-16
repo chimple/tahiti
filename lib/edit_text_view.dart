@@ -72,37 +72,36 @@ class DragTextViewState extends State<DragTextView> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "BUILD => height : ${MediaQuery.of(context).size.height} ; width : ${MediaQuery.of(context).size.width}");
     // TODO: implement build
-    return Positioned(
-      top: offset.dy,
-      left: offset.dx,
-      child: GestureDetector(
-        child: Center(
-          child: LimitedBox(
-            child: Draggable(
-              // dragAnchor: DragAnchor.pointer,
-              childWhenDragging: Container(),
-              child: Container(
-                  child: Text(
-                widget.str,
-                style: TextStyle(fontFamily: widget.fontType, fontSize: 50.0),
-              )),
-              feedback: Material(
-                color: Colors.transparent,
+    return GestureDetector(
+        onScaleStart: _onScaleStart,
+        onScaleUpdate: _onScaleUpdate,
+        child: Stack(children: <Widget>[
+          Positioned(
+            left: offset.dx == 0.0 ? offset.dx : offset.dx - 100.0,
+            top: offset.dy == 0.0 ? offset.dy : offset.dy - 300.0,
+            child: Center( 
                 child: Text(
-                  widget.str,
-                  style: TextStyle(fontFamily: widget.fontType, fontSize: 50.0),
-                ),
-              ),
-              onDraggableCanceled: (v, o) {
-                setState(() {
-                  offset = o;
-                });
-              },
-            ),
-          ),
-        ),
-      ),
-    );
+              widget.str,
+              style: TextStyle(fontFamily: widget.fontType, fontSize: 50.0),
+            )),
+          )
+        ]));
+  }
+
+  void _onScaleStart(ScaleStartDetails details) {
+    print("_onScaleStart : $details");
+    setState(() {
+      offset = details.focalPoint;
+    });
+  }
+
+  void _onScaleUpdate(ScaleUpdateDetails details) {
+    print("_onScaleUpdate : $details");
+    setState(() {
+      offset = details.focalPoint;
+    });
   }
 }
