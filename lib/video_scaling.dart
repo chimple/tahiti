@@ -19,40 +19,49 @@ class _VideoScalingState extends State<VideoScaling> {
   VideoPlayerController vcontroller;
 
   Future<void> _startVideoPlayer() async {
-    vcontroller = new VideoPlayerController.file(new File(widget.videoPath));
-    videoPlayerListener = () {
-      if (videoController != null && videoController.value.size != null) {
-        // Refreshing the state to update video player with the correct ratio.
-        if (mounted) setState(() {});
-        videoController.removeListener(videoPlayerListener);
+    if (videoController == null) {
+      videoController =
+          new VideoPlayerController.file(new File(widget.videoPath));
+      videoPlayerListener = () {
+        if (videoController != null && videoController.value.size != null) {
+          // Refreshing the state to update video player with the correct ratio.
+          if (mounted) setState(() {});
+          videoController.removeListener(videoPlayerListener);
+        }
+      };
+      videoController.addListener(videoPlayerListener);
+      await videoController.setLooping(true);
+      await videoController.initialize();
+      //await videoController?.dispose();
+      if (mounted) {
+        setState(() {
+          videoController;
+        });
       }
-    };
-    vcontroller.addListener(videoPlayerListener);
-    await vcontroller.setLooping(true);
-    await vcontroller.initialize();
-    //await videoController?.dispose();
-    if (mounted) {
-      setState(() {
-        videoController = vcontroller;
-      });
+      videoController.pause();
     }
-    videoController.pause();
   }
 
   @override
   void didUpdateWidget(VideoScaling oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.videoPath != null) {
+    if (widget.videoPath != oldWidget.videoPath && videoController != null) {
       _isPlaying = false;
+      videoController.setVolume(0.0);
+      videoController.removeListener(videoPlayerListener);
+      videoController.dispose();
+      videoController = null;
+    }
+    if (widget.videoPath != null) {
       _startVideoPlayer();
     }
   }
 
   void _play() async {
     _isPlaying = !videoController.value.isPlaying;
-    if (_isPlaying)
+    if (_isPlaying) {
       await videoController.play();
-    else
+    } else
       await videoController.pause();
     setState(() {});
   }
