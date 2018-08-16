@@ -207,8 +207,8 @@ class SelectSticker extends StatelessWidget {
                     });
                     break;
                   case 'assets/stickers/camera/video.png':
-                    new Camera().vidoeRecorder().then((p) {
-                      //model.setVideoPath(p);
+                    new Camera().videoRecorder().then((p) {
+                      if(p!=null)model.setVideoPath(p);
                     });
                     break;
                 }
