@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tahiti/rotate/photo_view.dart';
 
 class AddSticker extends StatefulWidget {
   final String sticker;
@@ -14,8 +15,11 @@ class _AddStickerState extends State<AddSticker> {
     if (widget.sticker == null)
       return Container();
     else
-      return new Center(
-        child: new Image.asset(widget.sticker),
+      return PhotoView(
+        imageProvider: AssetImage(widget.sticker),
+        backgroundColor: Colors.transparent,
+        minScale: 0.1,
+        maxScale: 2.0,
       );
   }
 }
