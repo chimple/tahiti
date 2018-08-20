@@ -5,7 +5,7 @@ import 'package:tahiti/camera.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
 
-final  Map<String, List<Iconf>> fixedTextItems = {
+final Map<String, List<Iconf>> bottomStickers = {
   'assets/stickers/text.png': [
     Iconf(type: ItemType.text, data: 'Bungee'),
     Iconf(type: ItemType.text, data: 'Chela one'),
@@ -20,13 +20,17 @@ final  Map<String, List<Iconf>> fixedTextItems = {
     Iconf(type: ItemType.text, data: 'Rock salt'),
     Iconf(type: ItemType.text, data: 'Shadows into light'),
   ],
-};
-final Map<String, List<Iconf>> bottomStickers = {
   'assets/stickers/emoguy/happy.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/angry.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/cold.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/cry.gif',),
-    Iconf( type: ItemType.png, data: 'assets/stickers/emoguy/happy.gif',),
+    Iconf(
+      type: ItemType.png,
+      data: 'assets/stickers/emoguy/cry.gif',
+    ),
+    Iconf(
+      type: ItemType.png,
+      data: 'assets/stickers/emoguy/happy.gif',
+    ),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/irritated.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/laughing.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/love.gif'),
@@ -146,15 +150,13 @@ final Map<String, List<Iconf>> topStickers = {
   'assets/stickers/drawing/pencil.png': [],
   'assets/stickers/drawing/eraser.png': [],
   'assets/stickers/drawing/brush.png': [
-  Iconf(type: ItemType.png, data:  'assets/stickers/drawing/pencil.png'),
-  Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush.png'),
-  Iconf(type: ItemType.png, data:  'assets/stickers/drawing/brush1.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/pencil.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush1.png'),
   ],
- 
   'assets/stickers/drawing/bucket.png': [],
   'assets/stickers/drawing/roller.png': [],
 };
-
 
 class SelectSticker extends StatelessWidget {
   static Recorder recorder = new Recorder();
@@ -168,7 +170,6 @@ class SelectSticker extends StatelessWidget {
               side: side,
               onUserPress: (text) {
                 print(text);
-                model.getSticker(text);
                 switch (text) {
                   // TODO: later change static image base code into index base
                   case 'assets/stickers/drawing/pencil.png':
@@ -194,28 +195,34 @@ class SelectSticker extends StatelessWidget {
                       recorder.stopAudio();
                     }
                     break;
-                    case 'assets/stickers/camera/camera1.png':
+                  case 'assets/stickers/camera/camera1.png':
                     new Camera().openCamera().then((p) {
-                      if(p!=null)
-                      model.setImagePath(p);
+                      if (p != null) model.setImagePath(p);
                     });
                     break;
                   case 'assets/stickers/camera/gallery.png':
                     new Camera().pickImage().then((p) {
-                      if(p!=null)
-                      model.setImagePath(p);
+                      if (p != null) model.setImagePath(p);
                     });
                     break;
-                    case  'assets/stickers/camera/video.png':
-                    new Camera().vidoeRecorder().then((p){
-                      //model.setVideoPath(p);
+                  case 'assets/stickers/camera/video.png':
+                    new Camera().videoRecorder().then((p) {
+                      if (p != null) model.setVideoPath(p);
                     });
                     break;
+                  default:
+                    //TODO: currently checking hardcoded prefixes
+                    // Later verify the selection option along with sub-option
+                    if (text.startsWith('assets/stickers')) {
+                      model.getSticker(text);
+                    } else {
+                      model.getFont(text);
+                    }
                 }
               },
-              bottomItems: bottomStickers,
-              topItems: topStickers,
-              fixedTextItems: fixedTextItems,
+              menuItems:
+                  side == DisplaySide.bottom ? bottomStickers : topStickers,
+              numFixedItems: side == DisplaySide.bottom ? 1 : 0,
               itemCrossAxisCount: 2,
               buildItem: buildItem,
               buildIndexItem: buildIndexItem,
@@ -223,12 +230,19 @@ class SelectSticker extends StatelessWidget {
   }
 
   Widget buildItem(Iconf conf, bool enabled) {
-    if(conf.type==ItemType.text)
-        return Container(child: Center(child: new Text("abc", style: TextStyle(fontFamily: conf.data, fontSize: 30.0), )),color: Colors.blueAccent[100],);
-   else
-    return Image.asset(conf.data);
+    if (conf.type == ItemType.text)
+      return Container(
+        child: Center(
+            child: new Text(
+          "abc",
+          style: TextStyle(fontFamily: conf.data, fontSize: 30.0),
+        )),
+        color: Colors.blueAccent[100],
+      );
+    else
+      return Image.asset(conf.data);
   }
-  
+
   Widget buildIndexItem(Iconf conf, bool enabled) {
     return Image.asset(conf.data);
   }

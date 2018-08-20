@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:tahiti/rotate/photo_view.dart';
 
 class AddSticker extends StatefulWidget {
   final String sticker;
   AddSticker({this.sticker}) : super();
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _AddStickerState createState() => new _AddStickerState();
 }
 
-class _MyHomePageState extends State<AddSticker> {
+class _AddStickerState extends State<AddSticker> {
   @override
   Widget build(BuildContext context) {
     if (widget.sticker == null)
       return Container();
     else
-      return new Center(
-        child: new Image.asset(widget.sticker),
+      return PhotoView(
+        imageProvider: AssetImage(widget.sticker),
+        backgroundColor: Colors.transparent,
+        minScale: 0.1,
+        maxScale: 2.0,
       );
   }
 }
