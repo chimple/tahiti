@@ -5,7 +5,7 @@ import 'package:tahiti/camera.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
 
-final Map<String, List<Iconf>> fixedTextItems = {
+final Map<String, List<Iconf>> bottomStickers = {
   'assets/stickers/text.png': [
     Iconf(type: ItemType.text, data: 'Bungee'),
     Iconf(type: ItemType.text, data: 'Chela one'),
@@ -20,8 +20,6 @@ final Map<String, List<Iconf>> fixedTextItems = {
     Iconf(type: ItemType.text, data: 'Rock salt'),
     Iconf(type: ItemType.text, data: 'Shadows into light'),
   ],
-};
-final Map<String, List<Iconf>> bottomStickers = {
   'assets/stickers/emoguy/happy.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/angry.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/cold.gif'),
@@ -171,6 +169,7 @@ class SelectSticker extends StatelessWidget {
         builder: (context, child, model) => PopupGridView(
               side: side,
               onUserPress: (text) {
+                print(text);
                 switch (text) {
                   // TODO: later change static image base code into index base
                   case 'assets/stickers/drawing/pencil.png':
@@ -208,14 +207,22 @@ class SelectSticker extends StatelessWidget {
                     break;
                   case 'assets/stickers/camera/video.png':
                     new Camera().videoRecorder().then((p) {
-                      if(p!=null)model.setVideoPath(p);
+                      if (p != null) model.setVideoPath(p);
                     });
                     break;
+                  default:
+                    //TODO: currently checking hardcoded prefixes
+                    // Later verify the selection option along with sub-option
+                    if (text.startsWith('assets/stickers')) {
+                      model.getSticker(text);
+                    } else {
+                      model.getFont(text);
+                    }
                 }
               },
-              bottomItems: bottomStickers,
-              topItems: topStickers,
-              fixedTextItems: fixedTextItems,
+              menuItems:
+                  side == DisplaySide.bottom ? bottomStickers : topStickers,
+              numFixedItems: side == DisplaySide.bottom ? 1 : 0,
               itemCrossAxisCount: 2,
               buildItem: buildItem,
               buildIndexItem: buildIndexItem,
