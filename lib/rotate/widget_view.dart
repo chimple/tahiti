@@ -17,7 +17,7 @@ class WidgetView extends StatefulWidget {
 
 class WidgetViewState extends State<WidgetView> {
   Offset _offset = new Offset(0.0, 0.0);
-  double _scale = 0.0, _newscale = 0.0, _beforescale = 0.0;
+  double _scale = 1.0, _newscale = 0.0, _beforescale = 0.0;
   Offset _position;
   double _rotation;
   double _rotationBefore;
@@ -48,35 +48,34 @@ class WidgetViewState extends State<WidgetView> {
         onScaleStart: onScaleStart,
         onScaleUpdate: onScaleUpdate,
         child: Stack(children: <Widget>[
-          Positioned(
+          Positioned( 
             left: _offset.dx < ((cont.width - _width) / 2.0)
                 ? 0.0
                 : _offset.dx > (_width + ((cont.width - _width) / 2.0))
                     ? _width
-                    : _offset.dx- ((cont.width - _width) / 2.0),
+                    : (_offset.dx-(200.0*_scale)) - ((cont.width - _width) / 2.0),
             top: _offset.dy < ((cont.height - _height) / 1.3)
                 ? 0.0
                 : _offset.dy > (_height + ((cont.height - _height) / 2.0))
-                    ? _height-100.0
-                    : (_offset.dy-100.0)- ((cont.height - _height) / 2.0),
-            child: Center(
-              child: Transform(
-                  child: Transform(
+                    ? _height - 100.0
+                    : (_offset.dy - (100.0*_scale)) - ((cont.height - _height) / 2.0),
+            child: Transform(
+                child: Transform(
+                  child: LimitedBox(
                     child: Text(
                       widget.str,
                       style: TextStyle(
                           fontFamily: widget.fontType,
                           fontSize: _scale < 1.0 ? 50.0 : _scale * 50.0),
                     ),
-                    // origin: Offset(constraints.maxWidth, constraints.maxHeight)/2.0,
-                    alignment: Alignment.center,
-                    transform: rotationMatrix,
                   ),
-                  transform: Matrix4.rotationZ(0.0),
+                  // origin: Offset(constraints.maxWidth, constraints.maxHeight)/2.0,
                   alignment: Alignment.center,
-                  origin:
-                      Offset(constraints.maxWidth, constraints.maxHeight) / 2.0),
-            ),
+                  transform: rotationMatrix,
+                ),
+                transform: Matrix4.rotationZ(0.0),
+                alignment: Alignment.center,
+                origin: (Offset(_offset.dx + 100.0, _offset.dy) / 2.0)),
           )
         ]),
       );

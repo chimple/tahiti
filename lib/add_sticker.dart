@@ -15,11 +15,13 @@ class _AddStickerState extends State<AddSticker> {
     if (widget.sticker == null)
       return Container();
     else
-      return PhotoView(
-        imageProvider: AssetImage(widget.sticker),
-        backgroundColor: Colors.transparent,
-        minScale: 0.1,
-        maxScale: 2.0,
+      return Center(
+        child: PhotoView(
+          imageProvider: AssetImage(widget.sticker),
+          backgroundColor: Colors.transparent,
+          minScale: 0.3,
+          maxScale: 2.0,
+        ),
       );
   }
 }
