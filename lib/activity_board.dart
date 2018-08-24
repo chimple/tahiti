@@ -5,6 +5,7 @@ import 'package:tahiti/paper.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/tool_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/template_list.dart';
 
 class ActivityBoard extends StatefulWidget {
   @override
@@ -14,6 +15,18 @@ class ActivityBoard extends StatefulWidget {
 }
 
 class ActivityBoardState extends State<ActivityBoard> {
+  bool _displayPaper = false;
+  String template = '';
+  String topicId = 'lion';
+
+  void _onPress(String activity, String template) {
+    setState(() {
+      _displayPaper = true;
+      this.template = template;
+      print('data is   $activity');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new ScopedModel<ActivityModel>(
@@ -24,9 +37,13 @@ class ActivityBoardState extends State<ActivityBoard> {
               child: Container(
                 color: Colors.grey,
                 child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Paper(),
-                ),
+                    aspectRatio: 1.0,
+                    child: _displayPaper
+                        ? Paper(template: template)
+                        : TemplateList(
+                            topicId: topicId,
+                            onPress: _onPress,
+                          )),
               ),
             ),
             Positioned(
