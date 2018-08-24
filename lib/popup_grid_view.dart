@@ -61,7 +61,7 @@ class PopupGridViewState extends State<PopupGridView> {
       child: InkWell(
           onTap: () => setState(
                 () {
-                  if (popped) {
+                  if (popped&&highlightedBottomItem == title) {
                     popped = false;
                   } else {
                     popped = true;
@@ -154,8 +154,11 @@ class PopupGridViewState extends State<PopupGridView> {
                 right: 0.0,
                 child: SizedBox(
                   height: menuHeight,
-                  child: Row(
-                    children: rowItems,
+                  child: Container(
+                    color: Colors.white,
+                    child: Row(
+                      children: rowItems,
+                    ),
                   ),
                 ),
               )
