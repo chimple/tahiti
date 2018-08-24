@@ -40,10 +40,7 @@ class ActivityBoardState extends State<ActivityBoard> {
                     aspectRatio: 1.0,
                     child: _displayPaper
                         ? Paper(template: template)
-                        : TemplateList(
-                            topicId: topicId,
-                            onPress: _onPress,
-                          )),
+                        : TemplateList(topicId: topicId, onPress: _onPress)),
               ),
             ),
             Positioned(
