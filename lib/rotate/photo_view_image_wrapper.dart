@@ -44,10 +44,8 @@ class PhotoViewImageWrapper extends StatefulWidget {
 
 class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
     with TickerProviderStateMixin {
-  
   Offset _offset = new Offset(0.0, 0.0);
   double _scale = 0.0;
-
 
   Offset _position;
   Offset _normalizedPosition;
@@ -55,6 +53,9 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
   double _scaleBefore;
   double _rotation;
   double _rotationBefore;
+  double _width;
+  double _height;
+  var cont;
   Offset _rotationFocusPoint;
 
   AnimationController _scaleAnimationController;
@@ -100,15 +101,21 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
   void onScaleUpdate(rotate.ScaleUpdateDetails details) {
     final double newScale = (_scaleBefore * details.scale);
     final Offset delta = (details.focalPoint - _normalizedPosition);
+    print("onScaleUpdate : $details");
     if (details.scale != 1.0) {
       widget.onStartPanning();
     }
     setState(() {
-      _offset = details.focalPoint;
+      if ((_offset.dx > ((cont.width - _width) / 2.0)) &&
+          (_offset.dx < (_width + ((cont.width - _width) / 2.0))) &&
+          (_offset.dy > ((cont.height - _height) / 1.4)) &&
+          (_offset.dy < (_height + ((cont.height - _height) / 1.7)))) {
+        _offset = details.focalPoint;
+      }
       _scale = newScale;
       _position = clampPosition(delta * details.scale);
       _rotation = _rotationBefore + details.rotation;
-      _rotationFocusPoint = details.focalPoint/2.0;
+      _rotationFocusPoint = details.focalPoint / 2.0;
     });
   }
 
@@ -234,8 +241,6 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     var matrix = new Matrix4.identity()
@@ -243,42 +248,63 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
       ..scale(scaleTypeAwareScale());
 
     var rotationMatrix = new Matrix4.identity()..rotateZ(_rotation);
-    return new RotateGestureDetector(
-      child: Stack(children: <Widget>[
-        Positioned(
-          left: _offset.dx < 100.0 ? _offset.dx : _offset.dx - widget.imageInfo.image.width.toDouble()/2,
-            top: _offset.dy < 200.0 ? _offset.dy : _offset.dy - widget.imageInfo.image.height.toDouble(),
-          child: new Transform(
+    cont = MediaQuery.of(context).size;
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      _width = constraints.maxWidth;
+      _height = constraints.maxHeight;
+      print("fullwidth: ${cont.width}, fullheight: ${cont.height}");
+      print("width: $_width, height: $_height");
+      return new RotateGestureDetector(
+        child: Stack(children: <Widget>[
+          Positioned(
+            // left: _offset.dx < ((cont.width - _width) / 2.0)
+            //     ? _offset.dx - widget.imageInfo.image.width.toDouble()
+            //     : _offset.dx > (_width + ((cont.width - _width) / 2.0))
+            //         ? _offset.dx - widget.imageInfo.image.width.toDouble()
+            //         : _offset.dx - widget.imageInfo.image.width.toDouble() / 2,
+            // top: _offset.dy < ((cont.height - _height) / 2.0)
+            //     ? _offset.dy - widget.imageInfo.image.height.toDouble()
+            //     : _offset.dy > (_height + ((cont.height - _height) / 2.0))
+            //         ? _offset.dy - widget.imageInfo.image.height.toDouble()
+            //         : _offset.dy - widget.imageInfo.image.height.toDouble(),
+            left: _offset.dx - widget.imageInfo.image.width.toDouble() / 2,
+            top: _offset.dy - widget.imageInfo.image.height.toDouble(),
             child: new Transform(
-              child: LimitedBox(
-            maxHeight: widget.imageInfo.image.height.toDouble(),
-            maxWidth: widget.imageInfo.image.width.toDouble(),
-                                child: new CustomSingleChildLayout(
-                  delegate: new ImagePositionDelegate(
-                      widget.imageInfo.image.width / 1,
-                      widget.imageInfo.image.height / 1),
-                  child: new RawImage(
-                    image: widget.imageInfo.image,
-                    scale: widget.imageInfo.scale,
+              child: new Transform(
+                child: LimitedBox(
+                  maxHeight: widget.imageInfo.image.height.toDouble(),
+                  maxWidth: widget.imageInfo.image.width.toDouble(),
+                  child: Center(
+                    child: new CustomSingleChildLayout(
+                      delegate: new ImagePositionDelegate(
+                          widget.imageInfo.image.width / 1,
+                          widget.imageInfo.image.height / 1),
+                      child: new RawImage(
+                        image: widget.imageInfo.image,
+                        scale: widget.imageInfo.scale,
+                      ),
+                    ),
                   ),
                 ),
+                transform: rotationMatrix,
+                // origin: _rotationFocusPoint,
+                origin: Offset(widget.imageInfo.image.width.toDouble(),
+                        widget.imageInfo.image.height.toDouble()) /
+                    2.0,
               ),
-              transform: rotationMatrix,
-              // origin: _rotationFocusPoint,
-              origin: Offset(widget.imageInfo.image.width.toDouble(), widget.imageInfo.image.height.toDouble())/2.0,
+              transform: matrix,
+              alignment: Alignment.center,
             ),
-            transform: matrix,
-            alignment: Alignment.center,
           ),
-        ),
-      ]),
-      onDoubleTap: widget.onDoubleTap,
-      onScaleStart: onScaleStart,
-      onScaleUpdate: onScaleUpdate,
-      onScaleEnd: onScaleEnd,
-    );
+        ]),
+        onDoubleTap: widget.onDoubleTap,
+        onScaleStart: onScaleStart,
+        onScaleUpdate: onScaleUpdate,
+        onScaleEnd: onScaleEnd,
+      );
+    });
   }
-
 }
 
 class ImagePositionDelegate extends SingleChildLayoutDelegate {
