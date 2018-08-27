@@ -13,20 +13,9 @@ class Drawing extends StatefulWidget {
 }
 
 class _DrawingState extends State<Drawing> {
-  bool _finished;
-
   @override
   void initState() {
     super.initState();
-    _finished = false;
-    widget.painterController._widgetFinish = _finish;
-  }
-
-  Size _finish() {
-    setState(() {
-      _finished = true;
-    });
-    return context.size;
   }
 
   @override
@@ -37,14 +26,12 @@ class _DrawingState extends State<Drawing> {
           repaint: widget.painterController),
     );
     child = new ClipRect(child: child);
-    if (!_finished) {
-      child = new GestureDetector(
-        child: child,
-        onPanStart: _onPanStart,
-        onPanUpdate: _onPanUpdate,
-        onPanEnd: _onPanEnd,
-      );
-    }
+    child = new GestureDetector(
+      child: child,
+      onPanStart: _onPanStart,
+      onPanUpdate: _onPanUpdate,
+      onPanEnd: _onPanEnd,
+    );
     return new Container(
       child: child,
       width: double.infinity,
@@ -91,23 +78,16 @@ class _PainterPainter extends CustomPainter {
 class _PathHistory {
   List<MapEntry<Path, Paint>> _paths;
   Paint currentPaint;
-  Paint _backgroundPaint;
   bool _inDrag;
 
   _PathHistory() {
     _paths = new List<MapEntry<Path, Paint>>();
     _inDrag = false;
-    _backgroundPaint = new Paint();
-  }
-
-  void setBackgroundColor(Color backgroundColor) {
-    _backgroundPaint.color = backgroundColor;
   }
 
   void undo() {
     if (!_inDrag) {
       _paths.removeLast();
-      print("the path is : $_paths");
     }
   }
 
@@ -145,22 +125,13 @@ class _PathHistory {
 }
 
 class PainterController extends ChangeNotifier {
-  // Color _drawColor = new Color(0xff000000);
-  Color _backgroundColor = new Color(0xffffff00);
-
-  double _thickness = 1.0;
+  double _thickness;
   _PathHistory _pathHistory;
-  ValueGetter<Size> _widgetFinish;
+  var _blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
 
   PainterController() {
     _pathHistory = new _PathHistory();
-    _thickness = 3.0;
-    _updatePaint();
-  }
-
-  Color get backgroundColor => _backgroundColor;
-  set backgroundColor(Color color) {
-    _backgroundColor = color;
+    _thickness = 5.0;
     _updatePaint();
   }
 
@@ -169,13 +140,21 @@ class PainterController extends ChangeNotifier {
     _thickness = t;
     _updatePaint();
   }
+   get blurEffect => _blurEffect;
+  set blurEffect(var t) {
+    _blurEffect = t;
+    _updatePaint();
+  }
 
   void _updatePaint() {
     Paint paint = new Paint();
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = _thickness;
+    paint.strokeCap = StrokeCap.round;
+    paint.strokeJoin = StrokeJoin.round;
+    paint.color = Colors.black;
     _pathHistory.currentPaint = paint;
-    _pathHistory.setBackgroundColor(Color(0xffffff00));
+    paint.maskFilter = _blurEffect;
     notifyListeners();
   }
 

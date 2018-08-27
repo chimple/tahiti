@@ -69,45 +69,42 @@ class _VideoScalingState extends State<VideoScaling> {
   @override
   Widget build(BuildContext context) {
     return widget.videoPath != null
-        ? new LayoutBuilder(builder: (ctx, constraints) {
-            Size size = constraints.biggest * .5;
-            return Center(
-              child: InkWell(
-                child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 3.0,
-                        ),
+        ? Center(
+            child: InkWell(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 3.0,
                       ),
-                      height: size.height,
-                      width: size.width,
-                      child: videoController == null
-                          ? Container()
-                          : VideoPlayer(videoController),
                     ),
-                    _isPlaying
-                        ? Icon(
-                            Icons.pause,
-                            color: Colors.white,
-                            size: 30.0,
-                          )
-                        : Icon(
-                            Icons.play_arrow,
-                            color: Colors.white,
-                            size: 30.0,
-                          ),
-                  ],
-                ),
-                onTap: () {
-                  _play();
-                },
+                    height: 300.0,
+                    width: 300.0,
+                    child: videoController == null
+                        ? Container()
+                        : VideoPlayer(videoController),
+                  ),
+                  _isPlaying
+                      ? Icon(
+                          Icons.pause,
+                          color: Colors.white,
+                          size: 30.0,
+                        )
+                      : Icon(
+                          Icons.play_arrow,
+                          color: Colors.white,
+                          size: 30.0,
+                        ),
+                ],
               ),
-            );
-          })
+              onTap: () {
+                _play();
+              },
+            ),
+          )
         : Container();
   }
 

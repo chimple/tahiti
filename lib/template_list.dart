@@ -79,11 +79,11 @@ class TemplateListDataState extends State<TemplateListData> {
   }
 
   Widget _buildTile(int index) {
-    return new Card(
+    return Card(
         elevation: 5.0,
         child: new InkWell(
           onTap: () {
-            widget.onPress(templates[index], _assetName);
+            widget.onPress(_assetName);
             Navigator.of(context).pop();
           },
           child: new Column(
