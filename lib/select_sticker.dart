@@ -206,26 +206,26 @@ class SelectSticker extends StatelessWidget {
                     break;
                   case 'assets/stickers/camera/camera1.png':
                     new Camera().openCamera().then((p) {
-                      if (p != null) model.setImagePath(p);
+                      if (p != null) model.addImage(p);
                     });
                     break;
                   case 'assets/stickers/camera/gallery.png':
                     new Camera().pickImage().then((p) {
-                      if (p != null) model.setImagePath(p);
+                      if (p != null) model.addImage(p);
                     });
                     break;
                   case 'assets/stickers/camera/video.png':
                     new Camera().videoRecorder().then((p) {
-                      if (p != null) model.setVideoPath(p);
+                      if (p != null) model.addVideo(p.path);
                     });
                     break;
                   default:
                     //TODO: currently checking hardcoded prefixes
                     // Later verify the selection option along with sub-option
                     if (text.startsWith('assets/stickers')) {
-                      model.getSticker(text);
+                      model.addSticker(text);
                     } else {
-                      model.getFont(text);
+                      model.addText('', font: text);
                     }
                 }
               },

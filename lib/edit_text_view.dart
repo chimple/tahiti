@@ -7,8 +7,9 @@ import 'package:tahiti/rotate/widget_view.dart';
 class EditTextView extends StatefulWidget {
   final String fontType;
   String change = 'Type Here';
+  final double scale;
 
-  EditTextView({this.fontType}) : super();
+  EditTextView({this.fontType, this.scale}) : super();
 
   @override
   EditTextViewState createState() {
@@ -31,31 +32,30 @@ class EditTextViewState extends State<EditTextView> {
   @override
   Widget build(BuildContext context) {
     return widget.fontType != null
-      ? !viewtext
-          ? LimitedBox(
-              child: Center(
-                  child: TextField(
-                      onSubmitted: (str) {
-                        myFocusNode.unfocus();
-                        setState(() {
-                          viewtext = true;
-                          userTyped = str;
-                        });
-                      },
-                      autofocus: true,
-                      focusNode: myFocusNode,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 50.0,
-                          color: const Color(0xFF000000),
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: widget.fontType),
-                      decoration: new InputDecoration.collapsed(
-                          hintText: widget.change))),
-            )
-          : WidgetView(fontType: widget.fontType, str: userTyped)
-      : Container();
+        ? !viewtext
+            ? Center(
+                child: TextField(
+                    onSubmitted: (str) {
+                      myFocusNode.unfocus();
+                      setState(() {
+                        viewtext = true;
+                        userTyped = str;
+                      });
+                    },
+                    autofocus: true,
+                    focusNode: myFocusNode,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 50.0 * widget.scale,
+                        color: const Color(0xFF000000),
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        fontFamily: widget.fontType),
+                    decoration:
+                        new InputDecoration.collapsed(hintText: widget.change)))
+            : Text(userTyped,
+                textScaleFactor: widget.scale,
+                style: TextStyle(fontFamily: widget.fontType))
+        : Container();
   }
 }
-
