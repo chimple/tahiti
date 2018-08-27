@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
 import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
     as rotate;
+import 'activity_model.dart';
 
 class TransformWrapper extends StatefulWidget {
   const TransformWrapper({Key key, @required this.child, @required this.thing})
@@ -45,12 +46,13 @@ class _TransformWrapperState extends State<TransformWrapper>
     });
   }
 
-  void onScaleEnd(rotate.ScaleEndDetails details) {
-    //TODO: create a move in the model to support undo redo
-    widget.thing['x'] = _translate.dx;
-    widget.thing['y'] = _translate.dy;
-    widget.thing['scale'] = _scale;
-    widget.thing['rotate'] = _rotate;
+  void onScaleEnd(ActivityModel model, rotate.ScaleEndDetails details) {
+    Map<String, dynamic> updatedThing = Map<String, dynamic>.from(widget.thing);
+    updatedThing['x'] = _translate.dx;
+    updatedThing['y'] = _translate.dy;
+    updatedThing['scale'] = _scale;
+    updatedThing['rotate'] = _rotate;
+    model.updateThing(updatedThing);
   }
 
   @override
@@ -72,13 +74,14 @@ class _TransformWrapperState extends State<TransformWrapper>
     return Positioned(
       left: _translate.dx,
       top: _translate.dy,
-      child: new RotateGestureDetector(
-        onScaleStart: onScaleStart,
-        onScaleUpdate: onScaleUpdate,
-        onScaleEnd: onScaleEnd,
-        child: WidgetTransformDelegate(
-          rotate: _rotate,
-          scale: _scale,
+      child: WidgetTransformDelegate(
+        rotate: _rotate,
+        scale: _scale,
+        child: new RotateGestureDetector(
+          onScaleStart: onScaleStart,
+          onScaleUpdate: onScaleUpdate,
+          onScaleEnd: (rotate.ScaleEndDetails details) =>
+              onScaleEnd(ActivityModel.of(context), details),
           child: widget.child,
         ),
       ),

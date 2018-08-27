@@ -29,6 +29,25 @@ class Paper extends StatelessWidget {
                 ),
           ),
         );
+        children.add(Align(
+          alignment: Alignment.bottomRight,
+          heightFactor: 100.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.undo),
+                  iconSize: 40.0,
+                  color: Colors.red,
+                  onPressed: model.canUndo() ? () => model.undo() : null),
+              IconButton(
+                  icon: Icon(Icons.redo),
+                  iconSize: 40.0,
+                  color: Colors.red,
+                  onPressed: model.canRedo() ? () => model.redo() : null),
+            ],
+          ),
+        ));
         return Stack(children: children);
       },
     );
