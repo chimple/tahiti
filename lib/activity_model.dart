@@ -1,45 +1,74 @@
-import 'dart:io';
-
+import 'package:uuid/uuid.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ActivityModel extends Model {
+  List<Map<String, dynamic>> things = [];
+  String _template;
   PainterController _controller;
-  String _sticker;
 
   ActivityModel() {
     _controller = new PainterController();
   }
 
-  String _imagePath;
-  String _videoPath;
+  static ActivityModel of(BuildContext context) =>
+      ScopedModel.of<ActivityModel>(context);
 
   PainterController get controller => this._controller;
-  String get getImagePath => _imagePath;
-  String get getVideoPath => _videoPath;
-  String get sticker => _sticker;
 
-  void setImagePath(String str) {
-    _imagePath = str;
+  String get template => _template;
+  set template(String t) {
+    _template = t;
     notifyListeners();
   }
 
-  void setVideoPath(File str) {
-    _videoPath = str.path;
+  void addSticker(String name) {
+    things.add({
+      'id': Uuid().v4(),
+      'type': 'sticker',
+      'asset': name,
+      'x': 0.0,
+      'y': 0.0,
+      'scale': 0.5
+    });
     notifyListeners();
   }
 
-  void getSticker(String t) {
-    _sticker = t;
+  void addImage(String imagePath) {
+    things.add({
+      'id': Uuid().v4(),
+      'type': 'image',
+      'path': imagePath,
+      'x': 0.0,
+      'y': 0.0,
+      'scale': 0.5
+    });
     notifyListeners();
   }
 
-  String _fontProvider;
-
-  void getFont(String str) {
-    _fontProvider = str;
+  void addVideo(String videoPath) {
+    things.add({
+      'id': Uuid().v4(),
+      'type': 'video',
+      'path': videoPath,
+      'x': 0.0,
+      'y': 0.0,
+      'scale': 0.5
+    });
     notifyListeners();
   }
 
-  String get fontProvider => _fontProvider;
+  void addText(String text, {String font}) {
+    things.add({
+      'id': Uuid().v4(),
+      'type': 'text',
+      'text': text,
+      'font': font,
+      'x': 0.0,
+      'y': 0.0,
+      'scale': 0.5
+    });
+    notifyListeners();
+  }
 }
