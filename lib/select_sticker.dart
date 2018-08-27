@@ -154,6 +154,11 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/roller.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size5.png'),
     
   ],
   'assets/stickers/drawing/bucket.png': [],
@@ -177,6 +182,7 @@ class SelectSticker extends StatelessWidget {
                   case 'assets/stickers/drawing/pencil.png':
                     model.controller.thickness = 1.2;
                     model.controller.blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
+                    
                     break;
                   case 'assets/stickers/drawing/brush.png':
                     model.controller.thickness = 15.0;

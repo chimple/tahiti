@@ -103,6 +103,7 @@ class _PathHistory {
       Path path = new Path();
       path.moveTo(startPoint.dx, startPoint.dy);
       _paths.add(new MapEntry<Path, Paint>(path, currentPaint));
+      
     }
   }
 
@@ -110,6 +111,7 @@ class _PathHistory {
     if (_inDrag) {
       Path path = _paths.last.key;
       path.lineTo(nextPoint.dx, nextPoint.dy);
+  
     }
   }
 
