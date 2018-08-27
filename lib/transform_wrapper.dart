@@ -74,14 +74,14 @@ class _TransformWrapperState extends State<TransformWrapper>
     return Positioned(
       left: _translate.dx,
       top: _translate.dy,
-      child: new RotateGestureDetector(
-        onScaleStart: onScaleStart,
-        onScaleUpdate: onScaleUpdate,
-        onScaleEnd: (rotate.ScaleEndDetails details) =>
-            onScaleEnd(ActivityModel.of(context), details),
-        child: WidgetTransformDelegate(
-          rotate: _rotate,
-          scale: _scale,
+      child: WidgetTransformDelegate(
+        rotate: _rotate,
+        scale: _scale,
+        child: new RotateGestureDetector(
+          onScaleStart: onScaleStart,
+          onScaleUpdate: onScaleUpdate,
+          onScaleEnd: (rotate.ScaleEndDetails details) =>
+              onScaleEnd(ActivityModel.of(context), details),
           child: widget.child,
         ),
       ),
