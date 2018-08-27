@@ -5,6 +5,8 @@ import 'package:scoped_model/scoped_model.dart';
 
 class ActivityModel extends Model {
   List<Map<String, dynamic>> things = [];
+  List<Map<String, dynamic>> undoStack = [];
+  List<Map<String, dynamic>> redoStack = [];
   String _template;
   PainterController _controller;
 
@@ -24,7 +26,7 @@ class ActivityModel extends Model {
   }
 
   void addSticker(String name) {
-    things.add({
+    addThing({
       'id': Uuid().v4(),
       'type': 'sticker',
       'asset': name,
@@ -32,11 +34,10 @@ class ActivityModel extends Model {
       'y': 0.0,
       'scale': 0.5
     });
-    notifyListeners();
   }
 
   void addImage(String imagePath) {
-    things.add({
+    addThing({
       'id': Uuid().v4(),
       'type': 'image',
       'path': imagePath,
@@ -44,11 +45,10 @@ class ActivityModel extends Model {
       'y': 0.0,
       'scale': 0.5
     });
-    notifyListeners();
   }
 
   void addVideo(String videoPath) {
-    things.add({
+    addThing({
       'id': Uuid().v4(),
       'type': 'video',
       'path': videoPath,
@@ -56,11 +56,10 @@ class ActivityModel extends Model {
       'y': 0.0,
       'scale': 0.5
     });
-    notifyListeners();
   }
 
   void addText(String text, {String font}) {
-    things.add({
+    addThing({
       'id': Uuid().v4(),
       'type': 'text',
       'text': text,
@@ -69,6 +68,73 @@ class ActivityModel extends Model {
       'y': 0.0,
       'scale': 0.5
     });
+  }
+
+  void addThing(Map<String, dynamic> thing) {
+    _addThing(thing);
+    redoStack.clear();
+  }
+
+  void _addThing(Map<String, dynamic> thing) {
+    print('_addThing: $thing');
+    thing['op'] = 'add';
+    things.add(thing);
+    undoStack.add(Map.from(thing));
+    print('_addThing: $undoStack $redoStack');
     notifyListeners();
+  }
+
+  void updateThing(Map<String, dynamic> thing) {
+    _updateThing(thing);
+    redoStack.clear();
+  }
+
+  void _updateThing(Map<String, dynamic> thing) {
+    print('updateThing: $thing');
+    final index = things.indexWhere((t) => t['id'] == thing['id']);
+    if (index >= 0) {
+      things[index]['op'] = 'update';
+      undoStack.add(things[index]);
+      thing['op'] = 'update';
+      things[index] = thing;
+    }
+    print('updateThing: $undoStack $redoStack');
+    notifyListeners();
+  }
+
+  bool canUndo() {
+    return undoStack.isNotEmpty;
+  }
+
+  void undo() {
+    print('undo: $undoStack $redoStack');
+    final thing = undoStack.removeLast();
+    if (thing['op'] == 'add') {
+      things.removeWhere((t) => t['id'] == thing['id']);
+      redoStack.add(thing);
+    } else {
+      //assume it is update
+      final index = things.indexWhere((t) => t['id'] == thing['id']);
+      redoStack.add(things[index]);
+      things[index] = thing;
+    }
+    print('undo: $undoStack $redoStack');
+    notifyListeners();
+  }
+
+  bool canRedo() {
+    return redoStack.isNotEmpty;
+  }
+
+  void redo() {
+    print('redo: $undoStack $redoStack');
+    final thing = redoStack.removeLast();
+    if (thing['op'] == 'add') {
+      _addThing(thing);
+    } else {
+      //assume it is update
+      _updateThing(thing);
+    }
+    print('redo: $undoStack $redoStack');
   }
 }
