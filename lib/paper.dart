@@ -20,14 +20,14 @@ class Paper extends StatelessWidget {
           children.add(AspectRatio(
               aspectRatio: 1.0, child: SvgPicture.asset(model.template)));
         }
-        children.add(Drawing(model.controller));
+        children.add(Drawing());
         children.addAll(
-          model.things.map(
-            (t) => TransformWrapper(
-                  child: buildWidgetFromThing(t),
-                  thing: t,
-                ),
-          ),
+          model.things.where((t) => t['type'] != 'drawing').map(
+                (t) => TransformWrapper(
+                      child: buildWidgetFromThing(t),
+                      thing: t,
+                    ),
+              ),
         );
         children.add(Align(
           alignment: Alignment.bottomRight,

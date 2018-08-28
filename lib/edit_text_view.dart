@@ -46,7 +46,7 @@ class EditTextViewState extends State<EditTextView> {
                     focusNode: myFocusNode,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 50.0 * widget.scale,
+                        fontSize: 128.0 * widget.scale,
                         color: const Color(0xFF000000),
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
