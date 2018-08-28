@@ -9,24 +9,17 @@ class Roller extends StatelessWidget {
   Roller({Key key, this.cover, this.reveal}) : super();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Scratch Card',
-      home: Scaffold(
-        body: Material(
-          child: Center(
-            child: Stack(
-              children: <Widget>[
-                ScratchCard(
-                  cover: cover,
-                  reveal: reveal,
-                  strokeWidth: 25.0,
-                  finishPercent: 50,
-                  onComplete: () => print('The card is now clear!'),
-                ),
-              ],
-            ),
+    return Center(
+      child: Stack(
+        children: <Widget>[
+          ScratchCard(
+            cover: cover,
+            reveal: reveal,
+            strokeWidth: 25.0,
+            finishPercent: 50,
+            onComplete: () => print('The card is now clear!'),
           ),
-        ),
+        ],
       ),
     );
   }

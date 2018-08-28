@@ -156,7 +156,11 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/roller.png'),
   ],
   'assets/stickers/drawing/bucket.png': [],
-  'assets/stickers/drawing/roller.png': [],
+  'assets/stickers/drawing/roller.png': [
+    Iconf(type: ItemType.png, data: 'assets/stickers/cover_images/sample1.jpg'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/cover_images/sample2.jpg'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/cover_images/sample3.jpg'),
+  ],
 };
 
 class SelectSticker extends StatelessWidget {
