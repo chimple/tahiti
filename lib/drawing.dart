@@ -154,6 +154,8 @@ class PainterController extends ChangeNotifier {
     _updatePaint();
   }
 
+  get paths => _pathHistory._paths;
+
   void _updatePaint() {
     Paint paint = new Paint();
     paint.style = PaintingStyle.stroke;
