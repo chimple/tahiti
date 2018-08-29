@@ -84,7 +84,10 @@ class _VideoScalingState extends State<VideoScaling> {
                     height: 300.0,
                     width: 300.0,
                     child: videoController == null
-                        ? Container()
+                        ? Container(
+                            child: CircularProgressIndicator(
+                            strokeWidth: 10.0,
+                          ))
                         : VideoPlayer(videoController),
                   ),
                   _isPlaying

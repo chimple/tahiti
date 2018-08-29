@@ -161,6 +161,26 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/cover_images/sample2.jpg'),
     Iconf(type: ItemType.png, data: 'assets/stickers/cover_images/sample3.jpg'),
   ],
+  'assets/stickers/birds.jpg': [
+    Iconf(
+        type: ItemType.png,
+        data: 'assets/stickers/filter_image/filterImage1.png'),
+    Iconf(
+        type: ItemType.png,
+        data: 'assets/stickers/filter_image/filterImage2.png'),
+    Iconf(
+        type: ItemType.png,
+        data: 'assets/stickers/filter_image/filterImage3.png'),
+    Iconf(
+        type: ItemType.png,
+        data: 'assets/stickers/filter_image/filterImage4.png'),
+    Iconf(
+        type: ItemType.png,
+        data: 'assets/stickers/filter_image/filterImage5.png'),
+    Iconf(
+        type: ItemType.png,
+        data: 'assets/stickers/filter_image/filterImage6.png'),
+  ],
 };
 
 class SelectSticker extends StatelessWidget {
@@ -229,7 +249,12 @@ class SelectSticker extends StatelessWidget {
                   default:
                     //TODO: currently checking hardcoded prefixes
                     // Later verify the selection option along with sub-option
-                    if (text.startsWith('assets/stickers')) {
+                    if (text.startsWith('assets/stickers/filter_image')) {
+                      model.addFilter(text);
+                    } else if (text
+                        .startsWith('assets/stickers/cover_images')) {
+                      model.addMaskImage(text);
+                    } else if (text.startsWith('assets/stickers')) {
                       model.addSticker(text);
                     } else {
                       model.addText('', font: text);
