@@ -37,6 +37,10 @@ class ActivityModel extends Model {
     _painterController = new PainterController();
   }
 
+  ActivityModel.fromJson(Map<String, dynamic> json) {}
+
+  Map<String, dynamic> toJson() {}
+
   static ActivityModel of(BuildContext context) =>
       ScopedModel.of<ActivityModel>(context);
 
@@ -141,7 +145,6 @@ class ActivityModel extends Model {
       redoStack.add(thing);
       if (thing['type'] == 'drawing') {
         painterController.undo();
-        return;
       }
     } else {
       //assume it is update
@@ -164,7 +167,6 @@ class ActivityModel extends Model {
       _addThing(thing);
       if (thing['type'] == 'drawing') {
         painterController.redo(thing['path']);
-        return;
       }
     } else {
       //assume it is update
