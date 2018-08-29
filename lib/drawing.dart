@@ -28,9 +28,9 @@ class _DrawingState extends State<Drawing> {
     child = new ClipRect(child: child);
     child = new GestureDetector(
       child: child,
-      onPanStart: _onPanStart,
-      onPanUpdate: _onPanUpdate,
-      onPanEnd: _onPanEnd,
+      // onScaleStart: _onScaleStart,
+      onScaleUpdate: _onScaleUpdate,
+      onScaleEnd: _onScaleEnd,
     );
     return new Container(
       child: child,
@@ -39,21 +39,33 @@ class _DrawingState extends State<Drawing> {
     );
   }
 
-  void _onPanStart(DragStartDetails start) {
-    Offset pos = (context.findRenderObject() as RenderBox)
-        .globalToLocal(start.globalPosition);
-    widget.painterController._pathHistory.add(pos);
-    widget.painterController._notifyListeners();
+  // void _onScaleStart(ScaleStartDetails start) {
+  //   Offset pos = (context.findRenderObject() as RenderBox)
+  //       .globalToLocal(start.focalPoint);
+  //       print("$pos");
+        
+  //   widget.painterController._pathHistory.add(pos);
+  //   widget.painterController._notifyListeners();
+  // }
+
+  void _onScaleUpdate(ScaleUpdateDetails update) {
+    if(update.scale == 1.0){
+      Offset pos = (context.findRenderObject() as RenderBox)
+        .globalToLocal(update.focalPoint);
+      if(widget.painterController._pathHistory.getDragStatus()){
+        widget.painterController._pathHistory.updateCurrent(pos);
+        print("$pos");
+      }else{
+        
+        widget.painterController._pathHistory.add(pos);
+        print("${update.scale}");
+        print("$pos");
+      }
+      widget.painterController._notifyListeners();
+    }
   }
 
-  void _onPanUpdate(DragUpdateDetails update) {
-    Offset pos = (context.findRenderObject() as RenderBox)
-        .globalToLocal(update.globalPosition);
-    widget.painterController._pathHistory.updateCurrent(pos);
-    widget.painterController._notifyListeners();
-  }
-
-  void _onPanEnd(DragEndDetails end) {
+  void _onScaleEnd(ScaleEndDetails end) {
     widget.painterController._pathHistory.endCurrent();
     widget.painterController._notifyListeners();
   }
@@ -119,6 +131,10 @@ class _PathHistory {
     _inDrag = false;
   }
 
+  bool getDragStatus(){
+    return _inDrag;
+  }
+
   void draw(Canvas canvas, Size size) {
     for (MapEntry<Path, Paint> path in _paths) {
       canvas.drawPath(path.key, path.value);
@@ -154,7 +170,7 @@ class PainterController extends ChangeNotifier {
     paint.strokeWidth = _thickness;
     paint.strokeCap = StrokeCap.round;
     paint.strokeJoin = StrokeJoin.round;
-    paint.color = Colors.black;
+    paint.color = Colors.red;
     _pathHistory.currentPaint = paint;
     paint.maskFilter = _blurEffect;
     notifyListeners();
