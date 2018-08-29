@@ -180,32 +180,39 @@ class SelectSticker extends StatelessWidget {
                 switch (text) {
                   // TODO: later change static image base code into index base
                   case 'assets/stickers/drawing/pencil.png':
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
-                    model.controller.thickness = 10.0;
+                    model.painterController.thickness = 1.2;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.normal, 0.0);
                     break;
                   case 'assets/stickers/drawing/brush.png':
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.normal, 15.5);
+                    model.painterController.thickness = 15.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.normal, 15.5);
                     break;
                   case 'assets/stickers/drawing/brush1.png':
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.inner, 0.0);
+                    model.painterController.thickness = 10.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.inner, 0.0);
                     break;
-                    case 'assets/stickers/drawing/roller.png':
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.inner, 15.5);
+                  case 'assets/stickers/drawing/roller.png':
+                    model.painterController.thickness = 10.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.inner, 15.5);
                     break;
                     case 'assets/stickers/drawing/size1.png':
-                    model.controller.thickness = 1.2;
+                    model.painterController.thickness = 1.2;
                     break;
                     case 'assets/stickers/drawing/size2.png':
-                    model.controller.thickness = 5.0;
+                    model.painterController.thickness = 5.0;
                     break;
                     case 'assets/stickers/drawing/size3.png':
-                    model.controller.thickness = 8.0;
+                    model.painterController.thickness = 8.0;
                     break;
                     case 'assets/stickers/drawing/size4.png':
-                    model.controller.thickness = 10.0;
+                    model.painterController.thickness = 10.0;
                     break;
                     case 'assets/stickers/drawing/size5.png':
-                    model.controller.thickness = 15.0;
+                    model.painterController.thickness = 15.0;
                     break;
                   case 'assets/stickers/mic/stop.png':
                     if (!recorder.isRecording) {

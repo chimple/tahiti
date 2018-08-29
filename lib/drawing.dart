@@ -1,73 +1,61 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/activity_model.dart';
 
-class Drawing extends StatefulWidget {
-  final PainterController painterController;
-
-  Drawing(PainterController painterController)
-      : this.painterController = painterController,
-        super(key: new ValueKey<PainterController>(painterController));
-
-  @override
-  _DrawingState createState() => new _DrawingState();
-}
-
-class _DrawingState extends State<Drawing> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class Drawing extends StatelessWidget {
+  Drawing({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget child = new CustomPaint(
-      willChange: true,
-      painter: new _PainterPainter(widget.painterController._pathHistory,
-          repaint: widget.painterController),
-    );
-    child = new ClipRect(child: child);
-    child = new GestureDetector(
-      child: child,
-      // onScaleStart: _onScaleStart,
-      onScaleUpdate: _onScaleUpdate,
-      onScaleEnd: _onScaleEnd,
-    );
-    return new Container(
-      child: child,
-      width: double.infinity,
-      height: double.infinity,
+    return ScopedModelDescendant<ActivityModel>(
+      builder: (context, child, model) {
+        Widget child = new CustomPaint(
+          willChange: true,
+          painter: new _PainterPainter(model.painterController._pathHistory,
+              repaint: model.painterController),
+        );
+        child = new ClipRect(child: child);
+        child = new GestureDetector(
+          child: child,
+          onPanStart: (DragStartDetails start) => _onPanStart(context, start),
+          onPanUpdate: (DragUpdateDetails update) =>
+              _onPanUpdate(context, update),
+          onPanEnd: (DragEndDetails end) => _onPanEnd(context, end),
+        );
+        return new Container(
+          child: child,
+          width: double.infinity,
+          height: double.infinity,
+        );
+      },
     );
   }
 
-  // void _onScaleStart(ScaleStartDetails start) {
-  //   Offset pos = (context.findRenderObject() as RenderBox)
-  //       .globalToLocal(start.focalPoint);
-  //       print("$pos");
-        
-  //   widget.painterController._pathHistory.add(pos);
-  //   widget.painterController._notifyListeners();
-  // }
-
-  void _onScaleUpdate(ScaleUpdateDetails update) {
-    if(update.scale == 1.0){
-      Offset pos = (context.findRenderObject() as RenderBox)
-        .globalToLocal(update.focalPoint);
-      if(widget.painterController._pathHistory.getDragStatus()){
-        widget.painterController._pathHistory.updateCurrent(pos);
-        print("$pos");
-      }else{
-        
-        widget.painterController._pathHistory.add(pos);
-        print("${update.scale}");
-        print("$pos");
-      }
-      widget.painterController._notifyListeners();
-    }
+  void _onPanStart(BuildContext context, DragStartDetails start) {
+    PainterController painterController =
+        ActivityModel.of(context).painterController;
+    Offset pos = (context.findRenderObject() as RenderBox)
+        .globalToLocal(start.globalPosition);
+    painterController._pathHistory.add(pos);
+    painterController._notifyListeners();
   }
 
-  void _onScaleEnd(ScaleEndDetails end) {
-    widget.painterController._pathHistory.endCurrent();
-    widget.painterController._notifyListeners();
+  void _onPanUpdate(BuildContext context, DragUpdateDetails update) {
+    PainterController painterController =
+        ActivityModel.of(context).painterController;
+    Offset pos = (context.findRenderObject() as RenderBox)
+        .globalToLocal(update.globalPosition);
+    painterController._pathHistory.updateCurrent(pos);
+    painterController._notifyListeners();
+  }
+
+  void _onPanEnd(BuildContext context, DragEndDetails end) {
+    ActivityModel model = ActivityModel.of(context);
+    PainterController painterController = model.painterController;
+    painterController._pathHistory.endCurrent();
+    model.addDrawing(painterController._pathHistory._paths.last);
+    painterController._notifyListeners();
   }
 }
 
@@ -100,6 +88,12 @@ class _PathHistory {
   void undo() {
     if (!_inDrag) {
       _paths.removeLast();
+    }
+  }
+
+  void redo(MapEntry<Path, Paint> path) {
+    if (!_inDrag) {
+      _paths.add(path);
     }
   }
 
@@ -158,7 +152,8 @@ class PainterController extends ChangeNotifier {
     _thickness = t;
     _updatePaint();
   }
-   get blurEffect => _blurEffect;
+
+  get blurEffect => _blurEffect;
   set blurEffect(var t) {
     _blurEffect = t;
     _updatePaint();
@@ -178,6 +173,11 @@ class PainterController extends ChangeNotifier {
 
   void undo() {
     _pathHistory.undo();
+    notifyListeners();
+  }
+
+  void redo(MapEntry<Path, Paint> path) {
+    _pathHistory.redo(path);
     notifyListeners();
   }
 

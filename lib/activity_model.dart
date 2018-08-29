@@ -8,16 +8,16 @@ class ActivityModel extends Model {
   List<Map<String, dynamic>> undoStack = [];
   List<Map<String, dynamic>> redoStack = [];
   String _template;
-  PainterController _controller;
+  PainterController _painterController;
 
   ActivityModel() {
-    _controller = new PainterController();
+    _painterController = new PainterController();
   }
 
   static ActivityModel of(BuildContext context) =>
       ScopedModel.of<ActivityModel>(context);
 
-  PainterController get controller => this._controller;
+  PainterController get painterController => this._painterController;
 
   String get template => _template;
   set template(String t) {
@@ -66,8 +66,12 @@ class ActivityModel extends Model {
       'font': font,
       'x': 0.0,
       'y': 0.0,
-      'scale': 0.5
+      'scale': 1.0
     });
+  }
+
+  void addDrawing(MapEntry<Path, Paint> path) {
+    addThing({'id': Uuid().v4(), 'type': 'drawing', 'path': path});
   }
 
   void addThing(Map<String, dynamic> thing) {
@@ -112,6 +116,10 @@ class ActivityModel extends Model {
     if (thing['op'] == 'add') {
       things.removeWhere((t) => t['id'] == thing['id']);
       redoStack.add(thing);
+      if (thing['type'] == 'drawing') {
+        painterController.undo();
+        return;
+      }
     } else {
       //assume it is update
       final index = things.indexWhere((t) => t['id'] == thing['id']);
@@ -131,6 +139,10 @@ class ActivityModel extends Model {
     final thing = redoStack.removeLast();
     if (thing['op'] == 'add') {
       _addThing(thing);
+      if (thing['type'] == 'drawing') {
+        painterController.redo(thing['path']);
+        return;
+      }
     } else {
       //assume it is update
       _updateThing(thing);
