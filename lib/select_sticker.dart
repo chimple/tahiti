@@ -154,7 +154,6 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/roller.png'),
-    
   ],
   'assets/stickers/drawing/bucket.png': [],
   'assets/stickers/drawing/roller.png': [],
@@ -175,20 +174,24 @@ class SelectSticker extends StatelessWidget {
                 switch (text) {
                   // TODO: later change static image base code into index base
                   case 'assets/stickers/drawing/pencil.png':
-                    model.controller.thickness = 1.2;
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
+                    model.painterController.thickness = 1.2;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.normal, 0.0);
                     break;
                   case 'assets/stickers/drawing/brush.png':
-                    model.controller.thickness = 15.0;
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.normal, 15.5);
+                    model.painterController.thickness = 15.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.normal, 15.5);
                     break;
                   case 'assets/stickers/drawing/brush1.png':
-                    model.controller.thickness = 10.0;
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.inner, 0.0);
+                    model.painterController.thickness = 10.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.inner, 0.0);
                     break;
-                    case 'assets/stickers/drawing/roller.png':
-                    model.controller.thickness = 10.0;
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.inner, 15.5);
+                  case 'assets/stickers/drawing/roller.png':
+                    model.painterController.thickness = 10.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.inner, 15.5);
                     break;
                   case 'assets/stickers/mic/stop.png':
                     if (!recorder.isRecording) {
