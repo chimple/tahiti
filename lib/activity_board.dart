@@ -36,35 +36,33 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ActivityModel>(
-      builder: (context, child, model) => Stack(
-            children: <Widget>[
-              Center(
-                child: Container(
-                  color: Colors.grey,
-                  child: AspectRatio(
-                      aspectRatio: 1.0,
-                      child: _displayPaper
-                          ? Paper()
-                          : ActivityTemplateList(
-                              topicId: topicId,
-                              onPress: _onPress,
-                            )),
+    return _displayPaper
+        ? ScopedModelDescendant<ActivityModel>(
+            builder: (context, child, model) => Stack(
+                  children: <Widget>[
+                    Center(
+                      child: Container(
+                        color: Colors.grey,
+                        child: AspectRatio(aspectRatio: 1.0, child: Paper()),
+                      ),
+                    ),
+                    Positioned(
+                        top: 0.0,
+                        left: 0.0,
+                        right: 0.0,
+                        child: SelectSticker(side: DisplaySide.top)),
+                    Positioned(
+                        bottom: 0.0,
+                        left: 0.0,
+                        right: 0.0,
+                        child: SelectSticker(side: DisplaySide.bottom)),
+                  ],
                 ),
-              ),
-              Positioned(
-                  top: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: SelectSticker(side: DisplaySide.top)),
-              Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: SelectSticker(side: DisplaySide.bottom)),
-            ],
-          ),
-    );
+          )
+        : ActivityTemplateList(
+            topicId: topicId,
+            onPress: _onPress,
+          );
   }
 }
 

@@ -5,8 +5,8 @@ import 'package:scoped_model/scoped_model.dart';
 
 class ActivityModel extends Model {
   List<Map<String, dynamic>> things = [];
-  List<Map<String, dynamic>> undoStack = [];
-  List<Map<String, dynamic>> redoStack = [];
+  List<Map<String, dynamic>> _undoStack = [];
+  List<Map<String, dynamic>> _redoStack = [];
   String _template;
   PainterController _painterController;
 
@@ -80,21 +80,21 @@ class ActivityModel extends Model {
 
   void addThing(Map<String, dynamic> thing) {
     _addThing(thing);
-    redoStack.clear();
+    _redoStack.clear();
   }
 
   void _addThing(Map<String, dynamic> thing) {
     print('_addThing: $thing');
     thing['op'] = 'add';
     things.add(thing);
-    undoStack.add(Map.from(thing));
-    print('_addThing: $undoStack $redoStack');
+    _undoStack.add(Map.from(thing));
+    print('_addThing: $_undoStack $_redoStack');
     notifyListeners();
   }
 
   void updateThing(Map<String, dynamic> thing) {
     _updateThing(thing);
-    redoStack.clear();
+    _redoStack.clear();
   }
 
   void _updateThing(Map<String, dynamic> thing) {
@@ -102,44 +102,44 @@ class ActivityModel extends Model {
     final index = things.indexWhere((t) => t['id'] == thing['id']);
     if (index >= 0) {
       things[index]['op'] = 'update';
-      undoStack.add(things[index]);
+      _undoStack.add(things[index]);
       thing['op'] = 'update';
       things[index] = thing;
     }
-    print('updateThing: $undoStack $redoStack');
+    print('updateThing: $_undoStack $_redoStack');
     notifyListeners();
   }
 
   bool canUndo() {
-    return undoStack.isNotEmpty;
+    return _undoStack.isNotEmpty;
   }
 
   void undo() {
-    print('undo: $undoStack $redoStack');
-    final thing = undoStack.removeLast();
+    print('undo: $_undoStack $_redoStack');
+    final thing = _undoStack.removeLast();
     if (thing['op'] == 'add') {
       things.removeWhere((t) => t['id'] == thing['id']);
-      redoStack.add(thing);
+      _redoStack.add(thing);
       if (thing['type'] == 'drawing') {
         painterController.undo();
       }
     } else {
       //assume it is update
       final index = things.indexWhere((t) => t['id'] == thing['id']);
-      redoStack.add(things[index]);
+      _redoStack.add(things[index]);
       things[index] = thing;
     }
-    print('undo: $undoStack $redoStack');
+    print('undo: $_undoStack $_redoStack');
     notifyListeners();
   }
 
   bool canRedo() {
-    return redoStack.isNotEmpty;
+    return _redoStack.isNotEmpty;
   }
 
   void redo() {
-    print('redo: $undoStack $redoStack');
-    final thing = redoStack.removeLast();
+    print('redo: $_undoStack $_redoStack');
+    final thing = _redoStack.removeLast();
     if (thing['op'] == 'add') {
       _addThing(thing);
       if (thing['type'] == 'drawing') {
@@ -149,6 +149,6 @@ class ActivityModel extends Model {
       //assume it is update
       _updateThing(thing);
     }
-    print('redo: $undoStack $redoStack');
+    print('redo: $_undoStack $_redoStack');
   }
 }
