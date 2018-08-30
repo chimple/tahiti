@@ -10,9 +10,10 @@ class Camera {
     _cameraPath = await ImagePicker.pickImage(
       source: ImageSource.camera,
     );
-    if(_cameraPath!=null)
-    return _cameraPath.path;
-    else return null;
+    if (_cameraPath != null)
+      return _cameraPath.path;
+    else
+      return null;
   }
 
   Future<String> pickImage() async {
@@ -20,16 +21,18 @@ class Camera {
     _cameraPath = await ImagePicker.pickImage(
       source: ImageSource.gallery,
     );
-     if(_cameraPath!=null)
-    return _cameraPath.path;
-    else return null;
+    if (_cameraPath != null)
+      return _cameraPath.path;
+    else
+      return null;
   }
 
   Future<File> videoRecorder() async {
     print("video:");
     var videoPath = await ImagePicker.pickVideo(source: ImageSource.camera);
-    if(videoPath!=null)
-    return videoPath;
-    else return null;
+    if (videoPath != null)
+      return videoPath;
+    else
+      return null;
   }
 }

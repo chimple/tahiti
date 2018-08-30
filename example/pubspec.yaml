@@ -145,9 +145,16 @@ flutter:
     - assets/stickers/mic/play.png
     - assets/stickers/mic/stop.png
     - assets/stickers/text.png
-    
-
-
+    - assets/stickers/cover_images/sample1.jpg
+    - assets/stickers/cover_images/sample2.jpg
+    - assets/stickers/cover_images/sample3.jpg
+    - assets/stickers/birds.jpg
+    - assets/stickers/filter_image/filterImage1.png
+    - assets/stickers/filter_image/filterImage2.png
+    - assets/stickers/filter_image/filterImage3.png
+    - assets/stickers/filter_image/filterImage4.png
+    - assets/stickers/filter_image/filterImage5.png
+    - assets/stickers/filter_image/filterImage6.png
     # template
     - assets/templates/LionSA1.svg
 

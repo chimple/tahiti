@@ -2,14 +2,37 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/material.dart';
 
 class ActivityModel extends Model {
   List<Map<String, dynamic>> things = [];
   List<Map<String, dynamic>> undoStack = [];
   List<Map<String, dynamic>> redoStack = [];
   String _template;
+  String maskImage;
   PainterController _painterController;
-
+  Color color = Colors.white;
+  BlendMode blendMode = BlendMode.modulate;
+  List<Color> _color = [
+    Colors.white, //0
+    Colors.white, //1
+    Colors.white, //2
+    Colors.red, //3
+    Colors.orangeAccent, //4
+    Colors.pink, // 5
+    Colors.blue, //6
+    Colors.red, //7
+  ];
+  List<BlendMode> _blendModeList = [
+    BlendMode.modulate, //0
+    BlendMode.color, //1
+    BlendMode.exclusion, //2
+    BlendMode.color, //3
+    BlendMode.color, //4
+    BlendMode.color, //5
+    BlendMode.color, //6
+    BlendMode.difference, //7
+  ];
   ActivityModel() {
     _painterController = new PainterController();
   }
@@ -45,8 +68,8 @@ class ActivityModel extends Model {
       'id': Uuid().v4(),
       'type': 'image',
       'path': imagePath,
-      'x': 0.0,
-      'y': 0.0,
+      'x': 100.0,
+      'y': 100.0,
       'scale': 0.5
     });
   }
@@ -149,6 +172,32 @@ class ActivityModel extends Model {
       //assume it is update
       _updateThing(thing);
     }
+
     print('redo: $undoStack $redoStack');
+  }
+
+  void addMaskImage(String text) {
+    maskImage = text;
+    notifyListeners();
+  }
+
+  void addFilter(String text) {
+    if (text == 'assets/stickers/filter_image/filterImage1.png') {
+      color = _color[0];
+      blendMode = _blendModeList[0];
+    } else if (text == 'assets/stickers/filter_image/filterImage1.png') {
+      color = _color[1];
+      blendMode = _blendModeList[1];
+    } else if (text == 'assets/stickers/filter_image/filterImage2.png') {
+      color = _color[2];
+      blendMode = _blendModeList[2];
+    } else if (text == 'assets/stickers/filter_image/filterImage3.png') {
+      color = _color[3];
+      blendMode = _blendModeList[3];
+    } else if (text == 'assets/stickers/filter_image/filterImage4.png') {
+      color = _color[4];
+      blendMode = _blendModeList[4];
+    }
+    notifyListeners();
   }
 }

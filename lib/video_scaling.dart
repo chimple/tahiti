@@ -43,9 +43,9 @@ class _VideoScalingState extends State<VideoScaling> {
   }
 
   @override
-  void didUpdateWidget(VideoScaling oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.videoPath != oldWidget.videoPath && videoController != null) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (videoController != null) {
       _isPlaying = false;
       videoController.setVolume(0.0);
       videoController.removeListener(videoPlayerListener);
@@ -84,7 +84,10 @@ class _VideoScalingState extends State<VideoScaling> {
                     height: 300.0,
                     width: 300.0,
                     child: videoController == null
-                        ? Container()
+                        ? Container(
+                            child: CircularProgressIndicator(
+                            strokeWidth: 10.0,
+                          ))
                         : VideoPlayer(videoController),
                   ),
                   _isPlaying
