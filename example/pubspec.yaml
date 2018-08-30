@@ -8,7 +8,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  simple_permissions: 0.1.5
+  simple_permissions: ^0.1.6
 
 dev_dependencies:
   flutter_test:
@@ -141,6 +141,11 @@ flutter:
     - assets/stickers/drawing/eraser.png
     - assets/stickers/drawing/pencil.png
     - assets/stickers/drawing/roller.png
+    - assets/stickers/drawing/size1.png
+    - assets/stickers/drawing/size2.png
+    - assets/stickers/drawing/size3.png
+    - assets/stickers/drawing/size4.png
+    - assets/stickers/drawing/size5.png
     - assets/stickers/mic/mic.png
     - assets/stickers/mic/play.png
     - assets/stickers/mic/stop.png

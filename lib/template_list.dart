@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -17,12 +15,12 @@ class TemplateListState extends State<TemplateList> {
   @override
   void initState() {
     super.initState();
-    _showDialog();
-  }
-
-  Future _showDialog() async {
-    return showDialog(
-        context: context, barrierDismissible: false, builder: _build);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => _build(context),
+      );
+    });
   }
 
   Widget _build(BuildContext context) {

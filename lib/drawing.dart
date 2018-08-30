@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 
@@ -19,10 +18,10 @@ class Drawing extends StatelessWidget {
         child = new ClipRect(child: child);
         child = new GestureDetector(
           child: child,
-          onPanStart: (DragStartDetails start) => _onPanStart(context, start),
-          onPanUpdate: (DragUpdateDetails update) =>
-              _onPanUpdate(context, update),
-          onPanEnd: (DragEndDetails end) => _onPanEnd(context, end),
+          // onScaleStart: (ScaleStartDetails start) => _onScaleStart(context, start),
+          onScaleUpdate: (ScaleUpdateDetails update) =>
+              _onScaleUpdate(context, update),
+          onScaleEnd: (ScaleEndDetails end) => _onScaleEnd(context, end),
         );
         return new Container(
           child: child,
@@ -33,25 +32,32 @@ class Drawing extends StatelessWidget {
     );
   }
 
-  void _onPanStart(BuildContext context, DragStartDetails start) {
+  // void _onScaleStart(BuildContext context, ScaleStartDetails start) {
+  //   PainterController painterController =
+  //       ActivityModel.of(context).painterController;
+  //   Offset pos = (context.findRenderObject() as RenderBox)
+  //       .globalToLocal(start.focalPoint);
+  //   painterController._pathHistory.add(pos);
+  //   painterController._notifyListeners();
+  // }
+
+  void _onScaleUpdate(BuildContext context, ScaleUpdateDetails update) {
     PainterController painterController =
         ActivityModel.of(context).painterController;
-    Offset pos = (context.findRenderObject() as RenderBox)
-        .globalToLocal(start.globalPosition);
-    painterController._pathHistory.add(pos);
-    painterController._notifyListeners();
+    if (update.scale == 1.0) {
+      Offset pos = (context.findRenderObject() as RenderBox)
+          .globalToLocal(update.focalPoint);
+      if (painterController._pathHistory.getDragStatus()) {
+        painterController._pathHistory.updateCurrent(pos);
+      } else {
+        painterController._pathHistory.add(pos);
+      }
+
+      painterController._notifyListeners();
+    }
   }
 
-  void _onPanUpdate(BuildContext context, DragUpdateDetails update) {
-    PainterController painterController =
-        ActivityModel.of(context).painterController;
-    Offset pos = (context.findRenderObject() as RenderBox)
-        .globalToLocal(update.globalPosition);
-    painterController._pathHistory.updateCurrent(pos);
-    painterController._notifyListeners();
-  }
-
-  void _onPanEnd(BuildContext context, DragEndDetails end) {
+  void _onScaleEnd(BuildContext context, ScaleEndDetails end) {
     ActivityModel model = ActivityModel.of(context);
     PainterController painterController = model.painterController;
     painterController._pathHistory.endCurrent();
@@ -124,6 +130,10 @@ class _PathHistory {
     _inDrag = false;
   }
 
+  bool getDragStatus() {
+    return _inDrag;
+  }
+
   void draw(Canvas canvas, Size size) {
     for (MapEntry<Path, Paint> path in _paths) {
       canvas.drawPath(path.key, path.value);
@@ -162,7 +172,7 @@ class PainterController extends ChangeNotifier {
     paint.strokeWidth = _thickness;
     paint.strokeCap = StrokeCap.round;
     paint.strokeJoin = StrokeJoin.round;
-    paint.color = Colors.black;
+    paint.color = Colors.red;
     _pathHistory.currentPaint = paint;
     paint.maskFilter = _blurEffect;
     notifyListeners();
