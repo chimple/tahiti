@@ -7,24 +7,30 @@ homepage:
 dependencies:
   flutter:
     sdk: flutter
-  material_design_icons_flutter: 2.3.50  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
   flutter_svg: ^0.5.1
   audio_recorder: ^0.0.4
-  audioplayer: ^0.4.0
+  audioplayer2: ^0.5.1
   path_provider: ^0.4.1
   scoped_model: ^0.3.0
   image_picker: ^0.4.6
   video_player:
   uuid: ^1.0.3
+  json_annotation: ^1.1.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^0.10.1
+  json_serializable: ^1.2.1
 # The following section is specific to Flutter.
 flutter:
   plugin:
     androidPackage: org.chimple.tahiti
     pluginClass: TahitiPlugin
-
+environment:
+  sdk: ">=2.0.0-dev.58.0 <3.0.0"
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

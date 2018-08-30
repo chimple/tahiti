@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:audio_recorder/audio_recorder.dart';
-import 'package:audioplayer/audioplayer.dart';
+import 'package:audioplayer2/audioplayer2.dart';
 
 typedef void OnError(Exception exception);
 
