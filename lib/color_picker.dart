@@ -75,6 +75,9 @@ class ColorPickerState extends State<ColorPicker> {
 }
 
 class DisplaySticker extends StatelessWidget {
+  String primary;
+  Color primaryColor;
+  DisplaySticker({this.primary, this.primaryColor});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -84,7 +87,7 @@ class DisplaySticker extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1.0,
             child: new SvgPicture.asset(
-              'assets/svgimage/pen1.svg',
+              '${primary}1.svg',
               color: selectedColor,
               colorBlendMode: BlendMode.modulate,
             ),
@@ -92,7 +95,7 @@ class DisplaySticker extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1.0,
             child: new SvgPicture.asset(
-              'assets/svgimage/pen2.svg',
+              '${primary}2.svg',
             ),
           ),
         ],

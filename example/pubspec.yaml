@@ -150,6 +150,7 @@ flutter:
     - assets/stickers/mic/play.png
     - assets/stickers/mic/stop.png
     - assets/stickers/text.png
+    - assets/stickers/icon.png
     - assets/svgimage/men1.svg
     - assets/svgimage/men2.svg
     - assets/svgimage/monkey1.svg
