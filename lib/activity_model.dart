@@ -1,22 +1,30 @@
 import 'package:uuid/uuid.dart';
+import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+part 'activity_model.g.dart';
+
+@JsonSerializable()
 class ActivityModel extends Model {
   List<Map<String, dynamic>> things = [];
   List<Map<String, dynamic>> _undoStack = [];
   List<Map<String, dynamic>> _redoStack = [];
   String _template;
   PainterController _painterController;
+  PathHistory pathHistory;
 
-  ActivityModel() {
-    _painterController = new PainterController();
+  ActivityModel({@required this.pathHistory}) {
+    print('pathHistory: $pathHistory');
+    _painterController = new PainterController(pathHistory: this.pathHistory);
   }
 
-  ActivityModel.fromJson(Map<String, dynamic> json) {}
+  factory ActivityModel.fromJson(Map<String, dynamic> json) =>
+      _$ActivityModelFromJson(json);
 
-  Map<String, dynamic> toJson() {}
+  Map<String, dynamic> toJson() => _$ActivityModelToJson(this);
 
   static ActivityModel of(BuildContext context) =>
       ScopedModel.of<ActivityModel>(context);
@@ -74,8 +82,9 @@ class ActivityModel extends Model {
     });
   }
 
-  void addDrawing(MapEntry<Path, Paint> path) {
+  void addDrawing(PathInfo path) {
     addThing({'id': Uuid().v4(), 'type': 'drawing', 'path': path});
+    debugPrint(json.encode(this));
   }
 
   void addThing(Map<String, dynamic> thing) {
@@ -152,3 +161,88 @@ class ActivityModel extends Model {
     print('redo: $_undoStack $_redoStack');
   }
 }
+
+@JsonSerializable()
+class PathHistory {
+  List<PathInfo> paths;
+
+  PathHistory() {
+    paths = [];
+  }
+
+  factory PathHistory.fromJson(Map<String, dynamic> json) =>
+      _$PathHistoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PathHistoryToJson(this);
+
+  void undo() {
+    paths.removeLast();
+  }
+
+  void redo(PathInfo pathInfo) {
+    paths.add(pathInfo);
+  }
+
+  void clear() {
+    paths.clear();
+  }
+
+  void add(Offset startPoint, Paint paint) {
+    paths.add(PathInfo(paint: paint, points: [startPoint.dx, startPoint.dy]));
+  }
+
+  void updateCurrent(Offset nextPoint) {
+    paths.last.addPoint(nextPoint);
+  }
+
+  void draw(Canvas canvas, Size size) {
+    for (PathInfo pathInfo in paths) {
+      canvas.drawPath(pathInfo.path, pathInfo.paint);
+    }
+  }
+}
+
+@JsonSerializable()
+class PathInfo {
+  Path _path;
+
+  get path => _path;
+
+  @JsonKey(fromJson: _paintFromMap, toJson: _paintToMap)
+  final Paint paint;
+
+  List<double> points;
+
+  PathInfo({this.paint, this.points}) {
+    _path = new Path();
+    if (points.length >= 2) {
+      _path.moveTo(points[0], points[1]);
+    }
+    for (int i = 2; i < points.length - 1; i += 2) {
+      _path.lineTo(points[i], points[i + 1]);
+    }
+  }
+
+  factory PathInfo.fromJson(Map<String, dynamic> json) =>
+      _$PathInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PathInfoToJson(this);
+
+  addPoint(Offset nextPoint) {
+    _path.lineTo(nextPoint.dx, nextPoint.dy);
+    points.addAll([nextPoint.dx, nextPoint.dy]);
+  }
+}
+
+//TODO: maskFilter
+Paint _paintFromMap(Map<String, dynamic> map) => Paint()
+  ..style = PaintingStyle.stroke
+  ..strokeCap = StrokeCap.round
+  ..strokeJoin = StrokeJoin.round
+  ..strokeWidth = (map['strokeWidth'] as double)
+  ..color = Color(map['color'] as int);
+
+Map<String, dynamic> _paintToMap(Paint paint) => {
+      'strokeWidth': paint.strokeWidth,
+      'color': paint.color.value,
+    };

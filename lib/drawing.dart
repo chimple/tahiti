@@ -12,7 +12,7 @@ class Drawing extends StatelessWidget {
       builder: (context, child, model) {
         Widget child = new CustomPaint(
           willChange: true,
-          painter: new _PainterPainter(model.painterController._pathHistory,
+          painter: new _PainterPainter(model.pathHistory,
               repaint: model.painterController),
         );
         child = new ClipRect(child: child);
@@ -47,33 +47,35 @@ class Drawing extends StatelessWidget {
     if (update.scale == 1.0) {
       Offset pos = (context.findRenderObject() as RenderBox)
           .globalToLocal(update.focalPoint);
-      if (painterController._pathHistory.getDragStatus()) {
-        painterController._pathHistory.updateCurrent(pos);
+      if (painterController.getDragStatus()) {
+        painterController.updateCurrent(pos);
       } else {
-        painterController._pathHistory.add(pos);
+        painterController.add(pos);
       }
-
-      painterController._notifyListeners();
     }
   }
 
   void _onScaleEnd(BuildContext context, ScaleEndDetails end) {
     ActivityModel model = ActivityModel.of(context);
+    PathHistory pathHistory = ActivityModel.of(context).pathHistory;
     PainterController painterController = model.painterController;
-    painterController._pathHistory.endCurrent();
-    model.addDrawing(painterController._pathHistory._paths.last);
-    painterController._notifyListeners();
+    painterController.endCurrent();
+    model.addDrawing(pathHistory.paths.last); //TODO do this in pathhistory
+    painterController.notifyListeners();
   }
 }
 
 class _PainterPainter extends CustomPainter {
-  final _PathHistory _path;
+  final PathHistory _path;
 
   _PainterPainter(this._path, {Listenable repaint}) : super(repaint: repaint);
 
   @override
   void paint(Canvas canvas, Size size) {
     _path.draw(canvas, size);
+    for (PathInfo pathInfo in _path.paths) {
+      canvas.drawPath(pathInfo.path, pathInfo.paint);
+    }
   }
 
   @override
@@ -82,72 +84,14 @@ class _PainterPainter extends CustomPainter {
   }
 }
 
-class _PathHistory {
-  List<MapEntry<Path, Paint>> _paths;
-  Paint currentPaint;
-  bool _inDrag;
-
-  _PathHistory() {
-    _paths = new List<MapEntry<Path, Paint>>();
-    _inDrag = false;
-  }
-
-  void undo() {
-    if (!_inDrag) {
-      _paths.removeLast();
-    }
-  }
-
-  void redo(MapEntry<Path, Paint> path) {
-    if (!_inDrag) {
-      _paths.add(path);
-    }
-  }
-
-  void clear() {
-    if (!_inDrag) {
-      _paths.clear();
-    }
-  }
-
-  void add(Offset startPoint) {
-    if (!_inDrag) {
-      _inDrag = true;
-      Path path = new Path();
-      path.moveTo(startPoint.dx, startPoint.dy);
-      _paths.add(new MapEntry<Path, Paint>(path, currentPaint));
-    }
-  }
-
-  void updateCurrent(Offset nextPoint) {
-    if (_inDrag) {
-      Path path = _paths.last.key;
-      path.lineTo(nextPoint.dx, nextPoint.dy);
-    }
-  }
-
-  void endCurrent() {
-    _inDrag = false;
-  }
-
-  bool getDragStatus() {
-    return _inDrag;
-  }
-
-  void draw(Canvas canvas, Size size) {
-    for (MapEntry<Path, Paint> path in _paths) {
-      canvas.drawPath(path.key, path.value);
-    }
-  }
-}
-
 class PainterController extends ChangeNotifier {
+  PathHistory pathHistory;
   double _thickness;
-  _PathHistory _pathHistory;
+  Paint _currentPaint;
   var _blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
+  bool _inDrag = false;
 
-  PainterController() {
-    _pathHistory = new _PathHistory();
+  PainterController({this.pathHistory}) {
     _thickness = 5.0;
     _updatePaint();
   }
@@ -164,7 +108,7 @@ class PainterController extends ChangeNotifier {
     _updatePaint();
   }
 
-  get paths => _pathHistory._paths;
+  get paths => pathHistory.paths;
 
   void _updatePaint() {
     Paint paint = new Paint();
@@ -173,27 +117,52 @@ class PainterController extends ChangeNotifier {
     paint.strokeCap = StrokeCap.round;
     paint.strokeJoin = StrokeJoin.round;
     paint.color = Colors.red;
-    _pathHistory.currentPaint = paint;
+    _currentPaint = paint;
     paint.maskFilter = _blurEffect;
     notifyListeners();
   }
 
-  void undo() {
-    _pathHistory.undo();
-    notifyListeners();
+  void add(Offset startPoint) {
+    if (!_inDrag) {
+      _inDrag = true;
+      pathHistory.add(startPoint, _currentPaint);
+      notifyListeners();
+    }
   }
 
-  void redo(MapEntry<Path, Paint> path) {
-    _pathHistory.redo(path);
-    notifyListeners();
+  void updateCurrent(Offset nextPoint) {
+    if (_inDrag) {
+      pathHistory.updateCurrent(nextPoint);
+      notifyListeners();
+    }
+  }
+
+  void endCurrent() {
+    _inDrag = false;
+  }
+
+  bool getDragStatus() {
+    return _inDrag;
+  }
+
+  void undo() {
+    if (!_inDrag) {
+      pathHistory.undo();
+      notifyListeners();
+    }
+  }
+
+  void redo(PathInfo pathInfo) {
+    if (!_inDrag) {
+      pathHistory.redo(pathInfo);
+      notifyListeners();
+    }
   }
 
   void clear() {
-    _pathHistory.clear();
-    notifyListeners();
-  }
-
-  void _notifyListeners() {
-    notifyListeners();
+    if (!_inDrag) {
+      pathHistory.clear();
+      notifyListeners();
+    }
   }
 }

@@ -11,7 +11,7 @@ class ActivityBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModel<ActivityModel>(
-      model: ActivityModel(),
+      model: ActivityModel(pathHistory: PathHistory()),
       child: InnerActivityBoard(),
     );
   }
