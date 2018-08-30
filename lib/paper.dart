@@ -63,6 +63,7 @@ class Paper extends StatelessWidget {
                     icon: Icon(Icons.undo),
                     iconSize: 40.0,
                     color: Colors.red,
+                    onPressed: model.canUndo() ? () => model.undo() : null),
                 IconButton(
                     icon: Icon(Icons.redo),
                     iconSize: 40.0,
