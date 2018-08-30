@@ -154,6 +154,12 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/roller.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size5.png'),
+    
   ],
   'assets/stickers/drawing/bucket.png': [],
   'assets/stickers/drawing/roller.png': [],
@@ -192,6 +198,21 @@ class SelectSticker extends StatelessWidget {
                     model.painterController.thickness = 10.0;
                     model.painterController.blurEffect =
                         MaskFilter.blur(BlurStyle.inner, 15.5);
+                    break;
+                    case 'assets/stickers/drawing/size1.png':
+                    model.painterController.thickness = 1.2;
+                    break;
+                    case 'assets/stickers/drawing/size2.png':
+                    model.painterController.thickness = 5.0;
+                    break;
+                    case 'assets/stickers/drawing/size3.png':
+                    model.painterController.thickness = 8.0;
+                    break;
+                    case 'assets/stickers/drawing/size4.png':
+                    model.painterController.thickness = 10.0;
+                    break;
+                    case 'assets/stickers/drawing/size5.png':
+                    model.painterController.thickness = 15.0;
                     break;
                   case 'assets/stickers/mic/stop.png':
                     if (!recorder.isRecording) {
