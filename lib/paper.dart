@@ -23,7 +23,7 @@ class Paper extends StatelessWidget {
 
   Future<Null> _getPngImage() async {
     RenderRepaintBoundary boundary =
-      previewContainer.currentContext.findRenderObject();
+        previewContainer.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage();
     final directory = (await getExternalStorageDirectory()).path;
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -42,7 +42,11 @@ class Paper extends StatelessWidget {
           final children = <Widget>[];
           if (model.template != null) {
             children.add(AspectRatio(
-                aspectRatio: 1.0, child: SvgPicture.asset(model.template)));
+                aspectRatio: 1.0,
+                child: SvgPicture.asset(
+                  model.template,
+                  package: 'tahiti',
+                )));
           }
           children.add(Drawing());
 
@@ -86,7 +90,10 @@ class Paper extends StatelessWidget {
     switch (thing['type']) {
       case 'sticker':
         if (!s1.startsWith('assets/svgimage')) {
-          return Image.asset(thing['asset']);
+          return Image.asset(
+            thing['asset'],
+            package: 'tahiti',
+          );
         } else {
           return Container(
               height: 400.0,
@@ -98,8 +105,14 @@ class Paper extends StatelessWidget {
                         s1,
                         color: selectedColor,
                         colorBlendMode: BlendMode.modulate,
+                        package: 'tahiti',
                       )),
-                  AspectRatio(aspectRatio: 1.0, child: SvgPicture.asset(s2)),
+                  AspectRatio(
+                      aspectRatio: 1.0,
+                      child: SvgPicture.asset(
+                        s2,
+                        package: 'tahiti',
+                      )),
                 ],
               ));
         }

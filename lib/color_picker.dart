@@ -90,12 +90,14 @@ class DisplaySticker extends StatelessWidget {
               '${primary}1.svg',
               color: selectedColor,
               colorBlendMode: BlendMode.modulate,
+              package: 'tahiti',
             ),
           ),
           AspectRatio(
             aspectRatio: 1.0,
             child: new SvgPicture.asset(
               '${primary}2.svg',
+              package: 'tahiti',
             ),
           ),
         ],

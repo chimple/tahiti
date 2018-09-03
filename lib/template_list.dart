@@ -87,7 +87,11 @@ class TemplateListDataState extends State<TemplateListData> {
           child: new Column(
             children: <Widget>[
               new AspectRatio(
-                  aspectRatio: 1.2, child: new SvgPicture.asset(_assetName)),
+                  aspectRatio: 1.2,
+                  child: new SvgPicture.asset(
+                    _assetName,
+                    package: 'tahiti',
+                  )),
               new Expanded(
                   child: new Container(
                 color: Colors.grey,

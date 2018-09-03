@@ -288,12 +288,17 @@ class SelectSticker extends StatelessWidget {
         primary: conf.data,
         primaryColor: selectedColor,
       );
-   } 
-    else
-      return Image.asset(conf.data);
+    } else
+      return Image.asset(
+        conf.data,
+        package: 'tahiti',
+      );
   }
 
   Widget buildIndexItem(Iconf conf, bool enabled) {
-    return Image.asset(conf.data);
+    return Image.asset(
+      conf.data,
+      package: 'tahiti',
+    );
   }
 }
