@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tahiti/activity_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ColorPicker extends StatefulWidget {
   ColorPickerState createState() => ColorPickerState();
@@ -54,54 +56,53 @@ class ColorPickerState extends State<ColorPicker> {
   List<Widget> _mainColors(BuildContext context) {
     var children = <Widget>[];
     for (Color color in mainColors) {
-      children.add(InkWell(
-        onTap: () => onColorSelected(color),
-        child: new Container(
-            height: 20.0,
-            width: 70.0,
-            decoration: BoxDecoration(
-              color: color,
-            )),
-      ));
+      children.add(ScopedModelDescendant<ActivityModel>(
+          builder: (context, child, model) => InkWell(
+                onTap: () {
+                  setState(() {
+                    model.selectedColor = color;
+                  });
+                },
+                child: new Container(
+                    height: 20.0,
+                    width: 70.0,
+                    decoration: BoxDecoration(
+                      color: color,
+                    )),
+              )));
     }
     return children;
-  }
-
-  void onColorSelected(Color color) {
-    setState(() {
-      selectedColor = color;
-    });
   }
 }
 
 class DisplaySticker extends StatelessWidget {
   String primary;
-  Color primaryColor;
-  DisplaySticker({this.primary, this.primaryColor});
+  DisplaySticker({this.primary});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200.0,
-      child: new Stack(
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 1.0,
-            child: new SvgPicture.asset(
-              '${primary}1.svg',
-              color: selectedColor,
-              colorBlendMode: BlendMode.modulate,
-              package: 'tahiti',
-            ),
-          ),
-          AspectRatio(
-            aspectRatio: 1.0,
-            child: new SvgPicture.asset(
-              '${primary}2.svg',
-              package: 'tahiti',
-            ),
-          ),
-        ],
-      ),
-    );
+    return ScopedModelDescendant<ActivityModel>(
+        builder: (context, child, model) => Container(
+              height: 200.0,
+              child: new Stack(
+                children: <Widget>[
+                  AspectRatio(
+                    aspectRatio: 1.0,
+                    child: new SvgPicture.asset(
+                      '${primary}1.svg',
+                      color: model.selectedColor,
+                      colorBlendMode: BlendMode.modulate,
+                      package: 'tahiti',
+                    ),
+                  ),
+                  AspectRatio(
+                    aspectRatio: 1.0,
+                    child: new SvgPicture.asset(
+                      '${primary}2.svg',
+                      package: 'tahiti',
+                    ),
+                  ),
+                ],
+              ),
+            ));
   }
 }
