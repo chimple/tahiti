@@ -4,6 +4,7 @@ import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
+import 'package:tahiti/color_picker.dart';
 
 final Map<String, List<Iconf>> bottomStickers = {
   'assets/stickers/text.png': [
@@ -31,7 +32,7 @@ final Map<String, List<Iconf>> bottomStickers = {
       type: ItemType.png,
       data: 'assets/stickers/emoguy/happy.gif',
     ),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/irritated.gif'),
+    //Iconf(type: ItemType.sticker, data: 'assets/svgimage/pen'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/laughing.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/love.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/playing.gif'),
@@ -43,6 +44,15 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/thumbup.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/workingout.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/yummy.gif'),
+  ],
+  'assets/stickers/icon.png': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/pen'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/ball'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/men'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monkey'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/pot'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/carrot'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/bat'),
   ],
   'assets/stickers/giraffe/giraffe.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/1.png'),
@@ -154,7 +164,11 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/roller.png'),
-    
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size5.png'),
   ],
   'assets/stickers/drawing/bucket.png': [],
   'assets/stickers/drawing/roller.png': [],
@@ -175,20 +189,39 @@ class SelectSticker extends StatelessWidget {
                 switch (text) {
                   // TODO: later change static image base code into index base
                   case 'assets/stickers/drawing/pencil.png':
-                    model.controller.thickness = 1.2;
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
+                    model.painterController.thickness = 1.2;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.normal, 0.0);
                     break;
                   case 'assets/stickers/drawing/brush.png':
-                    model.controller.thickness = 15.0;
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.normal, 15.5);
+                    model.painterController.thickness = 15.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.normal, 15.5);
                     break;
                   case 'assets/stickers/drawing/brush1.png':
-                    model.controller.thickness = 10.0;
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.inner, 0.0);
+                    model.painterController.thickness = 10.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.inner, 0.0);
                     break;
-                    case 'assets/stickers/drawing/roller.png':
-                    model.controller.thickness = 10.0;
-                    model.controller.blurEffect = MaskFilter.blur(BlurStyle.inner, 15.5);
+                  case 'assets/stickers/drawing/roller.png':
+                    model.painterController.thickness = 10.0;
+                    model.painterController.blurEffect =
+                        MaskFilter.blur(BlurStyle.inner, 15.5);
+                    break;
+                  case 'assets/stickers/drawing/size1.png':
+                    model.painterController.thickness = 1.2;
+                    break;
+                  case 'assets/stickers/drawing/size2.png':
+                    model.painterController.thickness = 5.0;
+                    break;
+                  case 'assets/stickers/drawing/size3.png':
+                    model.painterController.thickness = 8.0;
+                    break;
+                  case 'assets/stickers/drawing/size4.png':
+                    model.painterController.thickness = 10.0;
+                    break;
+                  case 'assets/stickers/drawing/size5.png':
+                    model.painterController.thickness = 15.0;
                     break;
                   case 'assets/stickers/mic/stop.png':
                     if (!recorder.isRecording) {
@@ -222,7 +255,9 @@ class SelectSticker extends StatelessWidget {
                   default:
                     //TODO: currently checking hardcoded prefixes
                     // Later verify the selection option along with sub-option
-                    if (text.startsWith('assets/stickers')) {
+                    print('text here is $text');
+                    if (text.startsWith('assets/stickers') ||
+                        text.startsWith('assets/svgimage')) {
                       model.addSticker(text);
                     } else {
                       model.addText('', font: text);
@@ -248,11 +283,22 @@ class SelectSticker extends StatelessWidget {
         )),
         color: Colors.blueAccent[100],
       );
-    else
-      return Image.asset(conf.data);
+    else if (conf.type == ItemType.sticker) {
+      return DisplaySticker(
+        primary: conf.data,
+        primaryColor: selectedColor,
+      );
+    } else
+      return Image.asset(
+        conf.data,
+        package: 'tahiti',
+      );
   }
 
   Widget buildIndexItem(Iconf conf, bool enabled) {
-    return Image.asset(conf.data);
+    return Image.asset(
+      conf.data,
+      package: 'tahiti',
+    );
   }
 }

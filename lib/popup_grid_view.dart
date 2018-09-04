@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/color_picker.dart';
 
-enum ItemType { text, png }
+enum ItemType { text, png, sticker }
 
 class Iconf {
   ItemType type;
