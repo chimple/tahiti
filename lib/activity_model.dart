@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:scoped_model/scoped_model.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 part 'activity_model.g.dart';
 
@@ -16,6 +15,7 @@ class ActivityModel extends Model {
   Function _saveCallback;
   PainterController _painterController;
   PathHistory pathHistory;
+  Color _selectedColor;
   String id;
 
   ActivityModel({@required this.pathHistory, @required this.id}) {
@@ -41,6 +41,12 @@ class ActivityModel extends Model {
     _saveAndNotifyListeners();
   }
 
+  Color get selectedColor => _selectedColor;
+  set selectedColor(Color t) {
+    _selectedColor = t;
+    notifyListeners();
+  }
+
   void addSticker(String name) {
     addThing({
       'id': Uuid().v4(),
@@ -48,7 +54,8 @@ class ActivityModel extends Model {
       'asset': name,
       'x': 0.0,
       'y': 0.0,
-      'scale': 0.5
+      'scale': 0.5,
+      'color': selectedColor
     });
   }
 
