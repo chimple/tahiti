@@ -16,28 +16,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tahiti/transform_wrapper.dart';
 
 class Paper extends StatelessWidget {
-  static GlobalKey previewContainer = new GlobalKey();
   Paper({Key key}) : super(key: key);
 
   String timestamp() => new DateTime.now().millisecondsSinceEpoch.toString();
 
-  Future<Null> _getPngImage() async {
-    RenderRepaintBoundary boundary =
-        previewContainer.currentContext.findRenderObject();
-    ui.Image image = await boundary.toImage();
-    final directory = (await getExternalStorageDirectory()).path;
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-    File imgFile = new File('$directory/screenshot_${timestamp()}.png');
-    imgFile.writeAsBytes(pngBytes);
-    print('Screenshot Path:' + imgFile.path);
-  }
+  // Future<Null> _getPngImage() async {
+  //   RenderRepaintBoundary boundary =
+  //       previewContainer.currentContext.findRenderObject();
+  //   ui.Image image = await boundary.toImage();
+  //   final directory = (await getExternalStorageDirectory()).path;
+  //   ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  //   Uint8List pngBytes = byteData.buffer.asUint8List();
+  //   File imgFile = new File('$directory/screenshot_${timestamp()}.png');
+  //   imgFile.writeAsBytes(pngBytes);
+  //   print('Screenshot Path:' + imgFile.path);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return new RepaintBoundary(
-      key: previewContainer,
-      child: ScopedModelDescendant<ActivityModel>(
+    return ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) {
           final children = <Widget>[];
           if (model.template != null) {
@@ -78,7 +75,6 @@ class Paper extends StatelessWidget {
           ));
           return Stack(children: children);
         },
-      ),
     );
   }
 
