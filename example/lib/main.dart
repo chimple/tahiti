@@ -31,7 +31,12 @@ class _MyAppState extends State<MyApp> {
         appBar: new AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: ActivityBoard(),
+        body: ActivityBoard(
+          templates: [
+            'assets/templates/LionSA1.svg',
+            'assets/templates/LionSA1.svg'
+          ],
+        ),
       ),
     );
   }

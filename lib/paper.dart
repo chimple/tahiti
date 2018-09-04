@@ -45,7 +45,6 @@ class Paper extends StatelessWidget {
                 aspectRatio: 1.0,
                 child: SvgPicture.asset(
                   model.template,
-                  package: 'tahiti',
                 )));
           }
           children.add(Drawing());

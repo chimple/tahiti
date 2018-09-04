@@ -166,8 +166,6 @@ flutter:
     - assets/svgimage/bat2.svg
     - assets/svgimage/ball1.svg
     - assets/svgimage/ball2.svg
-    # template
-    - assets/templates/LionSA1.svg
   fonts:
     - family: Bungee
       fonts:
