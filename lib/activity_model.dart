@@ -12,11 +12,13 @@ class ActivityModel extends Model {
   List<Map<String, dynamic>> _undoStack = [];
   List<Map<String, dynamic>> _redoStack = [];
   String _template;
+  Function _saveCallback;
   PainterController _painterController;
   PathHistory pathHistory;
   Color _selectedColor;
+  String id;
 
-  ActivityModel({@required this.pathHistory}) {
+  ActivityModel({@required this.pathHistory, @required this.id}) {
     print('pathHistory: $pathHistory');
     _painterController = new PainterController(pathHistory: this.pathHistory);
   }
@@ -31,10 +33,12 @@ class ActivityModel extends Model {
 
   PainterController get painterController => this._painterController;
 
+  set saveCallback(Function s) => _saveCallback = s;
+
   String get template => _template;
   set template(String t) {
     _template = t;
-    notifyListeners();
+    _saveAndNotifyListeners();
   }
 
   Color get selectedColor => _selectedColor;
@@ -105,7 +109,7 @@ class ActivityModel extends Model {
     things.add(thing);
     _undoStack.add(Map.from(thing));
     print('_addThing: $_undoStack $_redoStack');
-    notifyListeners();
+    _saveAndNotifyListeners();
   }
 
   void updateThing(Map<String, dynamic> thing) {
@@ -123,7 +127,7 @@ class ActivityModel extends Model {
       things[index] = thing;
     }
     print('updateThing: $_undoStack $_redoStack');
-    notifyListeners();
+    _saveAndNotifyListeners();
   }
 
   bool canUndo() {
@@ -146,7 +150,7 @@ class ActivityModel extends Model {
       things[index] = thing;
     }
     print('undo: $_undoStack $_redoStack');
-    notifyListeners();
+    _saveAndNotifyListeners();
   }
 
   bool canRedo() {
@@ -166,6 +170,11 @@ class ActivityModel extends Model {
       _updateThing(thing);
     }
     print('redo: $_undoStack $_redoStack');
+  }
+
+  void _saveAndNotifyListeners() {
+    if (_saveCallback != null) _saveCallback(jsonMap: toJson());
+    notifyListeners();
   }
 }
 
