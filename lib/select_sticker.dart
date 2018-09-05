@@ -32,7 +32,6 @@ final Map<String, List<Iconf>> bottomStickers = {
       type: ItemType.png,
       data: 'assets/stickers/emoguy/happy.gif',
     ),
-    //Iconf(type: ItemType.sticker, data: 'assets/svgimage/pen'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/laughing.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/love.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/playing.gif'),
@@ -286,14 +285,18 @@ class SelectSticker extends StatelessWidget {
     else if (conf.type == ItemType.sticker) {
       return DisplaySticker(
         primary: conf.data,
-        primaryColor: selectedColor,
       );
-   } 
-    else
-      return Image.asset(conf.data);
+    } else
+      return Image.asset(
+        conf.data,
+        package: 'tahiti',
+      );
   }
 
   Widget buildIndexItem(Iconf conf, bool enabled) {
-    return Image.asset(conf.data);
+    return Image.asset(
+      conf.data,
+      package: 'tahiti',
+    );
   }
 }

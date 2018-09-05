@@ -10,7 +10,8 @@ ActivityModel _$ActivityModelFromJson(Map<String, dynamic> json) {
   return ActivityModel(
       pathHistory: json['pathHistory'] == null
           ? null
-          : PathHistory.fromJson(json['pathHistory'] as Map<String, dynamic>))
+          : PathHistory.fromJson(json['pathHistory'] as Map<String, dynamic>),
+      id: json['id'] as String)
     ..things = (json['things'] as List)
         ?.map((e) => e as Map<String, dynamic>)
         ?.toList()
@@ -21,6 +22,7 @@ Map<String, dynamic> _$ActivityModelToJson(ActivityModel instance) =>
     <String, dynamic>{
       'things': instance.things,
       'pathHistory': instance.pathHistory,
+      'id': instance.id,
       'template': instance.template
     };
 
