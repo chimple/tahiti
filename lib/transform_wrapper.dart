@@ -26,6 +26,8 @@ class _TransformWrapperState extends State<TransformWrapper>
   double _scale;
   double _scaleAtStart;
 
+  double _width;
+
   double _rotate;
   double _rotateAtStart;
 
@@ -41,7 +43,9 @@ class _TransformWrapperState extends State<TransformWrapper>
   void onScaleUpdate(rotate.ScaleUpdateDetails details) {
     setState(() {
       _translate = _translateAtStart + details.focalPoint - _focalPointAtStart;
-      _scale = _scaleAtStart * details.scale;
+      _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
+          ? _scaleAtStart * details.scale
+          : _width * 0.001;
       _rotate = _rotateAtStart + details.rotation;
     });
   }
@@ -71,6 +75,7 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   @override
   Widget build(BuildContext context) {
+    _width = MediaQuery.of(context).size.width;
     return Positioned(
       left: _translate.dx,
       top: _translate.dy,
