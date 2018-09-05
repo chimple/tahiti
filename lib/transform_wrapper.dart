@@ -38,7 +38,6 @@ class _TransformWrapperState extends State<TransformWrapper>
       _scaleAtStart = _scale;
       _rotateAtStart = _rotate;
     });
-    print("scale===================$_scale ");
   }
 
   void onScaleUpdate(rotate.ScaleUpdateDetails details) {
