@@ -88,7 +88,7 @@ class PainterController extends ChangeNotifier {
   PathHistory pathHistory;
   double _thickness;
   Paint _currentPaint;
-  var _blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
+  MaskFilter _blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
   bool _inDrag = false;
 
   PainterController({this.pathHistory}) {
@@ -103,7 +103,7 @@ class PainterController extends ChangeNotifier {
   }
 
   get blurEffect => _blurEffect;
-  set blurEffect(var t) {
+  set blurEffect(MaskFilter t) {
     _blurEffect = t;
     _updatePaint();
   }

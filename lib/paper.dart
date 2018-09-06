@@ -34,43 +34,50 @@ class Paper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) {
-          final children = <Widget>[];
-          if (model.template != null) {
-            children.add(AspectRatio(
-                aspectRatio: 1.0,
-                child: SvgPicture.asset(
-                  model.template,
-                )));
-          }
-          children.add(Drawing());
-          children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
-                (t) => TransformWrapper(
-                      child: buildWidgetFromThing(t),
-                      thing: t,
-                    ),
-              ));
-          children.add(Align(
-            alignment: Alignment.bottomRight,
-            heightFactor: 100.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                IconButton(
-                    icon: Icon(Icons.undo),
-                    iconSize: 40.0,
-                    color: Colors.red,
-                    onPressed: model.canUndo() ? () => model.undo() : null),
-                IconButton(
-                    icon: Icon(Icons.redo),
-                    iconSize: 40.0,
-                    color: Colors.red,
-                    onPressed: model.canRedo() ? () => model.redo() : null),
-              ],
-            ),
-          ));
-          return Stack(children: children);
-        },
+      builder: (context, child, model) {
+        final children = <Widget>[];
+        if (model.template != null) {
+          children.add(AspectRatio(
+              aspectRatio: 1.0,
+              child: SvgPicture.asset(
+                model.template,
+              )));
+        }
+        children.add(Drawing());
+        children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
+              (t) => TransformWrapper(
+                    child: buildWidgetFromThing(t),
+                    thing: t,
+                  ),
+            ));
+        children.add(Align(
+          alignment: Alignment.bottomRight,
+          heightFactor: 100.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.undo),
+                  iconSize: 40.0,
+                  color: Colors.red,
+                  onPressed: model.canUndo() ? () => model.undo() : null),
+              IconButton(
+                  icon: Icon(Icons.redo),
+                  iconSize: 40.0,
+                  color: Colors.red,
+                  onPressed: model.canRedo() ? () => model.redo() : null),
+            ],
+          ),
+        ));
+        return FittedBox(
+          fit: BoxFit.contain,
+          child: SizedBox(
+            height: 2560.0,
+            width: 2560.0,
+            child: Stack(children: children),
+          ),
+        );
+      },
     );
   }
 
