@@ -30,7 +30,7 @@ flutter:
     androidPackage: org.chimple.tahiti
     pluginClass: TahitiPlugin
   assets:
-    - assets/stickers/pig/pig.png
+    - assets/menu/pig.png
     - assets/stickers/pig/8.png
     - assets/stickers/pig/9.png
     - assets/stickers/pig/14.png
@@ -47,7 +47,7 @@ flutter:
     - assets/stickers/pig/2.png
     - assets/stickers/pig/3.png
     - assets/stickers/pig/1.png
-    - assets/stickers/giraffe/giraffe.png
+    - assets/menu/giraffe.png
     - assets/stickers/giraffe/8.png
     - assets/stickers/giraffe/9.png
     - assets/stickers/giraffe/14.png
@@ -64,7 +64,7 @@ flutter:
     - assets/stickers/giraffe/2.png
     - assets/stickers/giraffe/3.png
     - assets/stickers/giraffe/1.png
-    - assets/stickers/monkey/monkey.png
+    - assets/menu/monkey.png
     - assets/stickers/monkey/8.png
     - assets/stickers/monkey/9.png
     - assets/stickers/monkey/14.png
@@ -81,7 +81,7 @@ flutter:
     - assets/stickers/monkey/2.png
     - assets/stickers/monkey/3.png
     - assets/stickers/monkey/1.png
-    - assets/stickers/doggie/doggie.png
+    - assets/menu/doggie.png
     - assets/stickers/doggie/8.png
     - assets/stickers/doggie/9.png
     - assets/stickers/doggie/14.png
@@ -98,7 +98,7 @@ flutter:
     - assets/stickers/doggie/2.png
     - assets/stickers/doggie/3.png
     - assets/stickers/doggie/1.png
-    - assets/stickers/carpie/carpie.png
+    - assets/menu/carpie.png
     - assets/stickers/carpie/8.png
     - assets/stickers/carpie/9.png
     - assets/stickers/carpie/14.png
@@ -115,7 +115,7 @@ flutter:
     - assets/stickers/carpie/2.png
     - assets/stickers/carpie/3.png
     - assets/stickers/carpie/1.png
-    - assets/stickers/emoguy/happy.png
+    - assets/menu/happy.png
     - assets/stickers/emoguy/angry.gif
     - assets/stickers/emoguy/cold.gif
     - assets/stickers/emoguy/cry.gif
@@ -132,26 +132,27 @@ flutter:
     - assets/stickers/emoguy/thumbup.gif
     - assets/stickers/emoguy/workingout.gif
     - assets/stickers/emoguy/yummy.gif
-    - assets/stickers/camera/camera.png
-    - assets/stickers/camera/camera1.png
-    - assets/stickers/camera/gallery.png
-    - assets/stickers/camera/video.png
-    - assets/stickers/drawing/brush.png
-    - assets/stickers/drawing/brush1.png
-    - assets/stickers/drawing/bucket.png
-    - assets/stickers/drawing/eraser.png
-    - assets/stickers/drawing/pencil.png
-    - assets/stickers/drawing/roller.png
-    - assets/stickers/drawing/size1.png
-    - assets/stickers/drawing/size2.png
-    - assets/stickers/drawing/size3.png
-    - assets/stickers/drawing/size4.png
-    - assets/stickers/drawing/size5.png
-    - assets/stickers/mic/mic.png
-    - assets/stickers/mic/play.png
-    - assets/stickers/mic/stop.png
-    - assets/stickers/text.png
-    - assets/stickers/icon.png
+    - assets/menu/camera.png
+    - assets/camera/camera1.png
+    - assets/camera/gallery.png 
+    - assets/camera/video.png
+    - assets/menu/brush.png
+    - assets/menu/brush1.png
+    - assets/menu/bucket.png
+    - assets/menu/eraser.png
+    - assets/menu/pencil.png
+    - assets/menu/roller.png
+    - assets/drawing/size1.png
+    - assets/drawing/size2.png
+    - assets/drawing/size3.png
+    - assets/drawing/size4.png
+    - assets/drawing/size5.png
+    - assets/menu/mic.png
+    - assets/mic/mic.png
+    - assets/mic/play.png
+    - assets/mic/stop.png
+    - assets/text.png
+    - assets/icon.png
     - assets/svgimage/men1.svg
     - assets/svgimage/men2.svg
     - assets/svgimage/monkey1.svg

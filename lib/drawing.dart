@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tahiti/popup_grid_view.dart';
 
 class Drawing extends StatefulWidget {
   Drawing({
@@ -41,7 +42,7 @@ class RollerState extends State<Drawing> {
 
   @override
   void didUpdateWidget(Drawing oldWidget) {
-    print('didUpdateWidget');
+    print('didUpdateWidget${widget.model.unMaskImagePath}');
     if (_oldImage != widget.model.unMaskImagePath && _oldImage != null) {
       _list.addFirst(_oldImage);
     }
@@ -63,7 +64,7 @@ class RollerState extends State<Drawing> {
       if (painterController.getDragStatus()) {
         painterController.updateCurrent(pos);
       } else {
-        painterController.add(pos);
+        painterController.add(context, pos);
       }
     }
   }
@@ -267,16 +268,22 @@ class PainterController extends ChangeNotifier {
     paint.strokeCap = StrokeCap.round;
     paint.strokeJoin = StrokeJoin.round;
     paint.color = Colors.red;
-    _currentPaint = paint;
     paint.maskFilter = _blurEffect;
+    _currentPaint = paint;
     notifyListeners();
   }
 
-  void add(Offset startPoint) {
+  void add(BuildContext context, Offset startPoint) {
     if (!_inDrag) {
-      _inDrag = true;
-      pathHistory.add(startPoint, _currentPaint);
-      notifyListeners();
+      if (ActivityModel.of(context).popped != Popped.noPopup) {
+        ActivityModel.of(context).popped = Popped.noPopup;
+      }
+      if (ActivityModel.of(context).isDrawing) {
+        _inDrag = true;
+        Path path = new Path();
+        path.moveTo(startPoint.dx, startPoint.dy);
+        pathHistory.add(startPoint, _currentPaint);
+      }
     }
   }
 

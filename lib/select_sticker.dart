@@ -7,7 +7,7 @@ import 'package:tahiti/recorder.dart';
 import 'package:tahiti/color_picker.dart';
 
 final Map<String, List<Iconf>> bottomStickers = {
-  'assets/stickers/text.png': [
+  'assets/menu/text.png': [
     Iconf(type: ItemType.text, data: 'Bungee'),
     Iconf(type: ItemType.text, data: 'Chela one'),
     Iconf(type: ItemType.text, data: 'Gloria Hallelujah'),
@@ -21,7 +21,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.text, data: 'Rock salt'),
     Iconf(type: ItemType.text, data: 'Shadows into light'),
   ],
-  'assets/stickers/emoguy/happy.png': [
+  'assets/menu/happy.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/angry.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/cold.gif'),
     Iconf(
@@ -44,7 +44,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/workingout.gif'),
     Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/yummy.gif'),
   ],
-  'assets/stickers/icon.png': [
+  'assets/menu/icon.png': [
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/pen'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/ball'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/men'),
@@ -53,7 +53,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/carrot'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bat'),
   ],
-  'assets/stickers/giraffe/giraffe.png': [
+  'assets/menu/giraffe.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/10.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/11.png'),
@@ -71,7 +71,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/8.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/9.png'),
   ],
-  'assets/stickers/pig/pig.png': [
+  'assets/menu/pig.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/pig/1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/pig/10.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/pig/11.png'),
@@ -89,7 +89,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/pig/8.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/pig/9.png'),
   ],
-  'assets/stickers/monkey/monkey.png': [
+  'assets/menu/monkey.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/monkey/1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/monkey/10.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/monkey/11.png'),
@@ -107,7 +107,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/monkey/8.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/monkey/9.png'),
   ],
-  'assets/stickers/carpie/carpie.png': [
+  'assets/menu/carpie.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/carpie/1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/carpie/10.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/carpie/11.png'),
@@ -125,7 +125,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/carpie/8.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/carpie/9.png'),
   ],
-  'assets/stickers/doggie/doggie.png': [
+  'assets/menu/doggie.png': [
     Iconf(type: ItemType.png, data: 'assets/stickers/doggie/1.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/doggie/10.png'),
     Iconf(type: ItemType.png, data: 'assets/stickers/doggie/11.png'),
@@ -146,31 +146,46 @@ final Map<String, List<Iconf>> bottomStickers = {
 };
 
 final Map<String, List<Iconf>> topStickers = {
-  'assets/stickers/mic/mic.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/mic/mic.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/mic/play.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/mic/stop.png'),
+  'assets/menu/mic.png': [
+    Iconf(type: ItemType.png, data: 'assets/mic/mic.png'),
+    Iconf(type: ItemType.png, data: 'assets/mic/play.png'),
+    Iconf(type: ItemType.png, data: 'assets/mic/stop.png'),
   ],
-  'assets/stickers/camera/camera.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/camera/camera1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/camera/gallery.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/camera/video.png'),
+  'assets/menu/camera.png': [
+    Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
+    Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
+    Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
   ],
-  'assets/stickers/drawing/pencil.png': [],
-  'assets/stickers/drawing/eraser.png': [],
-  'assets/stickers/drawing/brush.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/pencil.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/brush1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/roller.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size5.png'),
+  'assets/menu/pencil.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  'assets/stickers/drawing/bucket.png': [],
-  'assets/stickers/drawing/roller.png': [
+  'assets/menu/eraser.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/brush.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/brush1.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/bucket.png': [],
+  'assets/menu/roller.png': [
     Iconf(type: ItemType.png, data: 'assets/roller_image/sample1.jpg'),
     Iconf(type: ItemType.png, data: 'assets/roller_image/sample2.jpg'),
     Iconf(type: ItemType.png, data: 'assets/roller_image/sample3.jpg'),
@@ -193,83 +208,54 @@ class SelectSticker extends StatelessWidget {
               onUserPress: (text) {
                 print(text);
                 switch (text) {
-                  // TODO: later change static image base code into index base
-                  case 'assets/stickers/drawing/pencil.png':
-                    model.painterController.thickness = 1.2;
-                    model.painterController.blurEffect =
-                        MaskFilter.blur(BlurStyle.normal, 0.0);
-                    break;
-                  case 'assets/stickers/drawing/brush.png':
-                    model.painterController.thickness = 15.0;
-                    model.painterController.blurEffect =
-                        MaskFilter.blur(BlurStyle.normal, 15.5);
-                    break;
-                  case 'assets/stickers/drawing/brush1.png':
-                    model.painterController.thickness = 10.0;
-                    model.painterController.blurEffect =
-                        MaskFilter.blur(BlurStyle.inner, 0.0);
-                    break;
-                  case 'assets/stickers/drawing/roller.png':
-                    model.painterController.thickness = 10.0;
-                    model.painterController.blurEffect =
-                        MaskFilter.blur(BlurStyle.inner, 15.5);
-                    break;
-                  case 'assets/stickers/drawing/size1.png':
+                  case 'assets/drawing/size1.png':
                     model.painterController.thickness = 1.2;
                     break;
-                  case 'assets/stickers/drawing/size2.png':
+                  case 'assets/drawing/size2.png':
                     model.painterController.thickness = 5.0;
                     break;
-                  case 'assets/stickers/drawing/size3.png':
+                  case 'assets/drawing/size3.png':
                     model.painterController.thickness = 8.0;
                     break;
-                  case 'assets/stickers/drawing/size4.png':
+                  case 'assets/drawing/size4.png':
                     model.painterController.thickness = 10.0;
                     break;
-                  case 'assets/stickers/drawing/size5.png':
+                  case 'assets/drawing/size5.png':
                     model.painterController.thickness = 15.0;
                     break;
-                  case 'assets/stickers/mic/stop.png':
+                  case 'assets/mic/stop.png':
                     if (!recorder.isRecording) {
                       recorder.start();
                     } else {
                       recorder.stop();
                     }
                     break;
-                  case 'assets/stickers/mic/play.png':
+                  case 'assets/mic/play.png':
                     if (recorder.isRecorded) {
                       recorder.playAudio();
                     } else {
                       recorder.stopAudio();
                     }
                     break;
-                  case 'assets/stickers/camera/camera1.png':
+                  case 'assets/camera/camera1.png':
                     new Camera().openCamera().then((p) {
                       if (p != null) model.addImage(p);
                     });
                     break;
-                  case 'assets/stickers/camera/gallery.png':
+                  case 'assets/camera/gallery.png':
                     new Camera().pickImage().then((p) {
                       if (p != null) model.addImage(p);
                     });
                     break;
-                  case 'assets/stickers/camera/video.png':
+                  case 'assets/camera/video.png':
                     new Camera().videoRecorder().then((p) {
                       if (p != null) model.addVideo(p.path);
                     });
                     break;
                   default:
-                    //TODO: currently checking hardcoded prefixes
-                    // Later verify the selection option along with sub-option
-                    print('text here is $text');
                     if (text.startsWith('assets/stickers') ||
                         text.startsWith('assets/svgimage')) {
                       model.addSticker(text);
-                    } else if (text.startsWith('assets/roller_image')) {
-                      model.painterController.doUnMask();
-                      model.addUnMaskImage(text);
-                    } else {
-                      model.addText('', font: text);
                     }
                 }
               },
