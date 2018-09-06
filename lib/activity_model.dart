@@ -1,3 +1,4 @@
+import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
@@ -13,6 +14,8 @@ class ActivityModel extends Model {
   List<Map<String, dynamic>> _redoStack = [];
   String _template;
   Function _saveCallback;
+  Popped _popped = Popped.noPopup;
+  bool _isDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
   Color _selectedColor;
@@ -44,6 +47,18 @@ class ActivityModel extends Model {
   Color get selectedColor => _selectedColor;
   set selectedColor(Color t) {
     _selectedColor = t;
+    notifyListeners();
+  }
+
+  Popped get popped => _popped;
+  set popped(Popped t) {
+    _popped = t;
+    notifyListeners();
+  }
+
+  bool get isDrawing => _isDrawing;
+  set isDrawing(bool t) {
+    _isDrawing = t;
     notifyListeners();
   }
 
@@ -176,6 +191,13 @@ class ActivityModel extends Model {
     if (_saveCallback != null) _saveCallback(jsonMap: toJson());
     notifyListeners();
   }
+
+  String unMaskImagePath = 'assets/roller_image/sample1.jpg';
+  void addUnMaskImage(String text) {
+    print("text: $text");
+    unMaskImagePath = text;
+    notifyListeners();
+  }
 }
 
 @JsonSerializable()
@@ -211,9 +233,9 @@ class PathHistory {
     paths.last.addPoint(nextPoint);
   }
 
-  void draw(Canvas canvas, Size size) {
+  void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
-      canvas.drawPath(pathInfo.path, pathInfo.paint);
+      context.canvas.drawPath(pathInfo.path, pathInfo.paint);
     }
   }
 }

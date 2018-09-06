@@ -1,11 +1,7 @@
-import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/drawing.dart';
@@ -43,7 +39,9 @@ class Paper extends StatelessWidget {
                 model.template,
               )));
         }
-        children.add(Drawing());
+        children.add(Drawing(
+          model: model,
+        ));
         children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
               (t) => TransformWrapper(
                     child: buildWidgetFromThing(t),

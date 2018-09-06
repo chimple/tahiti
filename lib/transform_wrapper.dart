@@ -28,6 +28,8 @@ class _TransformWrapperState extends State<TransformWrapper>
   double _scale;
   double _scaleAtStart;
 
+  double _width;
+
   double _rotate;
   double _rotateAtStart;
   RenderBox _parentRenderBox;
@@ -41,8 +43,6 @@ class _TransformWrapperState extends State<TransformWrapper>
       _translateAtStart = _translate;
       _scaleAtStart = _scale;
       _rotateAtStart = _rotate;
-      print(
-          'onScaleStart: $_focalPointAtStart ${details.focalPoint} $_translateAtStart $_translate');
     });
   }
 
@@ -50,10 +50,10 @@ class _TransformWrapperState extends State<TransformWrapper>
     setState(() {
       Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
       _translate = _translateAtStart + pos - _focalPointAtStart;
-      _scale = _scaleAtStart * details.scale;
+      _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
+          ? _scaleAtStart * details.scale
+          : _width * 0.001;
       _rotate = _rotateAtStart + details.rotation;
-      print(
-          'onScaleUpdate: $pos ${details.focalPoint} $_focalPointAtStart $_translateAtStart $_translate');
     });
   }
 
@@ -83,6 +83,7 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   @override
   Widget build(BuildContext context) {
+    _width = MediaQuery.of(context).size.width;
     return Positioned(
       left: _translate.dx,
       top: _translate.dy,
