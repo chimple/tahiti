@@ -166,6 +166,18 @@ flutter:
     - assets/svgimage/bat2.svg
     - assets/svgimage/ball1.svg
     - assets/svgimage/ball2.svg
+    - assets/filter_icon.jpg
+    - assets/roller_image/sample1.jpg
+    - assets/roller_image/sample2.jpg
+    - assets/roller_image/sample3.jpg
+    - assets/roller_image/sample4.jpg
+    - assets/roller_image/sample5.jpg
+    - assets/filter_image/filterImage1.png
+    - assets/filter_image/filterImage2.png
+    - assets/filter_image/filterImage3.png
+    - assets/filter_image/filterImage4.png
+    - assets/filter_image/filterImage5.png
+    - assets/filter_image/filterImage6.png
   fonts:
     - family: Bungee
       fonts:

@@ -176,6 +176,12 @@ class ActivityModel extends Model {
     if (_saveCallback != null) _saveCallback(jsonMap: toJson());
     notifyListeners();
   }
+
+  String unMaskImagePath;
+  void addUnMaskImage(String text) {
+    unMaskImagePath = text;
+    notifyListeners();
+  }
 }
 
 @JsonSerializable()
@@ -211,9 +217,9 @@ class PathHistory {
     paths.last.addPoint(nextPoint);
   }
 
-  void draw(Canvas canvas, Size size) {
+  void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
-      canvas.drawPath(pathInfo.path, pathInfo.paint);
+      context.canvas.drawPath(pathInfo.path, pathInfo.paint);
     }
   }
 }

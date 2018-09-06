@@ -1,11 +1,7 @@
-import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/drawing.dart';
@@ -34,43 +30,45 @@ class Paper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) {
-          final children = <Widget>[];
-          if (model.template != null) {
-            children.add(AspectRatio(
-                aspectRatio: 1.0,
-                child: SvgPicture.asset(
-                  model.template,
-                )));
-          }
-          children.add(Drawing());
-          children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
-                (t) => TransformWrapper(
-                      child: buildWidgetFromThing(t),
-                      thing: t,
-                    ),
-              ));
-          children.add(Align(
-            alignment: Alignment.bottomRight,
-            heightFactor: 100.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                IconButton(
-                    icon: Icon(Icons.undo),
-                    iconSize: 40.0,
-                    color: Colors.red,
-                    onPressed: model.canUndo() ? () => model.undo() : null),
-                IconButton(
-                    icon: Icon(Icons.redo),
-                    iconSize: 40.0,
-                    color: Colors.red,
-                    onPressed: model.canRedo() ? () => model.redo() : null),
-              ],
-            ),
-          ));
-          return Stack(children: children);
-        },
+      builder: (context, child, model) {
+        final children = <Widget>[];
+        if (model.template != null) {
+          children.add(AspectRatio(
+              aspectRatio: 1.0,
+              child: SvgPicture.asset(
+                model.template,
+              )));
+        }
+        children.add(Drawing(
+          model: model,
+        ));
+        children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
+              (t) => TransformWrapper(
+                    child: buildWidgetFromThing(t),
+                    thing: t,
+                  ),
+            ));
+        children.add(Align(
+          alignment: Alignment.bottomRight,
+          heightFactor: 100.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.undo),
+                  iconSize: 40.0,
+                  color: Colors.red,
+                  onPressed: model.canUndo() ? () => model.undo() : null),
+              IconButton(
+                  icon: Icon(Icons.redo),
+                  iconSize: 40.0,
+                  color: Colors.red,
+                  onPressed: model.canRedo() ? () => model.redo() : null),
+            ],
+          ),
+        ));
+        return Stack(children: children);
+      },
     );
   }
 

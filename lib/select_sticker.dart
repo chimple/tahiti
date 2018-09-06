@@ -170,7 +170,14 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/stickers/drawing/size5.png'),
   ],
   'assets/stickers/drawing/bucket.png': [],
-  'assets/stickers/drawing/roller.png': [],
+  'assets/stickers/drawing/roller.png': [
+    Iconf(type: ItemType.png, data: 'assets/roller_image/sample1.jpg'),
+    Iconf(type: ItemType.png, data: 'assets/roller_image/sample2.jpg'),
+    Iconf(type: ItemType.png, data: 'assets/roller_image/sample3.jpg'),
+    Iconf(type: ItemType.png, data: 'assets/roller_image/sample4.jpg'),
+    Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
+  ],
+  'assets/filter_icon.jpg': [],
 };
 
 class SelectSticker extends StatelessWidget {
@@ -258,6 +265,9 @@ class SelectSticker extends StatelessWidget {
                     if (text.startsWith('assets/stickers') ||
                         text.startsWith('assets/svgimage')) {
                       model.addSticker(text);
+                    } else if (text.startsWith('assets/roller_image')) {
+                      model.painterController.doUnMask();
+                      model.addUnMaskImage(text);
                     } else {
                       model.addText('', font: text);
                     }
