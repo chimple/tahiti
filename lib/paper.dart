@@ -70,8 +70,8 @@ class Paper extends StatelessWidget {
         return FittedBox(
           fit: BoxFit.contain,
           child: SizedBox(
-            height: 2560.0,
-            width: 2560.0,
+            height: 512.0,
+            width: 512.0,
             child: Stack(children: children),
           ),
         );
