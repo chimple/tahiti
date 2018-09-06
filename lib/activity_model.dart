@@ -195,10 +195,7 @@ class ActivityModel extends Model {
   String unMaskImagePath;
   void addUnMaskImage(String text) {
     print("text: $text");
-    if (text == 'assets/menu/roller')
-      unMaskImagePath = 'assets/roller_image/sample1.jpg';
-    else
-      unMaskImagePath = text;
+    unMaskImagePath = text;
     notifyListeners();
   }
 }
