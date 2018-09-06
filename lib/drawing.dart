@@ -119,7 +119,7 @@ class RollerState extends State<Drawing> {
 
   Widget _buildWidget(BuildContext context, String text) {
     return _ScratchCardLayout(
-      child: text.startsWith('assets/templates')
+      child: text.endsWith('.svg')
           ? Container(
               height: double.infinity,
               width: double.infinity,
