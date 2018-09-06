@@ -42,7 +42,6 @@ class RollerState extends State<Drawing> {
 
   @override
   void didUpdateWidget(Drawing oldWidget) {
-    print('didUpdateWidget${widget.model.unMaskImagePath}');
     if (_oldImage != widget.model.unMaskImagePath && _oldImage != null) {
       _list.addFirst(_oldImage);
     }
@@ -280,8 +279,6 @@ class PainterController extends ChangeNotifier {
       }
       if (ActivityModel.of(context).isDrawing) {
         _inDrag = true;
-        Path path = new Path();
-        path.moveTo(startPoint.dx, startPoint.dy);
         pathHistory.add(startPoint, _currentPaint);
       }
     }
