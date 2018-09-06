@@ -53,8 +53,7 @@ class RollerState extends State<Drawing> {
     super.didUpdateWidget(oldWidget);
   }
 
-  void _onScaleUpdate(
-      BuildContext context, ScaleUpdateDetails update, PaintOption p) {
+  void _onScaleUpdate(BuildContext context, ScaleUpdateDetails update) {
     Offset pos;
     PainterController painterController =
         ActivityModel.of(context).painterController;
@@ -69,7 +68,7 @@ class RollerState extends State<Drawing> {
     }
   }
 
-  void _onScaleEnd(BuildContext context, ScaleEndDetails end, PaintOption p) {
+  void _onScaleEnd(BuildContext context, ScaleEndDetails end) {
     ActivityModel model = ActivityModel.of(context);
     PathHistory pathHistory = ActivityModel.of(context).pathHistory;
     PainterController painterController = model.painterController;
@@ -89,17 +88,17 @@ class RollerState extends State<Drawing> {
             width: box.maxWidth,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onScaleUpdate: (ScaleUpdateDetails update) => _onScaleUpdate(
-                  context, update, widget.model.painterController.paintOption),
+              onScaleUpdate: (ScaleUpdateDetails update) =>
+                  _onScaleUpdate(context, update),
               onScaleEnd: (ScaleEndDetails end) => _onScaleEnd(
-                  context, end, widget.model.painterController.paintOption),
+                    context,
+                    end,
+                  ),
               child: Stack(
                   alignment: AlignmentDirectional.center,
                   fit: StackFit.expand,
                   children: <Widget>[
-                    widget.model.painterController.paintOption ==
-                                PaintOption.paint &&
-                            widget.model.unMaskImagePath == null
+                    widget.model.unMaskImagePath == null
                         ? Container()
                         : FittedBox(
                             child: Image.asset(

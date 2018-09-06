@@ -36,13 +36,13 @@ class Paper extends StatelessWidget {
     return ScopedModelDescendant<ActivityModel>(
       builder: (context, child, model) {
         final children = <Widget>[];
-        // if (model.template != null) {
-        //   children.add(AspectRatio(
-        //       aspectRatio: 1.0,
-        //       child: SvgPicture.asset(
-        //         model.template,
-        //       )));
-        // }
+        if (model.template != null) {
+          children.add(AspectRatio(
+              aspectRatio: 1.0,
+              child: SvgPicture.asset(
+                model.template,
+              )));
+        }
         children.add(Drawing(
           model: model,
         ));
