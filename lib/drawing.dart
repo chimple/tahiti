@@ -88,12 +88,16 @@ class RollerState extends State<Drawing> {
             width: box.maxWidth,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onScaleUpdate: (ScaleUpdateDetails update) =>
-                  _onScaleUpdate(context, update),
-              onScaleEnd: (ScaleEndDetails end) => _onScaleEnd(
-                    context,
-                    end,
-                  ),
+              onScaleUpdate: widget.model.isInteractive
+                  ? (ScaleUpdateDetails update) =>
+                      _onScaleUpdate(context, update)
+                  : null,
+              onScaleEnd: widget.model.isInteractive
+                  ? (ScaleEndDetails end) => _onScaleEnd(
+                        context,
+                        end,
+                      )
+                  : null,
               child: Stack(
                   alignment: AlignmentDirectional.center,
                   fit: StackFit.expand,

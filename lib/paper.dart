@@ -48,25 +48,27 @@ class Paper extends StatelessWidget {
                     thing: t,
                   ),
             ));
-        children.add(Align(
-          alignment: Alignment.bottomRight,
-          heightFactor: 100.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.undo),
-                  iconSize: 40.0,
-                  color: Colors.red,
-                  onPressed: model.canUndo() ? () => model.undo() : null),
-              IconButton(
-                  icon: Icon(Icons.redo),
-                  iconSize: 40.0,
-                  color: Colors.red,
-                  onPressed: model.canRedo() ? () => model.redo() : null),
-            ],
-          ),
-        ));
+        if (model.isInteractive) {
+          children.add(Align(
+            alignment: Alignment.bottomRight,
+            heightFactor: 100.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.undo),
+                    iconSize: 40.0,
+                    color: Colors.red,
+                    onPressed: model.canUndo() ? () => model.undo() : null),
+                IconButton(
+                    icon: Icon(Icons.redo),
+                    iconSize: 40.0,
+                    color: Colors.red,
+                    onPressed: model.canRedo() ? () => model.redo() : null),
+              ],
+            ),
+          ));
+        }
         return FittedBox(
           fit: BoxFit.contain,
           child: SizedBox(

@@ -84,6 +84,7 @@ class _TransformWrapperState extends State<TransformWrapper>
   @override
   Widget build(BuildContext context) {
     _width = MediaQuery.of(context).size.width;
+    final model = ActivityModel.of(context);
     return Positioned(
       left: _translate.dx,
       top: _translate.dy,
@@ -91,10 +92,11 @@ class _TransformWrapperState extends State<TransformWrapper>
         rotate: _rotate,
         scale: _scale,
         child: new RotateGestureDetector(
-          onScaleStart: onScaleStart,
-          onScaleUpdate: onScaleUpdate,
-          onScaleEnd: (rotate.ScaleEndDetails details) =>
-              onScaleEnd(ActivityModel.of(context), details),
+          onScaleStart: model.isInteractive ? onScaleStart : null,
+          onScaleUpdate: model.isInteractive ? onScaleUpdate : null,
+          onScaleEnd: model.isInteractive
+              ? (rotate.ScaleEndDetails details) => onScaleEnd(model, details)
+              : null,
           child: widget.child,
         ),
       ),

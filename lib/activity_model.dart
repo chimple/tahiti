@@ -20,6 +20,7 @@ class ActivityModel extends Model {
   PathHistory pathHistory;
   Color _selectedColor;
   String id;
+  bool _isInteractive = true;
 
   ActivityModel({@required this.pathHistory, @required this.id}) {
     print('pathHistory: $pathHistory');
@@ -61,6 +62,9 @@ class ActivityModel extends Model {
     _isDrawing = t;
     notifyListeners();
   }
+
+  bool get isInteractive => _isInteractive;
+  set isInteractive(bool i) => _isInteractive = i;
 
   void addSticker(String name) {
     addThing({
