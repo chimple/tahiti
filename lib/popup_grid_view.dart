@@ -119,9 +119,9 @@ class PopupGridViewState extends State<PopupGridView> {
                             } else if (title.startsWith('assets/menu/text')) {
                               model.addText('', font: title);
                             } else if (title.startsWith('assets/menu/roller')) {
-                              model.addUnMaskImage(title);
-                              model.painterController.doUnMask();
-                              model.isDrawing = true;
+                              // model.addUnMaskImage(title);
+                              // model.painterController.doUnMask();
+                              model.isDrawing = false;
                             } else {
                               model.isDrawing = false;
                             }

@@ -199,7 +199,7 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  String unMaskImagePath = 'assets/roller_image/sample1.jpg';
+  String unMaskImagePath;
   void addUnMaskImage(String text) {
     print("text: $text");
     unMaskImagePath = text;
