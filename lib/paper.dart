@@ -67,7 +67,14 @@ class Paper extends StatelessWidget {
             ],
           ),
         ));
-        return Stack(children: children);
+        return FittedBox(
+          fit: BoxFit.contain,
+          child: SizedBox(
+            height: 512.0,
+            width: 512.0,
+            child: Stack(children: children),
+          ),
+        );
       },
     );
   }
