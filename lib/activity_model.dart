@@ -1,33 +1,73 @@
+import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
-import 'package:flutter/widgets.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'activity_model.g.dart';
 
+@JsonSerializable()
 class ActivityModel extends Model {
   List<Map<String, dynamic>> things = [];
-  List<Map<String, dynamic>> undoStack = [];
-  List<Map<String, dynamic>> redoStack = [];
+  List<Map<String, dynamic>> _undoStack = [];
+  List<Map<String, dynamic>> _redoStack = [];
   String _template;
+  Function _saveCallback;
+  Popped _popped = Popped.noPopup;
+  bool _isDrawing = false;
   PainterController _painterController;
+  PathHistory pathHistory;
 
-  ActivityModel() {
-    _painterController = new PainterController();
+  @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
+  Color _selectedColor;
+
+  String id;
+  bool _isInteractive = true;
+
+  ActivityModel({@required this.pathHistory, @required this.id}) {
+    print('pathHistory: $pathHistory');
+    _painterController = new PainterController(pathHistory: this.pathHistory);
   }
 
-  ActivityModel.fromJson(Map<String, dynamic> json) {}
+  factory ActivityModel.fromJson(Map<String, dynamic> json) =>
+      _$ActivityModelFromJson(json);
 
-  Map<String, dynamic> toJson() {}
+  Map<String, dynamic> toJson() => _$ActivityModelToJson(this);
 
   static ActivityModel of(BuildContext context) =>
       ScopedModel.of<ActivityModel>(context);
 
   PainterController get painterController => this._painterController;
 
+  set saveCallback(Function s) => _saveCallback = s;
+
   String get template => _template;
   set template(String t) {
     _template = t;
+    _saveAndNotifyListeners();
+  }
+
+  Color get selectedColor => _selectedColor;
+  set selectedColor(Color t) {
+    _selectedColor = t;
     notifyListeners();
   }
+
+  Popped get popped => _popped;
+  set popped(Popped t) {
+    _popped = t;
+    notifyListeners();
+  }
+
+  bool get isDrawing => _isDrawing;
+  set isDrawing(bool t) {
+    _isDrawing = t;
+    notifyListeners();
+  }
+
+  bool get isInteractive => _isInteractive;
+  set isInteractive(bool i) => _isInteractive = i;
 
   void addSticker(String name) {
     addThing({
@@ -36,7 +76,8 @@ class ActivityModel extends Model {
       'asset': name,
       'x': 0.0,
       'y': 0.0,
-      'scale': 0.5
+      'scale': 0.5,
+      'color': selectedColor.value
     });
   }
 
@@ -74,27 +115,28 @@ class ActivityModel extends Model {
     });
   }
 
-  void addDrawing(MapEntry<Path, Paint> path) {
+  void addDrawing(PathInfo path) {
     addThing({'id': Uuid().v4(), 'type': 'drawing', 'path': path});
+    debugPrint(json.encode(this));
   }
 
   void addThing(Map<String, dynamic> thing) {
     _addThing(thing);
-    redoStack.clear();
+    _redoStack.clear();
   }
 
   void _addThing(Map<String, dynamic> thing) {
     print('_addThing: $thing');
     thing['op'] = 'add';
     things.add(thing);
-    undoStack.add(Map.from(thing));
-    print('_addThing: $undoStack $redoStack');
-    notifyListeners();
+    _undoStack.add(Map.from(thing));
+    print('_addThing: $_undoStack $_redoStack');
+    _saveAndNotifyListeners();
   }
 
   void updateThing(Map<String, dynamic> thing) {
     _updateThing(thing);
-    redoStack.clear();
+    _redoStack.clear();
   }
 
   void _updateThing(Map<String, dynamic> thing) {
@@ -102,44 +144,44 @@ class ActivityModel extends Model {
     final index = things.indexWhere((t) => t['id'] == thing['id']);
     if (index >= 0) {
       things[index]['op'] = 'update';
-      undoStack.add(things[index]);
+      _undoStack.add(things[index]);
       thing['op'] = 'update';
       things[index] = thing;
     }
-    print('updateThing: $undoStack $redoStack');
-    notifyListeners();
+    print('updateThing: $_undoStack $_redoStack');
+    _saveAndNotifyListeners();
   }
 
   bool canUndo() {
-    return undoStack.isNotEmpty;
+    return _undoStack.isNotEmpty;
   }
 
   void undo() {
-    print('undo: $undoStack $redoStack');
-    final thing = undoStack.removeLast();
+    print('undo: $_undoStack $_redoStack');
+    final thing = _undoStack.removeLast();
     if (thing['op'] == 'add') {
       things.removeWhere((t) => t['id'] == thing['id']);
-      redoStack.add(thing);
+      _redoStack.add(thing);
       if (thing['type'] == 'drawing') {
         painterController.undo();
       }
     } else {
       //assume it is update
       final index = things.indexWhere((t) => t['id'] == thing['id']);
-      redoStack.add(things[index]);
+      _redoStack.add(things[index]);
       things[index] = thing;
     }
-    print('undo: $undoStack $redoStack');
-    notifyListeners();
+    print('undo: $_undoStack $_redoStack');
+    _saveAndNotifyListeners();
   }
 
   bool canRedo() {
-    return redoStack.isNotEmpty;
+    return _redoStack.isNotEmpty;
   }
 
   void redo() {
-    print('redo: $undoStack $redoStack');
-    final thing = redoStack.removeLast();
+    print('redo: $_undoStack $_redoStack');
+    final thing = _redoStack.removeLast();
     if (thing['op'] == 'add') {
       _addThing(thing);
       if (thing['type'] == 'drawing') {
@@ -149,6 +191,150 @@ class ActivityModel extends Model {
       //assume it is update
       _updateThing(thing);
     }
-    print('redo: $undoStack $redoStack');
+    print('redo: $_undoStack $_redoStack');
+  }
+
+  void _saveAndNotifyListeners() {
+    if (_saveCallback != null) _saveCallback(jsonMap: toJson());
+    notifyListeners();
+  }
+
+  String unMaskImagePath;
+  void addUnMaskImage(String text) {
+    print("text: $text");
+    unMaskImagePath = text;
+    notifyListeners();
   }
 }
+
+Color _colorFromInt(int colorValue) => Color(colorValue);
+int _intFromColor(Color color) => color.value;
+
+BlurStyle _blurStyleFromInt(int blurStyleValue) =>
+    BlurStyle.values[blurStyleValue];
+int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
+
+@JsonSerializable()
+class PathHistory {
+  List<PathInfo> paths;
+
+  PathHistory() {
+    paths = [];
+  }
+
+  factory PathHistory.fromJson(Map<String, dynamic> json) =>
+      _$PathHistoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PathHistoryToJson(this);
+
+  void undo() {
+    paths.removeLast();
+  }
+
+  void redo(PathInfo pathInfo) {
+    paths.add(pathInfo);
+  }
+
+  void clear() {
+    paths.clear();
+  }
+
+  void add(Offset startPoint,
+      {PaintOption paintOption,
+      BlurStyle blurStyle,
+      double sigma,
+      double thickness,
+      Color color}) {
+    paths.add(PathInfo(
+        points: [startPoint.dx, startPoint.dy],
+        paintOption: paintOption,
+        blurStyle: blurStyle,
+        sigma: sigma,
+        thickness: thickness,
+        color: color));
+  }
+
+  void updateCurrent(Offset nextPoint) {
+    paths.last.addPoint(nextPoint);
+  }
+
+  void draw(PaintingContext context, Size size) {
+    for (PathInfo pathInfo in paths) {
+      context.canvas.drawPath(pathInfo.path, pathInfo._paint);
+    }
+  }
+}
+
+@JsonSerializable()
+class PathInfo {
+  Paint _paint;
+
+  Path _path;
+
+  get path => _path;
+
+  List<double> points;
+  PaintOption paintOption;
+  @JsonKey(fromJson: _blurStyleFromInt, toJson: _intFromBlurStyle)
+  BlurStyle blurStyle;
+  double sigma;
+  double thickness;
+  @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
+  Color color;
+
+  PathInfo(
+      {this.points,
+      this.paintOption = PaintOption.paint,
+      this.blurStyle = BlurStyle.normal,
+      this.sigma = 0.0,
+      this.thickness = 8.0,
+      this.color = Colors.red}) {
+    _path = new Path();
+    if (points.length >= 2) {
+      _path.moveTo(points[0], points[1]);
+    }
+    for (int i = 2; i < points.length - 1; i += 2) {
+      _path.lineTo(points[i], points[i + 1]);
+    }
+
+    _paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..strokeWidth = thickness
+      ..color = color ?? Colors.red;
+    switch (paintOption) {
+      case PaintOption.paint:
+        _paint.maskFilter = MaskFilter.blur(blurStyle, sigma);
+        break;
+      case PaintOption.unMask:
+        _paint.blendMode = BlendMode.clear;
+        break;
+      case PaintOption.erase:
+        break;
+    }
+  }
+
+  factory PathInfo.fromJson(Map<String, dynamic> json) =>
+      _$PathInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PathInfoToJson(this);
+
+  addPoint(Offset nextPoint) {
+    _path.lineTo(nextPoint.dx, nextPoint.dy);
+    points.addAll([nextPoint.dx, nextPoint.dy]);
+  }
+}
+
+//TODO: maskFilter
+//Paint _paintFromMap(Map<String, dynamic> map) => Paint()
+//  ..style = PaintingStyle.stroke
+//  ..strokeCap = StrokeCap.round
+//  ..strokeJoin = StrokeJoin.round
+//  ..strokeWidth = (map['strokeWidth'] as double)
+//  ..color = Color(map['color'] as int);
+//
+//Map<String, dynamic> _paintToMap(Paint paint) => {
+//      'strokeWidth': paint.strokeWidth,
+//      'color': paint.color.value,
+//    };

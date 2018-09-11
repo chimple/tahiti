@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/color_picker.dart';
+import 'package:tahiti/drawing.dart';
 
-enum ItemType { text, png }
+enum ItemType { text, png, sticker }
 
 class Iconf {
   ItemType type;
@@ -15,6 +16,7 @@ class Iconf {
 typedef Widget BuildItem(Iconf text, bool enabled);
 typedef void OnUserPress(String text);
 enum DisplaySide { top, bottom }
+enum Popped { top, bottom, noPopup }
 
 class PopupGridView extends StatefulWidget {
   final OnUserPress onUserPress;
@@ -43,7 +45,8 @@ class PopupGridView extends StatefulWidget {
 class PopupGridViewState extends State<PopupGridView> {
   static const menuHeight = 80.0;
   String highlightedBottomItem;
-  bool popped = false;
+  String highlightedPopUpItem;
+  // bool popped = false;
   @override
   void initState() {
     super.initState();
@@ -51,27 +54,83 @@ class PopupGridViewState extends State<PopupGridView> {
   }
 
   Widget _buildMenuItem(String title, {double height, double width}) {
-    return Container(
-      height: height,
-      width: width,
-      alignment: Alignment.center,
-      color:
-          popped && highlightedBottomItem == title ? Colors.grey : Colors.white,
-      padding: const EdgeInsets.all(4.0),
-      child: InkWell(
-          onTap: () => setState(
-                () {
-                  if (popped&&highlightedBottomItem == title) {
-                    popped = false;
-                  } else {
-                    popped = true;
-                    highlightedBottomItem = title;
-                  }
-                },
-              ),
-          child: widget.buildIndexItem(
-              Iconf(type: ItemType.text, data: title), true)),
-    );
+    return ScopedModelDescendant<ActivityModel>(
+        builder: (context, child, model) => Container(
+              height: height,
+              width: width,
+              alignment: Alignment.center,
+              color: ((model.popped == Popped.bottom &&
+                              widget.side == DisplaySide.bottom) ||
+                          (model.popped == Popped.top &&
+                              widget.side == DisplaySide.top)) &&
+                      highlightedBottomItem == title
+                  ? Colors.grey
+                  : Colors.white,
+              padding: const EdgeInsets.all(4.0),
+              child: InkWell(
+                  onTap: () => setState(
+                        () {
+                          if ((model.popped == Popped.bottom ||
+                                  model.popped == Popped.top) &&
+                              highlightedBottomItem == title) {
+                            model.popped = Popped.noPopup;
+                          } else if (widget.side == DisplaySide.bottom) {
+                            model.popped = Popped.bottom;
+                            highlightedBottomItem = title;
+                            widget.onUserPress(title);
+                          } else if (widget.side == DisplaySide.top) {
+                            model.popped = Popped.top;
+                            highlightedBottomItem = title;
+                            widget.onUserPress(title);
+                          } else {
+                            model.popped = Popped.noPopup;
+                          }
+
+                          if (title != null) {
+                            if (title.startsWith('assets/menu/pencil.png')) {
+//                              model.painterController.blurEffect =
+//                                  MaskFilter.blur(BlurStyle.normal, 0.0);
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 0.0;
+                              model.isDrawing = true;
+                            } else if (title
+                                .startsWith('assets/menu/brush1.png')) {
+//                              model.painterController.blurEffect =
+//                                  MaskFilter.blur(BlurStyle.normal, 15.5);
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 15.5;
+                              model.isDrawing = true;
+                            } else if (title
+                                .startsWith('assets/menu/brush.png')) {
+//                              model.painterController.blurEffect =
+//                                  MaskFilter.blur(BlurStyle.inner, 15.5);
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.inner;
+                              model.painterController.sigma = 15.5;
+                              model.isDrawing = true;
+                            } else if (title.startsWith('assets/menu/text')) {
+                              model.addText('', font: title);
+                            } else if (title.startsWith('assets/menu/roller')) {
+                              // model.addUnMaskImage(title);
+                              // model.painterController.doUnMask();
+                              model.isDrawing = false;
+                            } else {
+                              model.isDrawing = false;
+                            }
+                          }
+                        },
+                      ),
+                  child: widget.buildIndexItem(
+                      Iconf(type: ItemType.text, data: title), true)),
+            ));
   }
 
   @override
@@ -109,10 +168,10 @@ class PopupGridViewState extends State<PopupGridView> {
               ),
               AnimatedPositioned(
                 bottom: widget.side == DisplaySide.bottom
-                    ? popped ? menuHeight : -10.0
+                    ? model.popped == Popped.bottom ? menuHeight : -10.0
                     : null,
                 top: widget.side == DisplaySide.top
-                    ? popped ? menuHeight : -10.0
+                    ? model.popped == Popped.top ? menuHeight : -10.0
                     : null,
                 left: 0.0,
                 right: 0.0,
@@ -136,10 +195,18 @@ class PopupGridViewState extends State<PopupGridView> {
                             children: widget.menuItems[highlightedBottomItem]
                                 .map((itemName) => Container(
                                       child: InkWell(
-                                          onTap: () =>
-                                              widget.onUserPress(itemName.data),
+                                          onTap: () => setState(() {
+                                                widget
+                                                    .onUserPress(itemName.data);
+                                                highlightedPopUpItem =
+                                                    itemName.data;
+                                              }),
                                           child:
                                               widget.buildItem(itemName, true)),
+                                      color:
+                                          itemName.data == highlightedPopUpItem
+                                              ? Colors.red
+                                              : Colors.white,
                                     ))
                                 .toList(growable: false)),
                       ),
