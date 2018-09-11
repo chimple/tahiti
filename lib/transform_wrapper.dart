@@ -98,22 +98,149 @@ class _TransformWrapperState extends State<TransformWrapper>
   }
 }
 
-class WidgetTransformDelegate extends StatelessWidget {
+class WidgetTransformDelegate extends StatefulWidget {
   final double rotate;
   final double scale;
   final Widget child;
+
   WidgetTransformDelegate({Key key, this.rotate, this.scale, this.child})
       : super(key: key);
 
   @override
+  WidgetTransformDelegateState createState() {
+    return new WidgetTransformDelegateState();
+  }
+}
+
+class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
+  Offset customeOffset = Offset.zero;
+  double customeWidth = 500.0;
+  double customeHeight = 200.0;
+
+  @override
   Widget build(BuildContext context) {
     var matrix = Matrix4.identity()
-      ..scale(scale)
-      ..rotateZ(rotate);
+      ..scale(widget.scale)
+      ..rotateZ(widget.rotate);
+    var matrix1 = Matrix4.identity()..scale(widget.scale);
+    // ..rotateZ(rotate);
     return Transform(
       transform: matrix,
       alignment: Alignment.center,
-      child: child,
+      child: Stack(children: <Widget>[
+        Positioned(
+          left: 0.0,
+          top: 0.0,
+          child: IconButton(
+            icon: Icon(Icons.cancel),
+            iconSize: 50.0,
+            color: Colors.black,
+            onPressed: () {
+              print("cancel");
+            },
+          ),
+        ),
+        Positioned(
+          left: 0.0,
+          top: 50.0,
+          child: IconButton(
+            icon: Icon(Icons.edit),
+            iconSize: 50.0,
+            color: Colors.black,
+            onPressed: () {},
+          ),
+        ),
+        Padding(
+          padding:
+              EdgeInsets.only(left: 60.0, top: 60.0, right: 20.0, bottom: 20.0),
+          child: LimitedBox(
+            // maxHeight: customeHeight,
+            maxWidth: customeWidth,
+              child: widget.child,
+              // decoration: BoxDecoration(
+              //   border: Border.all(color: Colors.red, width: 4.0),
+              //   borderRadius: BorderRadius.circular(2.0),
+              // )
+              ),
+        ),
+        Positioned(
+          left: 50.0,
+          top: 50.0,
+          child: GestureDetector(
+              onPanUpdate: onTopLeftPanUpdate,
+              child: Icon(
+                Icons.lens,
+                size: 30.0,
+                color: Colors.red,
+              )),
+        ),
+        Positioned(
+          right: 10.0,
+          top: 50.0,
+          child: GestureDetector(
+              onPanUpdate: onTopRightPanUpdate,
+              child: Icon(
+                Icons.lens,
+                size: 30.0,
+                color: Colors.red,
+              )),
+        ),
+        Positioned(
+          left: 50.0,
+          bottom: 10.0,
+          child: GestureDetector(
+              onPanUpdate: onBottomLeftPanUpdate,
+              child: Icon(
+                Icons.lens,
+                size: 30.0,
+                color: Colors.red,
+              )),
+        ),
+        Positioned(
+          right: 10.0,
+          bottom: 10.0,
+          child: GestureDetector(
+              onPanUpdate: onBottomRightPanUpdate,
+              child: Icon(
+                Icons.lens,
+                size: 30.0,
+                color: Colors.red,
+              )),
+        ),
+      ]),
     );
+  }
+
+//Pan Controller
+  void onTopLeftPanUpdate(DragUpdateDetails details) {
+    print("onTopLeftPanUpdate $details");
+    setState(() {
+      customeWidth += details.delta.dx;
+      customeHeight += details.delta.dy;
+    });
+  }
+
+  void onTopRightPanUpdate(DragUpdateDetails details) {
+    print("onTopRightPanUpdate $details");
+    setState(() {
+      customeWidth += details.delta.dx;
+      customeHeight += details.delta.dy;
+    });
+  }
+
+  void onBottomLeftPanUpdate(DragUpdateDetails details) {
+    print("onBottomLeftPanUpdate $details");
+    setState(() {
+      customeWidth += details.delta.dx;
+      customeHeight += details.delta.dy;
+    });
+  }
+
+  void onBottomRightPanUpdate(DragUpdateDetails details) {
+    print("onBottomRightPanUpdate $details");
+    setState(() {
+      customeWidth += details.delta.dx;
+      customeHeight += details.delta.dy;
+    });
   }
 }

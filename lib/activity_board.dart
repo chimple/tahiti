@@ -38,7 +38,7 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ActivityModel>(
       builder: (context, child, model) => Stack(
-            children: <Widget>[
+            children: <Widget>[ 
               Center(
                 child: Container(
                   color: Colors.grey,

@@ -25,6 +25,11 @@ class EditTextViewState extends State<EditTextView> {
   bool _deleteOption = true;
   bool edittxt = false;
   String userTyped;
+  var textType;
+
+  int noOfChar = 1;
+  double customeWidth = 400.0;
+  double customeHeight = 200.0;
 
   @override
   void initState() {
@@ -51,123 +56,47 @@ class EditTextViewState extends State<EditTextView> {
 
   @override
   Widget build(BuildContext context) {
+    // customeWidth = 400.0;
+    // customeHeight = 200.0;
+
     return widget.fontType != null
         ? !viewtext
-            ? LimitedBox(
-                child: Stack(children: <Widget>[
-                  Positioned(
-                    left: 0.0,
-                    top: 0.0,
-                    child: IconButton(
-                      icon: Icon(Icons.cancel),
-                      iconSize: 50.0,
-                      color: Colors.black,
-                      onPressed: () {},
+            ? LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                print("container size $constraints");
+                print("no of character $noOfChar");
+                // double maxSize =
+                //     (constraints.maxWidth * constraints.maxHeight) / 3000;
+                // print("maxsize $maxSize");
+                return FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: LimitedBox(
+                    // maxHeight: constraints.maxHeight + noOfChar,
+                    maxWidth: constraints.maxWidth,
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      onChanged: (str) {
+                        setState(() {
+                          noOfChar = str.length;
+                        });
+                      },
+                      autofocus: true,
+                      enabled: true,
+                      // focusNode: myFocusNode,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 30.0,
+                          color: const Color(0xFF000000),
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          fontFamily: widget.fontType),
+                      decoration: new InputDecoration.collapsed(
+                          hintText: widget.change),
                     ),
                   ),
-                  Positioned(
-                    left: 0.0,
-                    top: 50.0,
-                    child: IconButton(
-                      icon: Icon(Icons.edit),
-                      iconSize: 50.0,
-                      color: Colors.black,
-                      onPressed: () {},
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 60.0, top: 60.0, right: 20.0, bottom: 20.0),
-                    child: Container(
-                      height: 200.0,
-                      width: MediaQuery.of(context).size.width,
-                      child: Wrap(
-                        children: <Widget>[
-                          TextField(
-                          // maxLines: 1,
-                          onSubmitted: (str) {
-                            myFocusNode.unfocus();
-                            setState(() {
-                              print("object");
-                              // viewtext = true;
-                              edittxt = false;
-                              // _deleteOption = false;
-                              userTyped = str;
-                            });
-                          },
-                          autofocus: true,
-                          enabled: edittxt,
-                          focusNode: myFocusNode,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 50.0,
-                              color: const Color(0xFF000000),
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              fontFamily: widget.fontType),
-                          decoration: new InputDecoration.collapsed(
-                              hintText: widget.change),
-                        ),
-                        ]),
-                      decoration: _deleteOption
-                          ? BoxDecoration(
-                              border: Border.all(color: Colors.red, width: 4.0),
-                              borderRadius: BorderRadius.circular(2.0),
-                            )
-                          : BoxDecoration(
-                              borderRadius: BorderRadius.circular(2.0),
-                            ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 40.0,
-                    top: 40.0,
-                    child: IconButton(
-                      icon: Icon(Icons.lens),
-                      iconSize: 30.0,
-                      color: Colors.red,
-                      onPressed: () {},
-                    ),
-                  ),
-                  Positioned(
-                    right: 0.0,
-                    top: 40.0,
-                    child: IconButton(
-                      icon: Icon(Icons.lens),
-                      iconSize: 30.0,
-                      color: Colors.red,
-                      onPressed: () {},
-                    ),
-                  ),
-                  Positioned(
-                    left: 40.0,
-                    bottom: 0.0,
-                    child: IconButton(
-                      icon: Icon(Icons.lens),
-                      iconSize: 30.0,
-                      color: Colors.red,
-                      onPressed: () {},
-                    ),
-                  ),
-                  Positioned(
-                    right: 0.0,
-                    bottom: 0.0,
-                    child: IconButton(
-                      icon: Icon(Icons.lens),
-                      iconSize: 30.0,
-                      color: Colors.red,
-                      onPressed: () {},
-                    ),
-                  ),
-                ]),
-                // decoration: _deleteOption
-                //     ? BoxDecoration(
-                //         border: Border.all(color: Colors.green, width: 4.0),
-                //         borderRadius: BorderRadius.circular(2.0),
-                //       )
-                //     : BoxDecoration(
-                //         borderRadius: BorderRadius.circular(2.0),
-                //       ),
-              )
+                );
+              })
             : InkWell(
                 onTap: () {
                   setState(() {
@@ -184,5 +113,14 @@ class EditTextViewState extends State<EditTextView> {
                         fontFamily: widget.fontType, fontSize: 100.0)),
               )
         : Container();
+  }
+
+  //Pan Controller
+  void onPanUpdate(DragUpdateDetails details) {
+    print("onTopLeftPanUpdate $details");
+    setState(() {
+      customeWidth += details.delta.dx;
+      customeHeight += details.delta.dy;
+    });
   }
 }
