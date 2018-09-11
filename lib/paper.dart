@@ -48,26 +48,35 @@ class Paper extends StatelessWidget {
                     thing: t,
                   ),
             ));
-        children.add(Align(
-          alignment: Alignment.bottomRight,
-          heightFactor: 100.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.undo),
-                  iconSize: 40.0,
-                  color: Colors.red,
-                  onPressed: model.canUndo() ? () => model.undo() : null),
-              IconButton(
-                  icon: Icon(Icons.redo),
-                  iconSize: 40.0,
-                  color: Colors.red,
-                  onPressed: model.canRedo() ? () => model.redo() : null),
-            ],
+        if (model.isInteractive) {
+          children.add(Align(
+            alignment: Alignment.bottomRight,
+            heightFactor: 100.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.undo),
+                    iconSize: 40.0,
+                    color: Colors.red,
+                    onPressed: model.canUndo() ? () => model.undo() : null),
+                IconButton(
+                    icon: Icon(Icons.redo),
+                    iconSize: 40.0,
+                    color: Colors.red,
+                    onPressed: model.canRedo() ? () => model.redo() : null),
+              ],
+            ),
+          ));
+        }
+        return FittedBox(
+          fit: BoxFit.contain,
+          child: SizedBox(
+            height: 512.0,
+            width: 512.0,
+            child: Stack(children: children),
           ),
-        ));
-        return Stack(children: children);
+        );
       },
     );
   }
@@ -91,7 +100,7 @@ class Paper extends StatelessWidget {
                       aspectRatio: 1.0,
                       child: SvgPicture.asset(
                         s1,
-                        color: thing['color'],
+                        color: Color(thing['color'] as int),
                         colorBlendMode: BlendMode.modulate,
                         package: 'tahiti',
                       )),

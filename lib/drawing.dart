@@ -70,7 +70,7 @@ class RollerState extends State<Drawing> {
 
   void _onScaleEnd(BuildContext context, ScaleEndDetails end) {
     ActivityModel model = ActivityModel.of(context);
-    PathHistory pathHistory = ActivityModel.of(context).pathHistory;
+    PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
     painterController.endCurrent();
     model.addDrawing(pathHistory.paths.last); //TODO do this in pathhistory
@@ -88,12 +88,16 @@ class RollerState extends State<Drawing> {
             width: box.maxWidth,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onScaleUpdate: (ScaleUpdateDetails update) =>
-                  _onScaleUpdate(context, update),
-              onScaleEnd: (ScaleEndDetails end) => _onScaleEnd(
-                    context,
-                    end,
-                  ),
+              onScaleUpdate: widget.model.isInteractive
+                  ? (ScaleUpdateDetails update) =>
+                      _onScaleUpdate(context, update)
+                  : null,
+              onScaleEnd: widget.model.isInteractive
+                  ? (ScaleEndDetails end) => _onScaleEnd(
+                        context,
+                        end,
+                      )
+                  : null,
               child: Stack(
                   alignment: AlignmentDirectional.center,
                   fit: StackFit.expand,
@@ -119,7 +123,7 @@ class RollerState extends State<Drawing> {
 
   Widget _buildWidget(BuildContext context, String text) {
     return _ScratchCardLayout(
-      child: text.startsWith('assets/templates')
+      child: text.endsWith('.svg')
           ? Container(
               height: double.infinity,
               width: double.infinity,
@@ -235,51 +239,52 @@ class _ScratchCardRender extends RenderProxyBox {
 
 class PainterController extends ChangeNotifier {
   PathHistory pathHistory;
-  double _thickness;
+  double thickness;
+  BlurStyle blurStyle = BlurStyle.normal;
+  double sigma = 0.0;
+  PaintOption paintOption;
   Paint _currentPaint;
-  var _blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
   bool _inDrag = false;
-  PaintOption _paintOption;
   PainterController({this.pathHistory}) {
-    _thickness = 5.0;
-    _updatePaint();
-    _paintOption = PaintOption.paint;
+    thickness = 5.0;
+//    _updatePaint();
+    paintOption = PaintOption.paint;
   }
 
-  double get thickness => _thickness;
-  set thickness(double t) {
-    _thickness = t;
-    _updatePaint();
-  }
-
-  get blurEffect => _blurEffect;
-  set blurEffect(var t) {
-    _blurEffect = t;
-    _updatePaint();
-  }
+  //  double get thickness => _thickness;
+//  set thickness(double t) {
+//    _thickness = t;
+//    _updatePaint();
+//  }
 
   get paths => pathHistory.paths;
 
-  void _updatePaint() {
-    Paint paint = new Paint();
-    paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = _thickness;
-    paint.strokeCap = StrokeCap.round;
-    paint.strokeJoin = StrokeJoin.round;
-    paint.color = Colors.red;
-    paint.maskFilter = _blurEffect;
-    _currentPaint = paint;
-    notifyListeners();
-  }
+//  void _updatePaint() {
+//    Paint paint = new Paint();
+//    paint.style = PaintingStyle.stroke;
+//    paint.strokeWidth = _thickness;
+//    paint.strokeCap = StrokeCap.round;
+//    paint.strokeJoin = StrokeJoin.round;
+//    paint.color = Colors.red;
+//    paint.maskFilter = _blurEffect;
+//    _currentPaint = paint;
+//    notifyListeners();
+//  }
 
   void add(BuildContext context, Offset startPoint) {
+    final model = ActivityModel.of(context);
     if (!_inDrag) {
-      if (ActivityModel.of(context).popped != Popped.noPopup) {
-        ActivityModel.of(context).popped = Popped.noPopup;
+      if (model.popped != Popped.noPopup) {
+        model.popped = Popped.noPopup;
       }
-      if (ActivityModel.of(context).isDrawing) {
+      if (model.isDrawing) {
         _inDrag = true;
-        pathHistory.add(startPoint, _currentPaint);
+        pathHistory.add(startPoint,
+            paintOption: paintOption,
+            blurStyle: blurStyle,
+            sigma: sigma,
+            thickness: thickness,
+            color: model.selectedColor);
       }
     }
   }
@@ -320,7 +325,6 @@ class PainterController extends ChangeNotifier {
     }
   }
 
-  PaintOption get paintOption => _paintOption;
   void doUnMask() {
     Paint paint = new Paint();
     paint.style = PaintingStyle.stroke;
@@ -328,7 +332,7 @@ class PainterController extends ChangeNotifier {
     paint.strokeWidth = 25.0;
     paint.strokeCap = StrokeCap.round;
     _currentPaint = paint;
-    _paintOption = PaintOption.unMask;
+    paintOption = PaintOption.unMask;
     notifyListeners();
   }
 }
