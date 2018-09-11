@@ -1,7 +1,7 @@
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:convert';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -18,7 +18,10 @@ class ActivityModel extends Model {
   bool _isDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
+
+  @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
   Color _selectedColor;
+
   String id;
   bool _isInteractive = true;
 
@@ -74,7 +77,7 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': selectedColor
+      'color': selectedColor.value
     });
   }
 
@@ -204,6 +207,13 @@ class ActivityModel extends Model {
   }
 }
 
+Color _colorFromInt(int colorValue) => Color(colorValue);
+int _intFromColor(Color color) => color.value;
+
+BlurStyle _blurStyleFromInt(int blurStyleValue) =>
+    BlurStyle.values[blurStyleValue];
+int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
+
 @JsonSerializable()
 class PathHistory {
   List<PathInfo> paths;
@@ -229,8 +239,19 @@ class PathHistory {
     paths.clear();
   }
 
-  void add(Offset startPoint, Paint paint) {
-    paths.add(PathInfo(paint: paint, points: [startPoint.dx, startPoint.dy]));
+  void add(Offset startPoint,
+      {PaintOption paintOption,
+      BlurStyle blurStyle,
+      double sigma,
+      double thickness,
+      Color color}) {
+    paths.add(PathInfo(
+        points: [startPoint.dx, startPoint.dy],
+        paintOption: paintOption,
+        blurStyle: blurStyle,
+        sigma: sigma,
+        thickness: thickness,
+        color: color));
   }
 
   void updateCurrent(Offset nextPoint) {
@@ -239,29 +260,58 @@ class PathHistory {
 
   void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
-      context.canvas.drawPath(pathInfo.path, pathInfo.paint);
+      context.canvas.drawPath(pathInfo.path, pathInfo._paint);
     }
   }
 }
 
 @JsonSerializable()
 class PathInfo {
+  Paint _paint;
+
   Path _path;
 
   get path => _path;
 
-  @JsonKey(fromJson: _paintFromMap, toJson: _paintToMap)
-  final Paint paint;
-
   List<double> points;
+  PaintOption paintOption;
+  @JsonKey(fromJson: _blurStyleFromInt, toJson: _intFromBlurStyle)
+  BlurStyle blurStyle;
+  double sigma;
+  double thickness;
+  @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
+  Color color;
 
-  PathInfo({this.paint, this.points}) {
+  PathInfo(
+      {this.points,
+      this.paintOption = PaintOption.paint,
+      this.blurStyle = BlurStyle.normal,
+      this.sigma = 0.0,
+      this.thickness = 8.0,
+      this.color = Colors.red}) {
     _path = new Path();
     if (points.length >= 2) {
       _path.moveTo(points[0], points[1]);
     }
     for (int i = 2; i < points.length - 1; i += 2) {
       _path.lineTo(points[i], points[i + 1]);
+    }
+
+    _paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..strokeWidth = thickness
+      ..color = color ?? Colors.red;
+    switch (paintOption) {
+      case PaintOption.paint:
+        _paint.maskFilter = MaskFilter.blur(blurStyle, sigma);
+        break;
+      case PaintOption.unMask:
+        _paint.blendMode = BlendMode.clear;
+        break;
+      case PaintOption.erase:
+        break;
     }
   }
 
@@ -277,14 +327,14 @@ class PathInfo {
 }
 
 //TODO: maskFilter
-Paint _paintFromMap(Map<String, dynamic> map) => Paint()
-  ..style = PaintingStyle.stroke
-  ..strokeCap = StrokeCap.round
-  ..strokeJoin = StrokeJoin.round
-  ..strokeWidth = (map['strokeWidth'] as double)
-  ..color = Color(map['color'] as int);
-
-Map<String, dynamic> _paintToMap(Paint paint) => {
-      'strokeWidth': paint.strokeWidth,
-      'color': paint.color.value,
-    };
+//Paint _paintFromMap(Map<String, dynamic> map) => Paint()
+//  ..style = PaintingStyle.stroke
+//  ..strokeCap = StrokeCap.round
+//  ..strokeJoin = StrokeJoin.round
+//  ..strokeWidth = (map['strokeWidth'] as double)
+//  ..color = Color(map['color'] as int);
+//
+//Map<String, dynamic> _paintToMap(Paint paint) => {
+//      'strokeWidth': paint.strokeWidth,
+//      'color': paint.color.value,
+//    };

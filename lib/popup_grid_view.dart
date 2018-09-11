@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/color_picker.dart';
+import 'package:tahiti/drawing.dart';
 
 enum ItemType { text, png, sticker }
 
@@ -87,18 +88,33 @@ class PopupGridViewState extends State<PopupGridView> {
 
                           if (title != null) {
                             if (title.startsWith('assets/menu/pencil.png')) {
-                              model.painterController.blurEffect =
-                                  MaskFilter.blur(BlurStyle.normal, 0.0);
+//                              model.painterController.blurEffect =
+//                                  MaskFilter.blur(BlurStyle.normal, 0.0);
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 0.0;
                               model.isDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush1.png')) {
-                              model.painterController.blurEffect =
-                                  MaskFilter.blur(BlurStyle.normal, 15.5);
+//                              model.painterController.blurEffect =
+//                                  MaskFilter.blur(BlurStyle.normal, 15.5);
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 15.5;
                               model.isDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush.png')) {
-                              model.painterController.blurEffect =
-                                  MaskFilter.blur(BlurStyle.inner, 15.5);
+//                              model.painterController.blurEffect =
+//                                  MaskFilter.blur(BlurStyle.inner, 15.5);
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.inner;
+                              model.painterController.sigma = 15.5;
                               model.isDrawing = true;
                             } else if (title.startsWith('assets/menu/text')) {
                               model.addText('', font: title);

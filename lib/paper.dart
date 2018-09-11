@@ -100,7 +100,7 @@ class Paper extends StatelessWidget {
                       aspectRatio: 1.0,
                       child: SvgPicture.asset(
                         s1,
-                        color: thing['color'],
+                        color: Color(thing['color'] as int),
                         colorBlendMode: BlendMode.modulate,
                         package: 'tahiti',
                       )),
