@@ -122,6 +122,9 @@ class PopupGridViewState extends State<PopupGridView> {
                               // model.addUnMaskImage(title);
                               // model.painterController.doUnMask();
                               model.isDrawing = false;
+                            } else if (title
+                                .startsWith('assets/filter_image')) {
+                              model.isDrawing = false;
                             } else {
                               model.isDrawing = false;
                             }
