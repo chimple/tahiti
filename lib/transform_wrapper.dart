@@ -129,8 +129,8 @@ class WidgetTransformDelegate extends StatefulWidget {
 
 class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
   Offset customeOffset = Offset.zero;
-  double customeWidth = 500.0;
-  double customeHeight = 200.0;
+  double customWidth = 500.0;
+  double customHeight = 200.0;
 
   @override
   Widget build(BuildContext context) {
@@ -169,8 +169,8 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
           padding:
               EdgeInsets.only(left: 60.0, top: 60.0, right: 20.0, bottom: 20.0),
           child: LimitedBox(
-            // maxHeight: customeHeight,
-            maxWidth: customeWidth,
+            // maxHeight: customHeight,
+            maxWidth: customWidth,
               child: widget.child,
               // decoration: BoxDecoration(
               //   border: Border.all(color: Colors.red, width: 4.0),
@@ -230,32 +230,32 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
   void onTopLeftPanUpdate(DragUpdateDetails details) {
     print("onTopLeftPanUpdate $details");
     setState(() {
-      customeWidth += details.delta.dx;
-      customeHeight += details.delta.dy;
+      customWidth += details.delta.dx;
+      customHeight += details.delta.dy;
     });
   }
 
   void onTopRightPanUpdate(DragUpdateDetails details) {
     print("onTopRightPanUpdate $details");
     setState(() {
-      customeWidth += details.delta.dx;
-      customeHeight += details.delta.dy;
+      customWidth += details.delta.dx;
+      customHeight += details.delta.dy;
     });
   }
 
   void onBottomLeftPanUpdate(DragUpdateDetails details) {
     print("onBottomLeftPanUpdate $details");
     setState(() {
-      customeWidth += details.delta.dx;
-      customeHeight += details.delta.dy;
+      customWidth += details.delta.dx;
+      customHeight += details.delta.dy;
     });
   }
 
   void onBottomRightPanUpdate(DragUpdateDetails details) {
     print("onBottomRightPanUpdate $details");
     setState(() {
-      customeWidth += details.delta.dx;
-      customeHeight += details.delta.dy;
+      customWidth += details.delta.dx;
+      customHeight += details.delta.dy;
     });
   }
 }

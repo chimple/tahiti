@@ -28,8 +28,8 @@ class EditTextViewState extends State<EditTextView> {
   var textType;
 
   int noOfChar = 1;
-  double customeWidth = 400.0;
-  double customeHeight = 200.0;
+  double customWidth = 400.0;
+  double customHeight = 200.0;
 
   @override
   void initState() {
@@ -56,8 +56,8 @@ class EditTextViewState extends State<EditTextView> {
 
   @override
   Widget build(BuildContext context) {
-    // customeWidth = 400.0;
-    // customeHeight = 200.0;
+    // customWidth = 400.0;
+    // customHeight = 200.0;
 
     return widget.fontType != null
         ? !viewtext
@@ -119,8 +119,8 @@ class EditTextViewState extends State<EditTextView> {
   void onPanUpdate(DragUpdateDetails details) {
     print("onTopLeftPanUpdate $details");
     setState(() {
-      customeWidth += details.delta.dx;
-      customeHeight += details.delta.dy;
+      customWidth += details.delta.dx;
+      customHeight += details.delta.dy;
     });
   }
 }
