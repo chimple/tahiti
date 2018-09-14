@@ -46,7 +46,12 @@ class Paper extends StatelessWidget {
         ));
         children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
               (t) => TransformWrapper(
-                    child: buildWidgetFromThing(t),
+                    child: InkWell(
+                      child: buildWidgetFromThing(t),
+                      onTap: () {
+                        print("");
+                      },
+                    ),
                     thing: t,
                   ),
             ));
@@ -87,12 +92,9 @@ class Paper extends StatelessWidget {
     switch (thing['type']) {
       case 'sticker':
         if (!thing['asset'].startsWith('assets/svgimage')) {
-          return BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-            child: Image.asset(
-              thing['asset'],
-              package: 'tahiti',
-            ),
+          return Image.asset(
+            thing['asset'],
+            package: 'tahiti',
           );
         } else {
           return DisplaySticker(
@@ -103,7 +105,13 @@ class Paper extends StatelessWidget {
         }
         break;
       case 'image':
-        return Image.file(File(thing['path']));
+        return Image.file(
+          File(
+            thing['path'],
+          ),
+          colorBlendMode: BlendMode.plus,
+          color: Colors.red,
+        );
         break;
       case 'video':
         return VideoScaling(videoPath: thing['path']);
