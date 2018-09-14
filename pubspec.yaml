@@ -181,8 +181,8 @@ flutter:
     - assets/filter_image/filterImage4.png
     - assets/filter_image/filterImage5.png
     - assets/filter_image/filterImage6.png
-    - assets/svgimage/bodyparts
-    - assets/svgimage/fooditem
+    - assets/svgimage/bodyparts/
+    - assets/svgimage/fooditem/
     - assets/nima/Hop.nima
     - assets/nima/Hop.png
     - assets/nima/brush.png
