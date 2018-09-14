@@ -128,7 +128,6 @@ class WidgetTransformDelegate extends StatefulWidget {
 }
 
 class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
-  Offset customeOffset = Offset.zero;
   double customWidth = 500.0;
   double customHeight = 200.0;
 
