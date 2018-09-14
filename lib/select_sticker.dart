@@ -54,7 +54,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/carrot'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bat'),
   ],
-  'assets/svgimage/bodyparts/bodyicon.png': [
+  'assets/menu/body_icon.png': [
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/back'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/beard'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/chest'),
@@ -69,7 +69,7 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/palm'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/toe'),
   ],
-  'assets/svgimage/fooditem/foodicon.png': [
+  'assets/menu/food_icon.png': [
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/almond'),
     Iconf(
         type: ItemType.sticker, data: 'assets/svgimage/fooditem/bar_icecream'),
