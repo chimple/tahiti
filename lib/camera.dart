@@ -38,7 +38,7 @@ class Camera {
     final String filePath = '$dirPath/${timestamp()}.png';
     var image = decodeImage(new File(text).readAsBytesSync());
     var thumbnail = copyResize(image, 400);
-    new File(filePath)..writeAsBytesSync(encodePng(thumbnail));
+    new File(filePath)..writeAsBytesSync(encodePng(thumbnail,level: 1));
     print('path $filePath');
     return filePath;
   }

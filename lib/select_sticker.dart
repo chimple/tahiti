@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
 import 'package:tahiti/display_sticker.dart';
+import 'package:tahiti/drawing.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
 import 'package:tahiti/color_picker.dart';

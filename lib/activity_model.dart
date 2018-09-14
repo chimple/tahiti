@@ -261,6 +261,7 @@ class PathHistory {
   void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
+      print('paint asadsadsadsad::${pathInfo._paint}');
     }
   }
 }
@@ -311,6 +312,7 @@ class PathInfo {
         _paint.blendMode = BlendMode.clear;
         break;
       case PaintOption.erase:
+        _paint.blendMode = BlendMode.clear;
         break;
     }
   }

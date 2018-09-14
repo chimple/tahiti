@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -86,9 +87,12 @@ class Paper extends StatelessWidget {
     switch (thing['type']) {
       case 'sticker':
         if (!thing['asset'].startsWith('assets/svgimage')) {
-          return Image.asset(
-            thing['asset'],
-            package: 'tahiti',
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Image.asset(
+              thing['asset'],
+              package: 'tahiti',
+            ),
           );
         } else {
           return DisplaySticker(

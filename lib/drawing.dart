@@ -50,6 +50,7 @@ class RollerState extends State<Drawing> {
       _listOfImage = _list.toList();
     });
     print("list of images: $_listOfImage");
+    setState(() {});
     super.didUpdateWidget(oldWidget);
   }
 
@@ -104,11 +105,12 @@ class RollerState extends State<Drawing> {
                   children: <Widget>[
                     widget.model.unMaskImagePath == null
                         ? Container()
-                        : FittedBox(
-                            child: Image.asset(
-                            widget.model.unMaskImagePath,
-                            scale: 1.0,
-                          )),
+                        : Container(),
+                    //  FittedBox(
+                    //     child: Image.asset(
+                    //     widget.model.unMaskImagePath,
+                    //     scale: 1.0,
+                    //   )),
                     Stack(
                         children: _listOfImage
                             .map((c) => _buildWidget(context, c))
@@ -123,17 +125,23 @@ class RollerState extends State<Drawing> {
 
   Widget _buildWidget(BuildContext context, String text) {
     return _ScratchCardLayout(
-      child: text.endsWith('.svg')
-          ? Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: Colors.grey,
-              child: SvgPicture.asset(text))
-          : FittedBox(child: Image.asset(text)),
+      child: Container(),
       path: widget.model.pathHistory,
       strokeWidth: 25.0,
       data: widget.model.painterController,
     );
+    // return _ScratchCardLayout(
+    //   child: text.endsWith('.svg')
+    //       ? Container(
+    //           height: double.infinity,
+    //           width: double.infinity,
+    //           color: Colors.grey,
+    //           child: SvgPicture.asset(text))
+    //       : FittedBox(child: Image.asset(text)),
+    // path: widget.model.pathHistory,
+    // strokeWidth: 25.0,
+    // data: widget.model.painterController,
+    // );
   }
 }
 
@@ -222,10 +230,10 @@ class _ScratchCardRender extends RenderProxyBox {
     super.detach();
   }
 
-  PainterController painterController;
   @override
   void paint(PaintingContext context, Offset offset) {
     if (child != null) {
+      print('paintOption:: ${_data.paintOption}');
       context.canvas.saveLayer(offset & size, Paint());
       context.paintChild(child, offset);
       path.draw(context, size);
@@ -325,13 +333,13 @@ class PainterController extends ChangeNotifier {
     }
   }
 
+  void eraser() {
+    print('eraser');
+    paintOption = PaintOption.erase;
+  }
+
   void doUnMask() {
-    Paint paint = new Paint();
-    paint.style = PaintingStyle.stroke;
-    paint.blendMode = BlendMode.clear;
-    paint.strokeWidth = 25.0;
-    paint.strokeCap = StrokeCap.round;
-    _currentPaint = paint;
+    print('unmask');
     paintOption = PaintOption.unMask;
     notifyListeners();
   }
