@@ -271,8 +271,8 @@ class SelectSticker extends StatelessWidget {
                         text.startsWith('assets/svgimage')) {
                       model.addSticker(text);
                     } else if (text.startsWith('assets/roller_image')) {
-                      model.addUnMaskImage(text);
-                      model.painterController.doUnMask();
+                      //model.addUnMaskImage(text);
+                      // model.painterController.doUnMask();
                       model.isDrawing = true;
                     } else if (text
                         .startsWith('assets/filter_image/emboss.png')) {
