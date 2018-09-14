@@ -31,6 +31,7 @@ class Paper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int i = 0;
     return ScopedModelDescendant<ActivityModel>(
       builder: (context, child, model) {
         final children = <Widget>[];
@@ -47,9 +48,12 @@ class Paper extends StatelessWidget {
         children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
               (t) => TransformWrapper(
                     child: InkWell(
-                      child: buildWidgetFromThing(t),
+                      radius: 10.0,
+                      child: buildWidgetFromThing(
+                        t,
+                      ),
                       onTap: () {
-                        print("");
+                        if (t['type'] == 'image') model.imageId = t['id'];
                       },
                     ),
                     thing: t,
@@ -109,8 +113,8 @@ class Paper extends StatelessWidget {
           File(
             thing['path'],
           ),
-          colorBlendMode: BlendMode.plus,
-          color: Colors.red,
+          color: thing['color'],
+          colorBlendMode: thing['blendMode'],
         );
         break;
       case 'video':

@@ -130,6 +130,7 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.painterController.eraser();
                             } else {
                               model.isDrawing = false;
+                              model.imageId = null;
                             }
                           }
                         },

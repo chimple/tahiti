@@ -274,9 +274,8 @@ class SelectSticker extends StatelessWidget {
                       //model.addUnMaskImage(text);
                       // model.painterController.doUnMask();
                       model.isDrawing = true;
-                    } else if (text
-                        .startsWith('assets/filter_image/emboss.png')) {
-                      //FilterImage('emnboss').filterImage('').then((k) {});
+                    } else if (text.startsWith('assets/filter_image')) {
+                      model.filterImage(text);
                     }
                 }
               },
