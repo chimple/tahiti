@@ -1,13 +1,10 @@
-import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/edit_text_view.dart';
 import 'package:tahiti/video_scaling.dart';
@@ -34,22 +31,25 @@ class Paper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) {
-          final children = <Widget>[];
-          if (model.template != null) {
-            children.add(AspectRatio(
-                aspectRatio: 1.0,
-                child: SvgPicture.asset(
-                  model.template,
-                )));
-          }
-          children.add(Drawing());
-          children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
-                (t) => TransformWrapper(
-                      child: buildWidgetFromThing(t),
-                      thing: t,
-                    ),
-              ));
+      builder: (context, child, model) {
+        final children = <Widget>[];
+        if (model.template != null) {
+          children.add(AspectRatio(
+              aspectRatio: 1.0,
+              child: SvgPicture.asset(
+                model.template,
+              )));
+        }
+        children.add(Drawing(
+          model: model,
+        ));
+        children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
+              (t) => TransformWrapper(
+                    child: buildWidgetFromThing(t),
+                    thing: t,
+                  ),
+            ));
+        if (model.isInteractive) {
           children.add(Align(
             alignment: Alignment.bottomRight,
             heightFactor: 100.0,
@@ -69,42 +69,33 @@ class Paper extends StatelessWidget {
               ],
             ),
           ));
-          return Stack(children: children);
-        },
+        }
+        return FittedBox(
+          fit: BoxFit.contain,
+          child: SizedBox(
+            height: 512.0,
+            width: 512.0,
+            child: Stack(children: children),
+          ),
+        );
+      },
     );
   }
 
   Widget buildWidgetFromThing(Map<String, dynamic> thing) {
-    String s1 = '${thing['asset']}1.svg';
-    String s2 = '${thing['asset']}2.svg';
     switch (thing['type']) {
       case 'sticker':
-        if (!s1.startsWith('assets/svgimage')) {
+        if (!thing['asset'].startsWith('assets/svgimage')) {
           return Image.asset(
             thing['asset'],
             package: 'tahiti',
           );
         } else {
-          return Container(
-              height: 400.0,
-              child: Stack(
-                children: <Widget>[
-                  AspectRatio(
-                      aspectRatio: 1.0,
-                      child: SvgPicture.asset(
-                        s1,
-                        color: thing['color'],
-                        colorBlendMode: BlendMode.modulate,
-                        package: 'tahiti',
-                      )),
-                  AspectRatio(
-                      aspectRatio: 1.0,
-                      child: SvgPicture.asset(
-                        s2,
-                        package: 'tahiti',
-                      )),
-                ],
-              ));
+          return DisplaySticker(
+            size: 400.0,
+            primary: thing['asset'],
+            color: Color(thing['color'] as int),
+          );
         }
         break;
       case 'image':

@@ -1,132 +1,291 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'dart:collection';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:tahiti/popup_grid_view.dart';
 
-class Drawing extends StatelessWidget {
-  Drawing({Key key}) : super(key: key);
+class Drawing extends StatefulWidget {
+  Drawing({
+    this.template,
+    Key key,
+    this.model,
+    this.strokeWidth = 25.0,
+    this.finishPercent,
+  }) : super(key: key);
+  final double strokeWidth;
+  final int finishPercent;
 
+  final ActivityModel model;
+
+  Widget template;
   @override
-  Widget build(BuildContext context) {
-    return ScopedModelDescendant<ActivityModel>(
-      builder: (context, child, model) {
-        Widget child = new CustomPaint(
-          willChange: true,
-          painter: new _PainterPainter(model.pathHistory,
-              repaint: model.painterController),
-        );
-        child = new ClipRect(child: child);
-        child = new GestureDetector(
-          child: child,
-          // onScaleStart: (ScaleStartDetails start) => _onScaleStart(context, start),
-          onScaleUpdate: (ScaleUpdateDetails update) =>
-              _onScaleUpdate(context, update),
-          onScaleEnd: (ScaleEndDetails end) => _onScaleEnd(context, end),
-        );
-        return new Container(
-          child: child,
-          width: double.infinity,
-          height: double.infinity,
-        );
-      },
-    );
+  RollerState createState() {
+    return new RollerState();
+  }
+}
+
+class RollerState extends State<Drawing> {
+  GlobalKey previewContainer = new GlobalKey();
+  Queue<String> _list = new Queue();
+  List<String> _listOfImage = [];
+  String _oldImage;
+  @override
+  void initState() {
+    if (widget.model.template != null) {
+      _list.addFirst(widget.model.template);
+    }
+    _listOfImage = _list.toList();
+    super.initState();
   }
 
-  // void _onScaleStart(BuildContext context, ScaleStartDetails start) {
-  //   PainterController painterController =
-  //       ActivityModel.of(context).painterController;
-  //   Offset pos = (context.findRenderObject() as RenderBox)
-  //       .globalToLocal(start.focalPoint);
-  //   painterController._pathHistory.add(pos);
-  //   painterController._notifyListeners();
-  // }
+  @override
+  void didUpdateWidget(Drawing oldWidget) {
+    if (_oldImage != widget.model.unMaskImagePath && _oldImage != null) {
+      _list.addFirst(_oldImage);
+    }
+    _oldImage = widget.model.unMaskImagePath;
+    setState(() {
+      _listOfImage = _list.toList();
+    });
+    print("list of images: $_listOfImage");
+    super.didUpdateWidget(oldWidget);
+  }
 
   void _onScaleUpdate(BuildContext context, ScaleUpdateDetails update) {
+    Offset pos;
     PainterController painterController =
         ActivityModel.of(context).painterController;
     if (update.scale == 1.0) {
-      Offset pos = (context.findRenderObject() as RenderBox)
+      pos = (context.findRenderObject() as RenderBox)
           .globalToLocal(update.focalPoint);
       if (painterController.getDragStatus()) {
         painterController.updateCurrent(pos);
       } else {
-        painterController.add(pos);
+        painterController.add(context, pos);
       }
     }
   }
 
   void _onScaleEnd(BuildContext context, ScaleEndDetails end) {
     ActivityModel model = ActivityModel.of(context);
-    PathHistory pathHistory = ActivityModel.of(context).pathHistory;
+    PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
     painterController.endCurrent();
     model.addDrawing(pathHistory.paths.last); //TODO do this in pathhistory
     painterController.notifyListeners();
   }
-}
-
-class _PainterPainter extends CustomPainter {
-  final PathHistory _path;
-
-  _PainterPainter(this._path, {Listenable repaint}) : super(repaint: repaint);
 
   @override
-  void paint(Canvas canvas, Size size) {
-    _path.draw(canvas, size);
-    for (PathInfo pathInfo in _path.paths) {
-      canvas.drawPath(pathInfo.path, pathInfo.paint);
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      key: previewContainer,
+      child: LayoutBuilder(
+        builder: (context, box) {
+          return Container(
+            height: box.maxHeight,
+            width: box.maxWidth,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onScaleUpdate: widget.model.isInteractive
+                  ? (ScaleUpdateDetails update) =>
+                      _onScaleUpdate(context, update)
+                  : null,
+              onScaleEnd: widget.model.isInteractive
+                  ? (ScaleEndDetails end) => _onScaleEnd(
+                        context,
+                        end,
+                      )
+                  : null,
+              child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    widget.model.unMaskImagePath == null
+                        ? Container()
+                        : FittedBox(
+                            child: Image.asset(
+                            widget.model.unMaskImagePath,
+                            scale: 1.0,
+                          )),
+                    Stack(
+                        children: _listOfImage
+                            .map((c) => _buildWidget(context, c))
+                            .toList(growable: false)),
+                  ]),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildWidget(BuildContext context, String text) {
+    return _ScratchCardLayout(
+      child: text.endsWith('.svg')
+          ? Container(
+              height: double.infinity,
+              width: double.infinity,
+              color: Colors.grey,
+              child: SvgPicture.asset(text))
+          : FittedBox(child: Image.asset(text)),
+      path: widget.model.pathHistory,
+      strokeWidth: 25.0,
+      data: widget.model.painterController,
+    );
+  }
+}
+
+class _ScratchCardLayout extends SingleChildRenderObjectWidget {
+  _ScratchCardLayout({
+    Key key,
+    this.path,
+    this.strokeWidth = 25.0,
+    @required this.data,
+    @required this.child,
+  }) : super(
+          key: key,
+          child: child,
+        );
+
+  final Widget child;
+  final double strokeWidth;
+  final PainterController data;
+  final PathHistory path;
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return _ScratchCardRender(
+      strokeWidth: strokeWidth,
+      data: data,
+      path: path,
+    );
+  }
+
+  @override
+  void updateRenderObject(
+      BuildContext context, _ScratchCardRender renderObject) {
+    renderObject
+      ..strokeWidth = strokeWidth
+      ..data = data;
+  }
+}
+
+class _ScratchCardRender extends RenderProxyBox {
+  _ScratchCardRender({
+    RenderBox child,
+    double strokeWidth,
+    this.path,
+    PainterController data,
+  })  : assert(data != null),
+        _strokeWidth = strokeWidth,
+        _data = data,
+        super(child);
+
+  double _strokeWidth;
+  PainterController _data;
+  final PathHistory path;
+
+  set strokeWidth(double strokeWidth) {
+    assert(strokeWidth != null);
+    if (_strokeWidth == strokeWidth) {
+      return;
+    }
+    _strokeWidth = strokeWidth;
+    markNeedsPaint();
+  }
+
+  set data(PainterController data) {
+    assert(data != null);
+    if (_data == data) {
+      return;
+    }
+    if (attached) {
+      _data.removeListener(markNeedsPaint);
+      data.addListener(markNeedsPaint);
+    }
+    _data = data;
+
+    markNeedsPaint();
+  }
+
+  @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    _data.addListener(markNeedsPaint);
+  }
+
+  @override
+  void detach() {
+    _data.removeListener(markNeedsPaint);
+    super.detach();
+  }
+
+  PainterController painterController;
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (child != null) {
+      context.canvas.saveLayer(offset & size, Paint());
+      context.paintChild(child, offset);
+      path.draw(context, size);
+      context.canvas.restore();
     }
   }
 
   @override
-  bool shouldRepaint(_PainterPainter oldDelegate) {
-    return true;
-  }
+  bool get alwaysNeedsCompositing => child != null;
 }
 
 class PainterController extends ChangeNotifier {
   PathHistory pathHistory;
-  double _thickness;
+  double thickness;
+  BlurStyle blurStyle = BlurStyle.normal;
+  double sigma = 0.0;
+  PaintOption paintOption;
   Paint _currentPaint;
-  var _blurEffect = MaskFilter.blur(BlurStyle.normal, 0.0);
   bool _inDrag = false;
-
   PainterController({this.pathHistory}) {
-    _thickness = 5.0;
-    _updatePaint();
+    thickness = 5.0;
+//    _updatePaint();
+    paintOption = PaintOption.paint;
   }
 
-  double get thickness => _thickness;
-  set thickness(double t) {
-    _thickness = t;
-    _updatePaint();
-  }
-
-  get blurEffect => _blurEffect;
-  set blurEffect(var t) {
-    _blurEffect = t;
-    _updatePaint();
-  }
+  //  double get thickness => _thickness;
+//  set thickness(double t) {
+//    _thickness = t;
+//    _updatePaint();
+//  }
 
   get paths => pathHistory.paths;
 
-  void _updatePaint() {
-    Paint paint = new Paint();
-    paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = _thickness;
-    paint.strokeCap = StrokeCap.round;
-    paint.strokeJoin = StrokeJoin.round;
-    paint.color = Colors.red;
-    _currentPaint = paint;
-    paint.maskFilter = _blurEffect;
-    notifyListeners();
-  }
+//  void _updatePaint() {
+//    Paint paint = new Paint();
+//    paint.style = PaintingStyle.stroke;
+//    paint.strokeWidth = _thickness;
+//    paint.strokeCap = StrokeCap.round;
+//    paint.strokeJoin = StrokeJoin.round;
+//    paint.color = Colors.red;
+//    paint.maskFilter = _blurEffect;
+//    _currentPaint = paint;
+//    notifyListeners();
+//  }
 
-  void add(Offset startPoint) {
+  void add(BuildContext context, Offset startPoint) {
+    final model = ActivityModel.of(context);
     if (!_inDrag) {
-      _inDrag = true;
-      pathHistory.add(startPoint, _currentPaint);
-      notifyListeners();
+      if (model.popped != Popped.noPopup) {
+        model.popped = Popped.noPopup;
+      }
+      if (model.isDrawing) {
+        _inDrag = true;
+        pathHistory.add(startPoint,
+            paintOption: paintOption,
+            blurStyle: blurStyle,
+            sigma: sigma,
+            thickness: thickness,
+            color: model.selectedColor);
+      }
     }
   }
 
@@ -165,4 +324,17 @@ class PainterController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void doUnMask() {
+    Paint paint = new Paint();
+    paint.style = PaintingStyle.stroke;
+    paint.blendMode = BlendMode.clear;
+    paint.strokeWidth = 25.0;
+    paint.strokeCap = StrokeCap.round;
+    _currentPaint = paint;
+    paintOption = PaintOption.unMask;
+    notifyListeners();
+  }
 }
+
+enum PaintOption { paint, erase, unMask }
