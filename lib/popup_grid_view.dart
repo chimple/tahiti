@@ -116,8 +116,6 @@ class PopupGridViewState extends State<PopupGridView> {
                                   BlurStyle.inner;
                               model.painterController.sigma = 15.5;
                               model.isDrawing = true;
-                            } else if (title.startsWith('assets/menu/text')) {
-                              model.addText('', font: title);
                             } else if (title.startsWith('assets/menu/roller')) {
                               // model.addUnMaskImage(title);
                               // model.painterController.doUnMask();
@@ -196,6 +194,11 @@ class PopupGridViewState extends State<PopupGridView> {
                                 .map((itemName) => Container(
                                       child: InkWell(
                                           onTap: () => setState(() {
+                                                if (highlightedBottomItem ==
+                                                    "assets/menu/text.png") {
+                                                  model.addText('',
+                                                      font: itemName.data);
+                                                }
                                                 widget
                                                     .onUserPress(itemName.data);
                                                 highlightedPopUpItem =
