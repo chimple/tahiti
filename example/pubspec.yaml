@@ -41,6 +41,8 @@ flutter:
     - assets/filter_image/filterImage4.png
     - assets/filter_image/filterImage5.png
     - assets/filter_image/filterImage6.png
+    - assets/image/Hop.nima
+    - assets/image/Hop.png
   # For details regarding adding assets from package dependencies, see
   # https://flutter.io/assets-and-images/#from-packages
 

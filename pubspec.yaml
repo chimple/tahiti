@@ -18,6 +18,7 @@ dependencies:
   image_picker: ^0.4.6
   video_player:
   uuid: ^1.0.3
+  nima: ^1.0.1
   json_annotation: ^1.1.0
 dev_dependencies:
   flutter_test:
@@ -183,12 +184,8 @@ flutter:
     - assets/filter_image/filterImage6.png
     - assets/svgimage/bodyparts/
     - assets/svgimage/fooditem/
-    - assets/nima/Hop.nima
-    - assets/nima/Hop.png
-    - assets/nima/brush.png
-    - assets/nima/brush1.png
-    - assets/nima/bucket.png
-    - assets/nima/camera.png
+    - assets/image/Hop.nima
+    - assets/image/Hop.png
   fonts:
     - family: Bungee
       fonts:

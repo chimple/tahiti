@@ -216,66 +216,80 @@ final Map<String, List<Iconf>> bottomStickers = {
   ],
 };
 
-final Map<String, List<Iconf>> topStickers = {
-  'assets/menu/mic.png': [
-    Iconf(type: ItemType.png, data: 'assets/mic/mic.png'),
-    Iconf(type: ItemType.png, data: 'assets/mic/play.png'),
-    Iconf(type: ItemType.png, data: 'assets/mic/stop.png'),
-  ],
-  'assets/menu/camera.png': [
-    Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
-    Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
-    Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
-  ],
-  'assets/menu/pencil.png': [
-    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
-  ],
-  'assets/menu/eraser.png': [
-    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
-  ],
-  'assets/menu/brush.png': [
-    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
-  ],
-  'assets/menu/brush1.png': [
-    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
-  ],
-  'assets/menu/bucket.png': [],
-  'assets/menu/roller.png': [
-    Iconf(type: ItemType.png, data: 'assets/roller_image/sample1.jpg'),
-    Iconf(type: ItemType.png, data: 'assets/roller_image/sample2.jpg'),
-    Iconf(type: ItemType.png, data: 'assets/roller_image/sample3.jpg'),
-    Iconf(type: ItemType.png, data: 'assets/roller_image/sample4.jpg'),
-    Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
-  ],
-  'assets/filter_icon.jpg': [],
-};
+class TopStickers {
+  static List<Iconf> nimalist = [
+    Iconf(type: ItemType.png, data: 'assets/image/Hop.png'),
+  ];
 
-class SelectSticker extends StatelessWidget {
+  static String stopIcon = 'assets/mic/stop.png';
+  static List<Iconf> playIcon = [
+    Iconf(type: ItemType.png, data: 'assets/mic/play.png')
+  ];
+  final Map<String, List<Iconf>> topStickers = {
+    'assets/menu/mic.png': playIcon,
+    'assets/menu/camera.png': [
+      Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
+      Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
+      Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
+    ],
+    'assets/menu/pencil.png': [
+      Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+    ],
+    'assets/menu/eraser.png': [
+      Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+    ],
+    'assets/menu/brush.png': [
+      Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+    ],
+    'assets/menu/brush1.png': [
+      Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+    ],
+    'assets/menu/bucket.png': [],
+    'assets/menu/roller.png': [
+      Iconf(type: ItemType.png, data: 'assets/roller_image/sample1.jpg'),
+      Iconf(type: ItemType.png, data: 'assets/roller_image/sample2.jpg'),
+      Iconf(type: ItemType.png, data: 'assets/roller_image/sample3.jpg'),
+      Iconf(type: ItemType.png, data: 'assets/roller_image/sample4.jpg'),
+      Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
+    ],
+    'assets/filter_icon.jpg': [],
+  };
+}
+
+class SelectSticker extends StatefulWidget {
   static Recorder recorder = new Recorder();
   final OnUserPress onUserPress;
   final DisplaySide side;
   SelectSticker({this.side, this.onUserPress});
+
+  @override
+  SelectStickerState createState() {
+    return new SelectStickerState();
+  }
+}
+
+class SelectStickerState extends State<SelectSticker> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) => PopupGridView(
-              side: side,
+              side: widget.side,
               onUserPress: (text) {
                 print(text);
                 switch (text) {
@@ -295,17 +309,22 @@ class SelectSticker extends StatelessWidget {
                     model.painterController.thickness = 15.0;
                     break;
                   case 'assets/mic/stop.png':
-                    if (!recorder.isRecording) {
-                      recorder.start();
-                    } else {
-                      recorder.stop();
-                    }
+                    SelectSticker.recorder.stop();
+                    setState(() {
+                      TopStickers.playIcon = TopStickers.nimalist;
+                    });
+
                     break;
                   case 'assets/mic/play.png':
-                    if (recorder.isRecorded) {
-                      recorder.playAudio();
+                    SelectSticker.recorder.start();
+                    if (SelectSticker.recorder.isRecorded) {
+                      SelectSticker.recorder.start();
                     } else {
-                      recorder.stopAudio();
+                      setState(() {
+                        TopStickers.playIcon = [
+                          Iconf(type: ItemType.png, data: TopStickers.stopIcon)
+                        ];
+                      });
                     }
                     break;
                   case 'assets/camera/camera1.png':
@@ -328,6 +347,9 @@ class SelectSticker extends StatelessWidget {
                         text.startsWith('assets/svgimage')) {
                       model.addSticker(text);
                     }
+                    if (text.startsWith('assets/image')) {
+                      model.addNima(text);
+                    }
                     if (text.startsWith('assets/roller_image')) {
                       model.addUnMaskImage(text);
                       model.painterController.doUnMask();
@@ -335,9 +357,10 @@ class SelectSticker extends StatelessWidget {
                     }
                 }
               },
-              menuItems:
-                  side == DisplaySide.bottom ? bottomStickers : topStickers,
-              numFixedItems: side == DisplaySide.bottom ? 1 : 0,
+              menuItems: widget.side == DisplaySide.bottom
+                  ? bottomStickers
+                  : TopStickers().topStickers,
+              numFixedItems: widget.side == DisplaySide.bottom ? 1 : 0,
               itemCrossAxisCount: 2,
               buildItem: buildItem,
               buildIndexItem: buildIndexItem,
