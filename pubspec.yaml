@@ -184,8 +184,7 @@ flutter:
     - assets/filter_image/filterImage6.png
     - assets/svgimage/bodyparts/
     - assets/svgimage/fooditem/
-    - assets/image/Hop.nima
-    - assets/image/Hop.png
+    - assets/nima_animation/
   fonts:
     - family: Bungee
       fonts:

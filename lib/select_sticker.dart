@@ -218,7 +218,7 @@ final Map<String, List<Iconf>> bottomStickers = {
 
 class TopStickers {
   static List<Iconf> nimalist = [
-    Iconf(type: ItemType.png, data: 'assets/image/Hop.png'),
+    Iconf(type: ItemType.png, data: 'assets/nima_animation/Hop.png'),
   ];
 
   static String stopIcon = 'assets/mic/stop.png';
@@ -347,7 +347,7 @@ class SelectStickerState extends State<SelectSticker> {
                         text.startsWith('assets/svgimage')) {
                       model.addSticker(text);
                     }
-                    if (text.startsWith('assets/image')) {
+                    if (text.startsWith('assets/nima_animation')) {
                       model.addNima(text);
                     }
                     if (text.startsWith('assets/roller_image')) {
