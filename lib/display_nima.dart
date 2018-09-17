@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nima/nima_actor.dart';
 
-class DisplayNima extends StatefulWidget {
-  DisplayNima({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _DisplayNimaState createState() => new _DisplayNimaState();
-}
-
-class _DisplayNimaState extends State<DisplayNima> {
+class DisplayNima extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
