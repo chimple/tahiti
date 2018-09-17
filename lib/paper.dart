@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -30,6 +31,7 @@ class Paper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int i = 0;
     return ScopedModelDescendant<ActivityModel>(
       builder: (context, child, model) {
         final children = <Widget>[];
@@ -45,7 +47,15 @@ class Paper extends StatelessWidget {
         ));
         children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
               (t) => TransformWrapper(
-                    child: buildWidgetFromThing(t),
+                    child: InkWell(
+                      radius: 10.0,
+                      child: buildWidgetFromThing(
+                        t,
+                      ),
+                      onTap: () {
+                        if (t['type'] == 'image') model.imageId = t['id'];
+                      },
+                    ),
                     thing: t,
                   ),
             ));
@@ -99,7 +109,13 @@ class Paper extends StatelessWidget {
         }
         break;
       case 'image':
-        return Image.file(File(thing['path']));
+        return Image.file(
+          File(
+            thing['path'],
+          ),
+          color: thing['color'],
+          colorBlendMode: thing['blendMode'],
+        );
         break;
       case 'video':
         return VideoScaling(videoPath: thing['path']);

@@ -12,6 +12,7 @@ class ActivityModel extends Model {
   List<Map<String, dynamic>> things = [];
   List<Map<String, dynamic>> _undoStack = [];
   List<Map<String, dynamic>> _redoStack = [];
+
   String _template;
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
@@ -88,7 +89,9 @@ class ActivityModel extends Model {
       'path': imagePath,
       'x': 0.0,
       'y': 0.0,
-      'scale': 0.5
+      'scale': 0.5,
+      'color': color,
+      'blendMode': blendMode,
     });
   }
 
@@ -111,7 +114,7 @@ class ActivityModel extends Model {
       'font': font,
       'x': 0.0,
       'y': 0.0,
-      'scale': 1.0
+      'scale': .50
     });
   }
 
@@ -203,6 +206,50 @@ class ActivityModel extends Model {
   void addUnMaskImage(String text) {
     print("text: $text");
     unMaskImagePath = text;
+    notifyListeners();
+  }
+
+  Color color = Colors.white;
+  BlendMode blendMode = BlendMode.dst;
+  String imageId;
+
+  void filterImage(String text) {
+    Color cls;
+    BlendMode blnd;
+    if (text == 'assets/filter_image/default.png') {
+      cls = color;
+      blnd = blendMode;
+    } else if (text == 'assets/filter_image/black_white.png') {
+      cls = Colors.white;
+      blnd = BlendMode.color;
+    } else if (text == 'assets/filter_image/emboss.png') {
+      cls = Colors.red;
+      blnd = BlendMode.colorDodge;
+    } else if (text == 'assets/filter_image/sepia.png') {
+      cls = Colors.red;
+      blnd = BlendMode.darken;
+    } else if (text == 'assets/filter_image/sobel.png') {
+      cls = Colors.deepPurple;
+      blnd = BlendMode.modulate;
+    } else if (text == 'assets/filter_image/vignette.png') {
+      cls = Colors.green;
+      blnd = BlendMode.saturation;
+    } else if (text == 'assets/filter_image/contrast.png') {
+      blnd = BlendMode.darken;
+      cls = Colors.deepOrangeAccent;
+    }
+    print('uuid Image: $imageId');
+    things.forEach((t) {
+      if (t['id'] == imageId) {
+        t.forEach((k, v) {
+          if (k == 'color' || k == 'blendMode') {
+            t['color'] = cls;
+            t['blendMode'] = blnd;
+            // t['path'] = '';
+          }
+        });
+      }
+    });
     notifyListeners();
   }
 }
@@ -311,6 +358,7 @@ class PathInfo {
         _paint.blendMode = BlendMode.clear;
         break;
       case PaintOption.erase:
+        _paint.blendMode = BlendMode.clear;
         break;
     }
   }

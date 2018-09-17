@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
 import 'package:tahiti/display_sticker.dart';
+import 'package:tahiti/drawing.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
 import 'package:tahiti/color_picker.dart';
@@ -193,7 +194,15 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/roller_image/sample4.jpg'),
     Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
   ],
-  'assets/filter_icon.jpg': [],
+  'assets/filter_icon.jpg': [
+    Iconf(type: ItemType.png, data: 'assets/filter_image/default.png'),
+    Iconf(type: ItemType.png, data: 'assets/filter_image/black_white.png'),
+    Iconf(type: ItemType.png, data: 'assets/filter_image/emboss.png'),
+    Iconf(type: ItemType.png, data: 'assets/filter_image/sepia.png'),
+    Iconf(type: ItemType.png, data: 'assets/filter_image/sobel.png'),
+    Iconf(type: ItemType.png, data: 'assets/filter_image/vignette.png'),
+    Iconf(type: ItemType.png, data: 'assets/filter_image/contrast.png'),
+  ],
 };
 
 class SelectSticker extends StatelessWidget {
@@ -240,12 +249,18 @@ class SelectSticker extends StatelessWidget {
                     break;
                   case 'assets/camera/camera1.png':
                     new Camera().openCamera().then((p) {
-                      if (p != null) model.addImage(p);
+                      if (p != null)
+                        new Camera().jpgToPng(p).then((k) {
+                          model.addImage(k);
+                        });
                     });
                     break;
                   case 'assets/camera/gallery.png':
                     new Camera().pickImage().then((p) {
-                      if (p != null) model.addImage(p);
+                      if (p != null)
+                        new Camera().jpgToPng(p).then((k) {
+                          model.addImage(k);
+                        });
                     });
                     break;
                   case 'assets/camera/video.png':
@@ -257,11 +272,12 @@ class SelectSticker extends StatelessWidget {
                     if (text.startsWith('assets/stickers') ||
                         text.startsWith('assets/svgimage')) {
                       model.addSticker(text);
-                    }
-                    if (text.startsWith('assets/roller_image')) {
-                      model.addUnMaskImage(text);
-                      model.painterController.doUnMask();
+                    } else if (text.startsWith('assets/roller_image')) {
+                      //model.addUnMaskImage(text);
+                      // model.painterController.doUnMask();
                       model.isDrawing = true;
+                    } else if (text.startsWith('assets/filter_image')) {
+                      model.filterImage(text);
                     }
                 }
               },
