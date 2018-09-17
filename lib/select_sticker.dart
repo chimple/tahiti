@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
+import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
 import 'package:tahiti/color_picker.dart';
@@ -273,7 +274,7 @@ class SelectSticker extends StatelessWidget {
             ));
   }
 
-  Widget buildItem(Iconf conf, bool enabled) {
+  Widget buildItem(BuildContext context, Iconf conf, bool enabled) {
     if (conf.type == ItemType.text)
       return Container(
         child: Center(
@@ -286,6 +287,7 @@ class SelectSticker extends StatelessWidget {
     else if (conf.type == ItemType.sticker) {
       return DisplaySticker(
         primary: conf.data,
+        color: ActivityModel.of(context).selectedColor,
       );
     } else
       return Image.asset(
@@ -294,7 +296,7 @@ class SelectSticker extends StatelessWidget {
       );
   }
 
-  Widget buildIndexItem(Iconf conf, bool enabled) {
+  Widget buildIndexItem(BuildContext context, Iconf conf, bool enabled) {
     return Image.asset(
       conf.data,
       package: 'tahiti',

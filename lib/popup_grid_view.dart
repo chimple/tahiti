@@ -13,7 +13,7 @@ class Iconf {
   Iconf({this.type, this.data});
 }
 
-typedef Widget BuildItem(Iconf text, bool enabled);
+typedef Widget BuildItem(BuildContext context, Iconf text, bool enabled);
 typedef void OnUserPress(String text);
 enum DisplaySide { top, bottom }
 enum Popped { top, bottom, noPopup }
@@ -127,7 +127,7 @@ class PopupGridViewState extends State<PopupGridView> {
                         },
                       ),
                   child: widget.buildIndexItem(
-                      Iconf(type: ItemType.text, data: title), true)),
+                      context, Iconf(type: ItemType.text, data: title), true)),
             ));
   }
 
@@ -204,8 +204,8 @@ class PopupGridViewState extends State<PopupGridView> {
                                                 highlightedPopUpItem =
                                                     itemName.data;
                                               }),
-                                          child:
-                                              widget.buildItem(itemName, true)),
+                                          child: widget.buildItem(
+                                              context, itemName, true)),
                                       color:
                                           itemName.data == highlightedPopUpItem
                                               ? Colors.red

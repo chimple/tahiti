@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -72,37 +71,5 @@ class ColorPickerState extends State<ColorPicker> {
               )));
     }
     return children;
-  }
-}
-
-class DisplaySticker extends StatelessWidget {
-  String primary;
-  DisplaySticker({this.primary});
-  @override
-  Widget build(BuildContext context) {
-    return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) => Container(
-              height: 200.0,
-              child: new Stack(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 1.0,
-                    child: new SvgPicture.asset(
-                      '${primary}1.svg',
-                      color: model.selectedColor,
-                      colorBlendMode: BlendMode.modulate,
-                      package: 'tahiti',
-                    ),
-                  ),
-                  AspectRatio(
-                    aspectRatio: 1.0,
-                    child: new SvgPicture.asset(
-                      '${primary}2.svg',
-                      package: 'tahiti',
-                    ),
-                  ),
-                ],
-              ),
-            ));
   }
 }
