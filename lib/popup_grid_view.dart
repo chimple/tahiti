@@ -209,6 +209,11 @@ class PopupGridViewState extends State<PopupGridView> {
                                 .map((itemName) => Container(
                                       child: InkWell(
                                           onTap: () => setState(() {
+                                                if (highlightedBottomItem ==
+                                                    "assets/menu/text.png") {
+                                                  model.addText('',
+                                                      font: itemName.data);
+                                                }
                                                 widget
                                                     .onUserPress(itemName.data);
                                                 highlightedPopUpItem =
