@@ -129,7 +129,7 @@ class PopupGridViewState extends State<PopupGridView> {
                                 .startsWith('assets/menu/eraser.png')) {
                               model.painterController.eraser();
                             } else {
-                              model.isDrawing = false;
+                              model.isDrawing = true;
                               model.imageId = null;
                             }
                           }

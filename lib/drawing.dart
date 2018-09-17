@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
-import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tahiti/popup_grid_view.dart';
 
 class Drawing extends StatefulWidget {
@@ -11,14 +9,8 @@ class Drawing extends StatefulWidget {
     this.template,
     Key key,
     this.model,
-    this.strokeWidth = 25.0,
-    this.finishPercent,
   }) : super(key: key);
-  final double strokeWidth;
-  final int finishPercent;
-
   final ActivityModel model;
-
   Widget template;
   @override
   RollerState createState() {
@@ -28,29 +20,14 @@ class Drawing extends StatefulWidget {
 
 class RollerState extends State<Drawing> {
   GlobalKey previewContainer = new GlobalKey();
-  Queue<String> _list = new Queue();
-  List<String> _listOfImage = [];
-  String _oldImage;
+
   @override
   void initState() {
-    if (widget.model.template != null) {
-      _list.addFirst(widget.model.template);
-    }
-    _listOfImage = _list.toList();
     super.initState();
   }
 
   @override
   void didUpdateWidget(Drawing oldWidget) {
-    if (_oldImage != widget.model.unMaskImagePath && _oldImage != null) {
-      _list.addFirst(_oldImage);
-    }
-    _oldImage = widget.model.unMaskImagePath;
-    setState(() {
-      _listOfImage = _list.toList();
-    });
-    print("list of images: $_listOfImage");
-    setState(() {});
     super.didUpdateWidget(oldWidget);
   }
 
@@ -85,63 +62,28 @@ class RollerState extends State<Drawing> {
       child: LayoutBuilder(
         builder: (context, box) {
           return Container(
-            height: box.maxHeight,
-            width: box.maxWidth,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onScaleUpdate: widget.model.isInteractive
-                  ? (ScaleUpdateDetails update) =>
-                      _onScaleUpdate(context, update)
-                  : null,
-              onScaleEnd: widget.model.isInteractive
-                  ? (ScaleEndDetails end) => _onScaleEnd(
-                        context,
-                        end,
-                      )
-                  : null,
-              child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    widget.model.unMaskImagePath == null
-                        ? Container()
-                        : Container(),
-                    //  FittedBox(
-                    //     child: Image.asset(
-                    //     widget.model.unMaskImagePath,
-                    //     scale: 1.0,
-                    //   )),
-                    Stack(
-                        children: _listOfImage
-                            .map((c) => _buildWidget(context, c))
-                            .toList(growable: false)),
-                  ]),
-            ),
-          );
+              height: box.maxHeight,
+              width: box.maxWidth,
+              child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onScaleUpdate: widget.model.isInteractive
+                      ? (ScaleUpdateDetails update) =>
+                          _onScaleUpdate(context, update)
+                      : null,
+                  onScaleEnd: widget.model.isInteractive
+                      ? (ScaleEndDetails end) => _onScaleEnd(
+                            context,
+                            end,
+                          )
+                      : null,
+                  child: _ScratchCardLayout(
+                    child: Container(),
+                    path: widget.model.pathHistory,
+                    data: widget.model.painterController,
+                  )));
         },
       ),
     );
-  }
-
-  Widget _buildWidget(BuildContext context, String text) {
-    return _ScratchCardLayout(
-      child: Container(),
-      path: widget.model.pathHistory,
-      strokeWidth: 25.0,
-      data: widget.model.painterController,
-    );
-    // return _ScratchCardLayout(
-    //   child: text.endsWith('.svg')
-    //       ? Container(
-    //           height: double.infinity,
-    //           width: double.infinity,
-    //           color: Colors.grey,
-    //           child: SvgPicture.asset(text))
-    //       : FittedBox(child: Image.asset(text)),
-    // path: widget.model.pathHistory,
-    // strokeWidth: 25.0,
-    // data: widget.model.painterController,
-    // );
   }
 }
 
@@ -149,7 +91,6 @@ class _ScratchCardLayout extends SingleChildRenderObjectWidget {
   _ScratchCardLayout({
     Key key,
     this.path,
-    this.strokeWidth = 25.0,
     @required this.data,
     @required this.child,
   }) : super(
@@ -158,14 +99,12 @@ class _ScratchCardLayout extends SingleChildRenderObjectWidget {
         );
 
   final Widget child;
-  final double strokeWidth;
   final PainterController data;
   final PathHistory path;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return _ScratchCardRender(
-      strokeWidth: strokeWidth,
       data: data,
       path: path,
     );
@@ -174,35 +113,21 @@ class _ScratchCardLayout extends SingleChildRenderObjectWidget {
   @override
   void updateRenderObject(
       BuildContext context, _ScratchCardRender renderObject) {
-    renderObject
-      ..strokeWidth = strokeWidth
-      ..data = data;
+    renderObject..data = data;
   }
 }
 
 class _ScratchCardRender extends RenderProxyBox {
   _ScratchCardRender({
     RenderBox child,
-    double strokeWidth,
     this.path,
     PainterController data,
   })  : assert(data != null),
-        _strokeWidth = strokeWidth,
         _data = data,
         super(child);
 
-  double _strokeWidth;
   PainterController _data;
   final PathHistory path;
-
-  set strokeWidth(double strokeWidth) {
-    assert(strokeWidth != null);
-    if (_strokeWidth == strokeWidth) {
-      return;
-    }
-    _strokeWidth = strokeWidth;
-    markNeedsPaint();
-  }
 
   set data(PainterController data) {
     assert(data != null);
@@ -234,8 +159,8 @@ class _ScratchCardRender extends RenderProxyBox {
   void paint(PaintingContext context, Offset offset) {
     if (child != null) {
       context.canvas.saveLayer(offset & size, Paint());
-      context.paintChild(child, offset);
-      path.draw(context, size);
+      //context.paintChild(child, offset);
+      path.draw(context, offset);
       context.canvas.restore();
     }
   }

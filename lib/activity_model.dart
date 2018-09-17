@@ -305,7 +305,7 @@ class PathHistory {
     paths.last.addPoint(nextPoint);
   }
 
-  void draw(PaintingContext context, Size size) {
+  void draw(PaintingContext context, Offset offset) {
     for (PathInfo pathInfo in paths) {
       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
     }
