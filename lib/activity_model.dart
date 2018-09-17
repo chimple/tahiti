@@ -15,6 +15,7 @@ class ActivityModel extends Model {
   String _template;
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
+  String _highlighted ;
   bool _isDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
@@ -57,6 +58,12 @@ class ActivityModel extends Model {
   Popped get popped => _popped;
   set popped(Popped t) {
     _popped = t;
+    notifyListeners();
+  }
+
+  String get highlighted => _highlighted;
+  set highlighted(String t) {
+    _highlighted = t;
     notifyListeners();
   }
 
