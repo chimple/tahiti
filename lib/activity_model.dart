@@ -84,7 +84,7 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': selectedColor.value
+      'color': selectedColor?.value ?? Colors.red.value
     });
   }
 
