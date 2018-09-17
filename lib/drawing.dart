@@ -233,7 +233,6 @@ class _ScratchCardRender extends RenderProxyBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     if (child != null) {
-      print('paintOption:: ${_data.paintOption}');
       context.canvas.saveLayer(offset & size, Paint());
       context.paintChild(child, offset);
       path.draw(context, size);

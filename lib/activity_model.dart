@@ -216,21 +216,27 @@ class ActivityModel extends Model {
   void filterImage(String text) {
     Color cls;
     BlendMode blnd;
-    if (text == 'assets/filter_image/emboss.png') {
+    if (text == 'assets/filter_image/default.png') {
+      cls = color;
+      blnd = blendMode;
+    } else if (text == 'assets/filter_image/black_white.png') {
+      cls = Colors.white;
+      blnd = BlendMode.color;
+    } else if (text == 'assets/filter_image/emboss.png') {
       cls = Colors.red;
       blnd = BlendMode.colorDodge;
     } else if (text == 'assets/filter_image/sepia.png') {
       cls = Colors.red;
       blnd = BlendMode.darken;
     } else if (text == 'assets/filter_image/sobel.png') {
-      cls = Colors.blue;
+      cls = Colors.deepPurple;
       blnd = BlendMode.modulate;
     } else if (text == 'assets/filter_image/vignette.png') {
       cls = Colors.green;
       blnd = BlendMode.saturation;
-    } else if (text == 'assets/filter_image/contrast') {
-      blnd = BlendMode.plus;
-      cls = Colors.red;
+    } else if (text == 'assets/filter_image/contrast.png') {
+      blnd = BlendMode.darken;
+      cls = Colors.deepOrangeAccent;
     }
     print('uuid Image: $imageId');
     things.forEach((t) {
@@ -239,6 +245,7 @@ class ActivityModel extends Model {
           if (k == 'color' || k == 'blendMode') {
             t['color'] = cls;
             t['blendMode'] = blnd;
+            // t['path'] = '';
           }
         });
       }
@@ -301,7 +308,6 @@ class PathHistory {
   void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
-      print('paint asadsadsadsad::${pathInfo._paint}');
     }
   }
 }

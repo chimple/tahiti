@@ -195,6 +195,8 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
   ],
   'assets/filter_icon.jpg': [
+    Iconf(type: ItemType.png, data: 'assets/filter_image/default.png'),
+    Iconf(type: ItemType.png, data: 'assets/filter_image/black_white.png'),
     Iconf(type: ItemType.png, data: 'assets/filter_image/emboss.png'),
     Iconf(type: ItemType.png, data: 'assets/filter_image/sepia.png'),
     Iconf(type: ItemType.png, data: 'assets/filter_image/sobel.png'),

@@ -169,6 +169,8 @@ flutter:
     - assets/svgimage/ball1.svg
     - assets/svgimage/ball2.svg
     - assets/filter_icon.jpg
+    - assets/filter_image/default.png
+    - assets/filter_image/black_white.png
     - assets/filter_image/emboss.png
     - assets/filter_image/sepia.png
     - assets/filter_image/sobel.png
