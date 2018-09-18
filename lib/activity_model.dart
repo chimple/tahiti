@@ -15,6 +15,7 @@ class ActivityModel extends Model {
   String _template;
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
+  String _highlighted ;
   bool _isDrawing = false;
   bool _isGeometricDrawing = false;
   PainterController _painterController;
@@ -61,6 +62,12 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
+  String get highlighted => _highlighted;
+  set highlighted(String t) {
+    _highlighted = t;
+    notifyListeners();
+  }
+
   bool get isDrawing => _isDrawing;
   set isDrawing(bool t) {
     _isDrawing = t;
@@ -84,7 +91,7 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': selectedColor.value
+      'color': selectedColor?.value ?? Colors.red.value
     });
   }
 

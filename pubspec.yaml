@@ -140,6 +140,8 @@ flutter:
     - assets/menu/brush1.png
     - assets/menu/bucket.png
     - assets/menu/eraser.png
+    - assets/menu/food_icon.png
+    - assets/menu/body_icon.png
     - assets/menu/pencil.png
     - assets/menu/roller.png
     - assets/geometric.png
@@ -180,6 +182,14 @@ flutter:
     - assets/filter_image/filterImage4.png
     - assets/filter_image/filterImage5.png
     - assets/filter_image/filterImage6.png
+    - assets/svgimage/bodyparts/
+    - assets/svgimage/fooditem/
+    - assets/nima/Hop.nima
+    - assets/nima/Hop.png
+    - assets/nima/brush.png
+    - assets/nima/brush1.png
+    - assets/nima/bucket.png
+    - assets/nima/camera.png
   fonts:
     - family: Bungee
       fonts:
