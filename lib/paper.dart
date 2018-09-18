@@ -123,9 +123,12 @@ class Paper extends StatelessWidget {
       case 'text':
         return ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) => EditTextView(
-          myFocusNode: model.myFocusNode,
+          id: thing['id'],
           fontType: thing['font'],
+          text: thing['text'],
           scale: thing['scale'],
+          select: thing['select'],
+          editText: thing['editText']
         ));
         break;
     }

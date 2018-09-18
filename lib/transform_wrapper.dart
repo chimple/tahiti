@@ -84,12 +84,13 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   @override
   Widget build(BuildContext context) {
-    _width = MediaQuery.of(context).size.width;
+    _width = MediaQuery.of(context).size.width / 2;
     final model = ActivityModel.of(context);
     return Positioned(
       left: _translate.dx,
       top: _translate.dy,
       child: WidgetTransformDelegate(
+        thing: widget.thing,
         rotate: _rotate,
         scale: _scale,
         child: new RotateGestureDetector(
@@ -118,8 +119,10 @@ class WidgetTransformDelegate extends StatefulWidget {
   final double rotate;
   final double scale;
   final Widget child;
+  final Map<String, dynamic> thing;
 
-  WidgetTransformDelegate({Key key, this.rotate, this.scale, this.child})
+  WidgetTransformDelegate(
+      {Key key, this.rotate, this.scale, this.child, this.thing})
       : super(key: key);
 
   @override
@@ -149,7 +152,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                   left: 0.0,
                   top: 0.0,
                   child: Offstage(
-                    offstage: !model.myFocusNode.hasFocus,
+                    offstage: !widget.thing['select'],
                     child: IconButton(
                       icon: Icon(Icons.cancel),
                       iconSize: 50.0,
@@ -163,32 +166,42 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                 left: 0.0,
                 top: 50.0,
                 child: Offstage(
-                  offstage: !model.myFocusNode.hasFocus,
+                  offstage: !widget.thing['select'],
                   child: IconButton(
-                    icon: Icon(Icons.done_outline),
+                    icon: Icon(!widget.thing['editText']
+                        ? Icons.edit
+                        : Icons.done_outline),
                     iconSize: 50.0,
                     color: Colors.black,
                     onPressed: () {
-                      model.myFocusNode.unfocus();
+                      setState(() {
+                        if (!widget.thing['editText']) {
+                          model.selectThing(widget.thing['id'],
+                              widget.thing['text'], true, true);
+                        } else {
+                          model.selectThing(widget.thing['id'],
+                              widget.thing['text'], false, false);
+                        }
+                      });
                     },
                   ),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    left: 60.0, top: 60.0, right: 20.0, bottom: 20.0),
+                    left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    border: model.myFocusNode.hasFocus
+                    border: widget.thing['select']
                         ? Border.all(color: Colors.red, width: 4.0)
                         : null,
                     borderRadius: BorderRadius.circular(2.0),
                   ),
                   child: InkWell(
                     onTap: () {
-                      print("sadsdsadsad");
                       setState(() {
-                        enableOption = !enableOption;
+                        model.selectThing(widget.thing['id'],
+                            widget.thing['text'], true, false);
                       });
                     },
                     child: LimitedBox(
@@ -213,14 +226,14 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
               //     )),
               Positioned(
                   right: 0.0,
-                  top: 40.0,
+                  top: 0.0,
                   child: Offstage(
-                    offstage: !model.myFocusNode.hasFocus,
+                    offstage: !widget.thing['select'],
                     child: GestureDetector(
                         onPanUpdate: onBottomRightPanUpdate,
                         child: IconButton(
                           icon: Icon(Icons.swap_horizontal_circle),
-                          iconSize: 30.0,
+                          iconSize: 50.0,
                           color: Colors.black,
                           onPressed: () {},
                         )),

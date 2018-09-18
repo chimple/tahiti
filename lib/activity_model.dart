@@ -111,16 +111,29 @@ class ActivityModel extends Model {
     });
   }
 
-  void addText(String text, {String font}) {
+  void addText(String text, {String font, bool select, bool editText}) {
     addThing({
       'id': Uuid().v4(),
       'type': 'text',
       'text': text,
       'font': font,
+      'select': select,
+      'editText': editText,
       'x': 0.0,
       'y': 0.0,
       'scale': 1.0
     });
+  }
+  
+  void selectThing(var id, String text, bool select, bool editText){
+    things.forEach((t) {
+      if (t['id'] == id) {
+        t['text']=text;
+        t['select']=select;
+        t['editText']=editText;
+      }
+    });
+    notifyListeners();
   }
 
   void addDrawing(PathInfo path) {
