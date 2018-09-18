@@ -211,41 +211,21 @@ class ActivityModel extends Model {
 
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
-  String imageId;
+  String _imageId;
+  Color cls;
+  BlendMode blnd;
+  // need onTap and pass id of image here
+  set imageId(String id) {
+    _imageId = id;
+  }
 
-  void filterImage(String text) {
-    Color cls;
-    BlendMode blnd;
-    if (text == 'assets/filter_image/default.png') {
-      cls = color;
-      blnd = blendMode;
-    } else if (text == 'assets/filter_image/black_white.png') {
-      cls = Colors.white;
-      blnd = BlendMode.color;
-    } else if (text == 'assets/filter_image/emboss.png') {
-      cls = Colors.red;
-      blnd = BlendMode.colorDodge;
-    } else if (text == 'assets/filter_image/sepia.png') {
-      cls = Colors.red;
-      blnd = BlendMode.darken;
-    } else if (text == 'assets/filter_image/sobel.png') {
-      cls = Colors.deepPurple;
-      blnd = BlendMode.modulate;
-    } else if (text == 'assets/filter_image/vignette.png') {
-      cls = Colors.green;
-      blnd = BlendMode.saturation;
-    } else if (text == 'assets/filter_image/contrast.png') {
-      blnd = BlendMode.darken;
-      cls = Colors.deepOrangeAccent;
-    }
-    print('uuid Image: $imageId');
+  void filterImage() {
     things.forEach((t) {
-      if (t['id'] == imageId) {
+      if (t['id'] == _imageId) {
         t.forEach((k, v) {
           if (k == 'color' || k == 'blendMode') {
             t['color'] = cls;
             t['blendMode'] = blnd;
-            // t['path'] = '';
           }
         });
       }
@@ -373,7 +353,6 @@ class PathInfo {
     points.addAll([nextPoint.dx, nextPoint.dy]);
   }
 }
-
 //TODO: maskFilter
 //Paint _paintFromMap(Map<String, dynamic> map) => Paint()
 //  ..style = PaintingStyle.stroke

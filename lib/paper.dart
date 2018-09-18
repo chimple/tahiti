@@ -47,14 +47,8 @@ class Paper extends StatelessWidget {
         ));
         children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
               (t) => TransformWrapper(
-                    child: InkWell(
-                      radius: 10.0,
-                      child: buildWidgetFromThing(
-                        t,
-                      ),
-                      onTap: () {
-                        if (t['type'] == 'image') model.imageId = t['id'];
-                      },
+                    child: buildWidgetFromThing(
+                      t,
                     ),
                     thing: t,
                   ),

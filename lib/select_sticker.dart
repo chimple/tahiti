@@ -272,13 +272,35 @@ class SelectSticker extends StatelessWidget {
                     if (text.startsWith('assets/stickers') ||
                         text.startsWith('assets/svgimage')) {
                       model.addSticker(text);
-                    } else if (text.startsWith('assets/roller_image')) {
-                      //model.addUnMaskImage(text);
-                      // model.painterController.doUnMask();
-                      model.isDrawing = true;
-                    } else if (text.startsWith('assets/filter_image')) {
-                      model.filterImage(text);
-                    }
+                    } else if (text == 'assets/filter_image/default.png') {
+                      model.cls = model.color;
+                      model.blnd = model.blendMode;
+                      model.filterImage();
+                    } else if (text == 'assets/filter_image/black_white.png') {
+                      model.cls = Colors.white;
+                      model.blnd = BlendMode.color;
+                      model.filterImage();
+                    } else if (text == 'assets/filter_image/emboss.png') {
+                      model.cls = Colors.red;
+                      model.blnd = BlendMode.colorDodge;
+                      model.filterImage();
+                    } else if (text == 'assets/filter_image/sepia.png') {
+                      model.cls = Colors.red;
+                      model.blnd = BlendMode.darken;
+                      model.filterImage();
+                    } else if (text == 'assets/filter_image/sobel.png') {
+                      model.cls = Colors.deepPurple;
+                      model.blnd = BlendMode.modulate;
+                      model.filterImage();
+                    } else if (text == 'assets/filter_image/vignette.png') {
+                      model.cls = Colors.green;
+                      model.blnd = BlendMode.saturation;
+                      model.filterImage();
+                    } else if (text == 'assets/filter_image/contrast.png') {
+                      model.blnd = BlendMode.darken;
+                      model.cls = Colors.deepOrangeAccent;
+                      model.filterImage();
+                    } else {}
                 }
               },
               menuItems:
