@@ -19,6 +19,7 @@ class ActivityModel extends Model {
   bool _isDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
+  FocusNode myFocusNode = FocusNode();
 
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
   Color _selectedColor;

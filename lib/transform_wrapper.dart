@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
 import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
     as rotate;
@@ -130,6 +131,7 @@ class WidgetTransformDelegate extends StatefulWidget {
 class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
   double customWidth = 500.0;
   double customHeight = 200.0;
+  bool enableOption = false;
 
   @override
   Widget build(BuildContext context) {
@@ -138,90 +140,118 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
       ..rotateZ(widget.rotate);
     var matrix1 = Matrix4.identity()..scale(widget.scale);
     // ..rotateZ(rotate);
-    return Transform(
-      transform: matrix,
-      alignment: Alignment.center,
-      child: Stack(children: <Widget>[
-        Positioned(
-          left: 0.0,
-          top: 0.0,
-          child: IconButton(
-            icon: Icon(Icons.cancel),
-            iconSize: 50.0,
-            color: Colors.black,
-            onPressed: () {
-              print("cancel");
-            },
-          ),
-        ),
-        Positioned(
-          left: 0.0,
-          top: 50.0,
-          child: IconButton(
-            icon: Icon(Icons.edit),
-            iconSize: 50.0,
-            color: Colors.black,
-            onPressed: () {},
-          ),
-        ),
-        Padding(
-          padding:
-              EdgeInsets.only(left: 60.0, top: 60.0, right: 20.0, bottom: 20.0),
-          child: LimitedBox(
-            // maxHeight: customHeight,
-            maxWidth: customWidth,
-              child: widget.child,
-              // decoration: BoxDecoration(
-              //   border: Border.all(color: Colors.red, width: 4.0),
-              //   borderRadius: BorderRadius.circular(2.0),
-              // )
+    return ScopedModelDescendant<ActivityModel>(
+      builder: (context, child, model) => Transform(
+            transform: matrix,
+            alignment: Alignment.center,
+            child: Stack(children: <Widget>[
+              Positioned(
+                  left: 0.0,
+                  top: 0.0,
+                  child: Offstage(
+                    offstage: !model.myFocusNode.hasFocus,
+                    child: IconButton(
+                      icon: Icon(Icons.cancel),
+                      iconSize: 50.0,
+                      color: Colors.black,
+                      onPressed: () {
+                        print("cancel");
+                      },
+                    ),
+                  )),
+              Positioned(
+                left: 0.0,
+                top: 50.0,
+                child: Offstage(
+                  offstage: !model.myFocusNode.hasFocus,
+                  child: IconButton(
+                    icon: Icon(Icons.done_outline),
+                    iconSize: 50.0,
+                    color: Colors.black,
+                    onPressed: () {
+                      model.myFocusNode.unfocus();
+                    },
+                  ),
+                ),
               ),
-        ),
-        Positioned(
-          left: 50.0,
-          top: 50.0,
-          child: GestureDetector(
-              onPanUpdate: onTopLeftPanUpdate,
-              child: Icon(
-                Icons.lens,
-                size: 30.0,
-                color: Colors.red,
-              )),
-        ),
-        Positioned(
-          right: 10.0,
-          top: 50.0,
-          child: GestureDetector(
-              onPanUpdate: onTopRightPanUpdate,
-              child: Icon(
-                Icons.lens,
-                size: 30.0,
-                color: Colors.red,
-              )),
-        ),
-        Positioned(
-          left: 50.0,
-          bottom: 10.0,
-          child: GestureDetector(
-              onPanUpdate: onBottomLeftPanUpdate,
-              child: Icon(
-                Icons.lens,
-                size: 30.0,
-                color: Colors.red,
-              )),
-        ),
-        Positioned(
-          right: 10.0,
-          bottom: 10.0,
-          child: GestureDetector(
-              onPanUpdate: onBottomRightPanUpdate,
-              child: Icon(
-                Icons.lens,
-                size: 30.0,
-                color: Colors.red,
-              )),
-        ),
-      ]),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: 60.0, top: 60.0, right: 20.0, bottom: 20.0),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: model.myFocusNode.hasFocus
+                        ? Border.all(color: Colors.red, width: 4.0)
+                        : null,
+                    borderRadius: BorderRadius.circular(2.0),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      print("sadsdsadsad");
+                      setState(() {
+                        enableOption = !enableOption;
+                      });
+                    },
+                    child: LimitedBox(
+                      // maxHeight: customHeight,
+                      maxWidth: customWidth,
+                      child: widget.child,
+                    ),
+                  ),
+                ),
+              ),
+              // Positioned(
+              //     left: 40.0,
+              //     top: 40.0,
+              //     child: Offstage(
+              //       offstage: !model.myFocusNode.hasFocus,
+              //       child: IconButton(
+              //         icon: Icon(Icons.lens),
+              //         iconSize: 30.0,
+              //         color: Colors.red,
+              //         onPressed: () {},
+              //       ),
+              //     )),
+              Positioned(
+                  right: 0.0,
+                  top: 40.0,
+                  child: Offstage(
+                    offstage: !model.myFocusNode.hasFocus,
+                    child: GestureDetector(
+                        onPanUpdate: onBottomRightPanUpdate,
+                        child: IconButton(
+                          icon: Icon(Icons.swap_horizontal_circle),
+                          iconSize: 30.0,
+                          color: Colors.black,
+                          onPressed: () {},
+                        )),
+                  )),
+              // Positioned(
+              //     left: 40.0,
+              //     bottom: 0.0,
+              //     child: Offstage(
+              //       offstage: !model.myFocusNode.hasFocus,
+              //       child: IconButton(
+              //         icon: Icon(Icons.lens),
+              //         iconSize: 30.0,
+              //         color: Colors.red,
+              //         onPressed: () {},
+              //       ),
+              //     )),
+              // Positioned(
+              //   right: 0.0,
+              //   bottom: 0.0,
+              //   child: Offstage(
+              //     offstage: !model.myFocusNode.hasFocus,
+              //     child: IconButton(
+              //       icon: Icon(Icons.lens),
+              //       iconSize: 30.0,
+              //       color: Colors.red,
+              //       onPressed: () {},
+              //     ),
+              //   ),
+              // ),
+            ]),
+          ),
     );
   }
 

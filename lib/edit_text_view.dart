@@ -7,11 +7,12 @@ import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.d
 import 'package:tahiti/rotate/widget_view.dart';
 
 class EditTextView extends StatefulWidget {
+  FocusNode myFocusNode;
   final String fontType;
   String change = 'Type Here';
   final double scale;
 
-  EditTextView({this.fontType, this.scale}) : super();
+  EditTextView({this.fontType, this.scale, this.myFocusNode}) : super();
 
   @override
   EditTextViewState createState() {
@@ -20,7 +21,6 @@ class EditTextView extends StatefulWidget {
 }
 
 class EditTextViewState extends State<EditTextView> {
-  FocusNode myFocusNode = FocusNode();
   bool viewtext = false;
   bool _deleteOption = true;
   bool edittxt = false;
@@ -34,20 +34,20 @@ class EditTextViewState extends State<EditTextView> {
   @override
   void initState() {
     super.initState();
-    myFocusNode.addListener(_focusNodeListener);
+    widget.myFocusNode.addListener(_focusNodeListener);
   }
 
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed
-    myFocusNode.removeListener(_focusNodeListener);
-    myFocusNode.dispose();
+    widget.myFocusNode.removeListener(_focusNodeListener);
+    widget.myFocusNode.dispose();
 
     super.dispose();
   }
 
   Future<Null> _focusNodeListener() async {
-    if (myFocusNode.hasFocus) {
+    if (widget.myFocusNode.hasFocus) {
       print('TextField got the focus');
     } else {
       print('TextField lost the focus');
@@ -63,8 +63,6 @@ class EditTextViewState extends State<EditTextView> {
         ? !viewtext
             ? LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-                print("container size $constraints");
-                print("no of character $noOfChar");
                 // double maxSize =
                 //     (constraints.maxWidth * constraints.maxHeight) / 3000;
                 // print("maxsize $maxSize");
@@ -73,26 +71,28 @@ class EditTextViewState extends State<EditTextView> {
                   child: LimitedBox(
                     // maxHeight: constraints.maxHeight + noOfChar,
                     maxWidth: constraints.maxWidth,
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      onChanged: (str) {
-                        setState(() {
-                          noOfChar = str.length;
-                        });
-                      },
-                      autofocus: true,
-                      enabled: true,
-                      // focusNode: myFocusNode,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 30.0,
-                          color: const Color(0xFF000000),
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: widget.fontType),
-                      decoration: new InputDecoration.collapsed(
-                          hintText: widget.change),
+                    child: Container(
+                                          child: TextFormField (
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        // onChanged: (str) {
+                        //   setState(() {
+                        //     noOfChar = str.length;
+                        //   });
+                        // },
+                        // autofocus: true,
+                        // enabled: false,
+                        focusNode: widget.myFocusNode,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 30.0,
+                            color: const Color(0xFF000000),
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontFamily: widget.fontType),
+                        decoration: new InputDecoration.collapsed(
+                            hintText: widget.change),
+                      ),
                     ),
                   ),
                 );
