@@ -192,6 +192,13 @@ final Map<String, List<Iconf>> topStickers = {
     Iconf(type: ItemType.png, data: 'assets/roller_image/sample4.jpg'),
     Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
   ],
+  'assets/geometric.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
   'assets/filter_icon.jpg': [],
 };
 

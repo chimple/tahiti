@@ -16,6 +16,7 @@ class ActivityModel extends Model {
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
   bool _isDrawing = false;
+  bool _isGeometricDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
 
@@ -63,6 +64,12 @@ class ActivityModel extends Model {
   bool get isDrawing => _isDrawing;
   set isDrawing(bool t) {
     _isDrawing = t;
+    notifyListeners();
+  }
+
+  bool get isGeometricDrawing => _isGeometricDrawing;
+  set isGeometricDrawing(bool t) {
+    _isGeometricDrawing = t;
     notifyListeners();
   }
 
@@ -217,6 +224,11 @@ int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 @JsonSerializable()
 class PathHistory {
   List<PathInfo> paths;
+  Path path;
+  double initialY;
+  double initialX;
+  double x;
+  double y;
 
   PathHistory() {
     paths = [];
@@ -245,6 +257,9 @@ class PathHistory {
       double sigma,
       double thickness,
       Color color}) {
+    initialX = startPoint.dx;
+    initialY = startPoint.dy;
+    print("add() inside activityModel");
     paths.add(PathInfo(
         points: [startPoint.dx, startPoint.dy],
         paintOption: paintOption,
@@ -255,7 +270,42 @@ class PathHistory {
   }
 
   void updateCurrent(Offset nextPoint) {
-    paths.last.addPoint(nextPoint);
+    x = nextPoint.dx;
+    y = nextPoint.dy;
+    path = paths.last._path;
+
+    if (y < initialY + 50.0 && y > initialY - 50.0) {
+      path.lineTo(x, initialY);
+      initialX = x;
+    } else {
+      if (x > initialX - 50.0 && x < initialX + 50.0) {
+        path.lineTo(initialX, y);
+      } else {
+        initialY = y;
+        path.lineTo(x, initialY);
+        initialX = x;
+      }
+    }
+    // paths.last.addPoint(nextPoint);
+  }
+
+  void updateGeometricDrawing(Offset nextPoint) {
+    x = nextPoint.dx;
+    y = nextPoint.dy;
+    path = paths.last._path;
+
+    if (y < initialY + 50.0 && y > initialY - 50.0) {
+      path.lineTo(x, initialY);
+      initialX = x;
+    } else {
+      if (x > initialX - 50.0 && x < initialX + 50.0) {
+        path.lineTo(initialX, y);
+      } else {
+        initialY = y;
+        path.lineTo(x, initialY);
+        initialX = x;
+      }
+    }
   }
 
   void draw(PaintingContext context, Size size) {
