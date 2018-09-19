@@ -15,11 +15,10 @@ class ActivityModel extends Model {
   String _template;
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
-  String _highlighted ;
+  String _highlighted;
   bool _isDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
-  FocusNode myFocusNode = FocusNode();
 
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
   Color _selectedColor;
@@ -112,6 +111,12 @@ class ActivityModel extends Model {
   }
 
   void addText(String text, {String font, bool select, bool editText}) {
+    things.forEach((t) {
+      if (t['id'] != id) {
+        t['select'] = false;
+        things.removeWhere((t) => t['text'] == '');
+      }
+    });
     addThing({
       'id': Uuid().v4(),
       'type': 'text',
@@ -124,13 +129,17 @@ class ActivityModel extends Model {
       'scale': 1.0
     });
   }
-  
-  void selectThing(var id, String text, bool select, bool editText){
+
+  void selectThing(var id, String text, bool select, bool editText) {
     things.forEach((t) {
       if (t['id'] == id) {
-        t['text']=text;
-        t['select']=select;
-        t['editText']=editText;
+        t['text'] = text;
+        t['select'] = select;
+        t['editText'] = editText;
+      } else {
+        t['select'] = false;
+        // if(t['text'] == ''){
+        // }
       }
     });
     notifyListeners();

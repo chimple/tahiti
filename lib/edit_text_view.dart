@@ -16,6 +16,7 @@ class EditTextView extends StatefulWidget {
   final String text;
   final bool select;
   final bool editText;
+
   EditTextView(
       {this.id,
       this.fontType,
@@ -35,7 +36,6 @@ class EditTextViewState extends State<EditTextView> {
   bool viewtext = false;
   bool edittxt = false;
   var textType;
-  FocusNode myFocusNode = new FocusNode();
 
   int noOfChar = 1;
   double customWidth = 400.0;
@@ -52,7 +52,6 @@ class EditTextViewState extends State<EditTextView> {
     // Clean up the focus node when the Form is disposed
     // widget.myFocusNode.removeListener(_focusNodeListener);
     // widget.myFocusNode.dispose();
-
     super.dispose();
   }
 
@@ -71,7 +70,7 @@ class EditTextViewState extends State<EditTextView> {
     print("id: ${widget.id}");
 
     return widget.fontType != null
-        ? widget.editText || widget.text == ''
+        ? widget.editText
             ? LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                 // double maxSize =
@@ -83,20 +82,18 @@ class EditTextViewState extends State<EditTextView> {
                           child: Container(
                             // maxHeight: constraints.maxHeight + noOfChar,
                             width: constraints.maxWidth,
-                            child: TextField( controller: TextEditingController(
-                              text: widget.text
-                            ), 
-                              keyboardType: TextInputType.multiline,
+                            child: TextField(
+                              controller:
+                                  TextEditingController(text: widget.text),
                               maxLines: null,
                               onChanged: (str) {
                                 setState(() {
-                                model.selectThing(widget.id, str, widget.select,
-                                    widget.editText);
+                                  model.selectThing(widget.id, str,
+                                      widget.select, widget.editText);
                                 });
                               },
                               autofocus: true,
-                              enabled: widget.editText,
-                              // focusNode: myFocusNode,
+                              // enabled: widget.editText,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 30.0,
@@ -111,12 +108,14 @@ class EditTextViewState extends State<EditTextView> {
                         ));
               })
             : Text(
-                widget.text,
+                widget.text == '' ? widget.change : widget.text,
                 maxLines: null,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 30.0,
-                    color: const Color(0xFF000000),
+                    color: widget.text == ''
+                        ? Colors.black12
+                        : const Color(0xFF000000),
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
                     fontFamily: widget.fontType),

@@ -45,6 +45,7 @@ class Paper extends StatelessWidget {
         children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
               (t) => TransformWrapper(
                     child: buildWidgetFromThing(t),
+                    model:model,
                     thing: t,
                   ),
             ));
@@ -121,15 +122,14 @@ class Paper extends StatelessWidget {
         return VideoScaling(videoPath: thing['path']);
         break;
       case 'text':
-        return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) => EditTextView(
+        return EditTextView(
           id: thing['id'],
           fontType: thing['font'],
           text: thing['text'],
           scale: thing['scale'],
           select: thing['select'],
           editText: thing['editText']
-        ));
+        );
         break;
     }
   }

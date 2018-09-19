@@ -47,20 +47,16 @@ class PopupGridViewState extends State<PopupGridView> {
   String highlightedButtonItem;
   String highlightedPopUpItem;
   // bool popped = false;
-  FocusNode myFocusNode = new FocusNode();
+  
   @override
   void initState() {
     super.initState();
-    myFocusNode.addListener(null);
     highlightedButtonItem = widget.menuItems.keys.first;
   }
 
    @override
   void dispose() {
     // Clean up the focus node when the Form is disposed
-    myFocusNode.removeListener(null);
-    myFocusNode.dispose();
-
     super.dispose();
   }
 
@@ -219,7 +215,6 @@ class PopupGridViewState extends State<PopupGridView> {
                                           onTap: () => setState(() {
                                                 if (highlightedButtonItem ==
                                                     "assets/menu/text.png") {
-                                                      model.myFocusNode.addListener(null);
                                                   model.addText('',
                                                       font: itemName.data, select: true, editText: false);
                                                 }

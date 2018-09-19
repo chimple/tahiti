@@ -8,11 +8,12 @@ import 'activity_model.dart';
 import 'paper.dart';
 
 class TransformWrapper extends StatefulWidget {
-  const TransformWrapper({Key key, @required this.child, @required this.thing})
+  const TransformWrapper({Key key, @required this.child, @required this.thing, @required this.model})
       : super(key: key);
 
   final Widget child;
   final Map<String, dynamic> thing;
+  final model;
 
   @override
   State<StatefulWidget> createState() {
@@ -37,6 +38,10 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   void onScaleStart(rotate.ScaleStartDetails details) {
     setState(() {
+      if(!widget.thing['select']){
+          widget.model.selectThing(widget.thing['id'],
+                              widget.thing['text'], true, false);
+      }
       _parentRenderBox =
           (context.ancestorRenderObjectOfType(const TypeMatcher<RenderStack>())
               as RenderBox);
