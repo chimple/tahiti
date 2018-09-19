@@ -95,26 +95,11 @@ class Paper extends StatelessWidget {
             package: 'tahiti',
           );
         } else {
-          return Container(
-              height: 400.0,
-              child: Stack(
-                children: <Widget>[
-                  AspectRatio(
-                      aspectRatio: 1.0,
-                      child: SvgPicture.asset(
-                        s1,
-                        color: Color(thing['color'] as int),
-                        colorBlendMode: BlendMode.modulate,
-                        package: 'tahiti',
-                      )),
-                  AspectRatio(
-                      aspectRatio: 1.0,
-                      child: SvgPicture.asset(
-                        s2,
-                        package: 'tahiti',
-                      )),
-                ],
-              ));
+           return DisplaySticker(
+            size: 400.0,
+            primary: thing['asset'],
+            color: Color(thing['color'] as int),
+          );
         }
         break;
       case 'image':
