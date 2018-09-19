@@ -284,7 +284,7 @@ class PainterController extends ChangeNotifier {
             blurStyle: blurStyle,
             sigma: sigma,
             thickness: thickness,
-            color: model.selectedColor);
+            color:  model.drawingColor);
       }
     }
   }
