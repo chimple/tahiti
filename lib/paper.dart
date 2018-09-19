@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/display_nima.dart';
+import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/edit_text_view.dart';
 import 'package:tahiti/video_scaling.dart';
@@ -117,6 +119,9 @@ class Paper extends StatelessWidget {
         break;
       case 'image':
         return Image.file(File(thing['path']));
+        break;
+      case 'nima':
+        return new DisplayNima();
         break;
       case 'video':
         return VideoScaling(videoPath: thing['path']);

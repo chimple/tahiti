@@ -130,6 +130,17 @@ class ActivityModel extends Model {
     });
   }
 
+  void addNima(String name) {
+    addThing({
+      'id': Uuid().v4(),
+      'type': 'nima',
+      'asset': name,
+      'x': 0.0,
+      'y': 0.0,
+      'scale': 0.5,
+    });
+  }
+
   void selectThing(var id, String text, bool select, bool editText) {
     things.forEach((t) {
       if (t['id'] == id) {
