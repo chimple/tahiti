@@ -206,28 +206,25 @@ class ActivityModel extends Model {
   void addUnMaskImage(String text) {
     print("text: $text");
     unMaskImagePath = text;
+    painterController.paintOption = PaintOption.unMask;
     notifyListeners();
   }
 
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
-  String _imageId;
+  String _selectedThingId;
   Color cls;
   BlendMode blnd;
-  // need onTap and pass id of image here
-  set imageId(String id) {
-    _imageId = id;
+  // need onTap and pass id of selected thing here
+  set selectedThingId(String id) {
+    _selectedThingId = id;
   }
 
   void filterImage() {
     things.forEach((t) {
-      if (t['id'] == _imageId) {
-        t.forEach((k, v) {
-          if (k == 'color' || k == 'blendMode') {
-            t['color'] = cls;
-            t['blendMode'] = blnd;
-          }
-        });
+      if (t['id'] == _selectedThingId) {
+        t['color'] = cls;
+        t['blendMode'] = blnd;
       }
     });
     notifyListeners();
