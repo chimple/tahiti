@@ -133,6 +133,8 @@ class PopupGridViewState extends State<PopupGridView> {
                               // model.addUnMaskImage(title);
                               // model.painterController.doUnMask();
                               model.isDrawing = false;
+                            } else if (title.startsWith('assets/menu/eraser')) {
+                              model.painterController.eraser();
                             } else {
                               model.highlighted = null;
                               model.isDrawing = false;

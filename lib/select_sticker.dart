@@ -327,8 +327,8 @@ class SelectStickerState extends State<SelectSticker> {
                       model.addNima(text);
                     }
                     if (text.startsWith('assets/roller_image')) {
-                      model.addUnMaskImage(text);
-                      model.painterController.doUnMask();
+                      // model.addUnMaskImage(text);
+                      // model.painterController.doUnMask();
                       model.isDrawing = true;
                     }
                 }
