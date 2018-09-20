@@ -219,7 +219,7 @@ class PopupGridViewState extends State<PopupGridView> {
                                                 if (highlightedButtonItem ==
                                                     "assets/menu/text.png") {
                                                   model.addText('',
-                                                      font: itemName.data, select: true, editText: false);
+                                                      font: itemName.data, select: true, edit: false);
                                                 }
                                                 widget
                                                     .onUserPress(itemName.data);

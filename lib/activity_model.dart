@@ -81,6 +81,8 @@ class ActivityModel extends Model {
       'id': Uuid().v4(),
       'type': 'sticker',
       'asset': name,
+      'select': true,
+      'edit': true,
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
@@ -92,6 +94,8 @@ class ActivityModel extends Model {
     addThing({
       'id': Uuid().v4(),
       'type': 'image',
+      'select': true,
+      'edit': true,
       'path': imagePath,
       'x': 0.0,
       'y': 0.0,
@@ -103,6 +107,7 @@ class ActivityModel extends Model {
     addThing({
       'id': Uuid().v4(),
       'type': 'video',
+      'select': true,
       'path': videoPath,
       'x': 0.0,
       'y': 0.0,
@@ -110,30 +115,38 @@ class ActivityModel extends Model {
     });
   }
 
-  void addText(String text, {String font, bool select, bool editText}) {
+  void addText(String text, {String font, bool select, bool edit}) {
+    bool temp = false;
     things.forEach((t) {
-      if (t['id'] != id) {
-        t['select'] = false;
-        things.removeWhere((t) => t['text'] == '');
+      t['select'] = false;
+      t['edit'] = false;
+      if (t['text'] == '') {
+        temp = true;
+        t['font'] = font;
+        t['select'] = true;
       }
+      notifyListeners();
     });
-    addThing({
-      'id': Uuid().v4(),
-      'type': 'text',
-      'text': text,
-      'font': font,
-      'select': select,
-      'editText': editText,
-      'x': 0.0,
-      'y': 0.0,
-      'scale': 1.0
-    });
+    if (!temp) {
+      addThing({
+        'id': Uuid().v4(),
+        'type': 'text',
+        'text': text,
+        'font': font,
+        'select': select,
+        'edit': edit,
+        'x': 0.0,
+        'y': 0.0,
+        'scale': 1.0
+      });
+    }
   }
 
   void addNima(String name) {
     addThing({
       'id': Uuid().v4(),
       'type': 'nima',
+      'select': true,
       'asset': name,
       'x': 0.0,
       'y': 0.0,
@@ -141,18 +154,25 @@ class ActivityModel extends Model {
     });
   }
 
-  void selectThing(var id, String text, bool select, bool editText) {
+  void selectedThing(var id, String type, String text, bool select, bool edit) {
     things.forEach((t) {
       if (t['id'] == id) {
-        t['text'] = text;
+        if (type == 'text' || type == 'image' || type == 'sticker') {
+          if (type == 'text') {
+            t['text'] = text;
+          }
+          t['edit'] = edit;
+        }
         t['select'] = select;
-        t['editText'] = editText;
       } else {
         t['select'] = false;
-        // if(t['text'] == ''){
-        // }
       }
     });
+    notifyListeners();
+  }
+
+  void deletedThing(var id){
+    things.removeWhere((t) => t['id']==id);
     notifyListeners();
   }
 

@@ -118,7 +118,7 @@ class Paper extends StatelessWidget {
           text: thing['text'],
           scale: thing['scale'],
           select: thing['select'],
-          editText: thing['editText']
+          edit: thing['edit']
         );
         break;
     }

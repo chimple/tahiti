@@ -8,7 +8,11 @@ import 'activity_model.dart';
 import 'paper.dart';
 
 class TransformWrapper extends StatefulWidget {
-  const TransformWrapper({Key key, @required this.child, @required this.thing, @required this.model})
+  const TransformWrapper(
+      {Key key,
+      @required this.child,
+      @required this.thing,
+      @required this.model})
       : super(key: key);
 
   final Widget child;
@@ -38,9 +42,12 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   void onScaleStart(rotate.ScaleStartDetails details) {
     setState(() {
-      if(!widget.thing['select']){
-          widget.model.selectThing(widget.thing['id'],
-                              widget.thing['text'], true, false);
+      if (!widget.thing['select']) {
+        widget.thing['type'] == 'text'
+            ? widget.model.selectedThing(widget.thing['id'],
+                widget.thing['type'], widget.thing['text'], true, false)
+            : widget.model.selectedThing(
+                widget.thing['id'], widget.thing['type'], '', true, false);
       }
       _parentRenderBox =
           (context.ancestorRenderObjectOfType(const TypeMatcher<RenderStack>())
@@ -94,16 +101,17 @@ class _TransformWrapperState extends State<TransformWrapper>
     return Positioned(
       left: _translate.dx,
       top: _translate.dy,
-      child: WidgetTransformDelegate(
-        thing: widget.thing,
-        rotate: _rotate,
-        scale: _scale,
-        child: new RotateGestureDetector(
-          onScaleStart: model.isInteractive ? onScaleStart : null,
-          onScaleUpdate: model.isInteractive ? onScaleUpdate : null,
-          onScaleEnd: model.isInteractive
-              ? (rotate.ScaleEndDetails details) => onScaleEnd(model, details)
-              : null,
+      child: new RotateGestureDetector(
+        onScaleStart: model.isInteractive ? onScaleStart : null,
+        onScaleUpdate: model.isInteractive ? onScaleUpdate : null,
+        onScaleEnd: model.isInteractive
+            ? (rotate.ScaleEndDetails details) => onScaleEnd(model, details)
+            : null,
+        child: WidgetTransformDelegate(
+          thing: widget.thing,
+          rotate: _rotate,
+          scale: _scale,
+          model: widget.model,
           child: widget.child,
         ),
       ),
@@ -125,9 +133,10 @@ class WidgetTransformDelegate extends StatefulWidget {
   final double scale;
   final Widget child;
   final Map<String, dynamic> thing;
+  final model;
 
   WidgetTransformDelegate(
-      {Key key, this.rotate, this.scale, this.child, this.thing})
+      {Key key, this.rotate, this.scale, this.child, this.thing, this.model})
       : super(key: key);
 
   @override
@@ -148,129 +157,111 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
       ..rotateZ(widget.rotate);
     var matrix1 = Matrix4.identity()..scale(widget.scale);
     // ..rotateZ(rotate);
-    return ScopedModelDescendant<ActivityModel>(
-      builder: (context, child, model) => Transform(
-            transform: matrix,
-            alignment: Alignment.center,
-            child: Stack(children: <Widget>[
-              Positioned(
+    if (widget.thing['select']) {
+      return Transform(
+        transform: matrix,
+        alignment: Alignment.center,
+        child: Stack(children: <Widget>[
+          Positioned(
+              left: 0.0,
+              top: 0.0,
+              child: IconButton(
+                icon: Icon(Icons.delete_forever),
+                iconSize: 50.0,
+                color: Colors.black,
+                onPressed: () {
+                  widget.model.deletedThing(widget.thing['id']);
+                },
+              )),
+          widget.thing['type'] != 'video'
+              ? Positioned(
                   left: 0.0,
-                  top: 0.0,
-                  child: Offstage(
-                    offstage: !widget.thing['select'],
-                    child: IconButton(
-                      icon: Icon(Icons.cancel),
-                      iconSize: 50.0,
-                      color: Colors.black,
-                      onPressed: () {
-                        print("cancel");
-                      },
-                    ),
-                  )),
-              Positioned(
-                left: 0.0,
-                top: 50.0,
-                child: Offstage(
-                  offstage: !widget.thing['select'],
+                  top: 50.0,
                   child: IconButton(
-                    icon: Icon(!widget.thing['editText']
+                    icon: Icon(!widget.thing['edit']
                         ? Icons.edit
                         : Icons.done_outline),
                     iconSize: 50.0,
                     color: Colors.black,
                     onPressed: () {
                       setState(() {
-                        if (!widget.thing['editText']) {
-                          model.selectThing(widget.thing['id'],
-                              widget.thing['text'], true, true);
+                        if (!widget.thing['edit']) {
+                          (widget.thing['type'] == 'text')
+                              ? widget.model.selectedThing(
+                                  widget.thing['id'],
+                                  widget.thing['type'],
+                                  widget.thing['text'],
+                                  true,
+                                  true)
+                              : widget.model.selectedThing(widget.thing['id'],
+                                  widget.thing['type'], '', true, true);
                         } else {
-                          model.selectThing(widget.thing['id'],
-                              widget.thing['text'], false, false);
+                          (widget.thing['type'] == 'text')
+                              ? widget.model.selectedThing(
+                                  widget.thing['id'],
+                                  widget.thing['type'],
+                                  widget.thing['text'],
+                                  false,
+                                  false)
+                              : widget.model.selectedThing(widget.thing['id'],
+                                  widget.thing['type'], '', false, false);
                         }
                       });
                     },
                   ),
-                ),
+                )
+              : Container(),
+          Padding(
+            padding: EdgeInsets.only(
+                left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: widget.thing['select']
+                    ? Border.all(color: Colors.red, width: 4.0)
+                    : null,
+                borderRadius: BorderRadius.circular(2.0),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: widget.thing['select']
-                        ? Border.all(color: Colors.red, width: 4.0)
-                        : null,
-                    borderRadius: BorderRadius.circular(2.0),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        model.selectThing(widget.thing['id'],
-                            widget.thing['text'], true, false);
-                      });
-                    },
-                    child: LimitedBox(
-                      // maxHeight: customHeight,
-                      maxWidth: customWidth,
-                      child: widget.child,
-                    ),
-                  ),
-                ),
+              child: LimitedBox(
+                maxWidth: customWidth,
+                child: widget.child,
               ),
-              // Positioned(
-              //     left: 40.0,
-              //     top: 40.0,
-              //     child: Offstage(
-              //       offstage: !model.myFocusNode.hasFocus,
-              //       child: IconButton(
-              //         icon: Icon(Icons.lens),
-              //         iconSize: 30.0,
-              //         color: Colors.red,
-              //         onPressed: () {},
-              //       ),
-              //     )),
-              Positioned(
-                  right: 0.0,
-                  top: 0.0,
-                  child: Offstage(
-                    offstage: !widget.thing['select'],
-                    child: GestureDetector(
-                        onPanUpdate: onBottomRightPanUpdate,
-                        child: IconButton(
-                          icon: Icon(Icons.swap_horizontal_circle),
-                          iconSize: 50.0,
-                          color: Colors.black,
-                          onPressed: () {},
-                        )),
-                  )),
-              // Positioned(
-              //     left: 40.0,
-              //     bottom: 0.0,
-              //     child: Offstage(
-              //       offstage: !model.myFocusNode.hasFocus,
-              //       child: IconButton(
-              //         icon: Icon(Icons.lens),
-              //         iconSize: 30.0,
-              //         color: Colors.red,
-              //         onPressed: () {},
-              //       ),
-              //     )),
-              // Positioned(
-              //   right: 0.0,
-              //   bottom: 0.0,
-              //   child: Offstage(
-              //     offstage: !model.myFocusNode.hasFocus,
-              //     child: IconButton(
-              //       icon: Icon(Icons.lens),
-              //       iconSize: 30.0,
-              //       color: Colors.red,
-              //       onPressed: () {},
-              //     ),
-              //   ),
-              // ),
-            ]),
+            ),
           ),
-    );
+          Positioned(
+              right: 0.0,
+              top: 0.0,
+              child: GestureDetector(
+                  onPanUpdate: onBottomRightPanUpdate,
+                  child: IconButton(
+                    icon: Icon(Icons.swap_horizontal_circle),
+                    iconSize: 50.0,
+                    color: Colors.black,
+                    onPressed: () {},
+                  ))),
+        ]),
+      );
+    } else {
+      return Transform(
+          transform: matrix,
+          alignment: Alignment.center,
+          child: Padding(
+            padding: EdgeInsets.only(
+                left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: widget.thing['select']
+                    ? Border.all(color: Colors.red, width: 4.0)
+                    : null,
+                borderRadius: BorderRadius.circular(2.0),
+              ),
+              child: LimitedBox(
+                // maxHeight: customHeight,
+                maxWidth: customWidth,
+                child: widget.child,
+              ),
+            ),
+          ));
+    }
   }
 
 //Pan Controller

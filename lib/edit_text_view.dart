@@ -15,14 +15,14 @@ class EditTextView extends StatefulWidget {
   final id;
   final String text;
   final bool select;
-  final bool editText;
+  final bool edit;
 
   EditTextView(
       {this.id,
       this.fontType,
       this.scale,
       this.select,
-      this.editText,
+      this.edit,
       this.text})
       : super();
 
@@ -35,14 +35,17 @@ class EditTextView extends StatefulWidget {
 class EditTextViewState extends State<EditTextView> {
   bool viewtext = false;
   bool edittxt = false;
-  var textType;
+  String textType="suhas";
 
   int noOfChar = 1;
   double customWidth = 400.0;
   double customHeight = 200.0;
 
+  TextEditingController controller = new TextEditingController();
+
   @override
   void initState() {
+    controller = new TextEditingController(text: widget.text);
     super.initState();
     // widget.myFocusNode.addListener(_focusNodeListener);
   }
@@ -70,30 +73,30 @@ class EditTextViewState extends State<EditTextView> {
     print("id: ${widget.id}");
 
     return widget.fontType != null
-        ? widget.editText
-            ? LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                // double maxSize =
-                //     (constraints.maxWidth * constraints.maxHeight) / 3000;
-                // print("maxsize $maxSize");
-                return ScopedModelDescendant<ActivityModel>(
+        ? LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+            // double maxSize =
+            //     (constraints.maxWidth * constraints.maxHeight) / 3000;
+            // print("maxsize $maxSize");
+            return widget.edit
+                ? ScopedModelDescendant<ActivityModel>(
                     builder: (context, child, model) => FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Container(
-                            // maxHeight: constraints.maxHeight + noOfChar,
                             width: constraints.maxWidth,
                             child: TextField(
-                              controller:
-                                  TextEditingController(text: widget.text),
+                              controller: controller,
                               maxLines: null,
+                              keyboardType: TextInputType.text,
                               onChanged: (str) {
-                                setState(() {
-                                  model.selectThing(widget.id, str,
-                                      widget.select, widget.editText);
-                                });
+                                model.selectedThing(widget.id,"text", str, widget.select,
+                                    widget.edit);
+                              },
+                              onSubmitted: (str) {
+                                model.selectedThing(widget.id,"text", str, widget.select,
+                                    false);
                               },
                               autofocus: true,
-                              // enabled: widget.editText,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 30.0,
@@ -105,30 +108,21 @@ class EditTextViewState extends State<EditTextView> {
                                   hintText: widget.change),
                             ),
                           ),
-                        ));
-              })
-            : Text(
-                widget.text == '' ? widget.change : widget.text,
-                maxLines: null,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 30.0,
-                    color: widget.text == ''
-                        ? Colors.black12
-                        : const Color(0xFF000000),
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontFamily: widget.fontType),
-              )
+                        ))
+                : Text(
+                  widget.text == '' ? widget.change : widget.text,
+                  maxLines: null,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 30.0,
+                      color: widget.text == ''
+                          ? Colors.black12
+                          : const Color(0xFF000000),
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontFamily: widget.fontType),
+                );
+          })
         : Container();
-  }
-
-  //Pan Controller
-  void onPanUpdate(DragUpdateDetails details) {
-    print("onTopLeftPanUpdate $details");
-    setState(() {
-      customWidth += details.delta.dx;
-      customHeight += details.delta.dy;
-    });
   }
 }
