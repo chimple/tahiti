@@ -1,24 +1,21 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tahiti/activity_model.dart';
-import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tahiti/popup_grid_view.dart';
+import 'dart:ui' as ui show Codec, instantiateImageCodec, Image, FrameInfo;
 
 class Drawing extends StatefulWidget {
   Drawing({
     this.template,
     Key key,
     this.model,
-    this.strokeWidth = 25.0,
-    this.finishPercent,
   }) : super(key: key);
-  final double strokeWidth;
-  final int finishPercent;
-
   final ActivityModel model;
-
   Widget template;
   @override
   RollerState createState() {
@@ -28,28 +25,28 @@ class Drawing extends StatefulWidget {
 
 class RollerState extends State<Drawing> {
   GlobalKey previewContainer = new GlobalKey();
-  Queue<String> _list = new Queue();
-  List<String> _listOfImage = [];
-  String _oldImage;
+  ui.Image image;
   @override
   void initState() {
-    if (widget.model.template != null) {
-      _list.addFirst(widget.model.template);
-    }
-    _listOfImage = _list.toList();
+    load('assets/roller_image/sample5.jpg').then((i) {
+      setState(() {
+        image = i;
+      });
+    });
     super.initState();
+  }
+
+  Future<ui.Image> load(String asset) async {
+    ByteData data = await rootBundle.load(asset);
+    ui.Codec codec = await ui.instantiateImageCodec(
+      data.buffer.asUint8List(),
+    );
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return fi.image;
   }
 
   @override
   void didUpdateWidget(Drawing oldWidget) {
-    if (_oldImage != widget.model.unMaskImagePath && _oldImage != null) {
-      _list.addFirst(_oldImage);
-    }
-    _oldImage = widget.model.unMaskImagePath;
-    setState(() {
-      _listOfImage = _list.toList();
-    });
-    print("list of images: $_listOfImage");
     super.didUpdateWidget(oldWidget);
   }
 
@@ -84,55 +81,27 @@ class RollerState extends State<Drawing> {
       child: LayoutBuilder(
         builder: (context, box) {
           return Container(
-            height: box.maxHeight,
-            width: box.maxWidth,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onScaleUpdate: widget.model.isInteractive
-                  ? (ScaleUpdateDetails update) =>
-                      _onScaleUpdate(context, update)
-                  : null,
-              onScaleEnd: widget.model.isInteractive
-                  ? (ScaleEndDetails end) => _onScaleEnd(
-                        context,
-                        end,
-                      )
-                  : null,
-              child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    widget.model.unMaskImagePath == null
-                        ? Container()
-                        : FittedBox(
-                            child: Image.asset(
-                            widget.model.unMaskImagePath,
-                            scale: 1.0,
-                          )),
-                    Stack(
-                        children: _listOfImage
-                            .map((c) => _buildWidget(context, c))
-                            .toList(growable: false)),
-                  ]),
-            ),
-          );
+              height: box.maxHeight,
+              width: box.maxWidth,
+              child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onScaleUpdate: widget.model.isInteractive
+                      ? (ScaleUpdateDetails update) =>
+                          _onScaleUpdate(context, update)
+                      : null,
+                  onScaleEnd: widget.model.isInteractive
+                      ? (ScaleEndDetails end) => _onScaleEnd(
+                            context,
+                            end,
+                          )
+                      : null,
+                  child: _ScratchCardLayout(
+                    child: Container(),
+                    path: widget.model.pathHistory,
+                    data: widget.model.painterController,
+                  )));
         },
       ),
-    );
-  }
-
-  Widget _buildWidget(BuildContext context, String text) {
-    return _ScratchCardLayout(
-      child: text.endsWith('.svg')
-          ? Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: Colors.grey,
-              child: SvgPicture.asset(text))
-          : FittedBox(child: Image.asset(text)),
-      path: widget.model.pathHistory,
-      strokeWidth: 25.0,
-      data: widget.model.painterController,
     );
   }
 }
@@ -284,7 +253,7 @@ class PainterController extends ChangeNotifier {
             blurStyle: blurStyle,
             sigma: sigma,
             thickness: thickness,
-            color: model.selectedColor);
+            color: model.drawingColor);
       }
     }
   }
@@ -325,13 +294,13 @@ class PainterController extends ChangeNotifier {
     }
   }
 
+  void eraser() {
+    print('eraser');
+    paintOption = PaintOption.erase;
+    notifyListeners();
+  }
+
   void doUnMask() {
-    Paint paint = new Paint();
-    paint.style = PaintingStyle.stroke;
-    paint.blendMode = BlendMode.clear;
-    paint.strokeWidth = 25.0;
-    paint.strokeCap = StrokeCap.round;
-    _currentPaint = paint;
     paintOption = PaintOption.unMask;
     notifyListeners();
   }
