@@ -21,10 +21,14 @@ class ActivityModel extends Model {
   PathHistory pathHistory;
 
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
+  Color _textColor;
+  Color _stickerColor;
+  Color _drawingColor;
   Color _selectedColor;
 
   String id;
   bool _isInteractive = true;
+  String selectedIcon;
 
   ActivityModel({@required this.pathHistory, @required this.id}) {
     print('pathHistory: $pathHistory');
@@ -49,9 +53,32 @@ class ActivityModel extends Model {
     _saveAndNotifyListeners();
   }
 
+  set selecetedStickerIcon(String t) {
+    selectedIcon = t;
+    notifyListeners();
+  }
+
+  Color get textColor => _textColor;
+  set textColor(Color t) {
+    _textColor = t;
+    notifyListeners();
+  }
+
   Color get selectedColor => _selectedColor;
   set selectedColor(Color t) {
     _selectedColor = t;
+    notifyListeners();
+  }
+
+  Color get stickerColor => _stickerColor;
+  set stickerColor(Color t) {
+    _stickerColor = t;
+    notifyListeners();
+  }
+
+  Color get drawingColor => _drawingColor;
+  set drawingColor(Color t) {
+    _drawingColor = t;
     notifyListeners();
   }
 
@@ -84,7 +111,7 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': selectedColor?.value ?? Colors.red.value
+      'color': stickerColor?.value ?? Colors.red.value
     });
   }
 
@@ -129,7 +156,8 @@ class ActivityModel extends Model {
       'font': font,
       'x': 0.0,
       'y': 0.0,
-      'scale': 1.0
+      'scale': 1.0,
+      'color': textColor?.value ?? Colors.white.value
     });
   }
 

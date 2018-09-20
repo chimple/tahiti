@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
+<g style="opacity:0;">
+	<rect x="111" y="103.2" style="opacity:0.5;" width="13.4" height="57.6"/>
+	<path style="fill:#FFFFFF;" d="M107.3,91.4H32.6l-22.5,37.4v32.3h25.1c4.3-5.8,11.2-9.5,18.9-9.5s14.6,3.7,18.9,9.5h40.7V97.9
+		C113.8,94.3,110.9,91.4,107.3,91.4z"/>
+	<path style="fill:#FFFFFF;" d="M238.6,87.9H130.1c-3.6,0-6.5,2.9-6.5,6.5v66.6h51c4.3-5.8,11.2-9.5,18.9-9.5
+		c7.8,0,14.6,3.7,18.9,9.5h32.6V94.5C245.1,90.9,242.2,87.9,238.6,87.9z"/>
+	<polygon style="fill:#FFFFFF;" points="50.4,101.2 32,101.2 18.8,129.4 50.4,129.4 	"/>
+	<rect x="62" y="101.2" style="fill:#FFFFFF;" width="44.3" height="26.5"/>
+	<path style="fill:#FFFFFF;" d="M138,82.9v5h91.9v-5c0-3.6-2.9-6.5-6.5-6.5h-78.8C140.9,76.4,138,79.3,138,82.9z"/>
+	<rect x="55.3" y="91.1" style="opacity:0.5;" width="2.3" height="59.9"/>
+	<g style="opacity:0.5;">
+		<path d="M212.3,160.8c2.4,3.1,4.1,6.9,4.6,10.9h29.3c3,0,5.5-2.4,5.5-5.5l0,0c0-3-2.4-5.5-5.5-5.5H212.3z"/>
+		<path d="M170.2,171.7c0.6-4.1,2.2-7.8,4.6-10.9H72.9c2.4,3.1,4.1,6.9,4.6,10.9H170.2z"/>
+		<path d="M35.5,160.8H9c-3,0-5.5,2.4-5.5,5.5l0,0c0,3,2.4,5.5,5.5,5.5h21.9C31.4,167.6,33.1,163.9,35.5,160.8z"/>
+	</g>
+</g>
+<g>
+	<path style="fill:#FFC400;" d="M51.3,92.8H37.5v-8.6c0-3.8,3.1-6.9,6.9-6.9h0c3.8,0,6.9,3.1,6.9,6.9V92.8z"/>
+	<rect x="128.2" y="96.6" style="fill:#1F1E1E;" width="123.8" height="4"/>
+	<rect x="128.2" y="120.8" style="fill:#1F1E1E;" width="123.8" height="4"/>
+	<rect x="139.1" y="99.4" style="fill:#1F1E1E;" width="4.6" height="21.3"/>
+	<rect x="156.4" y="99.4" style="fill:#1F1E1E;" width="4.6" height="21.3"/>
+	<rect x="173.7" y="99.4" style="fill:#1F1E1E;" width="4.6" height="21.3"/>
+	<rect x="191" y="99.4" style="fill:#1F1E1E;" width="4.6" height="21.3"/>
+	<rect x="208.2" y="99.4" style="fill:#1F1E1E;" width="4.6" height="21.3"/>
+	<rect x="225.5" y="99.4" style="fill:#1F1E1E;" width="4.6" height="21.3"/>
+	<circle style="fill:#1E1E1E;" cx="54.2" cy="175.2" r="20.2"/>
+	<circle style="fill:#FFFFFF;" cx="54.2" cy="175.2" r="8.6"/>
+	<circle style="fill:#1E1E1E;" cx="193.5" cy="175.2" r="20.2"/>
+	<circle style="fill:#FFFFFF;" cx="193.5" cy="175.2" r="8.6"/>
+	<path style="fill:#FFFFFF;" d="M223.8,136.6h-88.7c-2.1,0-3.7-1.7-3.7-3.7l0,0c0-2.1,1.7-3.7,3.7-3.7h88.7c2.1,0,3.7,1.7,3.7,3.7
+		l0,0C227.5,134.9,225.8,136.6,223.8,136.6z"/>
+</g>
+</svg>

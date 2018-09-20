@@ -112,6 +112,7 @@ class Paper extends StatelessWidget {
         return EditTextView(
           fontType: thing['font'],
           scale: thing['scale'],
+          color: Color(thing['color'] as int),
         );
         break;
     }
