@@ -122,7 +122,9 @@ class ActivityModel extends Model {
       'path': imagePath,
       'x': 0.0,
       'y': 0.0,
-      'scale': 0.5
+      'scale': 0.5,
+      'color': color,
+      'blendMode': blendMode,
     });
   }
 
@@ -251,6 +253,30 @@ class ActivityModel extends Model {
     unMaskImagePath = text;
     notifyListeners();
   }
+
+  Color color = Colors.white;
+  BlendMode blendMode = BlendMode.dst;
+  String _selectedThingId;
+  Color cls;
+  BlendMode blnd;
+  // TODO:// onTap and pass id of selected thing here
+  set selectedThingId(String id) {
+    _selectedThingId = id;
+  }
+
+  void filterImage() {
+    things.forEach((t) {
+      if (t['id'] == _selectedThingId) {
+        t.forEach((k, v) {
+          if (k == 'color' || k == 'blendMode') {
+            t['color'] = cls;
+            t['blendMode'] = blnd;
+          }
+        });
+      }
+    });
+    notifyListeners();
+  }
 }
 
 Color _colorFromInt(int colorValue) => Color(colorValue);
@@ -357,6 +383,7 @@ class PathInfo {
         _paint.blendMode = BlendMode.clear;
         break;
       case PaintOption.erase:
+        _paint.blendMode = BlendMode.clear;
         break;
     }
   }
