@@ -264,7 +264,7 @@ class ActivityModel extends Model {
     _selectedThingId = id;
   }
 
-  void filterImage() {
+  void selectedThing() {
     things.forEach((t) {
       if (t['id'] == _selectedThingId) {
         t.forEach((k, v) {
