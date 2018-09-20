@@ -194,9 +194,12 @@ class PopupGridViewState extends State<PopupGridView> {
                         ? VerticalDirection.down
                         : VerticalDirection.up,
                     children: <Widget>[
-                      SizedBox(
-                        child: ColorPicker(),
-                      ),
+                      highlightedButtonItem == "assets/menu/mic.png" ||
+                              highlightedButtonItem == "assets/menu/camera.png"
+                          ? new Container()
+                          : SizedBox(
+                              child: ColorPicker(),
+                            ),
                       SizedBox(
                         height: 60.0,
                         child: GridView.count(

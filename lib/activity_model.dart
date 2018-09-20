@@ -15,7 +15,7 @@ class ActivityModel extends Model {
   String _template;
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
-  String _highlighted ;
+  String _highlighted;
   bool _isDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
@@ -107,6 +107,17 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5
+    });
+  }
+
+  void addNima(String name) {
+    addThing({
+      'id': Uuid().v4(),
+      'type': 'nima',
+      'asset': name,
+      'x': 0.0,
+      'y': 0.0,
+      'scale': 0.5,
     });
   }
 
