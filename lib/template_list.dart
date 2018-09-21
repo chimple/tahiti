@@ -12,6 +12,7 @@ class TemplateList extends StatefulWidget {
 }
 
 class TemplateListState extends State<TemplateList> {
+  String onValue;
   @override
   void initState() {
     super.initState();
@@ -19,7 +20,11 @@ class TemplateListState extends State<TemplateList> {
       await showDialog<String>(
         context: context,
         builder: (BuildContext context) => _build(context),
-      );
+      ).then((onValue) {
+        if (onValue == null) {
+          widget.onPress(null);
+        }
+      });
     });
   }
 
@@ -60,7 +65,7 @@ class TemplateListData extends StatelessWidget {
         child: new InkWell(
           onTap: () {
             onPress(templates[index]);
-            Navigator.of(context).pop();
+            Navigator.pop(context, 'selected');
           },
           child: new Column(
             children: <Widget>[

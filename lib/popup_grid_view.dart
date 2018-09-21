@@ -47,21 +47,21 @@ class PopupGridViewState extends State<PopupGridView> {
   String highlightedButtonItem;
   String highlightedPopUpItem;
   // bool popped = false;
-  
+
   @override
   void initState() {
     super.initState();
     highlightedButtonItem = widget.menuItems.keys.first;
   }
 
-   @override
+  @override
   void dispose() {
     // Clean up the focus node when the Form is disposed
     super.dispose();
   }
 
   Color _getIconColor(model, title) {
-    print("title and highlighted button $title......$highlightedButtonItem");
+    //print("title and highlighted button $title......$highlightedButtonItem");
     if (((model.popped == Popped.bottom && widget.side == DisplaySide.bottom) ||
             (model.popped == Popped.top && widget.side == DisplaySide.top)) &&
         highlightedButtonItem == title) {
@@ -101,6 +101,8 @@ class PopupGridViewState extends State<PopupGridView> {
                           // highlightedButtonItem = title;
 
                           if (title != null) {
+                            model.selectedIcon = title;
+                            print('icon is ${model.selectedIcon}');
                             if (title.startsWith('assets/menu/pencil.png')) {
 //                              model.painterController.blurEffect =
 //                                  MaskFilter.blur(BlurStyle.normal, 0.0);
@@ -138,6 +140,8 @@ class PopupGridViewState extends State<PopupGridView> {
                               // model.addUnMaskImage(title);
                               // model.painterController.doUnMask();
                               model.isDrawing = false;
+                            } else if (title.startsWith('assets/menu/eraser')) {
+                              model.painterController.eraser();
                             } else {
                               model.highlighted = null;
                               model.isDrawing = false;
@@ -219,7 +223,8 @@ class PopupGridViewState extends State<PopupGridView> {
                                                 if (highlightedButtonItem ==
                                                     "assets/menu/text.png") {
                                                   model.addText('',
-                                                      font: itemName.data, select: true, edit: false);
+                                                      font: itemName.data,
+                                                      edit: false);
                                                 }
                                                 widget
                                                     .onUserPress(itemName.data);

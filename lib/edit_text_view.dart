@@ -14,17 +14,17 @@ class EditTextView extends StatefulWidget {
   final double scale;
   final id;
   final String text;
-  final bool select;
   final bool edit;
+  final Color color;
 
   EditTextView(
       {this.id,
       this.fontType,
       this.scale,
-      this.select,
       this.edit,
-      this.text})
+      this.text, this.color})
       : super();
+
 
   @override
   EditTextViewState createState() {
@@ -89,18 +89,16 @@ class EditTextViewState extends State<EditTextView> {
                               maxLines: null,
                               keyboardType: TextInputType.text,
                               onChanged: (str) {
-                                model.selectedThing(widget.id,"text", str, widget.select,
-                                    widget.edit);
+                                model.selectedThing(widget.id,"text", str, widget.edit);
                               },
                               onSubmitted: (str) {
-                                model.selectedThing(widget.id,"text", str, widget.select,
-                                    false);
+                                model.selectedThing(widget.id,"text", str, false);
                               },
                               autofocus: true,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 30.0,
-                                  color: const Color(0xFF000000),
+                                  color: widget.color,
                                   fontWeight: FontWeight.bold,
                                   fontStyle: FontStyle.italic,
                                   fontFamily: widget.fontType),
@@ -117,7 +115,7 @@ class EditTextViewState extends State<EditTextView> {
                       fontSize: 30.0,
                       color: widget.text == ''
                           ? Colors.black12
-                          : const Color(0xFF000000),
+                          : widget.color,
                       fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.italic,
                       fontFamily: widget.fontType),

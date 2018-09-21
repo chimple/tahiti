@@ -42,13 +42,15 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   void onScaleStart(rotate.ScaleStartDetails details) {
     setState(() {
-      if (!widget.thing['select']) {
-        widget.thing['type'] == 'text'
-            ? widget.model.selectedThing(widget.thing['id'],
-                widget.thing['type'], widget.thing['text'], true, false)
-            : widget.model.selectedThing(
-                widget.thing['id'], widget.thing['type'], '', true, false);
-      }
+      widget.model.selectedThingId = widget.thing['id'];
+
+      // if (!widget.thing['select']) {
+      //   widget.thing['type'] == 'text'
+      //       ? widget.model.selectedThing(widget.thing['id'],
+      //           widget.thing['type'], widget.thing['text'], true, false)
+      //       : widget.model.selectedThing(
+      //           widget.thing['id'], widget.thing['type'], '', true, false);
+      // }
       _parentRenderBox =
           (context.ancestorRenderObjectOfType(const TypeMatcher<RenderStack>())
               as RenderBox);
@@ -157,111 +159,115 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
       ..rotateZ(widget.rotate);
     var matrix1 = Matrix4.identity()..scale(widget.scale);
     // ..rotateZ(rotate);
-    if (widget.thing['select']) {
-      return Transform(
-        transform: matrix,
-        alignment: Alignment.center,
-        child: Stack(children: <Widget>[
-          Positioned(
-              left: 0.0,
-              top: 0.0,
-              child: IconButton(
-                icon: Icon(Icons.delete_forever),
-                iconSize: 50.0,
-                color: Colors.black,
-                onPressed: () {
-                  widget.model.deletedThing(widget.thing['id']);
-                },
-              )),
-          widget.thing['type'] != 'video'
-              ? Positioned(
-                  left: 0.0,
-                  top: 50.0,
-                  child: IconButton(
-                    icon: Icon(!widget.thing['edit']
-                        ? Icons.edit
-                        : Icons.done_outline),
-                    iconSize: 50.0,
-                    color: Colors.black,
-                    onPressed: () {
-                      setState(() {
-                        if (!widget.thing['edit']) {
-                          (widget.thing['type'] == 'text')
-                              ? widget.model.selectedThing(
-                                  widget.thing['id'],
-                                  widget.thing['type'],
-                                  widget.thing['text'],
-                                  true,
-                                  true)
-                              : widget.model.selectedThing(widget.thing['id'],
-                                  widget.thing['type'], '', true, true);
-                        } else {
-                          (widget.thing['type'] == 'text')
-                              ? widget.model.selectedThing(
-                                  widget.thing['id'],
-                                  widget.thing['type'],
-                                  widget.thing['text'],
-                                  false,
-                                  false)
-                              : widget.model.selectedThing(widget.thing['id'],
-                                  widget.thing['type'], '', false, false);
-                        }
-                      });
-                    },
-                  ),
-                )
-              : Container(),
-          Padding(
-            padding: EdgeInsets.only(
-                left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: widget.thing['select']
-                    ? Border.all(color: Colors.red, width: 4.0)
-                    : null,
-                borderRadius: BorderRadius.circular(2.0),
-              ),
-              child: LimitedBox(
-                maxWidth: customWidth,
-                child: widget.child,
-              ),
-            ),
-          ),
-          Positioned(
-              right: 0.0,
-              top: 0.0,
-              child: GestureDetector(
-                  onPanUpdate: onBottomRightPanUpdate,
-                  child: IconButton(
-                    icon: Icon(Icons.swap_horizontal_circle),
-                    iconSize: 50.0,
-                    color: Colors.black,
-                    onPressed: () {},
-                  ))),
-        ]),
-      );
-    } else {
-      return Transform(
-          transform: matrix,
-          alignment: Alignment.center,
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: widget.thing['select']
-                    ? Border.all(color: Colors.red, width: 4.0)
-                    : null,
-                borderRadius: BorderRadius.circular(2.0),
-              ),
-              child: LimitedBox(
-                // maxHeight: customHeight,
-                maxWidth: customWidth,
-                child: widget.child,
-              ),
-            ),
-          ));
-    }
+    return ScopedModelDescendant<ActivityModel>(
+        builder: (context, child, model) =>
+            model.selectedThingId == widget.thing['id']
+                ? Transform(
+                    transform: matrix,
+                    alignment: Alignment.center,
+                    child: Stack(children: <Widget>[
+                      Positioned(
+                          left: 0.0,
+                          top: 0.0,
+                          child: IconButton(
+                            icon: Icon(Icons.delete_forever),
+                            iconSize: 50.0,
+                            color: Colors.black,
+                            onPressed: () {
+                              widget.model.deletedThing(widget.thing['id']);
+                            },
+                          )),
+                      widget.thing['type'] != 'video'
+                          ? Positioned(
+                              left: 0.0,
+                              top: 50.0,
+                              child: IconButton(
+                                icon: Icon(!widget.thing['edit']
+                                    ? Icons.edit
+                                    : Icons.done_outline),
+                                iconSize: 50.0,
+                                color: Colors.black,
+                                onPressed: () {
+                                  setState(() {
+                                    if (!widget.thing['edit']) {
+                                      (widget.thing['type'] == 'text')
+                                          ? widget.model.selectedThing(
+                                              widget.thing['id'],
+                                              widget.thing['type'],
+                                              widget.thing['text'],
+                                              true)
+                                          : widget.model.selectedThing(
+                                              widget.thing['id'],
+                                              widget.thing['type'],
+                                              '',
+                                              true);
+                                    } else {
+                                      (widget.thing['type'] == 'text')
+                                          ? widget.model.selectedThing(
+                                              widget.thing['id'],
+                                              widget.thing['type'],
+                                              widget.thing['text'],
+                                              false)
+                                          : widget.model.selectedThing(
+                                              widget.thing['id'],
+                                              widget.thing['type'],
+                                              '',
+                                              false);
+                                    }
+                                  });
+                                },
+                              ),
+                            )
+                          : Container(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: model.selectedThingId == widget.thing['id']
+                                ? Border.all(color: Colors.red, width: 4.0)
+                                : null,
+                            borderRadius: BorderRadius.circular(2.0),
+                          ),
+                          child: LimitedBox(
+                            maxWidth: customWidth,
+                            child: widget.child,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                          right: 0.0,
+                          top: 0.0,
+                          child: GestureDetector(
+                              onPanUpdate: onBottomRightPanUpdate,
+                              child: IconButton(
+                                icon: Icon(Icons.swap_horizontal_circle),
+                                iconSize: 50.0,
+                                color: Colors.black,
+                                onPressed: () {},
+                              ))),
+                    ]),
+                  )
+                : Transform(
+                    transform: matrix,
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: model.selectedThingId == widget.thing['id']
+                              ? Border.all(color: Colors.red, width: 4.0)
+                              : null,
+                          borderRadius: BorderRadius.circular(2.0),
+                        ),
+                        child: LimitedBox(
+                          // maxHeight: customHeight,
+                          maxWidth: customWidth,
+                          child: widget.child,
+                        ),
+                      ),
+                    )));
   }
 
 //Pan Controller

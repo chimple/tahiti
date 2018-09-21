@@ -117,8 +117,8 @@ class Paper extends StatelessWidget {
           fontType: thing['font'],
           text: thing['text'],
           scale: thing['scale'],
-          select: thing['select'],
-          edit: thing['edit']
+          edit: thing['edit'],
+          color: Color(thing['color'] as int),
         );
         break;
     }

@@ -5,7 +5,6 @@ import 'package:tahiti/camera.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
-import 'package:tahiti/color_picker.dart';
 
 final Map<String, List<Iconf>> bottomStickers = {
   'assets/menu/text.png': [
@@ -22,33 +21,9 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.text, data: 'Rock salt'),
     Iconf(type: ItemType.text, data: 'Shadows into light'),
   ],
-  'assets/menu/happy.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/angry.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/cold.gif'),
-    Iconf(
-      type: ItemType.png,
-      data: 'assets/stickers/emoguy/cry.gif',
-    ),
-    Iconf(
-      type: ItemType.png,
-      data: 'assets/stickers/emoguy/happy.gif',
-    ),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/laughing.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/love.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/playing.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/relaxed.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/sad.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/scared.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/sleeping.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/thumbsdown.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/thumbup.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/workingout.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/yummy.gif'),
-  ],
   'assets/menu/icon.png': [
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/pen'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/ball'),
-    Iconf(type: ItemType.sticker, data: 'assets/svgimage/men'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/monkey'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/pot'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/carrot'),
@@ -68,6 +43,97 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/mustache'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/palm'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/toe'),
+  ],
+  'assets/menu/clothes.png': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/blazer'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/bow'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/boxers'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/cap'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/coat'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/dress'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/earrings'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/gloves'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/gown'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/hat'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/jacket'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/jeans'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/pajamas'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/pant'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/hairband'),
+  ],
+  'assets/menu/fruit.png': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/apple'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/banana'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/cheery'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/chikoo'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/fig'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/grapefruit'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/grapes'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/guava'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/jackfruit'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/kiwifruit'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/lemon'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/lime'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/lychee'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/mango'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/stawberry'),
+  ],
+  'assets/menu/vegetables.png': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/beetroot'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/cabbage'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/capsicum'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/carrot'),
+    Iconf(
+        type: ItemType.sticker, data: 'assets/svgimage/vegetables/cauliflower'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/celeriac'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/celery'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/cucumber'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/drumstick'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/eggplant'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/fennal'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/garlic'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/ginger'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/kohlrabi'),
+    Iconf(
+        type: ItemType.sticker, data: 'assets/svgimage/vegetables/ladyfinger'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/mushroom'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/onion'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/peas'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/pepper'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/potato'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/radish'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/rhubarb'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/spinach'),
+    Iconf(
+        type: ItemType.sticker, data: 'assets/svgimage/vegetables/sweet_corn'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/vegetables/sweet_potato'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/turnip'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/witloof'),
+  ],
+  'assets/menu/vehicles.png': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/ambulance'),
+    Iconf(
+        type: ItemType.sticker, data: 'assets/svgimage/vehicles/autorickshaw'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/bike'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/boat'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/bulldozer'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/bus'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/car'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/carriage'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/chariot'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/fire_engine'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/jeep'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/lorry'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/police_car'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/rocket'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/scooter'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/ship'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/tank'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/tractor'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/train'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/van'),
   ],
   'assets/menu/food_icon.png': [
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/almond'),
@@ -123,96 +189,6 @@ final Map<String, List<Iconf>> bottomStickers = {
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/toffee'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/veg_roll'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/vine'),
-  ],
-  'assets/menu/giraffe.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/9.png'),
-  ],
-  'assets/menu/pig.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/pig/9.png'),
-  ],
-  'assets/menu/monkey.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/9.png'),
-  ],
-  'assets/menu/carpie.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/9.png'),
-  ],
-  'assets/menu/doggie.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/9.png'),
   ],
 };
 
@@ -351,8 +327,8 @@ class SelectStickerState extends State<SelectSticker> {
                       model.addNima(text);
                     }
                     if (text.startsWith('assets/roller_image')) {
-                      model.addUnMaskImage(text);
-                      model.painterController.doUnMask();
+                      // model.addUnMaskImage(text);
+                      // model.painterController.doUnMask();
                       model.isDrawing = true;
                     }
                 }
@@ -373,14 +349,18 @@ class SelectStickerState extends State<SelectSticker> {
         child: Center(
             child: new Text(
           "abc",
-          style: TextStyle(fontFamily: conf.data, fontSize: 30.0),
+          style: TextStyle(
+            fontFamily: conf.data,
+            fontSize: 30.0,
+            color: ActivityModel.of(context).textColor,
+          ),
         )),
         color: Colors.blueAccent[100],
       );
     else if (conf.type == ItemType.sticker) {
       return DisplaySticker(
         primary: conf.data,
-        color: ActivityModel.of(context).selectedColor,
+        color: ActivityModel.of(context).stickerColor,
       );
     } else
       return Image.asset(

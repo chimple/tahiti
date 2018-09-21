@@ -21,10 +21,21 @@ class ActivityModel extends Model {
   PathHistory pathHistory;
 
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
+  Color _textColor;
+  Color _stickerColor;
+  Color _drawingColor;
   Color _selectedColor;
 
   String id;
   bool _isInteractive = true;
+  String selectedIcon;
+
+  
+  Color color = Colors.white;
+  BlendMode blendMode = BlendMode.dst;
+  String selectedThingId;
+  Color cls;
+  BlendMode blnd;
 
   ActivityModel({@required this.pathHistory, @required this.id}) {
     print('pathHistory: $pathHistory');
@@ -49,9 +60,37 @@ class ActivityModel extends Model {
     _saveAndNotifyListeners();
   }
 
+  // TODO:// onTap and pass id of selected thing here
+  // set selectedThingId(String id) {
+  //   selectedThingId = id;
+  // }
+
+  set selecetedStickerIcon(String t) {
+    selectedIcon = t;
+    notifyListeners();
+  }
+
+  Color get textColor => _textColor;
+  set textColor(Color t) {
+    _textColor = t;
+    notifyListeners();
+  }
+
   Color get selectedColor => _selectedColor;
   set selectedColor(Color t) {
     _selectedColor = t;
+    notifyListeners();
+  }
+
+  Color get stickerColor => _stickerColor;
+  set stickerColor(Color t) {
+    _stickerColor = t;
+    notifyListeners();
+  }
+
+  Color get drawingColor => _drawingColor;
+  set drawingColor(Color t) {
+    _drawingColor = t;
     notifyListeners();
   }
 
@@ -81,12 +120,11 @@ class ActivityModel extends Model {
       'id': Uuid().v4(),
       'type': 'sticker',
       'asset': name,
-      'select': true,
       'edit': true,
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': selectedColor?.value ?? Colors.red.value
+      'color': stickerColor?.value ?? Colors.red.value
     });
   }
 
@@ -94,12 +132,13 @@ class ActivityModel extends Model {
     addThing({
       'id': Uuid().v4(),
       'type': 'image',
-      'select': true,
       'edit': true,
       'path': imagePath,
       'x': 0.0,
       'y': 0.0,
-      'scale': 0.5
+      'scale': 0.5,
+      'color': color,
+      'blendMode': blendMode,
     });
   }
 
@@ -107,7 +146,6 @@ class ActivityModel extends Model {
     addThing({
       'id': Uuid().v4(),
       'type': 'video',
-      'select': true,
       'path': videoPath,
       'x': 0.0,
       'y': 0.0,
@@ -115,15 +153,13 @@ class ActivityModel extends Model {
     });
   }
 
-  void addText(String text, {String font, bool select, bool edit}) {
+  void addText(String text, {String font, bool edit}) {
     bool temp = false;
     things.forEach((t) {
-      t['select'] = false;
       t['edit'] = false;
       if (t['text'] == '') {
         temp = true;
         t['font'] = font;
-        t['select'] = true;
       }
       notifyListeners();
     });
@@ -133,8 +169,8 @@ class ActivityModel extends Model {
         'type': 'text',
         'text': text,
         'font': font,
-        'select': select,
         'edit': edit,
+        'color': textColor?.value ?? Colors.white.value,
         'x': 0.0,
         'y': 0.0,
         'scale': 1.0
@@ -146,7 +182,6 @@ class ActivityModel extends Model {
     addThing({
       'id': Uuid().v4(),
       'type': 'nima',
-      'select': true,
       'asset': name,
       'x': 0.0,
       'y': 0.0,
@@ -154,7 +189,7 @@ class ActivityModel extends Model {
     });
   }
 
-  void selectedThing(var id, String type, String text, bool select, bool edit) {
+  void selectedThing(var id, String type, String text, bool edit) {
     things.forEach((t) {
       if (t['id'] == id) {
         if (type == 'text' || type == 'image' || type == 'sticker') {
@@ -163,9 +198,16 @@ class ActivityModel extends Model {
           }
           t['edit'] = edit;
         }
-        t['select'] = select;
       } else {
         t['select'] = false;
+      }
+      if (t['id'] == selectedThingId && t['type'] == 'image') {
+        t.forEach((k, v) {
+          if (k == 'color' || k == 'blendMode') {
+            t['color'] = cls;
+            t['blendMode'] = blnd;
+          }
+        });
       }
     });
     notifyListeners();
@@ -372,6 +414,7 @@ class PathInfo {
         _paint.blendMode = BlendMode.clear;
         break;
       case PaintOption.erase:
+        _paint.blendMode = BlendMode.clear;
         break;
     }
   }
