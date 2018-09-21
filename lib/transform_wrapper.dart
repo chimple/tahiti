@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
 import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
     as rotate;
@@ -7,11 +8,16 @@ import 'activity_model.dart';
 import 'paper.dart';
 
 class TransformWrapper extends StatefulWidget {
-  const TransformWrapper({Key key, @required this.child, @required this.thing})
+  const TransformWrapper(
+      {Key key,
+      @required this.child,
+      @required this.thing,
+      @required this.model})
       : super(key: key);
 
   final Widget child;
   final Map<String, dynamic> thing;
+  final model;
 
   @override
   State<StatefulWidget> createState() {
@@ -36,6 +42,16 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   void onScaleStart(rotate.ScaleStartDetails details) {
     setState(() {
+      widget.model.selectedThingId = widget.thing['id'];
+      widget.model.editSelectedThing = false;
+
+      // if (!widget.thing['select']) {
+      //   widget.thing['type'] == 'text'
+      //       ? widget.model.selectedThing(widget.thing['id'],
+      //           widget.thing['type'], widget.thing['text'], true, false)
+      //       : widget.model.selectedThing(
+      //           widget.thing['id'], widget.thing['type'], '', true, false);
+      // }
       _parentRenderBox =
           (context.ancestorRenderObjectOfType(const TypeMatcher<RenderStack>())
               as RenderBox);
@@ -83,20 +99,22 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   @override
   Widget build(BuildContext context) {
-    _width = MediaQuery.of(context).size.width;
+    _width = MediaQuery.of(context).size.width / 2;
     final model = ActivityModel.of(context);
     return Positioned(
       left: _translate.dx,
       top: _translate.dy,
-      child: WidgetTransformDelegate(
-        rotate: _rotate,
-        scale: _scale,
-        child: new RotateGestureDetector(
-          onScaleStart: model.isInteractive ? onScaleStart : null,
-          onScaleUpdate: model.isInteractive ? onScaleUpdate : null,
-          onScaleEnd: model.isInteractive
-              ? (rotate.ScaleEndDetails details) => onScaleEnd(model, details)
-              : null,
+      child: new RotateGestureDetector(
+        onScaleStart: model.isInteractive ? onScaleStart : null,
+        onScaleUpdate: model.isInteractive ? onScaleUpdate : null,
+        onScaleEnd: model.isInteractive
+            ? (rotate.ScaleEndDetails details) => onScaleEnd(model, details)
+            : null,
+        child: WidgetTransformDelegate(
+          thing: widget.thing,
+          rotate: _rotate,
+          scale: _scale,
+          model: widget.model,
           child: widget.child,
         ),
       ),
@@ -117,8 +135,11 @@ class WidgetTransformDelegate extends StatefulWidget {
   final double rotate;
   final double scale;
   final Widget child;
+  final Map<String, dynamic> thing;
+  final model;
 
-  WidgetTransformDelegate({Key key, this.rotate, this.scale, this.child})
+  WidgetTransformDelegate(
+      {Key key, this.rotate, this.scale, this.child, this.thing, this.model})
       : super(key: key);
 
   @override
@@ -130,6 +151,7 @@ class WidgetTransformDelegate extends StatefulWidget {
 class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
   double customWidth = 500.0;
   double customHeight = 200.0;
+  bool enableOption = false;
 
   @override
   Widget build(BuildContext context) {
@@ -138,91 +160,116 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
       ..rotateZ(widget.rotate);
     var matrix1 = Matrix4.identity()..scale(widget.scale);
     // ..rotateZ(rotate);
-    return Transform(
-      transform: matrix,
-      alignment: Alignment.center,
-      child: Stack(children: <Widget>[
-        Positioned(
-          left: 0.0,
-          top: 0.0,
-          child: IconButton(
-            icon: Icon(Icons.cancel),
-            iconSize: 50.0,
-            color: Colors.black,
-            onPressed: () {
-              print("cancel");
-            },
-          ),
-        ),
-        Positioned(
-          left: 0.0,
-          top: 50.0,
-          child: IconButton(
-            icon: Icon(Icons.edit),
-            iconSize: 50.0,
-            color: Colors.black,
-            onPressed: () {},
-          ),
-        ),
-        Padding(
-          padding:
-              EdgeInsets.only(left: 60.0, top: 60.0, right: 20.0, bottom: 20.0),
-          child: LimitedBox(
-            // maxHeight: customHeight,
-            maxWidth: customWidth,
-              child: widget.child,
-              // decoration: BoxDecoration(
-              //   border: Border.all(color: Colors.red, width: 4.0),
-              //   borderRadius: BorderRadius.circular(2.0),
-              // )
-              ),
-        ),
-        Positioned(
-          left: 50.0,
-          top: 50.0,
-          child: GestureDetector(
-              onPanUpdate: onTopLeftPanUpdate,
-              child: Icon(
-                Icons.lens,
-                size: 30.0,
-                color: Colors.red,
-              )),
-        ),
-        Positioned(
-          right: 10.0,
-          top: 50.0,
-          child: GestureDetector(
-              onPanUpdate: onTopRightPanUpdate,
-              child: Icon(
-                Icons.lens,
-                size: 30.0,
-                color: Colors.red,
-              )),
-        ),
-        Positioned(
-          left: 50.0,
-          bottom: 10.0,
-          child: GestureDetector(
-              onPanUpdate: onBottomLeftPanUpdate,
-              child: Icon(
-                Icons.lens,
-                size: 30.0,
-                color: Colors.red,
-              )),
-        ),
-        Positioned(
-          right: 10.0,
-          bottom: 10.0,
-          child: GestureDetector(
-              onPanUpdate: onBottomRightPanUpdate,
-              child: Icon(
-                Icons.lens,
-                size: 30.0,
-                color: Colors.red,
-              )),
-        ),
-      ]),
-    );
+    return ScopedModelDescendant<ActivityModel>(
+        builder: (context, child, model) =>
+            model.selectedThingId == widget.thing['id']
+                ? Transform(
+                    transform: matrix,
+                    alignment: Alignment.center,
+                    child: Stack(children: <Widget>[
+                      Positioned(
+                          left: 0.0,
+                          top: 0.0,
+                          child: IconButton(
+                            icon: Icon(Icons.delete_forever),
+                            iconSize: 50.0,
+                            color: Colors.black,
+                            onPressed: () {
+                              widget.model.deletedThing(widget.thing['id']);
+                            },
+                          )),
+                      widget.thing['type'] != 'video'
+                          ? Positioned(
+                              left: 0.0,
+                              top: 50.0,
+                              child: IconButton(
+                                icon: Icon(model.editSelectedThing
+                                    ? Icons.done_outline
+                                    : Icons.edit),
+                                iconSize: 50.0,
+                                color: Colors.black,
+                                onPressed: () {
+                                  setState(() {
+                                    model.editSelectedThing
+                                        ? model.editSelectedThing = false
+                                        : model.editSelectedThing = true;
+                                    // if (model.editSelectedThing) {
+                                    //   (widget.thing['type'] == 'text')
+                                    //       ? widget.model.selectedThing(
+                                    //           widget.thing['id'],
+                                    //           widget.thing['type'],
+                                    //           widget.thing['text'])
+                                    //       : widget.model.selectedThing(
+                                    //           widget.thing['id'],
+                                    //           widget.thing['type'],
+                                    //           '');
+                                    // } else {
+                                    //   (widget.thing['type'] == 'text')
+                                    //       ? widget.model.selectedThing(
+                                    //           widget.thing['id'],
+                                    //           widget.thing['type'],
+                                    //           widget.thing['text'])
+                                    //       : widget.model.selectedThing(
+                                    //           widget.thing['id'],
+                                    //           widget.thing['type'],
+                                    //           '');
+                                    // }
+                                  });
+                                },
+                              ),
+                            )
+                          : Container(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: model.selectedThingId == widget.thing['id']
+                                ? Border.all(color: Colors.red, width: 4.0)
+                                : null,
+                            borderRadius: BorderRadius.circular(2.0),
+                          ),
+                          child: LimitedBox(
+                            maxWidth: customWidth,
+                            child: widget.child,
+                          ),
+                        ),
+                      ),
+                      widget.thing['type'] == 'text'
+                          ? Positioned(
+                              right: 0.0,
+                              top: 0.0,
+                              child: GestureDetector(
+                                  onPanUpdate: onBottomRightPanUpdate,
+                                  child: IconButton(
+                                    icon: Icon(Icons.swap_horizontal_circle),
+                                    iconSize: 50.0,
+                                    color: Colors.black,
+                                    onPressed: () {},
+                                  )))
+                          : Container(),
+                    ]),
+                  )
+                : Transform(
+                    transform: matrix,
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: model.selectedThingId == widget.thing['id']
+                              ? Border.all(color: Colors.red, width: 4.0)
+                              : null,
+                          borderRadius: BorderRadius.circular(2.0),
+                        ),
+                        child: LimitedBox(
+                          // maxHeight: customHeight,
+                          maxWidth: customWidth,
+                          child: widget.child,
+                        ),
+                      ),
+                    )));
   }
 
 //Pan Controller

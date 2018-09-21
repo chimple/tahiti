@@ -48,10 +48,17 @@ class PopupGridViewState extends State<PopupGridView> {
   String highlightedButtonItem;
   String highlightedPopUpItem;
   // bool popped = false;
+
   @override
   void initState() {
     super.initState();
     highlightedButtonItem = widget.menuItems.keys.first;
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed
+    super.dispose();
   }
 
   Color _getIconColor(model, title) {
