@@ -135,6 +135,7 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = false;
                             } else if (title.startsWith('assets/menu/eraser')) {
                               model.painterController.eraser();
+                              model.isDrawing = true;
                             } else {
                               model.highlighted = null;
                               model.isDrawing = false;
