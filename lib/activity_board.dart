@@ -73,12 +73,12 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                         top: 0.0,
                         left: 0.0,
                         right: 0.0,
-                        child: SelectSticker(side: DisplaySide.top)),
+                        child: SelectSticker(side: DisplaySide.first)),
                     Positioned(
                         bottom: 0.0,
                         left: 0.0,
                         right: 0.0,
-                        child: SelectSticker(side: DisplaySide.bottom)),
+                        child: SelectSticker(side: DisplaySide.second)),
                   ],
                 ),
           )

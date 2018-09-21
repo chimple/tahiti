@@ -15,8 +15,8 @@ class Iconf {
 
 typedef Widget BuildItem(BuildContext context, Iconf text, bool enabled);
 typedef void OnUserPress(String text);
-enum DisplaySide { top, bottom }
-enum Popped { top, bottom, noPopup }
+enum DisplaySide { first, second }
+enum Popped { first, second, noPopup }
 
 class PopupGridView extends StatefulWidget {
   final OnUserPress onUserPress;
@@ -44,6 +44,7 @@ class PopupGridView extends StatefulWidget {
 
 class PopupGridViewState extends State<PopupGridView> {
   static const menuHeight = 80.0;
+  static const menuWidth = 80.0;
   String highlightedButtonItem;
   String highlightedPopUpItem;
   // bool popped = false;
@@ -62,8 +63,8 @@ class PopupGridViewState extends State<PopupGridView> {
 
   Color _getIconColor(model, title) {
     //print("title and highlighted button $title......$highlightedButtonItem");
-    if (((model.popped == Popped.bottom && widget.side == DisplaySide.bottom) ||
-            (model.popped == Popped.top && widget.side == DisplaySide.top)) &&
+    if (((model.popped == Popped.second && widget.side == DisplaySide.second) ||
+            (model.popped == Popped.first && widget.side == DisplaySide.first)) &&
         highlightedButtonItem == title) {
       return Colors.grey;
     } else if (model.highlighted == title) {
@@ -83,16 +84,16 @@ class PopupGridViewState extends State<PopupGridView> {
               child: InkWell(
                   onTap: () => setState(
                         () {
-                          if ((model.popped == Popped.bottom ||
-                                  model.popped == Popped.top) &&
+                          if ((model.popped == Popped.second ||
+                                  model.popped == Popped.first) &&
                               highlightedButtonItem == title) {
                             model.popped = Popped.noPopup;
-                          } else if (widget.side == DisplaySide.bottom) {
-                            model.popped = Popped.bottom;
+                          } else if (widget.side == DisplaySide.second) {
+                            model.popped = Popped.second;
                             highlightedButtonItem = title;
                             widget.onUserPress(title);
-                          } else if (widget.side == DisplaySide.top) {
-                            model.popped = Popped.top;
+                          } else if (widget.side == DisplaySide.first) {
+                            model.popped = Popped.first;
                             highlightedButtonItem = title;
                             widget.onUserPress(title);
                           } else {
@@ -104,8 +105,6 @@ class PopupGridViewState extends State<PopupGridView> {
                             model.selectedIcon = title;
                             print('icon is ${model.selectedIcon}');
                             if (title.startsWith('assets/menu/pencil.png')) {
-//                              model.painterController.blurEffect =
-//                                  MaskFilter.blur(BlurStyle.normal, 0.0);
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
@@ -115,8 +114,6 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush1.png')) {
-//                              model.painterController.blurEffect =
-//                                  MaskFilter.blur(BlurStyle.normal, 15.5);
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
@@ -126,8 +123,6 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush.png')) {
-//                              model.painterController.blurEffect =
-//                                  MaskFilter.blur(BlurStyle.inner, 15.5);
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
@@ -137,10 +132,9 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = true;
                             } else if (title.startsWith('assets/menu/roller')) {
                               model.highlighted = title;
-                              // model.addUnMaskImage(title);
-                              // model.painterController.doUnMask();
                               model.isDrawing = false;
                             } else if (title.startsWith('assets/menu/eraser')) {
+                              model.highlighted = title;
                               model.painterController.eraser();
                               model.isDrawing = true;
                             } else {
@@ -155,112 +149,229 @@ class PopupGridViewState extends State<PopupGridView> {
             ));
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
-    List<Widget> rowItems = [];
-    if (widget.numFixedItems > 0) {
-      rowItems.add(Container(
-          height: menuHeight,
-          width: 80.0,
-          child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: widget.menuItems.keys
-                  .take(widget.numFixedItems)
-                  .map(
-                    (k) => _buildMenuItem(k, height: menuHeight, width: 80.0),
-                  )
-                  .toList(growable: false))));
-    }
-    rowItems.add(Expanded(
-      child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: widget.menuItems.keys
-              .skip(widget.numFixedItems)
-              .map(
-                (k) => _buildMenuItem(k),
-              )
-              .toList(growable: false)),
-    ));
-    return ScopedModelDescendant<ActivityModel>(
-      builder: (context, child, model) => Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Container(
-                height: 200.0,
-              ),
-              AnimatedPositioned(
-                bottom: widget.side == DisplaySide.bottom
-                    ? model.popped == Popped.bottom ? menuHeight : -10.0
-                    : null,
-                top: widget.side == DisplaySide.top
-                    ? model.popped == Popped.top ? menuHeight : -10.0
-                    : null,
-                left: 0.0,
-                right: 0.0,
-                duration: Duration(milliseconds: 1000),
-                curve: Curves.elasticOut,
-                child: SizedBox(
-                  height: menuHeight,
-                  child: Column(
-                    verticalDirection: widget.side == DisplaySide.bottom
-                        ? VerticalDirection.down
-                        : VerticalDirection.up,
-                    children: <Widget>[
-                      highlightedButtonItem == "assets/menu/mic.png" ||
-                              highlightedButtonItem == "assets/menu/camera.png"
-                          ? new Container()
-                          : SizedBox(
-                              child: ColorPicker(),
-                            ),
-                      SizedBox(
-                        height: 60.0,
-                        child: GridView.count(
-                            crossAxisCount: 1,
-                            scrollDirection: Axis.horizontal,
-                            children: widget.menuItems[highlightedButtonItem]
-                                .map((itemName) => Container(
-                                      child: InkWell(
-                                          onTap: () => setState(() {
-                                                if (highlightedButtonItem ==
-                                                    "assets/menu/text.png") {
-                                                  model.addText('',
-                                                      font: itemName.data);
-                                                }
-                                                widget
-                                                    .onUserPress(itemName.data);
-                                                highlightedPopUpItem =
-                                                    itemName.data;
-                                              }),
-                                          child: widget.buildItem(
-                                              context, itemName, true)),
-                                      color:
-                                          itemName.data == highlightedPopUpItem
-                                              ? Colors.red
-                                              : Colors.white,
-                                    ))
-                                .toList(growable: false)),
-                      ),
-                    ],
-                  ),
+    Orientation orientation = MediaQuery.of(context).orientation;
+    MediaQueryData media = MediaQuery.of(context);
+    var size = media.size;
+    GlobalKey orientationKey = new GlobalKey();
+
+    if (orientation == Orientation.portrait) {
+      List<Widget> rowItems = [];
+      if (widget.numFixedItems > 0) {
+        rowItems.add(Container(
+            height: size.height * .1,
+            width: size.width * .1,
+            child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: widget.menuItems.keys
+                    .take(widget.numFixedItems)
+                    .map(
+                      (k) => _buildMenuItem(
+                            k,
+                            height: size.height * .1,
+                          ),
+                    )
+                    .toList(growable: false))));
+      }
+      rowItems.add(Expanded(
+        child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: widget.menuItems.keys
+                .skip(widget.numFixedItems)
+                .map(
+                  (k) => _buildMenuItem(k),
+                )
+                .toList(growable: false)),
+      ));
+      return ScopedModelDescendant<ActivityModel>(
+        builder: (context, child, model) => Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Container(
+                  height: size.height * .3,
+                  // width: size.width*.2,
                 ),
-              ),
-              Positioned(
-                bottom: widget.side == DisplaySide.bottom ? 0.0 : null,
-                top: widget.side == DisplaySide.bottom ? null : 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: SizedBox(
-                  height: menuHeight,
-                  child: Container(
-                    color: Colors.white,
-                    child: Row(
-                      children: rowItems,
+                AnimatedPositioned(
+                  key: orientationKey,
+                  bottom: widget.side == DisplaySide.second
+                      ? model.popped == Popped.second ? menuHeight : -100.0
+                      : null,
+                  top: widget.side == DisplaySide.first
+                      ? model.popped == Popped.first ? menuHeight : -100.0
+                      : null,
+                  left: 0.0,
+                  right: 0.0,
+                  duration: Duration(milliseconds: 1000),
+                  curve: Curves.elasticOut,
+                  child: SizedBox(
+                    height: size.height * .1,
+                    child: Column(
+                      verticalDirection: widget.side == DisplaySide.second
+                          ? VerticalDirection.down
+                          : VerticalDirection.up,
+                      children: <Widget>[
+                        SizedBox(
+                          height: size.height * .03,
+                          child: ColorPicker(),
+                        ),
+                        SizedBox(
+                          height: size.height * .07,
+                          child: GridView.count(
+                              crossAxisCount: 1,
+                              scrollDirection: Axis.horizontal,
+                              children: widget.menuItems[highlightedButtonItem]
+                                  .map((itemName) => Container(
+                                        child: InkWell(
+                                            onTap: () => setState(() {
+                                                  if (highlightedButtonItem ==
+                                                      "assets/menu/text.png") {
+                                                    model.addText('',
+                                                        font: itemName.data);
+                                                  }
+                                                  widget.onUserPress(
+                                                      itemName.data);
+                                                  highlightedPopUpItem =
+                                                      itemName.data;
+                                                }),
+                                            child: widget.buildItem(
+                                                context, itemName, true)),
+                                        color: itemName.data ==
+                                                highlightedPopUpItem
+                                            ? Colors.red
+                                            : Colors.white,
+                                      ))
+                                  .toList(growable: false)),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
-    );
+                Positioned(
+                  bottom: widget.side == DisplaySide.second ? 0.0 : null,
+                  top: widget.side == DisplaySide.second ? null : 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: SizedBox(
+                    height: size.height * .07,
+                    child: Container(
+                      color: Colors.white,
+                      child: Row(
+                        children: rowItems,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+      );
+    } else {
+      List<Widget> columnItems = [];
+      if (widget.numFixedItems > 0) {
+        columnItems.add(Container(
+            height: size.height * .1,
+            width: size.width * .15,
+            child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: widget.menuItems.keys
+                    .take(widget.numFixedItems)
+                    .map(
+                      (k) => _buildMenuItem(k, width: size.width * .1),
+                    )
+                    .toList(growable: false))));
+      }
+      columnItems.add(Expanded(
+        child: ListView(
+            scrollDirection: Axis.vertical,
+            children: widget.menuItems.keys
+                .skip(widget.numFixedItems)
+                .map(
+                  (k) => _buildMenuItem(k),
+                )
+                .toList(growable: false)),
+      ));
+      return ScopedModelDescendant<ActivityModel>(
+        builder: (context, child, model) => Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Container(
+                  height: size.height * .9,
+                  width: size.width * .15,
+                ),
+                AnimatedPositioned(
+                  key: orientationKey,
+                  left: widget.side == DisplaySide.second
+                      ? model.popped == Popped.second ? menuWidth : -100.0
+                      : null,
+                  right: widget.side == DisplaySide.first
+                      ? model.popped == Popped.first ? menuWidth : -100.0
+                      : null,
+                  top: 0.0,
+                  bottom: 0.0,
+                  duration: Duration(milliseconds: 1000),
+                  curve: Curves.elasticOut,
+                  child: SizedBox(
+                    width: size.width * .12,
+                    child: Row(
+                      verticalDirection: widget.side == DisplaySide.second
+                          ? VerticalDirection.down
+                          : VerticalDirection.up,
+                      children: <Widget>[
+                        SizedBox(
+                          width: size.width * .03,
+                          child: ColorPicker(),
+                        ),
+                        SizedBox(
+                          height: size.height * .84,
+                          width: size.width * .07,
+                          child: GridView.count(
+                              crossAxisCount: 1,
+                              scrollDirection: Axis.vertical,
+                              children: widget.menuItems[highlightedButtonItem]
+                                  .map((itemName) => Container(
+                                        child: InkWell(
+                                            onTap: () => setState(() {
+                                                  if (highlightedButtonItem ==
+                                                      "assets/menu/text.png") {
+                                                    model.addText('',
+                                                        font: itemName.data);
+                                                  }
+                                                  widget.onUserPress(
+                                                      itemName.data);
+                                                  highlightedPopUpItem =
+                                                      itemName.data;
+                                                }),
+                                            child: widget.buildItem(
+                                                context, itemName, true)),
+                                        color: itemName.data ==
+                                                highlightedPopUpItem
+                                            ? Colors.red
+                                            : Colors.white,
+                                      ))
+                                  .toList(growable: false)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: widget.side == DisplaySide.second ? 0.0 : null,
+                  right: widget.side == DisplaySide.second ? null : 0.0,
+                  top: 0.0,
+                  bottom: 0.0,
+                  child: SizedBox(
+                    width: size.width * .08,
+                    child: Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: columnItems,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+      );
+    }
   }
 }

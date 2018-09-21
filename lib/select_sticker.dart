@@ -6,7 +6,7 @@ import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
 
-final Map<String, List<Iconf>> bottomStickers = {
+final Map<String, List<Iconf>> secondStickers = {
   'assets/menu/text.png': [
     Iconf(type: ItemType.text, data: 'Bungee'),
     Iconf(type: ItemType.text, data: 'Chela one'),
@@ -201,7 +201,7 @@ class TopStickers {
   static List<Iconf> playIcon = [
     Iconf(type: ItemType.png, data: 'assets/mic/play.png')
   ];
-  final Map<String, List<Iconf>> topStickers = {
+  final Map<String, List<Iconf>> firstStickers = {
     'assets/menu/mic.png': playIcon,
     'assets/menu/camera.png': [
       Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
@@ -327,16 +327,14 @@ class SelectStickerState extends State<SelectSticker> {
                       model.addNima(text);
                     }
                     if (text.startsWith('assets/roller_image')) {
-                      // model.addUnMaskImage(text);
-                      // model.painterController.doUnMask();
                       model.isDrawing = true;
                     }
                 }
               },
-              menuItems: widget.side == DisplaySide.bottom
-                  ? bottomStickers
-                  : TopStickers().topStickers,
-              numFixedItems: widget.side == DisplaySide.bottom ? 1 : 0,
+              menuItems: widget.side == DisplaySide.second
+                  ? secondStickers
+                  : TopStickers().firstStickers,
+              numFixedItems: widget.side == DisplaySide.second ? 1 : 0,
               itemCrossAxisCount: 2,
               buildItem: buildItem,
               buildIndexItem: buildIndexItem,
