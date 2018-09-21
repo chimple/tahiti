@@ -30,10 +30,9 @@ class ActivityModel extends Model {
   bool _isInteractive = true;
   String selectedIcon;
 
-  
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
-  String selectedThingId;
+  String _selectedThingId;
   Color cls;
   BlendMode blnd;
 
@@ -61,9 +60,11 @@ class ActivityModel extends Model {
   }
 
   // TODO:// onTap and pass id of selected thing here
-  // set selectedThingId(String id) {
-  //   selectedThingId = id;
-  // }
+  String get selectedThingId => _selectedThingId;
+  set selectedThingId(String id) {
+    _selectedThingId = id;
+    notifyListeners();
+  }
 
   set selecetedStickerIcon(String t) {
     selectedIcon = t;
@@ -159,6 +160,7 @@ class ActivityModel extends Model {
       t['edit'] = false;
       if (t['text'] == '') {
         temp = true;
+        _selectedThingId = t['id'];
         t['font'] = font;
       }
       notifyListeners();
@@ -201,7 +203,7 @@ class ActivityModel extends Model {
       } else {
         t['select'] = false;
       }
-      if (t['id'] == selectedThingId && t['type'] == 'image') {
+      if (t['id'] == _selectedThingId && t['type'] == 'image') {
         t.forEach((k, v) {
           if (k == 'color' || k == 'blendMode') {
             t['color'] = cls;
@@ -213,8 +215,8 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  void deletedThing(var id){
-    things.removeWhere((t) => t['id']==id);
+  void deletedThing(var id) {
+    things.removeWhere((t) => t['id'] == id);
     notifyListeners();
   }
 
@@ -224,6 +226,7 @@ class ActivityModel extends Model {
   }
 
   void addThing(Map<String, dynamic> thing) {
+    selectedThingId = thing['id'];
     _addThing(thing);
     _redoStack.clear();
   }
