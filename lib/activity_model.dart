@@ -30,6 +30,13 @@ class ActivityModel extends Model {
   bool _isInteractive = true;
   String selectedIcon;
 
+  Color color = Colors.white;
+  BlendMode blendMode = BlendMode.dst;
+  String _selectedThingId;
+  bool _editSelectedThing=false;
+  Color cls;
+  BlendMode blnd;
+
   ActivityModel({@required this.pathHistory, @required this.id}) {
     print('pathHistory: $pathHistory');
     _painterController = new PainterController(pathHistory: this.pathHistory);
@@ -52,6 +59,20 @@ class ActivityModel extends Model {
     _template = t;
     _saveAndNotifyListeners();
   }
+
+  // TODO:// onTap and pass id of selected thing here
+  String get selectedThingId => _selectedThingId;
+  set selectedThingId(String id) {
+    _selectedThingId = id;
+    notifyListeners();
+  }
+
+  bool get editSelectedThing => _editSelectedThing;
+  set editSelectedThing(bool state){
+    _editSelectedThing = state;
+    notifyListeners();
+  }
+
 
   set selecetedStickerIcon(String t) {
     selectedIcon = t;
@@ -139,6 +160,30 @@ class ActivityModel extends Model {
     });
   }
 
+  void addText(String text, {String font}) {
+    bool temp = false;
+    things.forEach((t) {
+      if (t['text'] == '') {
+        temp = true;
+        _selectedThingId = t['id'];
+        t['font'] = font;
+      }
+      notifyListeners();
+    });
+    if (!temp) {
+      addThing({
+        'id': Uuid().v4(),
+        'type': 'text',
+        'text': text,
+        'font': font,
+        'color': textColor?.value ?? Colors.white.value,
+        'x': 0.0,
+        'y': 0.0,
+        'scale': 1.0
+      });
+    }
+  }
+
   void addNima(String name) {
     addThing({
       'id': Uuid().v4(),
@@ -150,17 +195,32 @@ class ActivityModel extends Model {
     });
   }
 
-  void addText(String text, {String font}) {
-    addThing({
-      'id': Uuid().v4(),
-      'type': 'text',
-      'text': text,
-      'font': font,
-      'x': 0.0,
-      'y': 0.0,
-      'scale': 1.0,
-      'color': textColor?.value ?? Colors.white.value
+  void selectedThing(var id, String type, String text) {
+    things.forEach((t) {
+      if (t['id'] == id) {
+        if (type == 'text' || type == 'image' || type == 'sticker') {
+          if (type == 'text') {
+            t['text'] = text;
+          }
+        }
+      } else {
+        t['select'] = false;
+      }
+      if (t['id'] == _selectedThingId && t['type'] == 'image') {
+        t.forEach((k, v) {
+          if (k == 'color' || k == 'blendMode') {
+            t['color'] = cls;
+            t['blendMode'] = blnd;
+          }
+        });
+      }
     });
+    notifyListeners();
+  }
+
+  void deletedThing(var id) {
+    things.removeWhere((t) => t['id'] == id);
+    notifyListeners();
   }
 
   void addDrawing(PathInfo path) {
@@ -169,6 +229,7 @@ class ActivityModel extends Model {
   }
 
   void addThing(Map<String, dynamic> thing) {
+    selectedThingId = thing['id'];
     _addThing(thing);
     _redoStack.clear();
   }
@@ -251,30 +312,6 @@ class ActivityModel extends Model {
   void addUnMaskImage(String text) {
     print("text: $text");
     unMaskImagePath = text;
-    notifyListeners();
-  }
-
-  Color color = Colors.white;
-  BlendMode blendMode = BlendMode.dst;
-  String _selectedThingId;
-  Color cls;
-  BlendMode blnd;
-  // TODO:// onTap and pass id of selected thing here
-  set selectedThingId(String id) {
-    _selectedThingId = id;
-  }
-
-  void selectedThing() {
-    things.forEach((t) {
-      if (t['id'] == _selectedThingId) {
-        t.forEach((k, v) {
-          if (k == 'color' || k == 'blendMode') {
-            t['color'] = cls;
-            t['blendMode'] = blnd;
-          }
-        });
-      }
-    });
     notifyListeners();
   }
 }
