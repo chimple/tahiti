@@ -245,6 +245,8 @@ class PainterController extends ChangeNotifier {
   PaintOption paintOption;
   Paint _currentPaint;
   bool _inDrag = false;
+  bool _isGeometricDrawing = false;
+  bool _isFreeDrawing = false;
   PainterController({this.pathHistory}) {
     thickness = 5.0;
 //    _updatePaint();
@@ -279,6 +281,20 @@ class PainterController extends ChangeNotifier {
       }
       if (model.isDrawing) {
         _inDrag = true;
+        _isFreeDrawing = true;
+        _isGeometricDrawing = false;
+
+        pathHistory.add(startPoint,
+            paintOption: paintOption,
+            blurStyle: blurStyle,
+            sigma: sigma,
+            thickness: thickness,
+            color: model.selectedColor);
+      } else if (model.isGeometricDrawing) {
+        _inDrag = true;
+        _isGeometricDrawing = true;
+        _isFreeDrawing = false;
+
         pathHistory.add(startPoint,
             paintOption: paintOption,
             blurStyle: blurStyle,
@@ -291,7 +307,11 @@ class PainterController extends ChangeNotifier {
 
   void updateCurrent(Offset nextPoint) {
     if (_inDrag) {
-      pathHistory.updateCurrent(nextPoint);
+      if (_isGeometricDrawing) {
+        pathHistory.updateGeometricDrawing(nextPoint);
+      } else if (_isFreeDrawing) {
+        pathHistory.updateFreeDrawing(nextPoint);
+      }
       notifyListeners();
     }
   }

@@ -15,7 +15,7 @@ class ActivityModel extends Model {
   String _template;
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
-  String _highlighted ;
+  String _highlighted;
   bool _isDrawing = false;
   bool _isGeometricDrawing = false;
   PainterController _painterController;
@@ -236,6 +236,7 @@ class PathHistory {
   double initialX;
   double x;
   double y;
+  
 
   PathHistory() {
     paths = [];
@@ -276,24 +277,8 @@ class PathHistory {
         color: color));
   }
 
-  void updateCurrent(Offset nextPoint) {
-    x = nextPoint.dx;
-    y = nextPoint.dy;
-    path = paths.last._path;
-
-    if (y < initialY + 50.0 && y > initialY - 50.0) {
-      path.lineTo(x, initialY);
-      initialX = x;
-    } else {
-      if (x > initialX - 50.0 && x < initialX + 50.0) {
-        path.lineTo(initialX, y);
-      } else {
-        initialY = y;
-        path.lineTo(x, initialY);
-        initialX = x;
-      }
-    }
-    // paths.last.addPoint(nextPoint);
+  void updateFreeDrawing(Offset nextPoint) {
+    paths.last.addPoint(nextPoint);
   }
 
   void updateGeometricDrawing(Offset nextPoint) {
@@ -308,9 +293,9 @@ class PathHistory {
       if (x > initialX - 50.0 && x < initialX + 50.0) {
         path.lineTo(initialX, y);
       } else {
+        initialX = x;
         initialY = y;
         path.lineTo(x, initialY);
-        initialX = x;
       }
     }
   }

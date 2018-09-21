@@ -131,9 +131,23 @@ class PopupGridViewState extends State<PopupGridView> {
                               // model.addUnMaskImage(title);
                               // model.painterController.doUnMask();
                               model.isDrawing = false;
-                            } else {
+                            }
+                            else if (title.startsWith('assets/geometric.png')) {
+//                              model.painterController.blurEffect =
+//                                  MaskFilter.blur(BlurStyle.normal, 0.0);
+                              model.highlighted = title;
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 0.0;
+                              model.isDrawing = false;
+                              model.isGeometricDrawing = true;
+                            }
+                             else {
                               model.highlighted = null;
                               model.isDrawing = false;
+                              model.isGeometricDrawing = false;
                             }
                           }
                         },
