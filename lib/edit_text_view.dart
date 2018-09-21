@@ -10,8 +10,9 @@ class EditTextView extends StatefulWidget {
   final String fontType;
   String change = 'Type Here';
   final double scale;
+  final Color color;
 
-  EditTextView({this.fontType, this.scale}) : super();
+  EditTextView({this.fontType, this.scale, this.color}) : super();
 
   @override
   EditTextViewState createState() {
@@ -87,7 +88,7 @@ class EditTextViewState extends State<EditTextView> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 30.0,
-                          color: const Color(0xFF000000),
+                         color: widget.color,
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.italic,
                           fontFamily: widget.fontType),

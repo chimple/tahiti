@@ -22,10 +22,14 @@ class ActivityModel extends Model {
   PathHistory pathHistory;
 
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
+  Color _textColor;
+  Color _stickerColor;
+  Color _drawingColor;
   Color _selectedColor;
 
   String id;
   bool _isInteractive = true;
+  String selectedIcon;
 
   ActivityModel({@required this.pathHistory, @required this.id}) {
     print('pathHistory: $pathHistory');
@@ -50,9 +54,32 @@ class ActivityModel extends Model {
     _saveAndNotifyListeners();
   }
 
+  set selecetedStickerIcon(String t) {
+    selectedIcon = t;
+    notifyListeners();
+  }
+
+  Color get textColor => _textColor;
+  set textColor(Color t) {
+    _textColor = t;
+    notifyListeners();
+  }
+
   Color get selectedColor => _selectedColor;
   set selectedColor(Color t) {
     _selectedColor = t;
+    notifyListeners();
+  }
+
+  Color get stickerColor => _stickerColor;
+  set stickerColor(Color t) {
+    _stickerColor = t;
+    notifyListeners();
+  }
+
+  Color get drawingColor => _drawingColor;
+  set drawingColor(Color t) {
+    _drawingColor = t;
     notifyListeners();
   }
 
@@ -91,7 +118,7 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': selectedColor?.value ?? Colors.red.value
+      'color': stickerColor?.value ?? Colors.red.value
     });
   }
 
@@ -102,7 +129,9 @@ class ActivityModel extends Model {
       'path': imagePath,
       'x': 0.0,
       'y': 0.0,
-      'scale': 0.5
+      'scale': 0.5,
+      'color': color,
+      'blendMode': blendMode,
     });
   }
 
@@ -117,6 +146,17 @@ class ActivityModel extends Model {
     });
   }
 
+  void addNima(String name) {
+    addThing({
+      'id': Uuid().v4(),
+      'type': 'nima',
+      'asset': name,
+      'x': 0.0,
+      'y': 0.0,
+      'scale': 0.5,
+    });
+  }
+
   void addText(String text, {String font}) {
     addThing({
       'id': Uuid().v4(),
@@ -125,7 +165,8 @@ class ActivityModel extends Model {
       'font': font,
       'x': 0.0,
       'y': 0.0,
-      'scale': 1.0
+      'scale': 1.0,
+      'color': textColor?.value ?? Colors.white.value
     });
   }
 
@@ -217,6 +258,30 @@ class ActivityModel extends Model {
   void addUnMaskImage(String text) {
     print("text: $text");
     unMaskImagePath = text;
+    notifyListeners();
+  }
+
+  Color color = Colors.white;
+  BlendMode blendMode = BlendMode.dst;
+  String _selectedThingId;
+  Color cls;
+  BlendMode blnd;
+  // TODO:// onTap and pass id of selected thing here
+  set selectedThingId(String id) {
+    _selectedThingId = id;
+  }
+
+  void selectedThing() {
+    things.forEach((t) {
+      if (t['id'] == _selectedThingId) {
+        t.forEach((k, v) {
+          if (k == 'color' || k == 'blendMode') {
+            t['color'] = cls;
+            t['blendMode'] = blnd;
+          }
+        });
+      }
+    });
     notifyListeners();
   }
 }
@@ -353,6 +418,7 @@ class PathInfo {
         _paint.blendMode = BlendMode.clear;
         break;
       case PaintOption.erase:
+        _paint.blendMode = BlendMode.clear;
         break;
     }
   }

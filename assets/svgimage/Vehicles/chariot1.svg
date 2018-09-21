@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
+<g>
+	<path style="fill:#FFFFFF;" d="M234,15v17h-6v137H31v-58l-3,1V92c0,0,17.5-9.5,51.5-7.5s61-46,93-60S234,15,234,15z"/>
+	<path style="opacity:0.5;" d="M172.5,24.5c-32,14-59,62-93,60S28,92,28,92v20c5-1,15-8.4,30.5-10.5c29-4,63-2,87-27
+		c23.4-24.4,45-48.8,86-42.5h2.5V15C234,15,204.5,10.5,172.5,24.5z"/>
+	<path style="opacity:0.5;" d="M225.5,131h-193c-2.5,0-4.5-2-4.5-4.5v0c0-2.5,2-4.5,4.5-4.5h193c2.5,0,4.5,2,4.5,4.5v0
+		C230,129,228,131,225.5,131z"/>
+	<path style="opacity:0.5;" d="M225.5,144h-193c-2.5,0-4.5-2-4.5-4.5l0,0c0-2.5,2-4.5,4.5-4.5h193c2.5,0,4.5,2,4.5,4.5l0,0
+		C230,142,228,144,225.5,144z"/>
+	<path style="opacity:0.5;" d="M225.5,157h-193c-2.5,0-4.5-2-4.5-4.5l0,0c0-2.5,2-4.5,4.5-4.5h193c2.5,0,4.5,2,4.5,4.5l0,0
+		C230,155,228,157,225.5,157z"/>
+</g>
+<g style="opacity:0;">
+	<g>
+		
+			<rect x="148" y="168" transform="matrix(0.9909 0.1342 -0.1342 0.9909 24.844 -21.4526)" style="fill:#844604;" width="47" height="11"/>
+		
+			<rect x="120.4" y="201.6" transform="matrix(0.4093 0.9124 -0.9124 0.4093 273.9737 -9.006)" style="fill:#844604;" width="47" height="11"/>
+		
+			<rect x="77.4" y="195.9" transform="matrix(-0.5587 0.8294 -0.8294 -0.5587 324.2771 230.2937)" style="fill:#844604;" width="47" height="11"/>
+		
+			<rect x="59.4" y="156.4" transform="matrix(-0.9993 -3.640893e-02 3.640893e-02 -0.9993 159.9071 326.6199)" style="fill:#844604;" width="47" height="11"/>
+		
+			<rect x="83.6" y="120.2" transform="matrix(-0.4968 -0.8679 0.8679 -0.4968 51.1361 281.0968)" style="fill:#844604;" width="47" height="11"/>
+		
+			<rect x="127" y="121.6" transform="matrix(0.4746 -0.8802 0.8802 0.4746 -32.8429 199.2491)" style="fill:#844604;" width="47" height="11"/>
+	</g>
+	<circle style="fill:#D0A565;" cx="127.5" cy="166.5" r="25"/>
+	<circle style="fill:#AD6F00;" cx="127.5" cy="166.5" r="18"/>
+	<path style="fill:#AD6F00;" d="M127.5,83.5c-45.3,0-82,36.7-82,82s36.7,82,82,82s82-36.7,82-82S172.8,83.5,127.5,83.5z
+		 M127.5,229.5c-35.3,0-64-28.7-64-64c0-35.3,28.7-64,64-64s64,28.7,64,64C191.5,200.8,162.8,229.5,127.5,229.5z"/>
+</g>
+</svg>

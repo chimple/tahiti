@@ -39,6 +39,9 @@ const List<Color> mainColors = const <Color>[
   const Color(0xFF9900FF),
   const Color(0xFFFF00FF),
 ];
+Color textColor;
+Color drawingColor;
+Color stickerColor;
 Color selectedColor;
 
 class ColorPickerState extends State<ColorPicker> {
@@ -59,7 +62,22 @@ class ColorPickerState extends State<ColorPicker> {
           builder: (context, child, model) => InkWell(
                 onTap: () {
                   setState(() {
-                    model.selectedColor = color;
+                    if (model.selectedIcon == 'assets/menu/body_icon.png' ||
+                        model.selectedIcon == 'assets/menu/clothes.png' ||
+                        model.selectedIcon == 'assets/menu/food_icon.png' ||
+                        model.selectedIcon == 'assets/menu/fruit.png' ||
+                        model.selectedIcon == 'assets/menu/icon.png' ||
+                        model.selectedIcon == 'assets/menu/vegetables.png' ||
+                        model.selectedIcon == 'assets/menu/vehicles.png') {
+                      model.stickerColor = color;
+                    } else if (model.selectedIcon == 'assets/menu/pencil.png' ||
+                        model.selectedIcon == 'assets/menu/brush.png') {
+                      model.drawingColor = color;
+                    } else if (model.selectedIcon == 'assets/menu/text.png') {
+                      model.textColor = color;
+                    } else {
+                      model.selectedColor = color;
+                    }
                   });
                 },
                 child: new Container(

@@ -54,7 +54,7 @@ class PopupGridViewState extends State<PopupGridView> {
   }
 
   Color _getIconColor(model, title) {
-    print("title and highlighted button $title......$highlightedButtonItem");
+    //print("title and highlighted button $title......$highlightedButtonItem");
     if (((model.popped == Popped.bottom && widget.side == DisplaySide.bottom) ||
             (model.popped == Popped.top && widget.side == DisplaySide.top)) &&
         highlightedButtonItem == title) {
@@ -94,6 +94,8 @@ class PopupGridViewState extends State<PopupGridView> {
                           // highlightedButtonItem = title;
 
                           if (title != null) {
+                            model.selectedIcon = title;
+                            print('icon is ${model.selectedIcon}');
                             if (title.startsWith('assets/menu/pencil.png')) {
 //                              model.painterController.blurEffect =
 //                                  MaskFilter.blur(BlurStyle.normal, 0.0);
@@ -131,20 +133,10 @@ class PopupGridViewState extends State<PopupGridView> {
                               // model.addUnMaskImage(title);
                               // model.painterController.doUnMask();
                               model.isDrawing = false;
-                            }
-                            else if (title.startsWith('assets/geometric.png')) {
-//                              model.painterController.blurEffect =
-//                                  MaskFilter.blur(BlurStyle.normal, 0.0);
-                              model.highlighted = title;
-                              model.painterController.paintOption =
-                                  PaintOption.paint;
-                              model.painterController.blurStyle =
-                                  BlurStyle.normal;
-                              model.painterController.sigma = 0.0;
-                              model.isDrawing = false;
-                              model.isGeometricDrawing = true;
-                            }
-                             else {
+                            } else if (title.startsWith('assets/menu/eraser')) {
+                              model.painterController.eraser();
+                              model.isDrawing = true;
+                            } else {
                               model.highlighted = null;
                               model.isDrawing = false;
                               model.isGeometricDrawing = false;
@@ -208,9 +200,12 @@ class PopupGridViewState extends State<PopupGridView> {
                         ? VerticalDirection.down
                         : VerticalDirection.up,
                     children: <Widget>[
-                      SizedBox(
-                        child: ColorPicker(),
-                      ),
+                      highlightedButtonItem == "assets/menu/mic.png" ||
+                              highlightedButtonItem == "assets/menu/camera.png"
+                          ? new Container()
+                          : SizedBox(
+                              child: ColorPicker(),
+                            ),
                       SizedBox(
                         height: 60.0,
                         child: GridView.count(
