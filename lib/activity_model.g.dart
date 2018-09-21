@@ -61,8 +61,8 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
 }
 
 const _$PoppedEnumMap = <Popped, dynamic>{
-  Popped.top: 'top',
-  Popped.bottom: 'bottom',
+  Popped.first: 'top',
+  Popped.second: 'bottom',
   Popped.noPopup: 'noPopup'
 };
 

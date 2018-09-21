@@ -47,15 +47,21 @@ Color selectedColor;
 class ColorPickerState extends State<ColorPicker> {
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
     return new Center(
       child: new SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: new Row(children: _mainColors(context)),
+        scrollDirection: orientation == Orientation.portrait
+            ? Axis.horizontal
+            : Axis.vertical,
+        child: orientation == Orientation.portrait
+            ? Row(children: _mainColors(context))
+            : Column(children: _mainColors(context)),
       ),
     );
   }
 
   List<Widget> _mainColors(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
     var children = <Widget>[];
     for (Color color in mainColors) {
       children.add(ScopedModelDescendant<ActivityModel>(
@@ -81,8 +87,8 @@ class ColorPickerState extends State<ColorPicker> {
                   });
                 },
                 child: new Container(
-                    height: 20.0,
-                    width: 70.0,
+                    height: orientation == Orientation.portrait ? 30.0 : 70.0,
+                    width:orientation == Orientation.portrait ? 70.0 : 30.0,
                     decoration: BoxDecoration(
                       color: color,
                     )),
