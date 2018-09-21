@@ -43,6 +43,7 @@ class _TransformWrapperState extends State<TransformWrapper>
   void onScaleStart(rotate.ScaleStartDetails details) {
     setState(() {
       widget.model.selectedThingId = widget.thing['id'];
+      widget.model.editSelectedThing = false;
 
       // if (!widget.thing['select']) {
       //   widget.thing['type'] == 'text'
@@ -182,38 +183,37 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                               left: 0.0,
                               top: 50.0,
                               child: IconButton(
-                                icon: Icon(!widget.thing['edit']
-                                    ? Icons.edit
-                                    : Icons.done_outline),
+                                icon: Icon(model.editSelectedThing
+                                    ? Icons.done_outline
+                                    : Icons.edit),
                                 iconSize: 50.0,
                                 color: Colors.black,
                                 onPressed: () {
                                   setState(() {
-                                    if (!widget.thing['edit']) {
-                                      (widget.thing['type'] == 'text')
-                                          ? widget.model.selectedThing(
-                                              widget.thing['id'],
-                                              widget.thing['type'],
-                                              widget.thing['text'],
-                                              true)
-                                          : widget.model.selectedThing(
-                                              widget.thing['id'],
-                                              widget.thing['type'],
-                                              '',
-                                              true);
-                                    } else {
-                                      (widget.thing['type'] == 'text')
-                                          ? widget.model.selectedThing(
-                                              widget.thing['id'],
-                                              widget.thing['type'],
-                                              widget.thing['text'],
-                                              false)
-                                          : widget.model.selectedThing(
-                                              widget.thing['id'],
-                                              widget.thing['type'],
-                                              '',
-                                              false);
-                                    }
+                                    model.editSelectedThing
+                                        ? model.editSelectedThing = false
+                                        : model.editSelectedThing = true;
+                                    // if (model.editSelectedThing) {
+                                    //   (widget.thing['type'] == 'text')
+                                    //       ? widget.model.selectedThing(
+                                    //           widget.thing['id'],
+                                    //           widget.thing['type'],
+                                    //           widget.thing['text'])
+                                    //       : widget.model.selectedThing(
+                                    //           widget.thing['id'],
+                                    //           widget.thing['type'],
+                                    //           '');
+                                    // } else {
+                                    //   (widget.thing['type'] == 'text')
+                                    //       ? widget.model.selectedThing(
+                                    //           widget.thing['id'],
+                                    //           widget.thing['type'],
+                                    //           widget.thing['text'])
+                                    //       : widget.model.selectedThing(
+                                    //           widget.thing['id'],
+                                    //           widget.thing['type'],
+                                    //           '');
+                                    // }
                                   });
                                 },
                               ),
@@ -235,17 +235,19 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                           ),
                         ),
                       ),
-                      Positioned(
-                          right: 0.0,
-                          top: 0.0,
-                          child: GestureDetector(
-                              onPanUpdate: onBottomRightPanUpdate,
-                              child: IconButton(
-                                icon: Icon(Icons.swap_horizontal_circle),
-                                iconSize: 50.0,
-                                color: Colors.black,
-                                onPressed: () {},
-                              ))),
+                      widget.thing['type'] == 'text'
+                          ? Positioned(
+                              right: 0.0,
+                              top: 0.0,
+                              child: GestureDetector(
+                                  onPanUpdate: onBottomRightPanUpdate,
+                                  child: IconButton(
+                                    icon: Icon(Icons.swap_horizontal_circle),
+                                    iconSize: 50.0,
+                                    color: Colors.black,
+                                    onPressed: () {},
+                                  )))
+                          : Container(),
                     ]),
                   )
                 : Transform(

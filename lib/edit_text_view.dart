@@ -14,17 +14,11 @@ class EditTextView extends StatefulWidget {
   final double scale;
   final id;
   final String text;
-  final bool edit;
   final Color color;
 
   EditTextView(
-      {this.id,
-      this.fontType,
-      this.scale,
-      this.edit,
-      this.text, this.color})
+      {this.id, this.fontType, this.scale, this.text, this.color})
       : super();
-
 
   @override
   EditTextViewState createState() {
@@ -34,8 +28,7 @@ class EditTextView extends StatefulWidget {
 
 class EditTextViewState extends State<EditTextView> {
   bool viewtext = false;
-  bool edittxt = false;
-  String textType="suhas";
+  String textType = "suhas";
 
   int noOfChar = 1;
   double customWidth = 400.0;
@@ -78,48 +71,49 @@ class EditTextViewState extends State<EditTextView> {
             // double maxSize =
             //     (constraints.maxWidth * constraints.maxHeight) / 3000;
             // print("maxsize $maxSize");
-            return widget.edit
-                ? ScopedModelDescendant<ActivityModel>(
-                    builder: (context, child, model) => FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Container(
-                            width: constraints.maxWidth,
-                            child: TextField(
-                              controller: controller,
-                              maxLines: null,
-                              keyboardType: TextInputType.text,
-                              onChanged: (str) {
-                                model.selectedThing(widget.id,"text", str, widget.edit);
-                              },
-                              onSubmitted: (str) {
-                                model.selectedThing(widget.id,"text", str, false);
-                              },
-                              autofocus: true,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 30.0,
-                                  color: widget.color,
-                                  fontWeight: FontWeight.bold,
-                                  fontStyle: FontStyle.italic,
-                                  fontFamily: widget.fontType),
-                              decoration: new InputDecoration.collapsed(
-                                  hintText: widget.change),
-                            ),
+            return ScopedModelDescendant<ActivityModel>(
+                builder: (context, child, model) => model.editSelectedThing && model.selectedThingId == widget.id
+                    ? FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Container(
+                          width: constraints.maxWidth,
+                          child: TextField(
+                            controller: controller,
+                            maxLines: null,
+                            keyboardType: TextInputType.text,
+                            onChanged: (str) {
+                              model.selectedThing(widget.id, "text", str);
+                            },
+                            onSubmitted: (str) {
+                              model.selectedThing(widget.id, "text", str);
+                              model.editSelectedThing = false;
+                            },
+                            autofocus: true,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 30.0,
+                                color: widget.color,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                fontFamily: widget.fontType),
+                            decoration: new InputDecoration.collapsed(
+                                hintText: widget.change),
                           ),
-                        ))
-                : Text(
-                  widget.text == '' ? widget.change : widget.text,
-                  maxLines: null,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 30.0,
-                      color: widget.text == ''
-                          ? Colors.black12
-                          : widget.color,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      fontFamily: widget.fontType),
-                );
+                        ),
+                      )
+                    : Text(
+                        widget.text == '' ? widget.change : widget.text,
+                        maxLines: null,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 30.0,
+                            color: widget.text == ''
+                                ? Colors.black12
+                                : widget.color,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontFamily: widget.fontType),
+                      ));
           })
         : Container();
   }

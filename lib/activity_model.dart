@@ -33,6 +33,7 @@ class ActivityModel extends Model {
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
   String _selectedThingId;
+  bool _editSelectedThing=false;
   Color cls;
   BlendMode blnd;
 
@@ -65,6 +66,13 @@ class ActivityModel extends Model {
     _selectedThingId = id;
     notifyListeners();
   }
+
+  bool get editSelectedThing => _editSelectedThing;
+  set editSelectedThing(bool state){
+    _editSelectedThing = state;
+    notifyListeners();
+  }
+
 
   set selecetedStickerIcon(String t) {
     selectedIcon = t;
@@ -121,7 +129,6 @@ class ActivityModel extends Model {
       'id': Uuid().v4(),
       'type': 'sticker',
       'asset': name,
-      'edit': true,
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
@@ -133,7 +140,6 @@ class ActivityModel extends Model {
     addThing({
       'id': Uuid().v4(),
       'type': 'image',
-      'edit': true,
       'path': imagePath,
       'x': 0.0,
       'y': 0.0,
@@ -154,10 +160,9 @@ class ActivityModel extends Model {
     });
   }
 
-  void addText(String text, {String font, bool edit}) {
+  void addText(String text, {String font}) {
     bool temp = false;
     things.forEach((t) {
-      t['edit'] = false;
       if (t['text'] == '') {
         temp = true;
         _selectedThingId = t['id'];
@@ -171,7 +176,6 @@ class ActivityModel extends Model {
         'type': 'text',
         'text': text,
         'font': font,
-        'edit': edit,
         'color': textColor?.value ?? Colors.white.value,
         'x': 0.0,
         'y': 0.0,
@@ -191,14 +195,13 @@ class ActivityModel extends Model {
     });
   }
 
-  void selectedThing(var id, String type, String text, bool edit) {
+  void selectedThing(var id, String type, String text) {
     things.forEach((t) {
       if (t['id'] == id) {
         if (type == 'text' || type == 'image' || type == 'sticker') {
           if (type == 'text') {
             t['text'] = text;
           }
-          t['edit'] = edit;
         }
       } else {
         t['select'] = false;
