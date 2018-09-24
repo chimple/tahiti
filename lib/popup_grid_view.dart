@@ -128,6 +128,14 @@ class PopupGridViewState extends State<PopupGridView> {
                                   BlurStyle.inner;
                               model.painterController.sigma = 15.5;
                               model.isDrawing = true;
+                            } else if (title
+                                .startsWith('assets/menu/geometric.png')) {
+                              model.highlighted = title;
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.sigma = 0.0;
+                              model.isDrawing = false;
+                              model.isGeometricDrawing = true;
                             } else if (title.startsWith('assets/menu/roller')) {
                               model.highlighted = title;
                               // model.addUnMaskImage(title);
