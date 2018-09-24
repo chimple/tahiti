@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
+import 'package:tahiti/paper.dart';
 
 enum ItemType { text, png, sticker }
 
@@ -64,7 +65,8 @@ class PopupGridViewState extends State<PopupGridView> {
   Color _getIconColor(model, title) {
     //print("title and highlighted button $title......$highlightedButtonItem");
     if (((model.popped == Popped.second && widget.side == DisplaySide.second) ||
-            (model.popped == Popped.first && widget.side == DisplaySide.first)) &&
+            (model.popped == Popped.first &&
+                widget.side == DisplaySide.first)) &&
         highlightedButtonItem == title) {
       return Colors.grey;
     } else if (model.highlighted == title) {
@@ -137,6 +139,9 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.highlighted = title;
                               model.painterController.eraser();
                               model.isDrawing = true;
+                            } else if (title.startsWith('assets/menu/save')) {
+                              Paper().getPngImage();
+                              model.isDrawing = false;
                             } else {
                               model.highlighted = null;
                               model.isDrawing = false;
@@ -149,12 +154,11 @@ class PopupGridViewState extends State<PopupGridView> {
             ));
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     MediaQueryData media = MediaQuery.of(context);
     var size = media.size;
-    GlobalKey orientationKey = new GlobalKey();
 
     if (orientation == Orientation.portrait) {
       List<Widget> rowItems = [];
@@ -193,7 +197,7 @@ class PopupGridViewState extends State<PopupGridView> {
                   // width: size.width*.2,
                 ),
                 AnimatedPositioned(
-                  key: orientationKey,
+                  key: Key('potraitModekey'),
                   bottom: widget.side == DisplaySide.second
                       ? model.popped == Popped.second ? menuHeight : -100.0
                       : null,
@@ -299,7 +303,7 @@ class PopupGridViewState extends State<PopupGridView> {
                   width: size.width * .15,
                 ),
                 AnimatedPositioned(
-                  key: orientationKey,
+                  key: Key('landscapeModekey'),
                   left: widget.side == DisplaySide.second
                       ? model.popped == Popped.second ? menuWidth : -100.0
                       : null,
