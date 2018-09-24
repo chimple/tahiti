@@ -34,7 +34,7 @@ class ActivityModel extends Model {
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
   String _selectedThingId;
-  bool _editSelectedThing=false;
+  bool _editSelectedThing = false;
   Color cls;
   BlendMode blnd;
 
@@ -69,11 +69,10 @@ class ActivityModel extends Model {
   }
 
   bool get editSelectedThing => _editSelectedThing;
-  set editSelectedThing(bool state){
+  set editSelectedThing(bool state) {
     _editSelectedThing = state;
     notifyListeners();
   }
-
 
   set selecetedStickerIcon(String t) {
     selectedIcon = t;
@@ -334,11 +333,6 @@ int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 class PathHistory {
   List<PathInfo> paths;
   Path path;
-  double initialY;
-  double initialX;
-  double x;
-  double y;
-  
 
   PathHistory() {
     paths = [];
@@ -367,9 +361,6 @@ class PathHistory {
       double sigma,
       double thickness,
       Color color}) {
-    initialX = startPoint.dx;
-    initialY = startPoint.dy;
-    print("add() inside activityModel");
     paths.add(PathInfo(
         points: [startPoint.dx, startPoint.dy],
         paintOption: paintOption,
@@ -381,25 +372,6 @@ class PathHistory {
 
   void updateFreeDrawing(Offset nextPoint) {
     paths.last.addPoint(nextPoint);
-  }
-
-  void updateGeometricDrawing(Offset nextPoint) {
-    x = nextPoint.dx;
-    y = nextPoint.dy;
-    path = paths.last._path;
-
-    if (y < initialY + 50.0 && y > initialY - 50.0) {
-      path.lineTo(x, initialY);
-      initialX = x;
-    } else {
-      if (x > initialX - 50.0 && x < initialX + 50.0) {
-        path.lineTo(initialX, y);
-      } else {
-        initialX = x;
-        initialY = y;
-        path.lineTo(x, initialY);
-      }
-    }
   }
 
   void draw(PaintingContext context, Size size) {
@@ -469,6 +441,7 @@ class PathInfo {
     _path.lineTo(nextPoint.dx, nextPoint.dy);
     points.addAll([nextPoint.dx, nextPoint.dy]);
   }
+
 }
 
 //TODO: maskFilter
