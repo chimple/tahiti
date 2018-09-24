@@ -45,13 +45,6 @@ class _TransformWrapperState extends State<TransformWrapper>
       widget.model.selectedThingId = widget.thing['id'];
       widget.model.editSelectedThing = false;
 
-      // if (!widget.thing['select']) {
-      //   widget.thing['type'] == 'text'
-      //       ? widget.model.selectedThing(widget.thing['id'],
-      //           widget.thing['type'], widget.thing['text'], true, false)
-      //       : widget.model.selectedThing(
-      //           widget.thing['id'], widget.thing['type'], '', true, false);
-      // }
       _parentRenderBox =
           (context.ancestorRenderObjectOfType(const TypeMatcher<RenderStack>())
               as RenderBox);
@@ -66,9 +59,10 @@ class _TransformWrapperState extends State<TransformWrapper>
     setState(() {
       Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
       _translate = _translateAtStart + pos - _focalPointAtStart;
-      _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
-          ? _scaleAtStart * details.scale
-          : _width * 0.001;
+      // _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
+      //     ? _scaleAtStart * details.scale
+      //     : _width * 0.001;
+      _scale = _scaleAtStart * details.scale;
       _rotate = _rotateAtStart + details.rotation;
     });
   }
@@ -240,7 +234,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                               right: 0.0,
                               top: 0.0,
                               child: GestureDetector(
-                                  onPanUpdate: onBottomRightPanUpdate,
+                                  onPanUpdate: onPanUpdate,
                                   child: IconButton(
                                     icon: Icon(Icons.swap_horizontal_circle),
                                     iconSize: 50.0,
@@ -273,32 +267,8 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
   }
 
 //Pan Controller
-  void onTopLeftPanUpdate(DragUpdateDetails details) {
-    print("onTopLeftPanUpdate $details");
-    setState(() {
-      customWidth += details.delta.dx;
-      customHeight += details.delta.dy;
-    });
-  }
-
-  void onTopRightPanUpdate(DragUpdateDetails details) {
-    print("onTopRightPanUpdate $details");
-    setState(() {
-      customWidth += details.delta.dx;
-      customHeight += details.delta.dy;
-    });
-  }
-
-  void onBottomLeftPanUpdate(DragUpdateDetails details) {
-    print("onBottomLeftPanUpdate $details");
-    setState(() {
-      customWidth += details.delta.dx;
-      customHeight += details.delta.dy;
-    });
-  }
-
-  void onBottomRightPanUpdate(DragUpdateDetails details) {
-    print("onBottomRightPanUpdate $details");
+  void onPanUpdate(DragUpdateDetails details) {
+    print("onPanUpdate $details");
     setState(() {
       customWidth += details.delta.dx;
       customHeight += details.delta.dy;
