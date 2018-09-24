@@ -51,18 +51,18 @@ class RollerState extends State<Drawing> {
   void didUpdateWidget(Drawing oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
+
   Drag _handleOnStart(Offset position) {
-    print('offsetr $position');
     if (count < 1) {
       setState(() {
         count++;
       });
-      return _DragHandler(_handleDragUpdate,_handleDragEnd);
+      return _DragHandler(_handleDragUpdate, _handleDragEnd);
     }
     return null;
   }
 
- void _handleDragUpdate(DragUpdateDetails update) {
+  void _handleDragUpdate(DragUpdateDetails update) {
     Offset pos;
     PainterController painterController =
         ActivityModel.of(context).painterController;
@@ -77,10 +77,12 @@ class RollerState extends State<Drawing> {
 
   void _handleDragEnd(DragEndDetails details) {
     ActivityModel model = ActivityModel.of(context);
-    PathHistory pathHistory = model.pathHistory;
+    // PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
     painterController.endCurrent();
-    model.addDrawing(pathHistory.paths.last);
+    if (model.pathHistory.paths.length > 0) {
+      model.addDrawing(model.pathHistory.paths.last);
+    }
     setState(() {
       count = 0;
     });
@@ -95,7 +97,7 @@ class RollerState extends State<Drawing> {
           return Container(
               height: box.maxHeight,
               width: box.maxWidth,
-               child: RawGestureDetector(
+              child: RawGestureDetector(
                   behavior: HitTestBehavior.opaque,
                   gestures: <Type, GestureRecognizerFactory>{
                     ImmediateMultiDragGestureRecognizer:
@@ -117,6 +119,7 @@ class RollerState extends State<Drawing> {
     );
   }
 }
+
 class _DragHandler extends Drag {
   _DragHandler(this.onUpdate, this.onEnd);
 

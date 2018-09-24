@@ -245,6 +245,7 @@ class TopStickers {
       Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
     ],
     'assets/filter_icon.jpg': [],
+    'assets/menu/save.png': [],
   };
 }
 
