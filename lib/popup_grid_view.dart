@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
+import 'package:tahiti/paper.dart';
 
 enum ItemType { text, png, sticker }
 
@@ -138,6 +139,9 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.highlighted = title;
                               model.painterController.eraser();
                               model.isDrawing = true;
+                            } else if (title.startsWith('assets/menu/save')) {
+                              Paper().getPngImage();
+                              model.isDrawing = false;
                             } else {
                               model.highlighted = null;
                               model.isDrawing = false;
