@@ -193,6 +193,10 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                     model.editSelectedThing
                                         ? model.editSelectedThing = false
                                         : model.editSelectedThing = true;
+                                    model.selectedThingId = widget.thing['id'];
+                                    if (!model.editSelectedThing) {
+                                      model.selectedThingId = '';
+                                    }
                                     // if (model.editSelectedThing) {
                                     //   (widget.thing['type'] == 'text')
                                     //       ? widget.model.selectedThing(

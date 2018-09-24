@@ -16,8 +16,7 @@ class EditTextView extends StatefulWidget {
   final String text;
   final Color color;
 
-  EditTextView(
-      {this.id, this.fontType, this.scale, this.text, this.color})
+  EditTextView({this.id, this.fontType, this.scale, this.text, this.color})
       : super();
 
   @override
@@ -72,7 +71,8 @@ class EditTextViewState extends State<EditTextView> {
             //     (constraints.maxWidth * constraints.maxHeight) / 3000;
             // print("maxsize $maxSize");
             return ScopedModelDescendant<ActivityModel>(
-                builder: (context, child, model) => model.editSelectedThing && model.selectedThingId == widget.id
+                builder: (context, child, model) => model.editSelectedThing &&
+                        model.selectedThingId == widget.id
                     ? FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Container(
@@ -82,10 +82,12 @@ class EditTextViewState extends State<EditTextView> {
                             maxLines: null,
                             keyboardType: TextInputType.text,
                             onChanged: (str) {
-                              model.selectedThing(widget.id, "text", str);
+                              model.selectedThing(
+                                  id: widget.id, type: "text", text: str);
                             },
                             onSubmitted: (str) {
-                              model.selectedThing(widget.id, "text", str);
+                              model.selectedThing(
+                                  id: widget.id, type: "text", text: str);
                               model.editSelectedThing = false;
                             },
                             autofocus: true,

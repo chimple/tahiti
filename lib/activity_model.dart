@@ -33,7 +33,7 @@ class ActivityModel extends Model {
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
   String _selectedThingId;
-  bool _editSelectedThing=false;
+  bool _editSelectedThing = false;
   Color cls;
   BlendMode blnd;
 
@@ -68,11 +68,10 @@ class ActivityModel extends Model {
   }
 
   bool get editSelectedThing => _editSelectedThing;
-  set editSelectedThing(bool state){
+  set editSelectedThing(bool state) {
     _editSelectedThing = state;
     notifyListeners();
   }
-
 
   set selecetedStickerIcon(String t) {
     selectedIcon = t;
@@ -82,6 +81,7 @@ class ActivityModel extends Model {
   Color get textColor => _textColor;
   set textColor(Color t) {
     _textColor = t;
+    selectedThing();
     notifyListeners();
   }
 
@@ -195,7 +195,7 @@ class ActivityModel extends Model {
     });
   }
 
-  void selectedThing(var id, String type, String text) {
+  void selectedThing({var id, String type, String text}) {
     things.forEach((t) {
       if (t['id'] == id) {
         if (type == 'text' || type == 'image' || type == 'sticker') {
@@ -213,6 +213,8 @@ class ActivityModel extends Model {
             t['blendMode'] = blnd;
           }
         });
+      } else if (t['id'] == _selectedThingId && t['type'] == 'text') {
+        t['color'] = textColor.value;
       }
     });
     notifyListeners();
