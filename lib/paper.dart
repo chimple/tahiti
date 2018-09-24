@@ -47,6 +47,7 @@ class Paper extends StatelessWidget {
         children.addAll(model.things.where((t) => t['type'] != 'drawing').map(
               (t) => TransformWrapper(
                     child: buildWidgetFromThing(t),
+                    model:model,
                     thing: t,
                   ),
             ));
@@ -84,15 +85,17 @@ class Paper extends StatelessWidget {
   }
 
   Widget buildWidgetFromThing(Map<String, dynamic> thing) {
+    String s1 = '${thing['asset']}1.svg';
+    String s2 = '${thing['asset']}2.svg';
     switch (thing['type']) {
       case 'sticker':
-        if (!thing['asset'].startsWith('assets/svgimage')) {
+        if (!s1.startsWith('assets/svgimage')) {
           return Image.asset(
             thing['asset'],
             package: 'tahiti',
           );
         } else {
-          return DisplaySticker(
+           return DisplaySticker(
             size: 400.0,
             primary: thing['asset'],
             color: Color(thing['color'] as int),
@@ -110,7 +113,9 @@ class Paper extends StatelessWidget {
         break;
       case 'text':
         return EditTextView(
+          id: thing['id'],
           fontType: thing['font'],
+          text: thing['text'],
           scale: thing['scale'],
           color: Color(thing['color'] as int),
         );

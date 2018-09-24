@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tahiti/activity_model.dart';
@@ -25,6 +26,7 @@ class Drawing extends StatefulWidget {
 
 class RollerState extends State<Drawing> {
   GlobalKey previewContainer = new GlobalKey();
+  int count = 0;
   ui.Image image;
   @override
   void initState() {
@@ -49,29 +51,39 @@ class RollerState extends State<Drawing> {
   void didUpdateWidget(Drawing oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
+  Drag _handleOnStart(Offset position) {
+    print('offsetr $position');
+    if (count < 1) {
+      setState(() {
+        count++;
+      });
+      return _DragHandler(_handleDragUpdate,_handleDragEnd);
+    }
+    return null;
+  }
 
-  void _onScaleUpdate(BuildContext context, ScaleUpdateDetails update) {
+ void _handleDragUpdate(DragUpdateDetails update) {
     Offset pos;
     PainterController painterController =
         ActivityModel.of(context).painterController;
-    if (update.scale == 1.0) {
-      pos = (context.findRenderObject() as RenderBox)
-          .globalToLocal(update.focalPoint);
-      if (painterController.getDragStatus()) {
-        painterController.updateCurrent(pos);
-      } else {
-        painterController.add(context, pos);
-      }
+    pos = (context.findRenderObject() as RenderBox)
+        .globalToLocal(update.globalPosition);
+    if (painterController.getDragStatus()) {
+      painterController.updateCurrent(pos);
+    } else {
+      painterController.add(context, pos);
     }
   }
 
-  void _onScaleEnd(BuildContext context, ScaleEndDetails end) {
+  void _handleDragEnd(DragEndDetails details) {
     ActivityModel model = ActivityModel.of(context);
     PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
     painterController.endCurrent();
-    model.addDrawing(pathHistory.paths.last); //TODO do this in pathhistory
-    painterController.notifyListeners();
+    model.addDrawing(pathHistory.paths.last);
+    setState(() {
+      count = 0;
+    });
   }
 
   @override
@@ -83,18 +95,18 @@ class RollerState extends State<Drawing> {
           return Container(
               height: box.maxHeight,
               width: box.maxWidth,
-              child: GestureDetector(
+               child: RawGestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onScaleUpdate: widget.model.isInteractive
-                      ? (ScaleUpdateDetails update) =>
-                          _onScaleUpdate(context, update)
-                      : null,
-                  onScaleEnd: widget.model.isInteractive
-                      ? (ScaleEndDetails end) => _onScaleEnd(
-                            context,
-                            end,
-                          )
-                      : null,
+                  gestures: <Type, GestureRecognizerFactory>{
+                    ImmediateMultiDragGestureRecognizer:
+                        GestureRecognizerFactoryWithHandlers<
+                            ImmediateMultiDragGestureRecognizer>(
+                      () => ImmediateMultiDragGestureRecognizer(),
+                      (ImmediateMultiDragGestureRecognizer instance) {
+                        instance..onStart = _handleOnStart;
+                      },
+                    ),
+                  },
                   child: _ScratchCardLayout(
                     child: Container(),
                     path: widget.model.pathHistory,
@@ -103,6 +115,22 @@ class RollerState extends State<Drawing> {
         },
       ),
     );
+  }
+}
+class _DragHandler extends Drag {
+  _DragHandler(this.onUpdate, this.onEnd);
+
+  final GestureDragUpdateCallback onUpdate;
+  final GestureDragEndCallback onEnd;
+
+  @override
+  void update(DragUpdateDetails details) {
+    onUpdate(details);
+  }
+
+  @override
+  void end(DragEndDetails details) {
+    onEnd(details);
   }
 }
 
