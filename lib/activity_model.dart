@@ -17,6 +17,7 @@ class ActivityModel extends Model {
   Popped _popped = Popped.noPopup;
   String _highlighted;
   bool _isDrawing = false;
+  bool _isGeometricDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
 
@@ -117,6 +118,12 @@ class ActivityModel extends Model {
   bool get isDrawing => _isDrawing;
   set isDrawing(bool t) {
     _isDrawing = t;
+    notifyListeners();
+  }
+
+  bool get isGeometricDrawing => _isGeometricDrawing;
+  set isGeometricDrawing(bool t) {
+    _isGeometricDrawing = t;
     notifyListeners();
   }
 
@@ -335,6 +342,7 @@ int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 @JsonSerializable()
 class PathHistory {
   List<PathInfo> paths;
+  Path path;
 
   PathHistory() {
     paths = [];
@@ -372,7 +380,7 @@ class PathHistory {
         color: color));
   }
 
-  void updateCurrent(Offset nextPoint) {
+  void updateFreeDrawing(Offset nextPoint) {
     paths.last.addPoint(nextPoint);
   }
 
@@ -443,6 +451,7 @@ class PathInfo {
     _path.lineTo(nextPoint.dx, nextPoint.dy);
     points.addAll([nextPoint.dx, nextPoint.dy]);
   }
+
 }
 
 //TODO: maskFilter

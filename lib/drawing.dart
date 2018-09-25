@@ -51,18 +51,18 @@ class RollerState extends State<Drawing> {
   void didUpdateWidget(Drawing oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
+
   Drag _handleOnStart(Offset position) {
-    print('offsetr $position');
     if (count < 1) {
       setState(() {
         count++;
       });
-      return _DragHandler(_handleDragUpdate,_handleDragEnd);
+      return _DragHandler(_handleDragUpdate, _handleDragEnd);
     }
     return null;
   }
 
- void _handleDragUpdate(DragUpdateDetails update) {
+  void _handleDragUpdate(DragUpdateDetails update) {
     Offset pos;
     PainterController painterController =
         ActivityModel.of(context).painterController;
@@ -77,10 +77,12 @@ class RollerState extends State<Drawing> {
 
   void _handleDragEnd(DragEndDetails details) {
     ActivityModel model = ActivityModel.of(context);
-    PathHistory pathHistory = model.pathHistory;
+    // PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
     painterController.endCurrent();
-    model.addDrawing(pathHistory.paths.last);
+    if (model.pathHistory.paths.length > 0) {
+      model.addDrawing(model.pathHistory.paths.last);
+    }
     setState(() {
       count = 0;
     });
@@ -95,7 +97,7 @@ class RollerState extends State<Drawing> {
           return Container(
               height: box.maxHeight,
               width: box.maxWidth,
-               child: RawGestureDetector(
+              child: RawGestureDetector(
                   behavior: HitTestBehavior.opaque,
                   gestures: <Type, GestureRecognizerFactory>{
                     ImmediateMultiDragGestureRecognizer:
@@ -117,6 +119,7 @@ class RollerState extends State<Drawing> {
     );
   }
 }
+
 class _DragHandler extends Drag {
   _DragHandler(this.onUpdate, this.onEnd);
 
@@ -131,7 +134,9 @@ class _DragHandler extends Drag {
   @override
   void end(DragEndDetails details) {
     onEnd(details);
-  }
+}
+@override
+void cancel(){}
 }
 
 class _ScratchCardLayout extends SingleChildRenderObjectWidget {
@@ -242,6 +247,12 @@ class PainterController extends ChangeNotifier {
   PaintOption paintOption;
   Paint _currentPaint;
   bool _inDrag = false;
+  bool _isGeometricDrawing = false;
+  bool _isFreeDrawing = false;
+
+  double initialY;
+  double initialX;
+
   PainterController({this.pathHistory}) {
     thickness = 5.0;
 //    _updatePaint();
@@ -269,6 +280,8 @@ class PainterController extends ChangeNotifier {
 //  }
 
   void add(BuildContext context, Offset startPoint) {
+    initialX = startPoint.dx;
+    initialY = startPoint.dy;
     final model = ActivityModel.of(context);
     if (!_inDrag) {
       if (model.popped != Popped.noPopup) {
@@ -276,6 +289,20 @@ class PainterController extends ChangeNotifier {
       }
       if (model.isDrawing) {
         _inDrag = true;
+        _isFreeDrawing = true;
+        _isGeometricDrawing = false;
+
+        pathHistory.add(startPoint,
+            paintOption: paintOption,
+            blurStyle: blurStyle,
+            sigma: sigma,
+            thickness: thickness,
+            color: model.selectedColor);
+      } else if (model.isGeometricDrawing) {
+        _inDrag = true;
+        _isGeometricDrawing = true;
+        _isFreeDrawing = false;
+
         pathHistory.add(startPoint,
             paintOption: paintOption,
             blurStyle: blurStyle,
@@ -288,7 +315,25 @@ class PainterController extends ChangeNotifier {
 
   void updateCurrent(Offset nextPoint) {
     if (_inDrag) {
-      pathHistory.updateCurrent(nextPoint);
+      if (_isGeometricDrawing) {
+        if (nextPoint.dy < initialY + 50.0 && nextPoint.dy > initialY - 50.0) {
+          // path.lineTo(x, initialY);
+          pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
+          initialX = nextPoint.dx;
+        } else {
+          if (nextPoint.dx > initialX - 50.0 &&
+              nextPoint.dx < initialX + 50.0) {
+            // path.lineTo(initialX, y);
+            pathHistory.paths.last.addPoint(Offset(initialX, nextPoint.dy));
+          } else {
+            initialX = nextPoint.dx;
+            initialY = nextPoint.dy;
+            pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
+          }
+        }
+      } else if (_isFreeDrawing) {
+        pathHistory.updateFreeDrawing(nextPoint);
+      }
       notifyListeners();
     }
   }

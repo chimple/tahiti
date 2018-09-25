@@ -236,6 +236,13 @@ class TopStickers {
       Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
       Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
     ],
+    'assets/menu/geometric.png': [
+      Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+      Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+    ],
     'assets/menu/bucket.png': [],
     'assets/menu/roller.png': [
       Iconf(type: ItemType.png, data: 'assets/roller_image/sample1.jpg'),
@@ -245,6 +252,7 @@ class TopStickers {
       Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
     ],
     'assets/filter_icon.jpg': [],
+    'assets/menu/save.png': [],
   };
 }
 
