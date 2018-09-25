@@ -53,7 +53,6 @@ class RollerState extends State<Drawing> {
   }
 
   Drag _handleOnStart(Offset position) {
-    print('offset $position');
     if (count < 1) {
       setState(() {
         count++;
@@ -78,10 +77,12 @@ class RollerState extends State<Drawing> {
 
   void _handleDragEnd(DragEndDetails details) {
     ActivityModel model = ActivityModel.of(context);
-    PathHistory pathHistory = model.pathHistory;
+    // PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
     painterController.endCurrent();
-    model.addDrawing(pathHistory.paths.last);
+    if (model.pathHistory.paths.length > 0) {
+      model.addDrawing(model.pathHistory.paths.last);
+    }
     setState(() {
       count = 0;
     });
