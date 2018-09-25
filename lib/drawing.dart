@@ -53,7 +53,6 @@ class RollerState extends State<Drawing> {
   }
 
   Drag _handleOnStart(Offset position) {
-    print('offset $position');
     if (count < 1) {
       setState(() {
         count++;
