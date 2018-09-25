@@ -133,9 +133,7 @@ class _DragHandler extends Drag {
   @override
   void end(DragEndDetails details) {
     onEnd(details);
-}
-@override
-void cancel(){}
+  }
 }
 
 class _ScratchCardLayout extends SingleChildRenderObjectWidget {
@@ -316,13 +314,11 @@ class PainterController extends ChangeNotifier {
     if (_inDrag) {
       if (_isGeometricDrawing) {
         if (nextPoint.dy < initialY + 50.0 && nextPoint.dy > initialY - 50.0) {
-          // path.lineTo(x, initialY);
           pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
           initialX = nextPoint.dx;
         } else {
           if (nextPoint.dx > initialX - 50.0 &&
               nextPoint.dx < initialX + 50.0) {
-            // path.lineTo(initialX, y);
             pathHistory.paths.last.addPoint(Offset(initialX, nextPoint.dy));
           } else {
             initialX = nextPoint.dx;
