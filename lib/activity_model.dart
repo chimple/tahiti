@@ -185,7 +185,7 @@ class ActivityModel extends Model {
         'color': textColor?.value ?? Colors.white.value,
         'x': 0.0,
         'y': 0.0,
-        'scale': 1.0
+        'scale': 0.5
       });
     }
   }
