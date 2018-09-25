@@ -36,60 +36,67 @@ class Paper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new RepaintBoundary(
-        key: previewContainer,
-        child: ScopedModelDescendant<ActivityModel>(
-          builder: (context, child, model) {
-            final children = <Widget>[];
-            if (model.template != null) {
-              children.add(AspectRatio(
-                  aspectRatio: 1.0,
-                  child: SvgPicture.asset(
-                    model.template,
-                  )));
-            }
-            children.add(Drawing(
-              model: model,
-            ));
-            children
-                .addAll(model.things.where((t) => t['type'] != 'drawing').map(
-                      (t) => TransformWrapper(
-                            child: buildWidgetFromThing(t),
-                            model: model,
-                            thing: t,
-                          ),
-                    ));
-            if (model.isInteractive) {
-              children.add(Align(
-                alignment: Alignment.bottomRight,
-                heightFactor: 100.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    IconButton(
-                        icon: Icon(Icons.undo),
-                        iconSize: 40.0,
-                        color: Colors.red,
-                        onPressed: model.canUndo() ? () => model.undo() : null),
-                    IconButton(
-                        icon: Icon(Icons.redo),
-                        iconSize: 40.0,
-                        color: Colors.red,
-                        onPressed: model.canRedo() ? () => model.redo() : null),
-                  ],
-                ),
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      print('Transform wrapper layout builder: $constraints');
+      return new RepaintBoundary(
+          key: previewContainer,
+          child: ScopedModelDescendant<ActivityModel>(
+            builder: (context, child, model) {
+              final children = <Widget>[];
+              if (model.template != null) {
+                children.add(AspectRatio(
+                    aspectRatio: 1.0,
+                    child: SvgPicture.asset(
+                      model.template,
+                    )));
+              }
+              children.add(Drawing(
+                model: model,
               ));
-            }
-            return FittedBox(
-              fit: BoxFit.contain,
-              child: SizedBox(
-                height: 512.0,
-                width: 512.0,
-                child: Stack(children: children),
-              ),
-            );
-          },
-        ));
+              children
+                  .addAll(model.things.where((t) => t['type'] != 'drawing').map(
+                        (t) => TransformWrapper(
+                              child: buildWidgetFromThing(t),
+                              model: model,
+                              constraints: constraints,
+                              thing: t,
+                            ),
+                      ));
+              if (model.isInteractive) {
+                children.add(Align(
+                  alignment: Alignment.bottomRight,
+                  heightFactor: 100.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      IconButton(
+                          icon: Icon(Icons.undo),
+                          iconSize: 40.0,
+                          color: Colors.red,
+                          onPressed:
+                              model.canUndo() ? () => model.undo() : null),
+                      IconButton(
+                          icon: Icon(Icons.redo),
+                          iconSize: 40.0,
+                          color: Colors.red,
+                          onPressed:
+                              model.canRedo() ? () => model.redo() : null),
+                    ],
+                  ),
+                ));
+              }
+              return FittedBox(
+                fit: BoxFit.contain,
+                child: SizedBox(
+                  height: 512.0,
+                  width: 512.0,
+                  child: Stack(children: children),
+                ),
+              );
+            },
+          ));
+    });
   }
 
   Widget buildWidgetFromThing(Map<String, dynamic> thing) {
