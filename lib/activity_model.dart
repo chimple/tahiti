@@ -17,6 +17,7 @@ class ActivityModel extends Model {
   Popped _popped = Popped.noPopup;
   String _highlighted;
   bool _isDrawing = false;
+  bool _isGeometricDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
 
@@ -33,7 +34,7 @@ class ActivityModel extends Model {
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
   String _selectedThingId;
-  bool _editSelectedThing=false;
+  bool _editSelectedThing = false;
   Color cls;
   BlendMode blnd;
 
@@ -68,11 +69,10 @@ class ActivityModel extends Model {
   }
 
   bool get editSelectedThing => _editSelectedThing;
-  set editSelectedThing(bool state){
+  set editSelectedThing(bool state) {
     _editSelectedThing = state;
     notifyListeners();
   }
-
 
   set selecetedStickerIcon(String t) {
     selectedIcon = t;
@@ -118,6 +118,12 @@ class ActivityModel extends Model {
   bool get isDrawing => _isDrawing;
   set isDrawing(bool t) {
     _isDrawing = t;
+    notifyListeners();
+  }
+
+  bool get isGeometricDrawing => _isGeometricDrawing;
+  set isGeometricDrawing(bool t) {
+    _isGeometricDrawing = t;
     notifyListeners();
   }
 
@@ -326,6 +332,7 @@ int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 @JsonSerializable()
 class PathHistory {
   List<PathInfo> paths;
+  Path path;
 
   PathHistory() {
     paths = [];
@@ -363,7 +370,7 @@ class PathHistory {
         color: color));
   }
 
-  void updateCurrent(Offset nextPoint) {
+  void updateFreeDrawing(Offset nextPoint) {
     paths.last.addPoint(nextPoint);
   }
 
@@ -434,6 +441,7 @@ class PathInfo {
     _path.lineTo(nextPoint.dx, nextPoint.dy);
     points.addAll([nextPoint.dx, nextPoint.dy]);
   }
+
 }
 
 //TODO: maskFilter
