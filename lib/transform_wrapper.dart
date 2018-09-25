@@ -182,7 +182,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                             iconSize: 50.0,
                             color: Colors.black,
                             onPressed: () {
-                              widget.model.deletedThing(widget.thing['id']);
+                              widget.model.deleteThing(widget.thing['id']);
                             },
                           )),
                       widget.thing['type'] != 'video'

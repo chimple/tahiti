@@ -17,6 +17,7 @@ class ActivityModel extends Model {
   Popped _popped = Popped.noPopup;
   String _highlighted;
   bool _isDrawing = false;
+  bool _isGeometricDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
 
@@ -33,7 +34,7 @@ class ActivityModel extends Model {
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
   String _selectedThingId;
-  bool _editSelectedThing=false;
+  bool _editSelectedThing = false;
   Color cls;
   BlendMode blnd;
 
@@ -68,11 +69,10 @@ class ActivityModel extends Model {
   }
 
   bool get editSelectedThing => _editSelectedThing;
-  set editSelectedThing(bool state){
+  set editSelectedThing(bool state) {
     _editSelectedThing = state;
     notifyListeners();
   }
-
 
   set selecetedStickerIcon(String t) {
     selectedIcon = t;
@@ -118,6 +118,12 @@ class ActivityModel extends Model {
   bool get isDrawing => _isDrawing;
   set isDrawing(bool t) {
     _isDrawing = t;
+    notifyListeners();
+  }
+
+  bool get isGeometricDrawing => _isGeometricDrawing;
+  set isGeometricDrawing(bool t) {
+    _isGeometricDrawing = t;
     notifyListeners();
   }
 
@@ -218,8 +224,12 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  void deletedThing(var id) {
-    things.removeWhere((t) => t['id'] == id);
+  void deleteThing(String id) {
+    final thing = things.firstWhere((t) => t['id'] == id);
+    thing['prevOp'] = thing['op'].toString();
+    thing['op'] = 'delete';
+    _undoStack.add(thing);
+    things.remove(thing);
     notifyListeners();
   }
 
@@ -274,6 +284,10 @@ class ActivityModel extends Model {
       if (thing['type'] == 'drawing') {
         painterController.undo();
       }
+    } else if (thing['op'] == 'delete') {
+      _redoStack.add(Map.from(thing));
+      thing['op'] = thing['prevOp'];
+      things.add(thing);
     } else {
       //assume it is update
       final index = things.indexWhere((t) => t['id'] == thing['id']);
@@ -296,6 +310,8 @@ class ActivityModel extends Model {
       if (thing['type'] == 'drawing') {
         painterController.redo(thing['path']);
       }
+    } else if (thing['op'] == 'delete') {
+      deleteThing(thing['id']);
     } else {
       //assume it is update
       _updateThing(thing);
@@ -326,6 +342,7 @@ int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 @JsonSerializable()
 class PathHistory {
   List<PathInfo> paths;
+  Path path;
 
   PathHistory() {
     paths = [];
@@ -363,7 +380,7 @@ class PathHistory {
         color: color));
   }
 
-  void updateCurrent(Offset nextPoint) {
+  void updateFreeDrawing(Offset nextPoint) {
     paths.last.addPoint(nextPoint);
   }
 
@@ -434,6 +451,7 @@ class PathInfo {
     _path.lineTo(nextPoint.dx, nextPoint.dy);
     points.addAll([nextPoint.dx, nextPoint.dy]);
   }
+
 }
 
 //TODO: maskFilter
