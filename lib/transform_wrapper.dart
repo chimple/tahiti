@@ -12,12 +12,14 @@ class TransformWrapper extends StatefulWidget {
       {Key key,
       @required this.child,
       @required this.thing,
-      @required this.model})
+      @required this.model,
+      @required this.constraints})
       : super(key: key);
 
   final Widget child;
   final Map<String, dynamic> thing;
   final model;
+  final BoxConstraints constraints;
 
   @override
   State<StatefulWidget> createState() {
@@ -34,7 +36,8 @@ class _TransformWrapperState extends State<TransformWrapper>
   double _scale;
   double _scaleAtStart;
 
-  double _width;
+  double _size;
+  Orientation orientation;
 
   double _rotate;
   double _rotateAtStart;
@@ -56,15 +59,20 @@ class _TransformWrapperState extends State<TransformWrapper>
   }
 
   void onScaleUpdate(rotate.ScaleUpdateDetails details) {
-    setState(() {
-      Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
-      _translate = _translateAtStart + pos - _focalPointAtStart;
-      // _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
-      //     ? _scaleAtStart * details.scale
-      //     : _width * 0.001;
-      _scale = _scaleAtStart * details.scale;
-      _rotate = _rotateAtStart + details.rotation;
-    });
+    if (details.focalPoint.dx > (orientation == Orientation.portrait ? 0.0 : _size/1.5) &&
+        details.focalPoint.dy > (orientation == Orientation.portrait ? _size/1.5 : _size/4) &&
+        (details.focalPoint.dy < (orientation == Orientation.portrait ? widget.constraints.maxHeight+(_size/2) : widget.constraints.maxHeight+(_size/6))) &&
+        (details.focalPoint.dx < (orientation == Orientation.portrait ? widget.constraints.maxWidth+(_size/2) : widget.constraints.maxHeight+(_size/2)))) {
+      setState(() {
+        Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
+        _translate = _translateAtStart + pos - _focalPointAtStart;
+        // _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
+        //     ? _scaleAtStart * details.scale
+        //     : _width * 0.001;
+        _scale = _scaleAtStart * details.scale;
+        _rotate = _rotateAtStart + details.rotation;
+      });
+    }
   }
 
   void onScaleEnd(ActivityModel model, rotate.ScaleEndDetails details) {
@@ -93,7 +101,12 @@ class _TransformWrapperState extends State<TransformWrapper>
 
   @override
   Widget build(BuildContext context) {
-    _width = MediaQuery.of(context).size.width / 2;
+    orientation = MediaQuery.of(context).orientation;
+    _size = MediaQuery.of(context).size.width >
+            MediaQuery.of(context).size.height
+        ? MediaQuery.of(context).size.width - MediaQuery.of(context).size.height
+        : MediaQuery.of(context).size.height -
+            MediaQuery.of(context).size.width;
     final model = ActivityModel.of(context);
     return Positioned(
       left: _translate.dx,
@@ -224,7 +237,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                             borderRadius: BorderRadius.circular(2.0),
                           ),
                           child: LimitedBox(
-                            maxWidth: customWidth,
+                            maxWidth: customWidth < 200.0 ? 200.0: customWidth,
                             child: widget.child,
                           ),
                         ),
@@ -259,7 +272,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                         ),
                         child: LimitedBox(
                           // maxHeight: customHeight,
-                          maxWidth: customWidth,
+                          maxWidth: customWidth < 200.0 ? 200.0: customWidth,
                           child: widget.child,
                         ),
                       ),
