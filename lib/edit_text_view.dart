@@ -93,7 +93,7 @@ class EditTextViewState extends State<EditTextView> {
                             autofocus: true,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 30.0,
+                                fontSize: 40.0,
                                 color: widget.color,
                                 fontWeight: FontWeight.bold,
                                 fontStyle: FontStyle.italic,
@@ -103,18 +103,21 @@ class EditTextViewState extends State<EditTextView> {
                           ),
                         ),
                       )
-                    : Text(
-                        widget.text == '' ? widget.change : widget.text,
-                        maxLines: null,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 30.0,
-                            color: widget.text == ''
-                                ? Colors.black12
-                                : widget.color,
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontFamily: widget.fontType),
+                    : Container(
+                        width: constraints.maxWidth,
+                        child: Text(
+                          widget.text == '' ? widget.change : widget.text,
+                          maxLines: null,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 40.0,
+                              color: widget.text == ''
+                                  ? Colors.black12
+                                  : widget.color,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontFamily: widget.fontType),
+                        ),
                       ));
           })
         : Container();

@@ -151,7 +151,7 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': color,
+      'color': color?.value ?? Colors.white.value,
       'blendMode': blendMode,
     });
   }
@@ -186,7 +186,7 @@ class ActivityModel extends Model {
         'color': textColor?.value ?? Colors.white.value,
         'x': 0.0,
         'y': 0.0,
-        'scale': 1.0
+        'scale': 0.5
       });
     }
   }
@@ -238,7 +238,7 @@ class ActivityModel extends Model {
 
   void addDrawing(PathInfo path) {
     addThing({'id': Uuid().v4(), 'type': 'drawing', 'path': path});
-    debugPrint(json.encode(this));
+    //debugPrint(json.encode(this));
   }
 
   void addThing(Map<String, dynamic> thing) {
@@ -454,7 +454,6 @@ class PathInfo {
     _path.lineTo(nextPoint.dx, nextPoint.dy);
     points.addAll([nextPoint.dx, nextPoint.dy]);
   }
-
 }
 
 //TODO: maskFilter
