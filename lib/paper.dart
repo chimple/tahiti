@@ -121,7 +121,7 @@ class Paper extends StatelessWidget {
         break;
       case 'image':
         return Image.file(File(thing['path'],),
-        color: thing['color'],
+        color: Color(thing['color'] as int),
         colorBlendMode: thing['blendMode'],
         );
         
