@@ -82,18 +82,21 @@ class ActivityModel extends Model {
   Color get textColor => _textColor;
   set textColor(Color t) {
     _textColor = t;
+    selectedThing();
     notifyListeners();
   }
 
   Color get selectedColor => _selectedColor;
   set selectedColor(Color t) {
     _selectedColor = t;
+    selectedThing();
     notifyListeners();
   }
 
   Color get stickerColor => _stickerColor;
   set stickerColor(Color t) {
     _stickerColor = t;
+    selectedThing();
     notifyListeners();
   }
 
@@ -138,7 +141,8 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': stickerColor?.value ?? Colors.red.value
+      'color': stickerColor?.value ?? Colors.red[50].value,
+      'blendMode': blendMode,
     });
   }
 
@@ -201,10 +205,10 @@ class ActivityModel extends Model {
     });
   }
 
-  void selectedThing(var id, String type, String text) {
+  void selectedThing({var id, String type, String text}) {
     things.forEach((t) {
       if (t['id'] == id) {
-        if (type == 'text' || type == 'image' || type == 'sticker') {
+        if (type == 'text' || type == 'image') {
           if (type == 'text') {
             t['text'] = text;
           }
@@ -219,6 +223,11 @@ class ActivityModel extends Model {
             t['blendMode'] = blnd;
           }
         });
+      } else if (t['id'] == _selectedThingId && t['type'] == 'text') {
+        t['color'] = textColor.value;
+      } else if (t['id'] == _selectedThingId && t['type'] == 'sticker') {
+        t['color'] = stickerColor.value;
+        t['blendMode'] = blendMode;
       }
     });
     notifyListeners();
