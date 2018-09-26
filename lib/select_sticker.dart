@@ -83,14 +83,13 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/cabbage'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/capsicum'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/carrot'),
-    Iconf(
-        type: ItemType.sticker, data: 'assets/svgimage/vegetables/cauliflower'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/cauliflower'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/celeriac'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/celery'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/cucumber'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/drumstick'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/eggplant'),
-    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/fennal'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/fennel'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/garlic'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/ginger'),
     Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/kohlrabi'),
@@ -364,10 +363,14 @@ class SelectStickerState extends State<SelectSticker> {
         color: Colors.blueAccent[100],
       );
     else if (conf.type == ItemType.sticker) {
-      return DisplaySticker(
-        primary: conf.data,
-        color: ActivityModel.of(context).stickerColor,
-      );
+      return ScopedModelDescendant<ActivityModel>(
+          builder: (context, child, model) => DisplaySticker(
+                blendmode: model.blendMode == BlendMode.dst
+                    ? model.blendMode
+                    : BlendMode.srcOver,
+                primary: conf.data,
+                color: ActivityModel.of(context).stickerColor,
+              ));
     } else
       return Image.asset(
         conf.data,
