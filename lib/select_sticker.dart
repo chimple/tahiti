@@ -305,13 +305,15 @@ class SelectStickerState extends State<SelectSticker> {
                     }
                     break;
                   case 'assets/camera/camera1.png':
+                    model.isEditing = true;
                     new Camera().openCamera().then((p) {
-                      if (p != null) model.addImage(p);
+                      // if (p != null) model.addImage(p);
+                      model.imagePath = p;
                     });
                     break;
                   case 'assets/camera/gallery.png':
                     new Camera().pickImage().then((p) {
-                      if (p != null) model.addImage(p);
+                      //if (p != null) model.addImage(p);
                     });
                     break;
                   case 'assets/camera/video.png':

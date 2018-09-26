@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
@@ -54,7 +55,7 @@ class Paper extends StatelessWidget {
             children
                 .addAll(model.things.where((t) => t['type'] != 'drawing').map(
                       (t) => TransformWrapper(
-                            child: buildWidgetFromThing(t),
+                            child: buildWidgetFromThing(t, context),
                             model: model,
                             thing: t,
                           ),
@@ -92,7 +93,7 @@ class Paper extends StatelessWidget {
         ));
   }
 
-  Widget buildWidgetFromThing(Map<String, dynamic> thing) {
+  Widget buildWidgetFromThing(Map<String, dynamic> thing, context) {
     String s1 = '${thing['asset']}1.svg';
     String s2 = '${thing['asset']}2.svg';
     switch (thing['type']) {
@@ -111,7 +112,11 @@ class Paper extends StatelessWidget {
         }
         break;
       case 'image':
-        return Image.file(File(thing['path']));
+        return Image.file(File(thing['path'],),
+        color: thing['color'],
+        colorBlendMode: thing['blendMode'],
+        );
+        
         break;
       case 'nima':
         return new DisplayNima();

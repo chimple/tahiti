@@ -17,6 +17,8 @@ class ActivityModel extends Model {
   Popped _popped = Popped.noPopup;
   String _highlighted;
   bool _isDrawing = false;
+  bool _isEditing = false;
+  String _imagePath;
   PainterController _painterController;
   PathHistory pathHistory;
 
@@ -66,10 +68,20 @@ class ActivityModel extends Model {
     _selectedThingId = id;
     notifyListeners();
   }
+   String get imagePath => _imagePath;
+  set imagePath(String t) {
+    _imagePath = t;
+    notifyListeners();
+  }
 
   bool get editSelectedThing => _editSelectedThing;
   set editSelectedThing(bool state){
     _editSelectedThing = state;
+    notifyListeners();
+  }
+  bool get isEditing => _isEditing;
+  set isEditing(bool t){
+    _isEditing = t;
     notifyListeners();
   }
 
@@ -136,7 +148,7 @@ class ActivityModel extends Model {
     });
   }
 
-  void addImage(String imagePath) {
+  void addImage(String imagePath,Color c,BlendMode blnd) {
     addThing({
       'id': Uuid().v4(),
       'type': 'image',
