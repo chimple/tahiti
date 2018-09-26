@@ -19,6 +19,7 @@ class ActivityModel extends Model {
   bool _isDrawing = false;
   bool _isEditing = false;
   String _imagePath;
+  bool _isGeometricDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
 
@@ -35,7 +36,7 @@ class ActivityModel extends Model {
   Color color = Colors.white;
   BlendMode blendMode = BlendMode.dst;
   String _selectedThingId;
-  bool _editSelectedThing=false;
+  bool _editSelectedThing = false;
   Color cls;
   BlendMode blnd;
 
@@ -75,7 +76,7 @@ class ActivityModel extends Model {
   }
 
   bool get editSelectedThing => _editSelectedThing;
-  set editSelectedThing(bool state){
+  set editSelectedThing(bool state) {
     _editSelectedThing = state;
     notifyListeners();
   }
@@ -85,7 +86,6 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-
   set selecetedStickerIcon(String t) {
     selectedIcon = t;
     notifyListeners();
@@ -94,18 +94,21 @@ class ActivityModel extends Model {
   Color get textColor => _textColor;
   set textColor(Color t) {
     _textColor = t;
+    selectedThing();
     notifyListeners();
   }
 
   Color get selectedColor => _selectedColor;
   set selectedColor(Color t) {
     _selectedColor = t;
+    selectedThing();
     notifyListeners();
   }
 
   Color get stickerColor => _stickerColor;
   set stickerColor(Color t) {
     _stickerColor = t;
+    selectedThing();
     notifyListeners();
   }
 
@@ -133,6 +136,12 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
+  bool get isGeometricDrawing => _isGeometricDrawing;
+  set isGeometricDrawing(bool t) {
+    _isGeometricDrawing = t;
+    notifyListeners();
+  }
+
   bool get isInteractive => _isInteractive;
   set isInteractive(bool i) => _isInteractive = i;
 
@@ -144,7 +153,8 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': stickerColor?.value ?? Colors.red.value
+      'color': stickerColor?.value ?? Colors.red[50].value,
+      'blendMode': blendMode,
     });
   }
 
@@ -156,7 +166,7 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
-      'color': color,
+      'color': color?.value ?? Colors.white.value,
       'blendMode': blendMode,
     });
   }
@@ -191,7 +201,7 @@ class ActivityModel extends Model {
         'color': textColor?.value ?? Colors.white.value,
         'x': 0.0,
         'y': 0.0,
-        'scale': 1.0
+        'scale': 0.5
       });
     }
   }
@@ -207,10 +217,10 @@ class ActivityModel extends Model {
     });
   }
 
-  void selectedThing(var id, String type, String text) {
+  void selectedThing({var id, String type, String text}) {
     things.forEach((t) {
       if (t['id'] == id) {
-        if (type == 'text' || type == 'image' || type == 'sticker') {
+        if (type == 'text' || type == 'image') {
           if (type == 'text') {
             t['text'] = text;
           }
@@ -225,19 +235,28 @@ class ActivityModel extends Model {
             t['blendMode'] = blnd;
           }
         });
+      } else if (t['id'] == _selectedThingId && t['type'] == 'text') {
+        t['color'] = textColor.value;
+      } else if (t['id'] == _selectedThingId && t['type'] == 'sticker') {
+        t['color'] = stickerColor.value;
+        t['blendMode'] = blendMode;
       }
     });
     notifyListeners();
   }
 
-  void deletedThing(var id) {
-    things.removeWhere((t) => t['id'] == id);
+  void deleteThing(String id) {
+    final thing = things.firstWhere((t) => t['id'] == id);
+    thing['prevOp'] = thing['op'].toString();
+    thing['op'] = 'delete';
+    _undoStack.add(thing);
+    things.remove(thing);
     notifyListeners();
   }
 
   void addDrawing(PathInfo path) {
     addThing({'id': Uuid().v4(), 'type': 'drawing', 'path': path});
-    debugPrint(json.encode(this));
+    //debugPrint(json.encode(this));
   }
 
   void addThing(Map<String, dynamic> thing) {
@@ -286,6 +305,10 @@ class ActivityModel extends Model {
       if (thing['type'] == 'drawing') {
         painterController.undo();
       }
+    } else if (thing['op'] == 'delete') {
+      _redoStack.add(Map.from(thing));
+      thing['op'] = thing['prevOp'];
+      things.add(thing);
     } else {
       //assume it is update
       final index = things.indexWhere((t) => t['id'] == thing['id']);
@@ -308,6 +331,8 @@ class ActivityModel extends Model {
       if (thing['type'] == 'drawing') {
         painterController.redo(thing['path']);
       }
+    } else if (thing['op'] == 'delete') {
+      deleteThing(thing['id']);
     } else {
       //assume it is update
       _updateThing(thing);
@@ -338,6 +363,7 @@ int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 @JsonSerializable()
 class PathHistory {
   List<PathInfo> paths;
+  Path path;
 
   PathHistory() {
     paths = [];
@@ -375,7 +401,7 @@ class PathHistory {
         color: color));
   }
 
-  void updateCurrent(Offset nextPoint) {
+  void updateFreeDrawing(Offset nextPoint) {
     paths.last.addPoint(nextPoint);
   }
 
