@@ -46,11 +46,49 @@ Color stickerColor;
 Color selectedColor;
 
 class ColorPickerState extends State<ColorPicker> {
+  ScrollController _scrollController = new ScrollController();
+  Offset scrollOffset;
+
+  _backwardButtonBehaviour() {
+    setState(() {
+      if (_scrollController.position.extentBefore > 0)
+        _scrollController.animateTo(
+            _scrollController.position.extentBefore -
+                _scrollController.position.extentInside,
+            curve: Curves.linear,
+            duration: const Duration(milliseconds: 300));
+    });
+  }
+
+  _forwardButtonBehaviour() {
+    setState(() {
+      if (_scrollController.position.extentAfter > 0)
+        _scrollController.animateTo(
+            _scrollController.position.extentInside +
+                _scrollController.position.extentBefore,
+            curve: Curves.linear,
+            duration: const Duration(milliseconds: 300));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
-    return new Center(
+    List<Widget> colorItems = [];
+    colorItems.add(Expanded(
+        flex: 2,
+        child: new InkWell(
+          onTap: () => _backwardButtonBehaviour(),
+          child: new FittedBox(
+              fit: BoxFit.fill,
+              child: orientation == Orientation.landscape
+                  ? const Icon(Icons.arrow_drop_up)
+                  : const Icon(Icons.arrow_left)),
+        )));
+    colorItems.add(new Expanded(
+      flex: 10,
       child: new SingleChildScrollView(
+        controller: _scrollController,
         scrollDirection: orientation == Orientation.portrait
             ? Axis.horizontal
             : Axis.vertical,
@@ -58,7 +96,29 @@ class ColorPickerState extends State<ColorPicker> {
             ? Row(children: _mainColors(context))
             : Column(children: _mainColors(context)),
       ),
+    ));
+    colorItems.add(
+      new Expanded(
+          flex: 2,
+          child: new InkWell(
+            onTap: () => _forwardButtonBehaviour(),
+            child: new FittedBox(
+                fit: BoxFit.fill,
+                child: orientation == Orientation.landscape
+                    ? const Icon(
+                        Icons.arrow_drop_down,
+                      )
+                    : const Icon(
+                        Icons.arrow_right,
+                      )),
+          )),
     );
+
+    return new Stack(children: [
+      orientation == Orientation.landscape
+          ? new Column(children: colorItems)
+          : new Row(children: colorItems)
+    ]);
   }
 
   List<Widget> _mainColors(BuildContext context) {
@@ -66,10 +126,10 @@ class ColorPickerState extends State<ColorPicker> {
     var children = <Widget>[];
     for (Color color in mainColors) {
       children.add(ScopedModelDescendant<ActivityModel>(
-          builder: (context, child, model) => InkWell(
-                onTap: () {
+          builder: (context, child, model) => RawMaterialButton(
+                onPressed: () {
                   setState(() {
-                    model.stickerColor = color;
+                    selectedColor = color;
                     if (model.selectedIcon == 'assets/menu/body_icon.png' ||
                         model.selectedIcon == 'assets/menu/clothes.png' ||
                         model.selectedIcon == 'assets/menu/food_icon.png' ||
@@ -77,13 +137,7 @@ class ColorPickerState extends State<ColorPicker> {
                         model.selectedIcon == 'assets/menu/icon.png' ||
                         model.selectedIcon == 'assets/menu/vegetables.png' ||
                         model.selectedIcon == 'assets/menu/vehicles.png') {
-                      if (model.stickerColor == Colors.white) {
-                        model.stickerColor = Colors.white;
-                        model.blendMode = BlendMode.dst;
-                      } else {
-                        model.stickerColor = color;
-                        model.blendMode = BlendMode.srcOver;
-                      }
+                      model.stickerColor = color;
                     } else if (model.selectedIcon == 'assets/menu/pencil.png' ||
                         model.selectedIcon == 'assets/menu/brush.png') {
                       model.drawingColor = color;
@@ -94,12 +148,19 @@ class ColorPickerState extends State<ColorPicker> {
                     }
                   });
                 },
-                child: new Container(
-                    height: orientation == Orientation.portrait ? 30.0 : 70.0,
-                    width: orientation == Orientation.portrait ? 70.0 : 30.0,
-                    decoration: BoxDecoration(
-                      color: color,
-                    )),
+                constraints: new BoxConstraints.tightFor(
+                  height: orientation == Orientation.portrait ? 40.0 : 60.0,
+                  width: orientation == Orientation.portrait ? 60.0 : 30.0,
+                ),
+                fillColor: color,
+                shape: new CircleBorder(
+                  side: new BorderSide(
+                    color: color == selectedColor
+                        ? Colors.black
+                        : const Color(0xFFD5D7DA),
+                    width: 4.0,
+                  ),
+                ),
               )));
     }
     return children;
