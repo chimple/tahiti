@@ -75,6 +75,9 @@ flutter:
     - assets/svgimage/fruits/
     - assets/svgimage/vegetables/
     - assets/svgimage/vehicles/
+    - assets/svgimage/shape/
+    - assets/svgimage/number/
+    - assets/svgimage/emotion/
     - assets/nima_animation/
   fonts:
     - family: Bungee
