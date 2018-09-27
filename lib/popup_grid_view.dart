@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
+import 'package:tahiti/select_sticker.dart';
 
 enum ItemType { text, png, sticker }
 
@@ -144,11 +147,34 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = false;
                             }
                           }
+                          if (title == 'assets/filter_icon.jpg') {
+                            showCategorySreen(context, model, title);
+                          } else if (false) {}
                         },
                       ),
                   child: widget.buildIndexItem(
                       context, Iconf(type: ItemType.text, data: title), true)),
             ));
+  }
+
+  Future<bool> showCategorySreen(
+      BuildContext context, ActivityModel model, String text) {
+    return showDialog(
+        context: context,
+        child: _buildScreen(context, model: model, text: text));
+  }
+
+  Widget _buildScreen(context, {ActivityModel model, String text}) {
+    if (text == 'assets/filter_icon.jpg') {
+      return CategoryScreen(
+        itemCrossAxisCount: 6,
+        items: secondStickers,
+        model: model,
+      );
+    }
+    // TODO::// for other components
+    else if (false) {
+    } else {}
   }
 
   @override

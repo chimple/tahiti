@@ -18,6 +18,7 @@ dependencies:
   image_picker: ^0.4.6
   video_player:
   uuid: ^1.0.3
+  tuple: ^1.0.1
   nima: ^1.0.1
   json_annotation: ^1.1.0
 dev_dependencies:
