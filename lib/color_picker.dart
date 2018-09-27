@@ -7,6 +7,7 @@ class ColorPicker extends StatefulWidget {
 }
 
 const List<Color> mainColors = const <Color>[
+  Colors.white,
   Colors.black,
   const Color(0xFF980000),
   const Color(0xFFFF0000),
@@ -68,6 +69,7 @@ class ColorPickerState extends State<ColorPicker> {
           builder: (context, child, model) => InkWell(
                 onTap: () {
                   setState(() {
+                    model.stickerColor = color;
                     if (model.selectedIcon == 'assets/menu/body_icon.png' ||
                         model.selectedIcon == 'assets/menu/clothes.png' ||
                         model.selectedIcon == 'assets/menu/food_icon.png' ||
@@ -75,7 +77,13 @@ class ColorPickerState extends State<ColorPicker> {
                         model.selectedIcon == 'assets/menu/icon.png' ||
                         model.selectedIcon == 'assets/menu/vegetables.png' ||
                         model.selectedIcon == 'assets/menu/vehicles.png') {
-                      model.stickerColor = color;
+                      if (model.stickerColor == Colors.white) {
+                        model.stickerColor = Colors.white;
+                        model.blendMode = BlendMode.dst;
+                      } else {
+                        model.stickerColor = color;
+                        model.blendMode = BlendMode.srcOver;
+                      }
                     } else if (model.selectedIcon == 'assets/menu/pencil.png' ||
                         model.selectedIcon == 'assets/menu/brush.png') {
                       model.drawingColor = color;
@@ -88,7 +96,7 @@ class ColorPickerState extends State<ColorPicker> {
                 },
                 child: new Container(
                     height: orientation == Orientation.portrait ? 30.0 : 70.0,
-                    width:orientation == Orientation.portrait ? 70.0 : 30.0,
+                    width: orientation == Orientation.portrait ? 70.0 : 30.0,
                     decoration: BoxDecoration(
                       color: color,
                     )),

@@ -16,8 +16,7 @@ class EditTextView extends StatefulWidget {
   final String text;
   final Color color;
 
-  EditTextView(
-      {this.id, this.fontType, this.scale, this.text, this.color})
+  EditTextView({this.id, this.fontType, this.scale, this.text, this.color})
       : super();
 
   @override
@@ -72,7 +71,8 @@ class EditTextViewState extends State<EditTextView> {
             //     (constraints.maxWidth * constraints.maxHeight) / 3000;
             // print("maxsize $maxSize");
             return ScopedModelDescendant<ActivityModel>(
-                builder: (context, child, model) => model.editSelectedThing && model.selectedThingId == widget.id
+                builder: (context, child, model) => model.editSelectedThing &&
+                        model.selectedThingId == widget.id
                     ? FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Container(
@@ -82,16 +82,18 @@ class EditTextViewState extends State<EditTextView> {
                             maxLines: null,
                             keyboardType: TextInputType.text,
                             onChanged: (str) {
-                              model.selectedThing(widget.id, "text", str);
+                              model.selectedThing(
+                                  id: widget.id, type: "text", text: str);
                             },
                             onSubmitted: (str) {
-                              model.selectedThing(widget.id, "text", str);
+                              model.selectedThing(
+                                  id: widget.id, type: "text", text: str);
                               model.editSelectedThing = false;
                             },
                             autofocus: true,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 30.0,
+                                fontSize: 40.0,
                                 color: widget.color,
                                 fontWeight: FontWeight.bold,
                                 fontStyle: FontStyle.italic,
@@ -101,18 +103,21 @@ class EditTextViewState extends State<EditTextView> {
                           ),
                         ),
                       )
-                    : Text(
-                        widget.text == '' ? widget.change : widget.text,
-                        maxLines: null,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 30.0,
-                            color: widget.text == ''
-                                ? Colors.black12
-                                : widget.color,
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontFamily: widget.fontType),
+                    : Container(
+                        width: constraints.maxWidth,
+                        child: Text(
+                          widget.text == '' ? widget.change : widget.text,
+                          maxLines: null,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 40.0,
+                              color: widget.text == ''
+                                  ? Colors.black12
+                                  : widget.color,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontFamily: widget.fontType),
+                        ),
                       ));
           })
         : Container();
