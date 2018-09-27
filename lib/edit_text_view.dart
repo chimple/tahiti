@@ -82,10 +82,12 @@ class EditTextViewState extends State<EditTextView> {
                             maxLines: null,
                             keyboardType: TextInputType.text,
                             onChanged: (str) {
-                              model.selectedThing(widget.id, "text", str);
+                              model.selectedThing(
+                                  id: widget.id, type: "text", text: str);
                             },
                             onSubmitted: (str) {
-                              model.selectedThing(widget.id, "text", str);
+                              model.selectedThing(
+                                  id: widget.id, type: "text", text: str);
                               model.editSelectedThing = false;
                             },
                             autofocus: true,
