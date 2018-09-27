@@ -78,6 +78,7 @@ flutter:
     - assets/svgimage/shape/
     - assets/svgimage/number/
     - assets/svgimage/emotion/
+    - assets/svgimage/furniture/
     - assets/nima_animation/
   fonts:
     - family: Bungee
