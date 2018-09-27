@@ -17,19 +17,21 @@ import 'dart:ui' as ui;
 import 'package:tahiti/transform_wrapper.dart';
 
 class Paper extends StatelessWidget {
-  Paper({Key key}) : super(key: key);
-  static GlobalKey previewContainer = new GlobalKey();
+  Paper({Key key}) : super(key: key) {
+    previewContainerKey = GlobalKey();
+  }
 
-  String timeStamp() => new DateTime.now().millisecondsSinceEpoch.toString();
+  GlobalKey previewContainerKey;
 
   Future<Null> getPngImage() async {
     RenderRepaintBoundary boundary =
-        previewContainer.currentContext.findRenderObject();
+        previewContainerKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage();
     final directory = (await getExternalStorageDirectory()).path;
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
-    File imgFile = new File('$directory/screenshot_${timeStamp()}.png');
+    File imgFile = new File(
+        '$directory/screenshot_${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
     print('Screenshot Path:' + imgFile.path);
   }
@@ -40,7 +42,7 @@ class Paper extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints constraints) {
       print('Transform wrapper layout builder: $constraints');
       return new RepaintBoundary(
-          key: previewContainer,
+          key: previewContainerKey,
           child: ScopedModelDescendant<ActivityModel>(
             builder: (context, child, model) {
               final children = <Widget>[];
