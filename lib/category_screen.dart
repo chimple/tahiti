@@ -188,9 +188,7 @@ class CategoryScreenState extends State<CategoryScreen> {
   }
 
   addSticker(Iconf text) {
-    // ActivityModel model = ActivityModel.of(context);
-    widget.model.addSticker(text.data);
-    print('sticekrs: $text');
+    print('stickers: $text');
     if (text.data.startsWith('assets/stickers') ||
         text.data.startsWith('assets/svgimage') &&
             text.type == ItemType.sticker) {
