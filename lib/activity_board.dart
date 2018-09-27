@@ -82,7 +82,6 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                         left: 0.0,
                         right: 0.0,
                         child: SelectSticker(side: DisplaySide.second)),
-                    ImageEditor(),
                   ],
                 ),
           )

@@ -58,7 +58,7 @@ class Paper extends StatelessWidget {
               children
                   .addAll(model.things.where((t) => t['type'] != 'drawing').map(
                         (t) => TransformWrapper(
-                              child: buildWidgetFromThing(t , context),
+                              child: buildWidgetFromThing(t),
                               model: model,
                               constraints: constraints,
                               thing: t,
@@ -95,12 +95,12 @@ class Paper extends StatelessWidget {
                   child: Stack(children: children),
                 ),
               );
-            },
+            },  
           ));
     });
   }
 
-  Widget buildWidgetFromThing(Map<String, dynamic> thing, context) {
+  Widget buildWidgetFromThing(Map<String, dynamic> thing) {
     String s1 = '${thing['asset']}1.svg';
     String s2 = '${thing['asset']}2.svg';
     switch (thing['type']) {

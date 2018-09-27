@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
+import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/paper.dart';
 
 enum ItemType { text, png, sticker }
@@ -162,6 +164,7 @@ class PopupGridViewState extends State<PopupGridView> {
                       context, Iconf(type: ItemType.text, data: title), true)),
             ));
   }
+
 
   @override
   Widget build(BuildContext context) {
