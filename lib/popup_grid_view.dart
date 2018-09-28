@@ -6,10 +6,7 @@ import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
-<<<<<<< HEAD
-=======
 import 'package:tahiti/select_sticker.dart';
->>>>>>> master
 
 enum ItemType { text, png, sticker }
 
@@ -128,7 +125,17 @@ class PopupGridViewState extends State<PopupGridView> {
                                   BlurStyle.normal;
                               model.painterController.sigma = 15.5;
                               model.isDrawing = true;
-                            } else if (title
+                            }else if (title
+                                .startsWith('assets/menu/geometric.png')) {
+                              model.highlighted = title;
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma =0.0;
+                              model.isDrawing = true;
+                            } 
+                            else if (title
                                 .startsWith('assets/menu/brush.png')) {
                               model.highlighted = title;
                               model.painterController.paintOption =
@@ -159,9 +166,6 @@ class PopupGridViewState extends State<PopupGridView> {
             ));
   }
 
-<<<<<<< HEAD
-   @override
-=======
   Future<bool> showCategorySreen(
       BuildContext context, ActivityModel model, String text) {
     return showDialog(
@@ -182,7 +186,6 @@ class PopupGridViewState extends State<PopupGridView> {
   }
 
   @override
->>>>>>> master
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     MediaQueryData media = MediaQuery.of(context);
@@ -191,67 +194,6 @@ class PopupGridViewState extends State<PopupGridView> {
 
     if (orientation == Orientation.portrait) {
       return ScopedModelDescendant<ActivityModel>(
-<<<<<<< HEAD
-        builder: (context, child, model) => Stack(
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Container(
-                  height: size.height * .3,
-                  // width: size.width*.2,
-                ),
-                AnimatedPositioned(
-                  key: orientationKey,
-                  bottom: widget.side == DisplaySide.second
-                      ? model.popped == Popped.second ? menuHeight : -100.0
-                      : null,
-                  top: widget.side == DisplaySide.first
-                      ? model.popped == Popped.first ? menuHeight : -100.0
-                      : null,
-                  left: 0.0,
-                  right: 0.0,
-                  duration: Duration(milliseconds: 1000),
-                  curve: Curves.elasticOut,
-                  child: SizedBox(
-                    height: size.height * .1,
-                    child: Column(
-                      verticalDirection: widget.side == DisplaySide.second
-                          ? VerticalDirection.down
-                          : VerticalDirection.up,
-                      children: <Widget>[
-                        SizedBox(
-                          height: size.height * .03,
-                          child: ColorPicker(),
-                        ),
-                        SizedBox(
-                          height: size.height * .07,
-                          child: GridView.count(
-                              crossAxisCount: 1,
-                              scrollDirection: Axis.horizontal,
-                              children: widget.menuItems[highlightedButtonItem]
-                                  .map((itemName) => Container(
-                                        child: InkWell(
-                                            onTap: () => setState(() {
-                                                  if (highlightedButtonItem ==
-                                                      "assets/menu/text.png") {
-                                                    model.addText('',
-                                                        font: itemName.data);
-                                                  }
-                                                  widget.onUserPress(
-                                                      itemName.data);
-                                                  highlightedPopUpItem =
-                                                      itemName.data;
-                                                }),
-                                            child: widget.buildItem(
-                                                context, itemName, true)),
-                                        color: itemName.data ==
-                                                highlightedPopUpItem
-                                            ? Colors.red
-                                            : Colors.white,
-                                      ))
-                                  .toList(growable: false)),
-                        ),
-                      ],
-=======
           builder: (context, child, model) {
         List<Widget> rowItems1 = [];
         List<Widget> rowItems = [];
@@ -368,62 +310,11 @@ class PopupGridViewState extends State<PopupGridView> {
                                         : Colors.white,
                                   ))
                               .toList(growable: false)),
->>>>>>> master
                     ),
                   ],
                 ),
               ),
             ),
-<<<<<<< HEAD
-      );
-    } else {
-      List<Widget> columnItems = [];
-      if (widget.numFixedItems > 0) {
-        columnItems.add(Container(
-            height: size.height * .1,
-            width: size.width * .15,
-            child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: widget.menuItems.keys
-                    .take(widget.numFixedItems)
-                    .map(
-                      (k) => _buildMenuItem(k, width: size.width * .1),
-                    )
-                    .toList(growable: false))));
-      }
-      columnItems.add(Expanded(
-        child: ListView(
-            scrollDirection: Axis.vertical,
-            children: widget.menuItems.keys
-                .skip(widget.numFixedItems)
-                .map(
-                  (k) => _buildMenuItem(k),
-                )
-                .toList(growable: false)),
-      ));
-      return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) => Stack(
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Container(
-                  height: size.height * .9,
-                  width: size.width * .15,
-                ),
-                AnimatedPositioned(
-                  key: orientationKey,
-                  left: widget.side == DisplaySide.second
-                      ? model.popped == Popped.second ? menuWidth : -100.0
-                      : null,
-                  right: widget.side == DisplaySide.first
-                      ? model.popped == Popped.first ? menuWidth : -100.0
-                      : null,
-                  top: 0.0,
-                  bottom: 0.0,
-                  duration: Duration(milliseconds: 1000),
-                  curve: Curves.elasticOut,
-                  child: SizedBox(
-                    width: size.width * .12,
-=======
             Positioned(
                 bottom: widget.side == DisplaySide.second ? 0.0 : null,
                 top: widget.side == DisplaySide.second ? null : 0.0,
@@ -434,7 +325,6 @@ class PopupGridViewState extends State<PopupGridView> {
                   width: size.width,
                   child: Container(
                     // color: Colors.purple,
->>>>>>> master
                     child: Row(
                       children: widget.side == DisplaySide.second
                           ? rowItems
