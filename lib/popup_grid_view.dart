@@ -160,10 +160,11 @@ class PopupGridViewState extends State<PopupGridView> {
   Future<bool> showCategorySreen(
       BuildContext context, ActivityModel model, String text) {
     return showDialog(
-        context: context, child: _buildScreen(model: model, text: text));
+        context: context,
+        child: _buildScreen(context, model: model, text: text));
   }
 
-  Widget _buildScreen({ActivityModel model, String text}) {
+  Widget _buildScreen(context, {ActivityModel model, String text}) {
     if (text == 'assets/filter_icon.jpg') {
       return CategoryScreen(
         itemCrossAxisCount: 6,
