@@ -5,10 +5,10 @@ import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
   final Orientation orientation;
-  ColorPicker({Key key, this.orientation}) : super(key: key);
+  ColorPicker(
+      {Key key, this.orientation, this.screenMode = ScreenMode.portrait})
+      : super(key: key);
   final ScreenMode screenMode;
-  ActivityModel model;
-  ColorPicker({this.model, this.screenMode = ScreenMode.portrait}) : super();
   ColorPickerState createState() => ColorPickerState();
 }
 
