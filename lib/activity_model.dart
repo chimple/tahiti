@@ -17,6 +17,7 @@ class ActivityModel extends Model {
   Popped _popped = Popped.noPopup;
   String _highlighted;
   bool _isDrawing = false;
+  String _imagePath;
   bool _isGeometricDrawing = false;
   PainterController _painterController;
   PathHistory pathHistory;
@@ -65,6 +66,11 @@ class ActivityModel extends Model {
   String get selectedThingId => _selectedThingId;
   set selectedThingId(String id) {
     _selectedThingId = id;
+    notifyListeners();
+  }
+   String get imagePath => _imagePath;
+  set imagePath(String t) {
+    _imagePath = t;
     notifyListeners();
   }
 

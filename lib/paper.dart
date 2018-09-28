@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
@@ -73,7 +74,7 @@ class Paper extends StatelessWidget {
                   child: Stack(children: children),
                 ),
               );
-            },
+            },  
           ));
     });
   }
@@ -98,7 +99,11 @@ class Paper extends StatelessWidget {
         }
         break;
       case 'image':
-        return Image.file(File(thing['path']));
+        return Image.file(File(thing['path'],),
+        color: Color(thing['color'] as int),
+        colorBlendMode: thing['blendMode'],
+        );
+        
         break;
       case 'nima':
         return new DisplayNima();

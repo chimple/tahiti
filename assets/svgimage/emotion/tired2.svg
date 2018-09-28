@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
+<rect style="opacity:0;fill:#FF6B57;" width="256" height="256"/>
+<g>
+	<path style="fill:none;stroke:#3F3F3F;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
+		M149.2,100.6c0,0,8.1,16.5,26.7,16.4c17.8,0,25.7-16.4,25.7-16.4"/>
+	<path style="fill:none;stroke:#3F3F3F;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
+		M106.8,100.6c0,0-3.3,16.4-26.7,16.4c-19.9,0-25.7-16.4-25.7-16.4"/>
+	<path style="fill:none;stroke:#3F3F3F;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
+		M164.5,41.3c0,0,11.5,28.2,36.4,31"/>
+	<path style="fill:none;stroke:#3F3F3F;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
+		M90.8,41.3c0,0-11.5,28.2-36.4,31"/>
+	<g>
+		<defs>
+			<path id="XMLID_19_" d="M149,139.5c-5.2-2.8-12.1-4.7-21.2-4.7c-9.2,0-16,1.8-21.2,4.7c-17,9.3-15.5,29.3-15.5,29.3h73.3
+				C164.5,168.8,166,148.8,149,139.5z"/>
+		</defs>
+		<use xlink:href="#XMLID_19_"  style="overflow:visible;fill:#3F3F3F;"/>
+		<clipPath id="XMLID_2_">
+			<use xlink:href="#XMLID_19_"  style="overflow:visible;"/>
+		</clipPath>
+		<rect x="85.3" y="131.2" style="clip-path:url(#XMLID_2_);fill:#FFFFFF;" width="85" height="15.3"/>
+		<ellipse style="clip-path:url(#XMLID_2_);fill:#F95A71;" cx="127.8" cy="170.7" rx="25" ry="12.7"/>
+	</g>
+</g>
+</svg>
