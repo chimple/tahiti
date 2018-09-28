@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
 import 'package:tahiti/display_sticker.dart';
+import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
+import 'package:uuid/uuid.dart';
 
 final Map<String, List<Iconf>> secondStickers = {
   'assets/menu/brush.png': [
@@ -264,6 +268,13 @@ class SelectSticker extends StatefulWidget {
 }
 
 class SelectStickerState extends State<SelectSticker> {
+  Future<bool> show(ActivityModel  model) {
+    return showDialog(
+          context: context,
+          child: ImageEditor(model),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ActivityModel>(
@@ -308,12 +319,16 @@ class SelectStickerState extends State<SelectSticker> {
                     break;
                   case 'assets/camera/camera1.png':
                     new Camera().openCamera().then((p) {
-                      if (p != null) model.addImage(p);
+                      // if (p != null) model.addImage(p);
+                      model.imagePath = p;
+                      show(model);
                     });
                     break;
                   case 'assets/camera/gallery.png':
                     new Camera().pickImage().then((p) {
-                      if (p != null) model.addImage(p);
+                      //if (p != null) model.addImage(p);
+                      model.imagePath = p;
+                      show(model);
                     });
                     break;
                   case 'assets/camera/video.png':
