@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
+  final ScreenMode screenMode;
   ActivityModel model;
-  ColorPicker({this.model}) : super();
+  ColorPicker({this.model, this.screenMode = ScreenMode.portrait}) : super();
   ColorPickerState createState() => ColorPickerState();
 }
 
@@ -75,6 +77,7 @@ class ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    print('object${widget.screenMode}');
     Orientation orientation = MediaQuery.of(context).orientation;
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
@@ -91,10 +94,12 @@ class ColorPickerState extends State<ColorPicker> {
       flex: 10,
       child: new SingleChildScrollView(
         controller: _scrollController,
-        scrollDirection: orientation == Orientation.portrait
+        scrollDirection: (orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Axis.horizontal
             : Axis.vertical,
-        child: orientation == Orientation.portrait
+        child: (orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Row(children: _mainColors(context))
             : Column(children: _mainColors(context)),
       ),
