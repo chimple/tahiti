@@ -3,18 +3,18 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
 <g style="opacity:0;">
-	<path style="fill:#FFFFFF;" d="M225.9,95.5c0,47.6-39.5,147.5-89.7,147.5s-92-99.9-92-147.5s21.3-78.6,92-81.4
+	<path style="fill:#F74F1C;" d="M225.9,95.5c0,47.6-39.5,147.5-89.7,147.5s-92-99.9-92-147.5s21.3-78.6,92-81.4
 		C195.2,11.7,225.9,47.9,225.9,95.5z"/>
 </g>
 <g>
 	<g>
 		<g>
-			<path style="fill:#41B528;" d="M109.6,47.8c-1.6,0-3.3-0.5-4.7-1.6c-3.2-2.6-3.8-7.3-1.2-10.5l19.3-24.3
-				c2.6-3.2,7.3-3.8,10.5-1.2c3.2,2.6,3.8,7.3,1.2,10.5L115.5,45C114,46.8,111.8,47.8,109.6,47.8z"/>
+			<path style="fill:#41B528;" d="M109.6,47.8c-1.6,0-3.3-0.5-4.7-1.6c-3.2-2.6-3.8-7.3-1.2-10.5L123,11.4c2.6-3.2,7.3-3.8,10.5-1.2
+				s3.8,7.3,1.2,10.5L115.5,45C114,46.8,111.8,47.8,109.6,47.8z"/>
 		</g>
 		<g>
 			<path style="fill:#4ACE32;" d="M128.9,56.6c-0.2,0-0.5,0-0.7,0c-4.1-0.4-7.1-4.1-6.7-8.2l3.4-34.9c0.4-4.1,4.1-7.1,8.2-6.7
-				c4.1,0.4,7.1,4.1,6.7,8.2l-3.4,34.9C136,53.7,132.8,56.6,128.9,56.6z"/>
+				s7.1,4.1,6.7,8.2l-3.4,34.9C136,53.7,132.8,56.6,128.9,56.6z"/>
 		</g>
 		<g>
 			<path style="fill:#4ACE32;" d="M96.5,28.3c-3.5,0-6.7-2.5-7.4-6.1c-0.8-4.1,1.9-8,5.9-8.8l34.4-6.7c4.1-0.8,8,1.9,8.8,5.9
@@ -29,10 +29,10 @@
 				l34.4,6.7c4.1,0.8,6.7,4.7,5.9,8.8C173.6,25.8,170.4,28.3,166.9,28.3z"/>
 		</g>
 	</g>
-	<circle style="opacity:0.1;" cx="94.9" cy="128.5" r="8.3"/>
-	<circle style="opacity:0.1;" cx="128" cy="119.1" r="8.3"/>
-	<circle style="opacity:0.1;" cx="90.2" cy="86" r="8.3"/>
-	<circle style="opacity:0.1;" cx="151.6" cy="187.5" r="8.3"/>
-	<circle style="opacity:0.1;" cx="182.3" cy="173.4" r="8.3"/>
+	<circle style="opacity:0.1;enable-background:new    ;" cx="94.9" cy="128.5" r="8.3"/>
+	<circle style="opacity:0.1;enable-background:new    ;" cx="128" cy="119.1" r="8.3"/>
+	<circle style="opacity:0.1;enable-background:new    ;" cx="90.2" cy="86" r="8.3"/>
+	<circle style="opacity:0.1;enable-background:new    ;" cx="151.6" cy="187.5" r="8.3"/>
+	<circle style="opacity:0.1;enable-background:new    ;" cx="182.3" cy="173.4" r="8.3"/>
 </g>
 </svg>
