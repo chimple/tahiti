@@ -19,6 +19,18 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class CategoryScreenState extends State<CategoryScreen> {
+  @override
+  void dispose() {
+    setState(() {});
+    super.dispose();
+  }
+
+  @override
+  didUpdateWidget(CategoryScreen oldWdiget) {
+    super.didUpdateWidget(oldWdiget);
+    setState(() {});
+  }
+
   ScrollController _scrollController;
   int _itemCount = 0;
   List<Tuple3<String, int, int>> _itemRange = List<Tuple3<String, int, int>>();
@@ -49,10 +61,8 @@ class CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Material(
       color: Colors.black87,
-      key: Key('overLayVisibleContainer'),
       child: SizedBox(
         height: size.height,
         width: size.width,
@@ -91,8 +101,8 @@ class CategoryScreenState extends State<CategoryScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  height: 3.0,
+                Divider(
+                  height: 6.0,
                   color: Colors.white,
                 ),
                 Expanded(
@@ -119,8 +129,8 @@ class CategoryScreenState extends State<CategoryScreen> {
                               ))
                           .toList(growable: false),
                     )),
-                Container(
-                  height: 3.0,
+                Divider(
+                  height: 6.0,
                   color: Colors.white,
                 ),
                 Expanded(
