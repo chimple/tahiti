@@ -19,18 +19,6 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class CategoryScreenState extends State<CategoryScreen> {
-  @override
-  void dispose() {
-    setState(() {});
-    super.dispose();
-  }
-
-  @override
-  didUpdateWidget(CategoryScreen oldWdiget) {
-    super.didUpdateWidget(oldWdiget);
-    setState(() {});
-  }
-
   ScrollController _scrollController;
   int _itemCount = 0;
   List<Tuple3<String, int, int>> _itemRange = List<Tuple3<String, int, int>>();
