@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
+  final ScreenMode screenMode;
+  ActivityModel model;
+  ColorPicker({this.model, this.screenMode = ScreenMode.portrait}) : super();
   ColorPickerState createState() => ColorPickerState();
 }
 
@@ -73,6 +77,7 @@ class ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    print('object${widget.screenMode}');
     Orientation orientation = MediaQuery.of(context).orientation;
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
@@ -89,10 +94,12 @@ class ColorPickerState extends State<ColorPicker> {
       flex: 10,
       child: new SingleChildScrollView(
         controller: _scrollController,
-        scrollDirection: orientation == Orientation.portrait
+        scrollDirection: (orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Axis.horizontal
             : Axis.vertical,
-        child: orientation == Orientation.portrait
+        child: (orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Row(children: _mainColors(context))
             : Column(children: _mainColors(context)),
       ),
@@ -125,43 +132,44 @@ class ColorPickerState extends State<ColorPicker> {
     Orientation orientation = MediaQuery.of(context).orientation;
     var children = <Widget>[];
     for (Color color in mainColors) {
-      children.add(ScopedModelDescendant<ActivityModel>(
-          builder: (context, child, model) => RawMaterialButton(
-                onPressed: () {
-                  setState(() {
-                    selectedColor = color;
-                    if (model.selectedIcon == 'assets/menu/body_icon.png' ||
-                        model.selectedIcon == 'assets/menu/clothes.png' ||
-                        model.selectedIcon == 'assets/menu/food_icon.png' ||
-                        model.selectedIcon == 'assets/menu/fruit.png' ||
-                        model.selectedIcon == 'assets/menu/icon.png' ||
-                        model.selectedIcon == 'assets/menu/vegetables.png' ||
-                        model.selectedIcon == 'assets/menu/vehicles.png') {
-                      model.stickerColor = color;
-                    } else if (model.selectedIcon == 'assets/menu/pencil.png' ||
-                        model.selectedIcon == 'assets/menu/brush.png') {
-                      model.drawingColor = color;
-                    } else if (model.selectedIcon == 'assets/menu/text.png') {
-                      model.textColor = color;
-                    } else {
-                      model.selectedColor = color;
-                    }
-                  });
-                },
-                constraints: new BoxConstraints.tightFor(
-                  height: orientation == Orientation.portrait ? 40.0 : 60.0,
-                  width: orientation == Orientation.portrait ? 60.0 : 30.0,
-                ),
-                fillColor: color,
-                shape: new CircleBorder(
-                  side: new BorderSide(
-                    color: color == selectedColor
-                        ? Colors.black
-                        : const Color(0xFFD5D7DA),
-                    width: 4.0,
-                  ),
-                ),
-              )));
+      // children.add(ScopedModelDescendant<ActivityModel>(
+      //     builder: (context, child, model) =>
+
+      children.add(RawMaterialButton(
+        onPressed: () {
+          setState(() {
+            selectedColor = color;
+            if (widget.model.selectedIcon == 'assets/menu/body_icon.png' ||
+                widget.model.selectedIcon == 'assets/menu/clothes.png' ||
+                widget.model.selectedIcon == 'assets/menu/food_icon.png' ||
+                widget.model.selectedIcon == 'assets/menu/fruit.png' ||
+                widget.model.selectedIcon == 'assets/menu/icon.png' ||
+                widget.model.selectedIcon == 'assets/menu/vegetables.png' ||
+                widget.model.selectedIcon == 'assets/menu/vehicles.png') {
+              widget.model.stickerColor = color;
+            } else if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
+                widget.model.selectedIcon == 'assets/menu/brush.png') {
+              widget.model.drawingColor = color;
+            } else if (widget.model.selectedIcon == 'assets/menu/text.png') {
+              widget.model.textColor = color;
+            } else {
+              widget.model.selectedColor = color;
+            }
+          });
+        },
+        constraints: new BoxConstraints.tightFor(
+          height: orientation == Orientation.portrait ? 40.0 : 60.0,
+          width: orientation == Orientation.portrait ? 60.0 : 30.0,
+        ),
+        fillColor: color,
+        shape: new CircleBorder(
+          side: new BorderSide(
+            color:
+                color == selectedColor ? Colors.black : const Color(0xFFD5D7DA),
+            width: 4.0,
+          ),
+        ),
+      ));
     }
     return children;
   }
