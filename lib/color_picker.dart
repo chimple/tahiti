@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
+  final Orientation orientation;
+  ColorPicker({Key key, this.orientation}) : super(key: key);
+  final ScreenMode screenMode;
+  ActivityModel model;
+  ColorPicker({this.model, this.screenMode = ScreenMode.portrait}) : super();
   ColorPickerState createState() => ColorPickerState();
 }
 
 const List<Color> mainColors = const <Color>[
+  Colors.white,
   Colors.black,
   const Color(0xFF980000),
   const Color(0xFFFF0000),
@@ -45,29 +52,92 @@ Color stickerColor;
 Color selectedColor;
 
 class ColorPickerState extends State<ColorPicker> {
+  ScrollController _scrollController = new ScrollController();
+  Offset scrollOffset;
+
+  _backwardButtonBehaviour() {
+    setState(() {
+      if (_scrollController.position.extentBefore > 0)
+        _scrollController.animateTo(
+            _scrollController.position.extentBefore -
+                _scrollController.position.extentInside,
+            curve: Curves.linear,
+            duration: const Duration(milliseconds: 300));
+    });
+  }
+
+  _forwardButtonBehaviour() {
+    setState(() {
+      if (_scrollController.position.extentAfter > 0)
+        _scrollController.animateTo(
+            _scrollController.position.extentInside +
+                _scrollController.position.extentBefore,
+            curve: Curves.linear,
+            duration: const Duration(milliseconds: 300));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('object${widget.screenMode}');
     Orientation orientation = MediaQuery.of(context).orientation;
-    return new Center(
+    List<Widget> colorItems = [];
+    colorItems.add(Expanded(
+        flex: 2,
+        child: new InkWell(
+          onTap: () => _backwardButtonBehaviour(),
+          child: new FittedBox(
+              fit: BoxFit.fill,
+              child: widget.orientation == Orientation.landscape
+                  ? const Icon(Icons.arrow_drop_up)
+                  : const Icon(Icons.arrow_left)),
+        )));
+    colorItems.add(new Expanded(
+      flex: 10,
       child: new SingleChildScrollView(
-        scrollDirection: orientation == Orientation.portrait
+        controller: _scrollController,
+        scrollDirection: (orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Axis.horizontal
             : Axis.vertical,
-        child: orientation == Orientation.portrait
+        child: (orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Row(children: _mainColors(context))
             : Column(children: _mainColors(context)),
       ),
+    ));
+    colorItems.add(
+      new Expanded(
+          flex: 2,
+          child: new InkWell(
+            onTap: () => _forwardButtonBehaviour(),
+            child: new FittedBox(
+                fit: BoxFit.fill,
+                child: widget.orientation == Orientation.landscape
+                    ? const Icon(
+                        Icons.arrow_drop_down,
+                      )
+                    : const Icon(
+                        Icons.arrow_right,
+                      )),
+          )),
     );
+
+    return new Stack(children: [
+      widget.orientation == Orientation.landscape
+          ? new Column(children: colorItems)
+          : new Row(children: colorItems)
+    ]);
   }
 
   List<Widget> _mainColors(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
     var children = <Widget>[];
     for (Color color in mainColors) {
       children.add(ScopedModelDescendant<ActivityModel>(
-          builder: (context, child, model) => InkWell(
-                onTap: () {
+          builder: (context, child, model) => RawMaterialButton(
+                onPressed: () {
                   setState(() {
+                    selectedColor = color;
                     if (model.selectedIcon == 'assets/menu/body_icon.png' ||
                         model.selectedIcon == 'assets/menu/clothes.png' ||
                         model.selectedIcon == 'assets/menu/food_icon.png' ||
@@ -86,12 +156,21 @@ class ColorPickerState extends State<ColorPicker> {
                     }
                   });
                 },
-                child: new Container(
-                    height: orientation == Orientation.portrait ? 30.0 : 70.0,
-                    width:orientation == Orientation.portrait ? 70.0 : 30.0,
-                    decoration: BoxDecoration(
-                      color: color,
-                    )),
+                constraints: new BoxConstraints.tightFor(
+                  height:
+                      widget.orientation == Orientation.portrait ? 40.0 : 60.0,
+                  width:
+                      widget.orientation == Orientation.portrait ? 60.0 : 30.0,
+                ),
+                fillColor: color,
+                shape: new CircleBorder(
+                  side: new BorderSide(
+                    color: color == selectedColor
+                        ? Colors.black
+                        : const Color(0xFFD5D7DA),
+                    width: 4.0,
+                  ),
+                ),
               )));
     }
     return children;

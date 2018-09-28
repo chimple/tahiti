@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:tahiti/image_editor.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -59,6 +61,7 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
 
   @override
   Widget build(BuildContext context) {
+   
     return _displayPaper
         ? ScopedModelDescendant<ActivityModel>(
             builder: (context, child, model) => Stack(

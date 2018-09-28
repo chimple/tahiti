@@ -7,8 +7,12 @@ class DisplaySticker extends StatelessWidget {
   String primary;
   Color color;
   double size;
+  BlendMode blendmode;
   DisplaySticker(
-      {@required this.primary, @required this.color, this.size = 200.0});
+      {@required this.primary,
+      @required this.color,
+      this.size = 200.0,
+      this.blendmode});
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ActivityModel>(
@@ -21,7 +25,9 @@ class DisplaySticker extends StatelessWidget {
                     child: new SvgPicture.asset(
                       '${primary}1.svg',
                       color: color,
-                      colorBlendMode: BlendMode.modulate,
+                      colorBlendMode: blendmode == BlendMode.dst
+                          ? blendmode
+                          : BlendMode.srcOver,
                       package: 'tahiti',
                     ),
                   ),
