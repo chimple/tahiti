@@ -254,7 +254,7 @@ class PopupGridViewState extends State<PopupGridView> {
                 child: widget.side == DisplaySide.second
                     ? SizedBox(
                         height: size.height * .04,
-                        child: ColorPicker(),
+                        child: ColorPicker(orientation: orientation),
                       )
                     : Container()),
             AnimatedPositioned(
@@ -408,7 +408,7 @@ class PopupGridViewState extends State<PopupGridView> {
                       heightFactor: .8,
                       child: SizedBox(
                         width: size.width * .03,
-                        child: ColorPicker(),
+                        child: ColorPicker(orientation: orientation),
                       ),
                     )
                   : Container(),
