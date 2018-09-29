@@ -369,15 +369,15 @@ class TopStickers {
     Iconf(type: ItemType.png, data: 'assets/mic/play.png')
   ];
   final Map<String, List<Iconf>> firstStickers = {
+    'assets/menu/text.png': [
+      // Iconf(type: ItemType.png, data: 'assets/menu/text.png'),
+    ],
     'assets/menu/mic.png': playIcon,
     'assets/menu/camera.png': [
       Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
     ],
-
-    //  'assets/menu/bucket.png': [],
-
     'assets/filter_icon.jpg': [],
   };
 }

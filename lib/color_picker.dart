@@ -5,10 +5,9 @@ import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
   final Orientation orientation;
-  ColorPicker(
-      {Key key, this.orientation, this.screenMode = ScreenMode.portrait})
-      : super(key: key);
   final ScreenMode screenMode;
+  final ActivityModel model;
+  ColorPicker({Key key, this.model, this.screenMode = ScreenMode.portrait, this.orientation}) : super(key: key);
   ColorPickerState createState() => ColorPickerState();
 }
 
@@ -133,13 +132,12 @@ class ColorPickerState extends State<ColorPicker> {
   List<Widget> _mainColors(BuildContext context) {
     var children = <Widget>[];
     for (Color color in mainColors) {
-      children.add(ScopedModelDescendant<ActivityModel>(
-          builder: (context, child, model) => RawMaterialButton(
+      children.add(RawMaterialButton(
                 onPressed: () {
                   setState(() {
                     selectedColor = color;
                   });
-                  model.selectedColor = color;
+                  widget.model.selectedColor = color;
                 },
                 constraints: new BoxConstraints.tightFor(
                   height:
@@ -156,7 +154,7 @@ class ColorPickerState extends State<ColorPicker> {
                     width: 4.0,
                   ),
                 ),
-              )));
+              ));
     }
     return children;
   }
