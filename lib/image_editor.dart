@@ -22,7 +22,7 @@ class ImageEditorState extends State<ImageEditor> {
     Colors.white,
     Colors.white,
     Colors.blue,
-    Colors.red,
+    Colors.tealAccent,
     Colors.pink,
     Colors.limeAccent,
     Colors.red,
@@ -30,12 +30,12 @@ class ImageEditorState extends State<ImageEditor> {
     Colors.limeAccent
   ];
   List<BlendMode> listBlendMode = [
-    BlendMode.dst,
-    BlendMode.color,
-    BlendMode.colorBurn,
-    BlendMode.hardLight,
+    BlendMode.dst, // default
+    BlendMode.color, //black_white
+    BlendMode.saturation,
     BlendMode.modulate,
-    BlendMode.luminosity,
+    BlendMode.modulate,
+    BlendMode.softLight,
     BlendMode.hardLight,
     BlendMode.modulate,
     BlendMode.luminosity
