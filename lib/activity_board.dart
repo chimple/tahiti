@@ -26,8 +26,10 @@ class ActivityBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModel<ActivityModel>(
       model: (json != null
-          ? ActivityModel.fromJson(json)
-          : ActivityModel(pathHistory: PathHistory(), id: Uuid().v4()))
+          ? ActivityModel(paintData: PaintData.fromJson(json))
+          : ActivityModel(
+              paintData: PaintData(
+                  id: Uuid().v4(), things: [], pathHistory: PathHistory())))
         ..saveCallback = saveCallback,
       child: InnerActivityBoard(
         templates: templates,
@@ -49,12 +51,14 @@ class InnerActivityBoard extends StatefulWidget {
 
 class InnerActivityBoardState extends State<InnerActivityBoard> {
   bool _displayPaper;
+  GlobalKey _previewContainerKey;
 
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     _displayPaper = widget.templates?.isEmpty ?? true;
+    _previewContainerKey = GlobalKey();
   }
 
   void _onPress(String template) {
@@ -70,13 +74,13 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
             child: Container(
               height: MediaQuery.of(context).orientation == Orientation.portrait? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).orientation == Orientation.portrait? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
-              color: Colors.grey,
+              color: Colors.white,
               child: AspectRatio(aspectRatio: 1.0, child: Paper()),
             ),
           )
         : Center(
             child: Container(
-              color: Colors.grey,
+              color: Colors.white,
               child: AspectRatio(aspectRatio: 1.0, child: Paper()),
             ),
           );

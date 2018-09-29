@@ -69,7 +69,7 @@ class RollerState extends State<Drawing> {
     pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(update.globalPosition);
     if (painterController.getDragStatus()) {
-      painterController.updateCurrent(pos);
+      painterController.updateCurrent(context, pos);
     } else {
       painterController.add(context, pos);
     }
@@ -77,12 +77,10 @@ class RollerState extends State<Drawing> {
 
   void _handleDragEnd(DragEndDetails details) {
     ActivityModel model = ActivityModel.of(context);
-    // PathHistory pathHistory = model.pathHistory;
+    PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
-    painterController.endCurrent();
-    if (model.pathHistory.paths.length > 0) {
-      model.addDrawing(model.pathHistory.paths.last);
-    }
+    painterController.endCurrent(context);
+    model.addDrawing(pathHistory.paths.last);
     setState(() {
       count = 0;
     });
@@ -94,9 +92,7 @@ class RollerState extends State<Drawing> {
       key: previewContainer,
       child: LayoutBuilder(
         builder: (context, box) {
-          return Container(
-              height: box.maxHeight,
-              width: box.maxWidth,
+          return ClipRect(
               child: RawGestureDetector(
                   behavior: HitTestBehavior.opaque,
                   gestures: <Type, GestureRecognizerFactory>{
@@ -134,9 +130,7 @@ class _DragHandler extends Drag {
   @override
   void end(DragEndDetails details) {
     onEnd(details);
-}
-@override
-void cancel(){}
+  }
 }
 
 class _ScratchCardLayout extends SingleChildRenderObjectWidget {
@@ -245,17 +239,15 @@ class PainterController extends ChangeNotifier {
   BlurStyle blurStyle = BlurStyle.normal;
   double sigma = 0.0;
   PaintOption paintOption;
+  DrawingType drawingType;
   Paint _currentPaint;
   bool _inDrag = false;
-  bool _isGeometricDrawing = false;
-  bool _isFreeDrawing = false;
-
   double initialY;
   double initialX;
 
   PainterController({this.pathHistory}) {
     thickness = 5.0;
-//    _updatePaint();
+// _updatePaint();
     paintOption = PaintOption.paint;
   }
 
@@ -282,6 +274,8 @@ class PainterController extends ChangeNotifier {
   void add(BuildContext context, Offset startPoint) {
     initialX = startPoint.dx;
     initialY = startPoint.dy;
+    pathHistory.startX = startPoint.dx;
+    pathHistory.startY = startPoint.dy;
     final model = ActivityModel.of(context);
     if (!_inDrag) {
       if (model.popped != Popped.noPopup) {
@@ -289,9 +283,6 @@ class PainterController extends ChangeNotifier {
       }
       if (model.isDrawing) {
         _inDrag = true;
-        _isFreeDrawing = true;
-        _isGeometricDrawing = false;
-
         pathHistory.add(startPoint,
             paintOption: paintOption,
             blurStyle: blurStyle,
@@ -300,9 +291,14 @@ class PainterController extends ChangeNotifier {
             color: model.selectedColor);
       } else if (model.isGeometricDrawing) {
         _inDrag = true;
-        _isGeometricDrawing = true;
-        _isFreeDrawing = false;
-
+        pathHistory.add(startPoint,
+            paintOption: paintOption,
+            blurStyle: blurStyle,
+            sigma: sigma,
+            thickness: thickness,
+            color: model.drawingColor);
+      } else if (model.isLineDrawing) {
+        _inDrag = true;
         pathHistory.add(startPoint,
             paintOption: paintOption,
             blurStyle: blurStyle,
@@ -313,17 +309,18 @@ class PainterController extends ChangeNotifier {
     }
   }
 
-  void updateCurrent(Offset nextPoint) {
+  void updateCurrent(BuildContext context, Offset nextPoint) {
+    final model = ActivityModel.of(context);
     if (_inDrag) {
-      if (_isGeometricDrawing) {
+      if (model.isDrawing) {
+        pathHistory.updateFreeDrawing(nextPoint);
+      } else if (model.isGeometricDrawing) {
         if (nextPoint.dy < initialY + 50.0 && nextPoint.dy > initialY - 50.0) {
-          // path.lineTo(x, initialY);
           pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
           initialX = nextPoint.dx;
         } else {
           if (nextPoint.dx > initialX - 50.0 &&
               nextPoint.dx < initialX + 50.0) {
-            // path.lineTo(initialX, y);
             pathHistory.paths.last.addPoint(Offset(initialX, nextPoint.dy));
           } else {
             initialX = nextPoint.dx;
@@ -331,15 +328,21 @@ class PainterController extends ChangeNotifier {
             pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
           }
         }
-      } else if (_isFreeDrawing) {
-        pathHistory.updateFreeDrawing(nextPoint);
+      } else if (model.isLineDrawing) {
+        pathHistory.x = nextPoint.dx;
+        pathHistory.y = nextPoint.dy;
       }
       notifyListeners();
     }
   }
 
-  void endCurrent() {
+  void endCurrent(BuildContext context) {
+    final model = ActivityModel.of(context);
     _inDrag = false;
+    if (model.isLineDrawing) {
+      Path path = paths.last.path;
+      path.lineTo(pathHistory.x, pathHistory.y);
+    }
   }
 
   bool getDragStatus() {
@@ -367,11 +370,11 @@ class PainterController extends ChangeNotifier {
     }
   }
 
-  void eraser() {
-    print('eraser');
-    paintOption = PaintOption.erase;
-    notifyListeners();
-  }
+  // void eraser() {
+  //   print('eraser');
+  //   paintOption = PaintOption.erase;
+  //   notifyListeners();
+  // }
 
   void doUnMask() {
     paintOption = PaintOption.unMask;
@@ -380,3 +383,4 @@ class PainterController extends ChangeNotifier {
 }
 
 enum PaintOption { paint, erase, unMask }
+enum DrawingType { freeDrawing, geometricDrawing, lineDrawing }

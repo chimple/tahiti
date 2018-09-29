@@ -18,6 +18,7 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
+
   'assets/menu/pencil.png': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
@@ -26,6 +27,20 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
   'assets/menu/eraser.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/geometric.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/line.png': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),

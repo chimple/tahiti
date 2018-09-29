@@ -136,23 +136,8 @@ class ColorPickerState extends State<ColorPicker> {
                 onPressed: () {
                   setState(() {
                     selectedColor = color;
-                    if (widget.model.selectedIcon == 'assets/menu/body_icon.png' ||
-                        widget.model.selectedIcon == 'assets/menu/clothes.png' ||
-                        widget.model.selectedIcon == 'assets/menu/food_icon.png' ||
-                        widget.model.selectedIcon == 'assets/menu/fruit.png' ||
-                        widget.model.selectedIcon == 'assets/menu/icon.png' ||
-                        widget.model.selectedIcon == 'assets/menu/vegetables.png' ||
-                        widget.model.selectedIcon == 'assets/menu/vehicles.png') {
-                      widget.model.stickerColor = color;
-                    } else if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
-                        widget.model.selectedIcon == 'assets/menu/brush.png') {
-                      widget.model.drawingColor = color;
-                    } else if (widget.model.selectedIcon == 'assets/menu/text.png') {
-                      widget.model.textColor = color;
-                    } else {
-                      widget.model.selectedColor = color;
-                    }
                   });
+                  widget.model.selectedColor = color;
                 },
                 constraints: new BoxConstraints.tightFor(
                   height:
