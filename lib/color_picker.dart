@@ -15,6 +15,8 @@ class ColorPicker extends StatefulWidget {
       this.getColor})
       : super(key: key);
   final ScreenMode screenMode;
+  final ActivityModel model;
+  ColorPicker({Key key, this.model, this.screenMode = ScreenMode.portrait, this.orientation}) : super(key: key);
   ColorPickerState createState() => ColorPickerState();
 }
 
