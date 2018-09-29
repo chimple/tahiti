@@ -5,6 +5,15 @@ import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
   final Orientation orientation;
+  final ActivityModel model;
+  final Function getColor;
+  ColorPicker(
+      {Key key,
+      this.orientation,
+      this.screenMode = ScreenMode.portrait,
+      this.model,
+      this.getColor})
+      : super(key: key);
   final ScreenMode screenMode;
   final ActivityModel model;
   ColorPicker({Key key, this.model, this.screenMode = ScreenMode.portrait, this.orientation}) : super(key: key);
@@ -78,7 +87,6 @@ class ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    print('object${widget.screenMode}');
     Orientation orientation = MediaQuery.of(context).orientation;
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
@@ -132,29 +140,36 @@ class ColorPickerState extends State<ColorPicker> {
   List<Widget> _mainColors(BuildContext context) {
     var children = <Widget>[];
     for (Color color in mainColors) {
-      children.add(RawMaterialButton(
-                onPressed: () {
-                  setState(() {
-                    selectedColor = color;
-                  });
-                  widget.model.selectedColor = color;
-                },
-                constraints: new BoxConstraints.tightFor(
-                  height:
-                      widget.orientation == Orientation.portrait ? 40.0 : 60.0,
-                  width:
-                      widget.orientation == Orientation.portrait ? 60.0 : 30.0,
-                ),
-                fillColor: color,
-                shape: new CircleBorder(
-                  side: new BorderSide(
-                    color: color == selectedColor
-                        ? Colors.black
-                        : const Color(0xFFD5D7DA),
-                    width: 4.0,
-                  ),
-                ),
-              ));
+      children.add(
+          // ScopedModelDescendant<ActivityModel>(
+          //  builder: (context, child, model) =>
+          RawMaterialButton(
+        onPressed: () {
+          setState(() {
+            selectedColor = color;
+          });
+          if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
+              widget.model.selectedIcon == 'assets/menu/geometric.png')
+            widget.model.selectedColor = color;
+          else if (widget.model.selectedIcon == 'assets/filter_icon.jpg')
+            widget.getColor(color);
+          else if (false) {}
+        },
+        constraints: new BoxConstraints.tightFor(
+          height: widget.orientation == Orientation.portrait ? 40.0 : 60.0,
+          width: widget.orientation == Orientation.portrait ? 60.0 : 30.0,
+        ),
+        fillColor: color,
+        shape: new CircleBorder(
+          side: new BorderSide(
+            color:
+                color == selectedColor ? Colors.black : const Color(0xFFD5D7DA),
+            width: 4.0,
+          ),
+        ),
+      ));
+
+      // );
     }
     return children;
   }

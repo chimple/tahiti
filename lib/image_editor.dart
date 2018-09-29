@@ -15,124 +15,166 @@ class ImageEditor extends StatefulWidget {
 }
 
 class ImageEditorState extends State<ImageEditor> {
-  int selectedColor = 0xff000000;
+  Color selectedColor = Colors.white;
+  int borderColor = 0;
+  BlendMode selectedBlendMode = BlendMode.dst;
+  List<Color> listColor = [
+    Colors.white,
+    Colors.white,
+    Colors.blue,
+    Colors.tealAccent,
+    Colors.pink,
+    Colors.limeAccent,
+    Colors.red,
+    Colors.pink,
+    Colors.limeAccent
+  ];
+  List<BlendMode> listBlendMode = [
+    BlendMode.dst, // default
+    BlendMode.color, //black_white
+    BlendMode.saturation,
+    BlendMode.modulate,
+    BlendMode.modulate,
+    BlendMode.softLight,
+    BlendMode.hardLight,
+    BlendMode.modulate,
+    BlendMode.luminosity
+  ];
+  List<int> _colorVal = [];
+  @override
+  initState() {
+    for (int i = 0; i < 8; i++) _colorVal.add(i);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<int> _colorVal = [
-      0xffc62828,
-      0xffffff00,
-      0xffd50000,
-      0xffe65100,
-      0xff00bcd4,
-    ];
-    int roundColor;
-    if (selectedColor == 0xff000000)
-      roundColor = 0xff00e676;
-    else
-      roundColor = 0xff76ff03;
+    int roundColor = 0xffffffff;
     var size = MediaQuery.of(context).size;
     return Material(
       color: Colors.black87,
-      child: Column(children: <Widget>[
-        Row(children: <Widget>[
-          Container(
-              height: size.height * .07,
-              width: size.width * .9,
-              color: Colors.grey,
-              child: Center(
-                  child: Text(
-                "Image",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: size.height * .03,
-                ),
-              ))),
-          Container(
-            height: size.height * .07,
-            width: size.width * .1,
-            color: Colors.grey,
-            child: IconButton(
-                iconSize: size.height * .03,
-                icon: Icon(Icons.done),
-                color: Colors.white,
-                onPressed: () {
-                  if (widget.model.imagePath != null)
-                    widget.model.addImage(widget.model.imagePath);
-                  Navigator.pop(context);
-                }),
-          ),
-        ]),
-        // Material(
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(),
+                    Text(
+                      "Image",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: size.height * .03,
+                      ),
+                    ),
+                    IconButton(
+                        iconSize: size.height * .03,
+                        icon: Icon(Icons.done),
+                        color: Colors.white,
+                        onPressed: () {
+                          if (widget.model.imagePath != null)
+                            widget.model.addImage(widget.model.imagePath,
+                                selectedColor, selectedBlendMode);
+                          widget.model.blendMode = selectedBlendMode;
+                          widget.model.color = selectedColor;
+                          Navigator.pop(context);
+                        }),
+                  ]),
+            ),
+            // Material(
 
-        new Column(children: <Widget>[
-          // Image.file(File(thing['path'])),
-          // ),
-          widget.model.imagePath != null
-              ? Container(
-                  height: size.height * .6,
-                  width: size.width,
-                  color: Colors.white,
-                  child: Image.file(File(widget.model.imagePath)),
-                )
-              : Container(
-                  height: size.height * .6,
-                  width: size.width,
-                  color: Colors.white70,
-                ),
+            // Image.file(File(thing['path'])),
+            // ),
+            widget.model.imagePath != null
+                ? Expanded(
+                    flex: 6,
+                    child: SizedBox(
+                        height: size.height * .59,
+                        width: size.width,
+                        child: Image.file(
+                          File(widget.model.imagePath),
+                          color: selectedColor,
+                          colorBlendMode: selectedBlendMode,
+                        )),
+                  )
+                : Expanded(
+                    flex: 6,
+                    child: Container(
+                      color: Colors.white70,
+                    ),
+                  ),
 
-          new SizedBox(
-              height: size.height * .22,
-              child: InkWell(
-                onTap: () {
-                  // widget.model.isEditing = false;
-                  // if (widget.model.imagePath != null)
-                  //   widget.model.addImage(
-                  //       widget.model.imagePath, Colors.white, BlendMode.color);
-                },
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  // scrollDirection: Axis.horizontal,
-                  children: _colorVal
-                      .map((colorValue) => Column(children: <Widget>[
-                            Center(
-                                child: RawMaterialButton(
-                              onPressed: () => _multiColor(colorValue),
-                              constraints: new BoxConstraints.tightFor(
-                                width: size.width * .2,
-                                height: size.height * .2,
-                              ),
-                              child: widget.model.imagePath != null
-                                  ? Image.file(File(widget.model.imagePath))
-                                  : Container(),
-                              fillColor: new Color(colorValue),
-                              shape: new BeveledRectangleBorder(
-                                side: new BorderSide(
-                                  color: colorValue == selectedColor
-                                      ? Color(roundColor)
-                                      : const Color(0xff000000),
-                                  width: 2.0,
+            new Expanded(
+                flex: 2,
+                child: InkWell(
+                  onTap: () {
+                    // widget.model.isEditing = false;
+                    // if (widget.model.imagePath != null)
+                    //   widget.model.addImage(
+                    //       widget.model.imagePath, Colors.white, BlendMode.color);
+                  },
+                  child: new ListView(
+                    scrollDirection: Axis.horizontal,
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    // scrollDirection: Axis.horizontal,
+                    children: _colorVal
+                        .map((count) => Column(children: <Widget>[
+                              Center(
+                                  child: RawMaterialButton(
+                                onPressed: () {
+                                  setState(() {
+                                    borderColor = count;
+                                  });
+                                  _multiColor(
+                                      listColor[_colorVal.indexOf(count)],
+                                      listBlendMode[_colorVal.indexOf(count)]);
+                                },
+                                constraints: new BoxConstraints.tightFor(
+                                  width: size.width * .19,
+                                  height: size.height * .19,
                                 ),
-                              ),
-                            )),
-                            Text(
-                              "Effects",
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ]))
-                      .toList(growable: false),
-                ),
-              ))
-        ]),
-        // ),
-      ]),
+                                child: widget.model.imagePath != null
+                                    ? Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Image.file(
+                                          File(widget.model.imagePath),
+                                          color: listColor[
+                                              _colorVal.indexOf(count)],
+                                          colorBlendMode: listBlendMode[
+                                              _colorVal.indexOf(count)],
+                                        ),
+                                      )
+                                    : Container(),
+                                shape: new BeveledRectangleBorder(
+                                  side: new BorderSide(
+                                    color: count == borderColor
+                                        ? Color(roundColor)
+                                        : const Color(0xffffff),
+                                    width: 3.0,
+                                  ),
+                                ),
+                              )),
+                              Text(
+                                "Effects",
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ]))
+                        .toList(growable: false),
+                  ),
+                ))
+
+            // ),
+          ]),
     );
   }
 
-  _multiColor(int colorValue) {
+  _multiColor(Color color, BlendMode bld) {
     setState(() {
-      selectedColor = colorValue;
+      selectedColor = color;
+      selectedBlendMode = bld;
     });
   }
 }
