@@ -117,6 +117,8 @@ class PopupGridViewState extends State<PopupGridView> {
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
                               model.isDrawing = true;
+                              model.isGeometricDrawing = false;
+                              model.isLineDrawing = false;
                             } else if (title
                                 .startsWith('assets/menu/brush1.png')) {
                               model.highlighted = title;
@@ -126,6 +128,28 @@ class PopupGridViewState extends State<PopupGridView> {
                                   BlurStyle.normal;
                               model.painterController.sigma = 15.5;
                               model.isDrawing = true;
+                            } else if (title
+                                .startsWith('assets/menu/geometric.png')) {
+                              model.highlighted = title;
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 0.0;
+                              model.isDrawing = false;
+                              model.isGeometricDrawing = true;
+                              model.isLineDrawing = false;
+                            } else if (title
+                                .startsWith('assets/menu/line.png')) {
+                              model.highlighted = title;
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 0.0;
+                              model.isDrawing = false;
+                              model.isGeometricDrawing = false;
+                              model.isLineDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush.png')) {
                               model.highlighted = title;
@@ -140,11 +164,16 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = false;
                             } else if (title.startsWith('assets/menu/eraser')) {
                               model.highlighted = title;
-                              model.painterController.eraser();
+                              model.painterController.paintOption =
+                                  PaintOption.erase;
                               model.isDrawing = true;
+                              model.isGeometricDrawing = false;
+                              model.isLineDrawing = false;
                             } else {
                               model.highlighted = null;
                               model.isDrawing = false;
+                              model.isGeometricDrawing = false;
+                              model.isLineDrawing = false;
                             }
                           }
                           if (title == 'assets/filter_icon.jpg') {

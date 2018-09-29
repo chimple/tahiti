@@ -14,9 +14,12 @@ class ActivityModel extends Model {
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
   String _highlighted;
-  bool _isDrawing = false;
   String _imagePath;
+
+  bool _isDrawing = false;
+  bool _isLineDrawing = false;
   bool _isGeometricDrawing = false;
+
   PainterController _painterController;
 
   Color _textColor;
@@ -127,6 +130,12 @@ class ActivityModel extends Model {
   bool get isGeometricDrawing => _isGeometricDrawing;
   set isGeometricDrawing(bool t) {
     _isGeometricDrawing = t;
+    notifyListeners();
+  }
+
+  bool get isLineDrawing => _isLineDrawing;
+  set isLineDrawing(bool t) {
+    _isLineDrawing = t;
     notifyListeners();
   }
 
@@ -365,6 +374,10 @@ class PaintData {
 @JsonSerializable()
 class PathHistory {
   List<PathInfo> paths;
+  double startX;
+  double startY;
+  double x;
+  double y;
 
   PathHistory() {
     paths = [];
@@ -408,6 +421,8 @@ class PathHistory {
 
   void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
+      // context.canvas
+      //     .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
     }
   }

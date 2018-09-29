@@ -18,6 +18,7 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
+
   'assets/menu/pencil.png': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
@@ -26,6 +27,20 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
   'assets/menu/eraser.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/geometric.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/line.png': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
@@ -364,7 +379,6 @@ class TopStickers {
     //  'assets/menu/bucket.png': [],
 
     'assets/filter_icon.jpg': [],
-    'assets/menu/save.png': [],
   };
 }
 
@@ -381,11 +395,11 @@ class SelectSticker extends StatefulWidget {
 }
 
 class SelectStickerState extends State<SelectSticker> {
-  Future<bool> show(ActivityModel  model) {
+  Future<bool> show(ActivityModel model) {
     return showDialog(
-          context: context,
-          child: ImageEditor(model),
-        );
+      context: context,
+      child: ImageEditor(model),
+    );
   }
 
   @override
