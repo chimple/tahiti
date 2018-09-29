@@ -7,6 +7,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'activity_model.g.dart';
 
+
 @JsonSerializable()
 class ActivityModel extends Model {
   List<Map<String, dynamic>> things = [];
@@ -16,9 +17,12 @@ class ActivityModel extends Model {
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
   String _highlighted;
-  bool _isDrawing = false;
   String _imagePath;
+
+  bool _isDrawing = false;
+  bool _isLineDrawing = false;
   bool _isGeometricDrawing = false;
+
   PainterController _painterController;
   PathHistory pathHistory;
 
@@ -68,7 +72,8 @@ class ActivityModel extends Model {
     _selectedThingId = id;
     notifyListeners();
   }
-   String get imagePath => _imagePath;
+
+  String get imagePath => _imagePath;
   set imagePath(String t) {
     _imagePath = t;
     notifyListeners();
@@ -133,6 +138,12 @@ class ActivityModel extends Model {
   bool get isGeometricDrawing => _isGeometricDrawing;
   set isGeometricDrawing(bool t) {
     _isGeometricDrawing = t;
+    notifyListeners();
+  }
+
+  bool get isLineDrawing => _isLineDrawing;
+  set isLineDrawing(bool t) {
+    _isLineDrawing = t;
     notifyListeners();
   }
 
@@ -358,7 +369,10 @@ int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 class PathHistory {
   List<PathInfo> paths;
   Path path;
-
+  double startX;
+  double startY;
+  double x;
+  double y;
   PathHistory() {
     paths = [];
   }
@@ -401,6 +415,8 @@ class PathHistory {
 
   void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
+      // context.canvas
+      //     .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
     }
   }
