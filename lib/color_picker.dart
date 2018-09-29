@@ -5,10 +5,9 @@ import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
   final Orientation orientation;
-  ColorPicker({Key key, this.orientation}) : super(key: key);
   final ScreenMode screenMode;
-  ActivityModel model;
-  ColorPicker({this.model, this.screenMode = ScreenMode.portrait}) : super();
+  final ActivityModel model;
+  ColorPicker({Key key, this.model, this.screenMode = ScreenMode.portrait, this.orientation}) : super(key: key);
   ColorPickerState createState() => ColorPickerState();
 }
 
@@ -133,26 +132,25 @@ class ColorPickerState extends State<ColorPicker> {
   List<Widget> _mainColors(BuildContext context) {
     var children = <Widget>[];
     for (Color color in mainColors) {
-      children.add(ScopedModelDescendant<ActivityModel>(
-          builder: (context, child, model) => RawMaterialButton(
+      children.add(RawMaterialButton(
                 onPressed: () {
                   setState(() {
                     selectedColor = color;
-                    if (model.selectedIcon == 'assets/menu/body_icon.png' ||
-                        model.selectedIcon == 'assets/menu/clothes.png' ||
-                        model.selectedIcon == 'assets/menu/food_icon.png' ||
-                        model.selectedIcon == 'assets/menu/fruit.png' ||
-                        model.selectedIcon == 'assets/menu/icon.png' ||
-                        model.selectedIcon == 'assets/menu/vegetables.png' ||
-                        model.selectedIcon == 'assets/menu/vehicles.png') {
-                      model.stickerColor = color;
-                    } else if (model.selectedIcon == 'assets/menu/pencil.png' ||
-                        model.selectedIcon == 'assets/menu/brush.png') {
-                      model.drawingColor = color;
-                    } else if (model.selectedIcon == 'assets/menu/text.png') {
-                      model.textColor = color;
+                    if (widget.model.selectedIcon == 'assets/menu/body_icon.png' ||
+                        widget.model.selectedIcon == 'assets/menu/clothes.png' ||
+                        widget.model.selectedIcon == 'assets/menu/food_icon.png' ||
+                        widget.model.selectedIcon == 'assets/menu/fruit.png' ||
+                        widget.model.selectedIcon == 'assets/menu/icon.png' ||
+                        widget.model.selectedIcon == 'assets/menu/vegetables.png' ||
+                        widget.model.selectedIcon == 'assets/menu/vehicles.png') {
+                      widget.model.stickerColor = color;
+                    } else if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
+                        widget.model.selectedIcon == 'assets/menu/brush.png') {
+                      widget.model.drawingColor = color;
+                    } else if (widget.model.selectedIcon == 'assets/menu/text.png') {
+                      widget.model.textColor = color;
                     } else {
-                      model.selectedColor = color;
+                      widget.model.selectedColor = color;
                     }
                   });
                 },
@@ -171,7 +169,7 @@ class ColorPickerState extends State<ColorPicker> {
                     width: 4.0,
                   ),
                 ),
-              )));
+              ));
     }
     return children;
   }

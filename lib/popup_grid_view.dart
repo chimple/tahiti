@@ -7,6 +7,7 @@ import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/select_sticker.dart';
+import 'package:tahiti/text_editor.dart';
 
 enum ItemType { text, png, sticker }
 
@@ -149,6 +150,8 @@ class PopupGridViewState extends State<PopupGridView> {
                           }
                           if (title == 'assets/filter_icon.jpg') {
                             showCategorySreen(context, model, title);
+                          } else if (title == 'assets/menu/text.png') {
+                            showCategorySreen(context, model, title);
                           } else if (false) {}
                         },
                       ),
@@ -170,6 +173,8 @@ class PopupGridViewState extends State<PopupGridView> {
         items: secondStickers,
         model: model,
       );
+    } else if (text == 'assets/menu/text.png') {
+      return TextEditor(model: model);
     }
     // TODO::// for other components
     else if (false) {
@@ -206,9 +211,10 @@ class PopupGridViewState extends State<PopupGridView> {
         //               .toList(growable: false))));
         // }
         rowItems.add(Expanded(
+          flex: 1,
           child: Center(
-            child: FractionallySizedBox(
-              widthFactor: .7,
+            child: Container(
+              width: 600.0,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: widget.menuItems.keys
@@ -221,22 +227,22 @@ class PopupGridViewState extends State<PopupGridView> {
           ),
         ));
         rowItems1.addAll(rowItems);
-        if (model.isInteractive) {
-          rowItems1.add(
-            IconButton(
-                icon: Icon(Icons.undo),
-                iconSize: size.height * .06,
-                color: Colors.red,
-                onPressed: model.canUndo() ? () => model.undo() : null),
-          );
-          rowItems1.add(
-            IconButton(
-                icon: Icon(Icons.redo),
-                iconSize: size.height * .06,
-                color: Colors.red,
-                onPressed: model.canRedo() ? () => model.redo() : null),
-          );
-        }
+        // if (model.isInteractive) {
+        //   rowItems1.add(
+        //     IconButton(
+        //         icon: Icon(Icons.undo),
+        //         iconSize: size.height * .06,
+        //         color: Colors.red,
+        //         onPressed: model.canUndo() ? () => model.undo() : null),
+        //   );
+        //   rowItems1.add(
+        //     IconButton(
+        //         icon: Icon(Icons.redo),
+        //         iconSize: size.height * .06,
+        //         color: Colors.red,
+        //         onPressed: model.canRedo() ? () => model.redo() : null),
+        //   );
+        // }
 
         return Stack(
           overflow: Overflow.visible,
@@ -367,22 +373,22 @@ class PopupGridViewState extends State<PopupGridView> {
                   .toList(growable: false)),
         ))));
 
-        if (model.isInteractive) {
-          stickerItems.add(
-            IconButton(
-                icon: Icon(Icons.undo),
-                iconSize: size.width * .04,
-                color: Colors.red,
-                onPressed: model.canUndo() ? () => model.undo() : null),
-          );
-          stickerItems.add(
-            IconButton(
-                icon: Icon(Icons.redo),
-                iconSize: size.width * .04,
-                color: Colors.red,
-                onPressed: model.canRedo() ? () => model.redo() : null),
-          );
-
+        // if (model.isInteractive) {
+        //   stickerItems.add(
+        //     IconButton(
+        //         icon: Icon(Icons.undo),
+        //         iconSize: size.width * .04,
+        //         color: Colors.red,
+        //         onPressed: model.canUndo() ? () => model.undo() : null),
+        //   );
+        //   stickerItems.add(
+        //     IconButton(
+        //         icon: Icon(Icons.redo),
+        //         iconSize: size.width * .04,
+        //         color: Colors.red,
+        //         onPressed: model.canRedo() ? () => model.redo() : null),
+        //   );
+        // }
           columnItems1.add(Expanded(
             child: FractionallySizedBox(
                 heightFactor: .8,
@@ -390,7 +396,7 @@ class PopupGridViewState extends State<PopupGridView> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: stickerItems)),
           ));
-        }
+        
 
         return Stack(
           overflow: Overflow.visible,
@@ -466,8 +472,8 @@ class PopupGridViewState extends State<PopupGridView> {
             Positioned(
               left: widget.side == DisplaySide.second ? 0.0 : null,
               right: widget.side == DisplaySide.second ? null : 0.0,
-              top: 0.0,
-              bottom: 0.0,
+              top: 100.0,
+              bottom: 100.0,
               child: SizedBox(
                 //  height: size.height * .07,
                 width: size.width * .06,
