@@ -92,9 +92,7 @@ class RollerState extends State<Drawing> {
       key: previewContainer,
       child: LayoutBuilder(
         builder: (context, box) {
-          return Container(
-              height: box.maxHeight,
-              width: box.maxWidth,
+          return ClipRect(
               child: RawGestureDetector(
                   behavior: HitTestBehavior.opaque,
                   gestures: <Type, GestureRecognizerFactory>{

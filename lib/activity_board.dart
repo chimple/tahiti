@@ -23,8 +23,10 @@ class ActivityBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModel<ActivityModel>(
       model: (json != null
-          ? ActivityModel.fromJson(json)
-          : ActivityModel(pathHistory: PathHistory(), id: Uuid().v4()))
+          ? ActivityModel(paintData: PaintData.fromJson(json))
+          : ActivityModel(
+              paintData: PaintData(
+                  id: Uuid().v4(), things: [], pathHistory: PathHistory())))
         ..saveCallback = saveCallback,
       child: InnerActivityBoard(
         templates: templates,
@@ -69,7 +71,7 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                   children: <Widget>[
                     Center(
                       child: Container(
-                        color: Colors.grey,
+                        color: Colors.white,
                         child: AspectRatio(
                             aspectRatio: 1.0,
                             child: Paper(
