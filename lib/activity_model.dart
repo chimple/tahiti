@@ -142,7 +142,7 @@ class ActivityModel extends Model {
   bool get isInteractive => _isInteractive;
   set isInteractive(bool i) => _isInteractive = i;
 
-  void addSticker(String name) {
+  void addSticker(String name, Color stickerColor, BlendMode blendMode) {
     addThing({
       'id': Uuid().v4(),
       'type': 'sticker',
@@ -155,7 +155,7 @@ class ActivityModel extends Model {
     });
   }
 
-  void addImage(String imagePath) {
+  void addImage(String imagePath, Color color, BlendMode blendMode) {
     addThing({
       'id': Uuid().v4(),
       'type': 'image',

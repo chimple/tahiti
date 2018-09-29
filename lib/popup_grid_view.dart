@@ -7,6 +7,7 @@ import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/select_sticker.dart';
+import 'package:tahiti/stickers.dart';
 
 enum ItemType { text, png, sticker }
 
@@ -177,7 +178,7 @@ class PopupGridViewState extends State<PopupGridView> {
                             }
                           }
                           if (title == 'assets/filter_icon.jpg') {
-                            showCategorySreen(context, model, title);
+                            showCategorySreen(model, title);
                           } else if (false) {}
                         },
                       ),
@@ -186,8 +187,7 @@ class PopupGridViewState extends State<PopupGridView> {
             ));
   }
 
-  Future<bool> showCategorySreen(
-      BuildContext context, ActivityModel model, String text) {
+  Future<bool> showCategorySreen(ActivityModel model, String text) {
     return showDialog(
         context: context, child: _buildScreen(model: model, text: text));
   }
@@ -196,7 +196,7 @@ class PopupGridViewState extends State<PopupGridView> {
     if (text == 'assets/filter_icon.jpg') {
       return CategoryScreen(
         itemCrossAxisCount: 6,
-        items: secondStickers,
+        items: Sticker.allStickers,
         model: model,
       );
     }
@@ -283,7 +283,8 @@ class PopupGridViewState extends State<PopupGridView> {
                 child: widget.side == DisplaySide.second
                     ? SizedBox(
                         height: size.height * .04,
-                        child: ColorPicker(orientation: orientation),
+                        child:
+                            ColorPicker(orientation: orientation, model: model),
                       )
                     : Container()),
             AnimatedPositioned(
@@ -437,7 +438,8 @@ class PopupGridViewState extends State<PopupGridView> {
                       heightFactor: .8,
                       child: SizedBox(
                         width: size.width * .03,
-                        child: ColorPicker(orientation: orientation),
+                        child:
+                            ColorPicker(orientation: orientation, model: model),
                       ),
                     )
                   : Container(),
