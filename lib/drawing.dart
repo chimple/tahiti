@@ -372,11 +372,11 @@ class PainterController extends ChangeNotifier {
     }
   }
 
-  void eraser() {
-    print('eraser');
-    paintOption = PaintOption.erase;
-    notifyListeners();
-  }
+  // void eraser() {
+  //   print('eraser');
+  //   paintOption = PaintOption.erase;
+  //   notifyListeners();
+  // }
 
   void doUnMask() {
     paintOption = PaintOption.unMask;
