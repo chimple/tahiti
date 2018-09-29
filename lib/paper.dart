@@ -90,7 +90,7 @@ class Paper extends StatelessWidget {
           return DisplaySticker(
             size: 400.0,
             primary: thing['asset'],
-            blendmode: thing['blendMode'],
+            blendmode: BlendMode.values[thing['blendMode'] as int],
             color: Color(thing['color'] as int),
           );
         }
@@ -101,7 +101,7 @@ class Paper extends StatelessWidget {
             thing['path'],
           ),
           color: Color(thing['color'] as int),
-          colorBlendMode: thing['blendMode'],
+          colorBlendMode: BlendMode.values[thing['blendMode'] as int],
         );
 
         break;

@@ -7,12 +7,10 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'activity_model.g.dart';
 
-@JsonSerializable()
 class ActivityModel extends Model {
-  List<Map<String, dynamic>> things = [];
+  PaintData paintData;
   List<Map<String, dynamic>> _undoStack = [];
   List<Map<String, dynamic>> _redoStack = [];
-  String _template;
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
   String _highlighted;
@@ -20,15 +18,12 @@ class ActivityModel extends Model {
   String _imagePath;
   bool _isGeometricDrawing = false;
   PainterController _painterController;
-  PathHistory pathHistory;
 
-  @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
   Color _textColor;
   Color _stickerColor;
   Color _drawingColor;
   Color _selectedColor;
 
-  String id;
   bool _isInteractive = true;
   String selectedIcon;
 
@@ -39,15 +34,10 @@ class ActivityModel extends Model {
   Color cls;
   BlendMode blnd;
 
-  ActivityModel({@required this.pathHistory, @required this.id}) {
-    print('pathHistory: $pathHistory');
-    _painterController = new PainterController(pathHistory: this.pathHistory);
+  ActivityModel({@required this.paintData}) {
+    _painterController =
+        new PainterController(pathHistory: this.paintData.pathHistory);
   }
-
-  factory ActivityModel.fromJson(Map<String, dynamic> json) =>
-      _$ActivityModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ActivityModelToJson(this);
 
   static ActivityModel of(BuildContext context) =>
       ScopedModel.of<ActivityModel>(context);
@@ -56,9 +46,12 @@ class ActivityModel extends Model {
 
   set saveCallback(Function s) => _saveCallback = s;
 
-  String get template => _template;
+  List<Map<String, dynamic>> get things => paintData.things;
+  PathHistory get pathHistory => paintData.pathHistory;
+
+  String get template => paintData.template;
   set template(String t) {
-    _template = t;
+    paintData.template = t;
     _saveAndNotifyListeners();
   }
 
@@ -68,7 +61,8 @@ class ActivityModel extends Model {
     _selectedThingId = id;
     notifyListeners();
   }
-   String get imagePath => _imagePath;
+
+  String get imagePath => _imagePath;
   set imagePath(String t) {
     _imagePath = t;
     notifyListeners();
@@ -148,7 +142,7 @@ class ActivityModel extends Model {
       'y': 0.0,
       'scale': 0.5,
       'color': stickerColor?.value ?? Colors.red[50].value,
-      'blendMode': blendMode,
+      'blendMode': blendMode.index,
     });
   }
 
@@ -161,7 +155,7 @@ class ActivityModel extends Model {
       'y': 0.0,
       'scale': 0.5,
       'color': color?.value ?? Colors.white.value,
-      'blendMode': blendMode,
+      'blendMode': blendMode.index,
     });
   }
 
@@ -178,7 +172,7 @@ class ActivityModel extends Model {
 
   void addText(String text, {String font}) {
     bool temp = false;
-    things.forEach((t) {
+    paintData.things.forEach((t) {
       if (t['text'] == '') {
         temp = true;
         _selectedThingId = t['id'];
@@ -212,7 +206,7 @@ class ActivityModel extends Model {
   }
 
   void selectedThing({var id, String type, String text}) {
-    things.forEach((t) {
+    paintData.things.forEach((t) {
       if (t['id'] == id) {
         if (type == 'text' || type == 'image') {
           if (type == 'text') {
@@ -240,11 +234,11 @@ class ActivityModel extends Model {
   }
 
   void deleteThing(String id) {
-    final thing = things.firstWhere((t) => t['id'] == id);
+    final thing = paintData.things.firstWhere((t) => t['id'] == id);
     thing['prevOp'] = thing['op'].toString();
     thing['op'] = 'delete';
     _undoStack.add(thing);
-    things.remove(thing);
+    paintData.things.remove(thing);
     notifyListeners();
   }
 
@@ -262,7 +256,7 @@ class ActivityModel extends Model {
   void _addThing(Map<String, dynamic> thing) {
     print('_addThing: $thing');
     thing['op'] = 'add';
-    things.add(thing);
+    paintData.things.add(thing);
     _undoStack.add(Map.from(thing));
     print('_addThing: $_undoStack $_redoStack');
     _saveAndNotifyListeners();
@@ -275,12 +269,12 @@ class ActivityModel extends Model {
 
   void _updateThing(Map<String, dynamic> thing) {
     print('updateThing: $thing');
-    final index = things.indexWhere((t) => t['id'] == thing['id']);
+    final index = paintData.things.indexWhere((t) => t['id'] == thing['id']);
     if (index >= 0) {
-      things[index]['op'] = 'update';
-      _undoStack.add(things[index]);
+      paintData.things[index]['op'] = 'update';
+      _undoStack.add(paintData.things[index]);
       thing['op'] = 'update';
-      things[index] = thing;
+      paintData.things[index] = thing;
     }
     print('updateThing: $_undoStack $_redoStack');
     _saveAndNotifyListeners();
@@ -294,7 +288,7 @@ class ActivityModel extends Model {
     print('undo: $_undoStack $_redoStack');
     final thing = _undoStack.removeLast();
     if (thing['op'] == 'add') {
-      things.removeWhere((t) => t['id'] == thing['id']);
+      paintData.things.removeWhere((t) => t['id'] == thing['id']);
       _redoStack.add(thing);
       if (thing['type'] == 'drawing') {
         painterController.undo();
@@ -302,12 +296,12 @@ class ActivityModel extends Model {
     } else if (thing['op'] == 'delete') {
       _redoStack.add(Map.from(thing));
       thing['op'] = thing['prevOp'];
-      things.add(thing);
+      paintData.things.add(thing);
     } else {
       //assume it is update
-      final index = things.indexWhere((t) => t['id'] == thing['id']);
-      _redoStack.add(things[index]);
-      things[index] = thing;
+      final index = paintData.things.indexWhere((t) => t['id'] == thing['id']);
+      _redoStack.add(paintData.things[index]);
+      paintData.things[index] = thing;
     }
     print('undo: $_undoStack $_redoStack');
     _saveAndNotifyListeners();
@@ -335,7 +329,7 @@ class ActivityModel extends Model {
   }
 
   void _saveAndNotifyListeners() {
-    if (_saveCallback != null) _saveCallback(jsonMap: toJson());
+    if (_saveCallback != null) _saveCallback(jsonMap: paintData.toJson());
     notifyListeners();
   }
 
@@ -355,9 +349,22 @@ BlurStyle _blurStyleFromInt(int blurStyleValue) =>
 int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 
 @JsonSerializable()
+class PaintData {
+  PaintData({this.id, this.things, this.template, this.pathHistory});
+  String id;
+  List<Map<String, dynamic>> things;
+  String template;
+  PathHistory pathHistory;
+
+  factory PaintData.fromJson(Map<String, dynamic> json) =>
+      _$PaintDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PaintDataToJson(this);
+}
+
+@JsonSerializable()
 class PathHistory {
   List<PathInfo> paths;
-  Path path;
 
   PathHistory() {
     paths = [];
