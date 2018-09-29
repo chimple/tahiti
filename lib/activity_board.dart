@@ -46,11 +46,13 @@ class InnerActivityBoard extends StatefulWidget {
 
 class InnerActivityBoardState extends State<InnerActivityBoard> {
   bool _displayPaper;
+  GlobalKey _previewContainerKey;
 
   @override
   void initState() {
     super.initState();
     _displayPaper = widget.templates?.isEmpty ?? true;
+    _previewContainerKey = GlobalKey();
   }
 
   void _onPress(String template) {
@@ -61,7 +63,6 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
 
   @override
   Widget build(BuildContext context) {
-   
     return _displayPaper
         ? ScopedModelDescendant<ActivityModel>(
             builder: (context, child, model) => Stack(
@@ -69,7 +70,11 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                     Center(
                       child: Container(
                         color: Colors.white,
-                        child: AspectRatio(aspectRatio: 1.0, child: Paper()),
+                        child: AspectRatio(
+                            aspectRatio: 1.0,
+                            child: Paper(
+                              previewContainerKey: _previewContainerKey,
+                            )),
                       ),
                     ),
                     Positioned(

@@ -3,8 +3,10 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
+import 'package:tahiti/select_sticker.dart';
 
 enum ItemType { text, png, sticker }
 
@@ -145,6 +147,9 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = false;
                             }
                           }
+                          if (title == 'assets/filter_icon.jpg') {
+                            showCategorySreen(context, model, title);
+                          } else if (false) {}
                         },
                       ),
                   child: widget.buildIndexItem(
@@ -152,6 +157,24 @@ class PopupGridViewState extends State<PopupGridView> {
             ));
   }
 
+  Future<bool> showCategorySreen(
+      BuildContext context, ActivityModel model, String text) {
+    return showDialog(
+        context: context, child: _buildScreen(model: model, text: text));
+  }
+
+  Widget _buildScreen({ActivityModel model, String text}) {
+    if (text == 'assets/filter_icon.jpg') {
+      return CategoryScreen(
+        itemCrossAxisCount: 6,
+        items: secondStickers,
+        model: model,
+      );
+    }
+    // TODO::// for other components
+    else if (false) {
+    } else {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +254,7 @@ class PopupGridViewState extends State<PopupGridView> {
                 child: widget.side == DisplaySide.second
                     ? SizedBox(
                         height: size.height * .04,
-                        child: ColorPicker(),
+                        child: ColorPicker(orientation: orientation),
                       )
                     : Container()),
             AnimatedPositioned(
@@ -385,7 +408,7 @@ class PopupGridViewState extends State<PopupGridView> {
                       heightFactor: .8,
                       child: SizedBox(
                         width: size.width * .03,
-                        child: ColorPicker(),
+                        child: ColorPicker(orientation: orientation),
                       ),
                     )
                   : Container(),

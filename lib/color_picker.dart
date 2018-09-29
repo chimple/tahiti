@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
+  final Orientation orientation;
+  ColorPicker(
+      {Key key, this.orientation, this.screenMode = ScreenMode.portrait})
+      : super(key: key);
+  final ScreenMode screenMode;
   ColorPickerState createState() => ColorPickerState();
 }
 
@@ -73,6 +79,7 @@ class ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    print('object${widget.screenMode}');
     Orientation orientation = MediaQuery.of(context).orientation;
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
@@ -81,7 +88,7 @@ class ColorPickerState extends State<ColorPicker> {
           onTap: () => _backwardButtonBehaviour(),
           child: new FittedBox(
               fit: BoxFit.fill,
-              child: orientation == Orientation.landscape
+              child: widget.orientation == Orientation.landscape
                   ? const Icon(Icons.arrow_drop_up)
                   : const Icon(Icons.arrow_left)),
         )));
@@ -89,10 +96,12 @@ class ColorPickerState extends State<ColorPicker> {
       flex: 10,
       child: new SingleChildScrollView(
         controller: _scrollController,
-        scrollDirection: orientation == Orientation.portrait
+        scrollDirection: (orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Axis.horizontal
             : Axis.vertical,
-        child: orientation == Orientation.portrait
+        child: (orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Row(children: _mainColors(context))
             : Column(children: _mainColors(context)),
       ),
@@ -104,7 +113,7 @@ class ColorPickerState extends State<ColorPicker> {
             onTap: () => _forwardButtonBehaviour(),
             child: new FittedBox(
                 fit: BoxFit.fill,
-                child: orientation == Orientation.landscape
+                child: widget.orientation == Orientation.landscape
                     ? const Icon(
                         Icons.arrow_drop_down,
                       )
@@ -115,14 +124,13 @@ class ColorPickerState extends State<ColorPicker> {
     );
 
     return new Stack(children: [
-      orientation == Orientation.landscape
+      widget.orientation == Orientation.landscape
           ? new Column(children: colorItems)
           : new Row(children: colorItems)
     ]);
   }
 
   List<Widget> _mainColors(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
     var children = <Widget>[];
     for (Color color in mainColors) {
       children.add(ScopedModelDescendant<ActivityModel>(
@@ -149,8 +157,10 @@ class ColorPickerState extends State<ColorPicker> {
                   });
                 },
                 constraints: new BoxConstraints.tightFor(
-                  height: orientation == Orientation.portrait ? 40.0 : 60.0,
-                  width: orientation == Orientation.portrait ? 60.0 : 30.0,
+                  height:
+                      widget.orientation == Orientation.portrait ? 40.0 : 60.0,
+                  width:
+                      widget.orientation == Orientation.portrait ? 60.0 : 30.0,
                 ),
                 fillColor: color,
                 shape: new CircleBorder(
