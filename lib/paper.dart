@@ -18,11 +18,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tahiti/transform_wrapper.dart';
 
 class Paper extends StatelessWidget {
-  Paper({Key key}) : super(key: key) {
-    previewContainerKey = GlobalKey();
-  }
-
   GlobalKey previewContainerKey;
+  Paper({Key key, this.previewContainerKey}) : super(key: key);
 
   Future<Null> getPngImage() async {
     RenderRepaintBoundary boundary =
@@ -74,7 +71,7 @@ class Paper extends StatelessWidget {
                   child: Stack(children: children),
                 ),
               );
-            },  
+            },
           ));
     });
   }
@@ -99,11 +96,14 @@ class Paper extends StatelessWidget {
         }
         break;
       case 'image':
-        return Image.file(File(thing['path'],),
-        color: Color(thing['color'] as int),
-        colorBlendMode: thing['blendMode'],
+        return Image.file(
+          File(
+            thing['path'],
+          ),
+          color: Color(thing['color'] as int),
+          colorBlendMode: thing['blendMode'],
         );
-        
+
         break;
       case 'nima':
         return new DisplayNima();
