@@ -68,7 +68,7 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                   children: <Widget>[
                     Center(
                       child: Container(
-                        color: Colors.grey,
+                        color: Colors.white,
                         child: AspectRatio(aspectRatio: 1.0, child: Paper()),
                       ),
                     ),
