@@ -50,6 +50,8 @@ class CategoryScreenState extends State<CategoryScreen> {
   }
 
   ScreenMode screenMode = ScreenMode.portrait;
+  Color color;
+  BlendMode blendMode = BlendMode.dst;
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -60,7 +62,7 @@ class CategoryScreenState extends State<CategoryScreen> {
     }
     Size size = MediaQuery.of(context).size;
     return Material(
-      color: Colors.black87,
+      color: Colors.black54,
       child: SizedBox(
         height: size.height,
         width: size.width,
@@ -147,11 +149,15 @@ class CategoryScreenState extends State<CategoryScreen> {
                                         (BuildContext context, int index) {
                                       return InkWell(
                                           onTap: () {
-                                            addSticker(widget.items[e][index])
-                                                .noSuchMethod();
+                                            widget.model.addSticker(
+                                                widget.items[e][index].data,
+                                                color,
+                                                blendMode);
+
                                             Navigator.pop(context);
                                           },
-                                          child: Container(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10.0),
                                             child: buildItem(context,
                                                 widget.items[e][index], true),
                                           ));
@@ -162,6 +168,8 @@ class CategoryScreenState extends State<CategoryScreen> {
                 Expanded(
                   child: ColorPicker(
                     screenMode: screenMode,
+                    model: widget.model,
+                    getColor: (color) => setColor(color),
                   ),
                   flex: 2,
                 ),
@@ -173,11 +181,23 @@ class CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
+  void setColor(Color c) {
+    setState(() {
+      color = c;
+      if (c == Colors.white) {
+        blendMode = BlendMode.dst;
+      } else {
+        blendMode = BlendMode.srcOver;
+      }
+    });
+  }
+
   Widget buildItem(BuildContext context, Iconf conf, bool enabled) {
     if (conf.type == ItemType.sticker) {
       return DisplaySticker(
         primary: conf.data,
-        color: widget.model.stickerColor,
+        color: color,
+        blendmode: blendMode,
       );
     } else
       return Image.asset(
@@ -193,14 +213,14 @@ class CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  addSticker(Iconf text) {
-    print('stickers: $text');
-    if (text.data.startsWith('assets/stickers') ||
-        text.data.startsWith('assets/svgimage') &&
-            text.type == ItemType.sticker) {
-      widget.model.addSticker(text.data);
-    }
-  }
+  // addSticker(Iconf text) {
+  //   print('stickers: $text');
+  //   if (text.data.startsWith('assets/stickers') ||
+  //       text.data.startsWith('assets/svgimage') &&
+  //           text.type == ItemType.sticker) {
+  //     widget.model.addSticker(text.data);
+  //   }
+  // }
 }
 
 enum ScreenMode { landScape, portrait }

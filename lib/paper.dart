@@ -11,10 +11,10 @@ import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/display_nima.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/drawing.dart';
+import 'dart:ui' as ui;
 import 'package:tahiti/edit_text_view.dart';
 import 'package:tahiti/video_scaling.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:ui' as ui;
 import 'package:tahiti/transform_wrapper.dart';
 
 class Paper extends StatelessWidget {
@@ -87,10 +87,10 @@ class Paper extends StatelessWidget {
             package: 'tahiti',
           );
         } else {
-          return DisplaySticker(
+           return DisplaySticker(
             size: 400.0,
             primary: thing['asset'],
-            blendmode: thing['blendMode'],
+            blendmode: BlendMode.values[thing['blendMode'] as int],
             color: Color(thing['color'] as int),
           );
         }
@@ -101,7 +101,7 @@ class Paper extends StatelessWidget {
             thing['path'],
           ),
           color: Color(thing['color'] as int),
-          colorBlendMode: thing['blendMode'],
+          colorBlendMode: BlendMode.values[thing['blendMode'] as int],
         );
 
         break;

@@ -1,3 +1,6 @@
+import 'package:flutter/services.dart';
+import 'package:tahiti/paper_actions.dart';
+import 'package:tahiti/text_editor.dart';
 import 'dart:io';
 import 'package:tahiti/image_editor.dart';
 import 'package:uuid/uuid.dart';
@@ -23,8 +26,10 @@ class ActivityBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModel<ActivityModel>(
       model: (json != null
-          ? ActivityModel.fromJson(json)
-          : ActivityModel(pathHistory: PathHistory(), id: Uuid().v4()))
+          ? ActivityModel(paintData: PaintData.fromJson(json))
+          : ActivityModel(
+              paintData: PaintData(
+                  id: Uuid().v4(), things: [], pathHistory: PathHistory())))
         ..saveCallback = saveCallback,
       child: InnerActivityBoard(
         templates: templates,
@@ -51,6 +56,7 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     _displayPaper = widget.templates?.isEmpty ?? true;
     _previewContainerKey = GlobalKey();
   }
@@ -61,32 +67,67 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
     });
   }
 
+  Widget _paperBuilder() {
+    return MediaQuery.of(context).orientation == Orientation.portrait
+        ? Positioned(
+          top: 120.0,
+            child: Container(
+              height: MediaQuery.of(context).orientation == Orientation.portrait? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).orientation == Orientation.portrait? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
+              color: Colors.white,
+              child: AspectRatio(aspectRatio: 1.0, child: Paper()),
+            ),
+          )
+        : Center(
+            child: Container(
+              color: Colors.white,
+              child: AspectRatio(aspectRatio: 1.0, child: Paper()),
+            ),
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return _displayPaper
         ? ScopedModelDescendant<ActivityModel>(
             builder: (context, child, model) => Stack(
                   children: <Widget>[
-                    Center(
-                      child: Container(
-                        color: Colors.white,
-                        child: AspectRatio(
-                            aspectRatio: 1.0,
-                            child: Paper(
-                              previewContainerKey: _previewContainerKey,
-                            )),
-                      ),
-                    ),
+                    _paperBuilder(),
                     Positioned(
                         top: 0.0,
                         left: 0.0,
                         right: 0.0,
-                        child: SelectSticker(side: DisplaySide.first)),
+                        child: Column(children: <Widget>[
+                          MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? Container(
+                                  alignment: Alignment.center,
+                                  // color: Colors.green,
+                                  height:
+                                      MediaQuery.of(context).size.height * .03,
+                                  child: Text(
+                                    "Painting",
+                                    style: TextStyle(fontSize: 20.0),
+                                  ),
+                                )
+                              : Container(),
+                          SelectSticker(side: DisplaySide.first)
+                        ])),
                     Positioned(
                         bottom: 0.0,
                         left: 0.0,
                         right: 0.0,
                         child: SelectSticker(side: DisplaySide.second)),
+                    Positioned(
+                      top: 0.0,
+                      left: 0.0,
+                      child: PaperActions(action: "backAction"),
+                    ),
+                    Positioned(
+                      top: 0.0,
+                      right: 0.0,
+                      child: PaperActions(action: "saveAction"),
+                    ),
                   ],
                 ),
           )

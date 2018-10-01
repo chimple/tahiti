@@ -8,6 +8,7 @@ class DisplaySticker extends StatelessWidget {
   Color color;
   double size;
   BlendMode blendmode;
+  ActivityModel model;
   DisplaySticker(
       {@required this.primary,
       @required this.color,
@@ -15,31 +16,32 @@ class DisplaySticker extends StatelessWidget {
       this.blendmode});
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) => Container(
-              height: size,
-              child: new Stack(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 1.0,
-                    child: new SvgPicture.asset(
-                      '${primary}1.svg',
-                      color: color,
-                      colorBlendMode: blendmode == BlendMode.dst
-                          ? blendmode
-                          : BlendMode.srcOver,
-                      package: 'tahiti',
-                    ),
-                  ),
-                  AspectRatio(
-                    aspectRatio: 1.0,
-                    child: new SvgPicture.asset(
-                      '${primary}2.svg',
-                      package: 'tahiti',
-                    ),
-                  ),
-                ],
-              ),
-            ));
+    return
+        // ScopedModelDescendant<ActivityModel>(
+        //     builder: (context, child, model) =>
+        Container(
+      height: size,
+      child: new Stack(
+        children: <Widget>[
+          AspectRatio(
+            aspectRatio: 1.0,
+            child: new SvgPicture.asset(
+              '${primary}1.svg',
+              color: color,
+              colorBlendMode: blendmode,
+              package: 'tahiti',
+            ),
+          ),
+          AspectRatio(
+            aspectRatio: 1.0,
+            child: new SvgPicture.asset(
+              '${primary}2.svg',
+              package: 'tahiti',
+            ),
+          ),
+        ],
+      ),
+    );
+    // );
   }
 }
