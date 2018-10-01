@@ -30,6 +30,8 @@ flutter:
 
   assets:  
     - assets/templates/LionSA1.svg
+    - assets/templates/pattern.svg
+    - assets/templates/pattern1.svg
     - assets/roller_image/sample1.jpg
     - assets/roller_image/sample2.jpg
     - assets/roller_image/sample3.jpg

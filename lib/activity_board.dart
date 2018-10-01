@@ -2,6 +2,9 @@ import 'package:flutter/services.dart';
 import 'package:tahiti/paper_actions.dart';
 import 'package:tahiti/text_editor.dart';
 import 'dart:io';
+import 'dart:async';
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
 import 'package:tahiti/image_editor.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +15,8 @@ import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/select_sticker.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/template_list.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:typed_data';
 
 class ActivityBoard extends StatelessWidget {
   final Function saveCallback;
@@ -70,18 +75,30 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
   Widget _paperBuilder() {
     return MediaQuery.of(context).orientation == Orientation.portrait
         ? Positioned(
-          top: 120.0,
+            top: 120.0,
             child: Container(
-              height: MediaQuery.of(context).orientation == Orientation.portrait? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).orientation == Orientation.portrait? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.height,
               color: Colors.white,
-              child: AspectRatio(aspectRatio: 1.0, child: Paper()),
+              child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: Paper(
+                    previewContainerKey: _previewContainerKey,
+                  )),
             ),
           )
         : Center(
             child: Container(
               color: Colors.white,
-              child: AspectRatio(aspectRatio: 1.0, child: Paper()),
+              child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: Paper(
+                    previewContainerKey: _previewContainerKey,
+                  )),
             ),
           );
   }
@@ -126,7 +143,10 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                     Positioned(
                       top: 0.0,
                       right: 0.0,
-                      child: PaperActions(action: "saveAction"),
+                      child: PaperActions(
+                        action: "saveAction",
+                        onClick: getPngImage,
+                      ),
                     ),
                   ],
                 ),
@@ -135,6 +155,19 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
             templates: widget.templates,
             onPress: _onPress,
           );
+  }
+
+  Future<Null> getPngImage() async {
+    RenderRepaintBoundary boundary =
+        _previewContainerKey.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage();
+    final directory = (await getExternalStorageDirectory()).path;
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    File imgFile = new File(
+        '$directory/screenshot_${DateTime.now().millisecondsSinceEpoch}.png');
+    imgFile.writeAsBytes(pngBytes);
+    print('Screenshot Path:' + imgFile.path);
   }
 }
 

@@ -7,14 +7,14 @@ class ColorPicker extends StatefulWidget {
   final Orientation orientation;
   final ActivityModel model;
   final Function getColor;
+  final ScreenMode screenMode;
   ColorPicker(
       {Key key,
-      this.orientation,
-      this.screenMode = ScreenMode.portrait,
       this.model,
+      this.screenMode = ScreenMode.portrait,
+      this.orientation,
       this.getColor})
       : super(key: key);
-  final ScreenMode screenMode;
   ColorPickerState createState() => ColorPickerState();
 }
 
@@ -55,7 +55,7 @@ const List<Color> mainColors = const <Color>[
 Color textColor;
 Color drawingColor;
 Color stickerColor;
-Color selectedColor;
+Color selectedColor = Color(0xFFFF0000);
 
 class ColorPickerState extends State<ColorPicker> {
   ScrollController _scrollController = new ScrollController();
@@ -145,13 +145,18 @@ class ColorPickerState extends State<ColorPicker> {
           setState(() {
             selectedColor = color;
           });
-          if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
-              widget.model.selectedIcon == 'assets/menu/geometric.png'){}
-            //widget.model.selectedColor = color;
-          else if (widget.model.selectedIcon == 'assets/filter_icon.jpg')
-            widget.getColor(color);
-          else if (widget.model.selectedIcon=='assets/menu/text.png') {
-            widget.getColor(color);
+          try {
+            if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
+                widget.model.selectedIcon == 'assets/menu/geometric.png') {
+              widget.model.selectedColor = color;
+            } else if (widget.model.selectedIcon == 'assets/filter_icon.jpg')
+              widget.getColor(color);
+            else if (false) {}
+          } catch (exception, e) {
+            print(e);
+          }
+          if (widget.model.editing == EditingOption.editSticker) {
+            widget.getColor(selectedColor);
           }
         },
         constraints: new BoxConstraints.tightFor(

@@ -27,7 +27,7 @@ class ImageEditorState extends State<ImageEditor> {
     Colors.limeAccent,
     Colors.red,
     Colors.pink,
-    Colors.limeAccent
+    Colors.green
   ];
   List<BlendMode> listBlendMode = [
     BlendMode.dst, // default
@@ -38,7 +38,7 @@ class ImageEditorState extends State<ImageEditor> {
     BlendMode.softLight,
     BlendMode.hardLight,
     BlendMode.modulate,
-    BlendMode.luminosity
+    BlendMode.hue
   ];
   List<int> _colorVal = [];
   @override
