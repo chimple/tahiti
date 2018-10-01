@@ -66,7 +66,9 @@ class RollerState extends State<Drawing> {
     PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
     painterController.endCurrent(context);
-    model.addDrawing(pathHistory.paths.last);
+     if (model.pathHistory.paths.length > 0) {
+      model.addDrawing(model.pathHistory.paths.last);
+    }
     setState(() {
       count = 0;
     });
