@@ -87,21 +87,21 @@ class ActivityModel extends Model {
   Color get textColor => _textColor;
   set textColor(Color t) {
     _textColor = t;
-    selectedThing();
+    //selectedThing();
     notifyListeners();
   }
 
   Color get selectedColor => _selectedColor;
   set selectedColor(Color t) {
     _selectedColor = t;
-    selectedThing();
+    //selectedThing();
     notifyListeners();
   }
 
   Color get stickerColor => _stickerColor;
   set stickerColor(Color t) {
     _stickerColor = t;
-    selectedThing();
+    //selectedThing();
     notifyListeners();
   }
 
@@ -172,9 +172,9 @@ class ActivityModel extends Model {
       'path': imagePath,
       'x': 0.0,
       'y': 0.0,
-      'scale': 0.5,
       'color': color?.value ?? Colors.white.value,
       'blendMode': blendMode.index,
+      'scale': 0.5,
     });
   }
 
@@ -239,8 +239,8 @@ class ActivityModel extends Model {
       if (t['id'] == _selectedThingId && t['type'] == 'image') {
         t.forEach((k, v) {
           if (k == 'color' || k == 'blendMode') {
-            t['color'] = cls;
-            t['blendMode'] = blnd;
+            t['color'] = color;
+            t['blendMode'] = blendMode;
           }
         });
       } else if (t['id'] == _selectedThingId && t['type'] == 'text') {
