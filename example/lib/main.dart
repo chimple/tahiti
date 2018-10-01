@@ -32,7 +32,8 @@ class _MyAppState extends State<MyApp> {
         body: ActivityBoard(
           templates: [
             'assets/templates/LionSA1.svg',
-            'assets/templates/LionSA1.svg'
+            'assets/templates/pattern.svg',
+            'assets/templates/pattern1.svg'
           ],
         ),
       ),
