@@ -85,7 +85,6 @@ class ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
         flex: 2,
@@ -101,11 +100,11 @@ class ColorPickerState extends State<ColorPicker> {
       flex: 10,
       child: new SingleChildScrollView(
         controller: _scrollController,
-        scrollDirection: (orientation == Orientation.portrait ||
+        scrollDirection: (widget.orientation == Orientation.portrait ||
                 widget.screenMode == ScreenMode.landScape)
             ? Axis.horizontal
             : Axis.vertical,
-        child: (orientation == Orientation.portrait ||
+        child: (widget.orientation == Orientation.portrait ||
                 widget.screenMode == ScreenMode.landScape)
             ? Row(children: _mainColors(context))
             : Column(children: _mainColors(context)),
@@ -147,11 +146,13 @@ class ColorPickerState extends State<ColorPicker> {
             selectedColor = color;
           });
           if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
-              widget.model.selectedIcon == 'assets/menu/geometric.png')
-            widget.model.selectedColor = color;
+              widget.model.selectedIcon == 'assets/menu/geometric.png'){}
+            //widget.model.selectedColor = color;
           else if (widget.model.selectedIcon == 'assets/filter_icon.jpg')
             widget.getColor(color);
-          else if (false) {}
+          else if (widget.model.selectedIcon=='assets/menu/text.png') {
+            widget.getColor(color);
+          }
         },
         constraints: new BoxConstraints.tightFor(
           height: widget.orientation == Orientation.portrait ? 40.0 : 60.0,

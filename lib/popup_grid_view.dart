@@ -222,23 +222,6 @@ class PopupGridViewState extends State<PopupGridView> {
           builder: (context, child, model) {
         List<Widget> rowItems1 = [];
         List<Widget> rowItems = [];
-        // if (widget.numFixedItems > 0) {
-        //   rowItems.add(Container(
-        //   //  color: Colors.purple,
-        //       height: size.height * .1,
-        //       width: size.width * .1,
-        //       child: ListView(
-        //           scrollDirection: Axis.horizontal,
-        //           children: widget.menuItems.keys
-        //               .take(widget.numFixedItems)
-        //               .map(
-        //                 (k) => _buildMenuItem(
-        //                       k,
-        //                       height: size.height * .1,
-        //                     ),
-        //               )
-        //               .toList(growable: false))));
-        // }
         rowItems.add(Expanded(
           flex: 1,
           child: Center(
@@ -256,22 +239,6 @@ class PopupGridViewState extends State<PopupGridView> {
           ),
         ));
         rowItems1.addAll(rowItems);
-        // if (model.isInteractive) {
-        //   rowItems1.add(
-        //     IconButton(
-        //         icon: Icon(Icons.undo),
-        //         iconSize: size.height * .06,
-        //         color: Colors.red,
-        //         onPressed: model.canUndo() ? () => model.undo() : null),
-        //   );
-        //   rowItems1.add(
-        //     IconButton(
-        //         icon: Icon(Icons.redo),
-        //         iconSize: size.height * .06,
-        //         color: Colors.red,
-        //         onPressed: model.canRedo() ? () => model.redo() : null),
-        //   );
-        // }
 
         return Stack(
           overflow: Overflow.visible,
@@ -367,65 +334,19 @@ class PopupGridViewState extends State<PopupGridView> {
           builder: (context, child, model) {
         List<Widget> columnItems1 = [];
         List<Widget> columnItems = [];
-        List<Widget> stickerItems = [];
-        // if (widget.numFixedItems > 0) {
-        //   columnItems.add(Container(
-        //       height: size.height * .9,
-        //       width: size.width * .15,
-        //       child: ListView(
-        //           scrollDirection: Axis.horizontal,
-        //           children: widget.menuItems.keys
-        //               .take(widget.numFixedItems)
-        //               .map(
-        //                 (k) => _buildMenuItem(k, width: size.width * .1),
-        //               )
-        //               .toList(growable: false))));
-        // }
-
-        stickerItems.addAll(widget.menuItems.keys
-            .skip(widget.numFixedItems)
-            .map(
-              (k) => _buildMenuItem(k),
-            )
-            .toList(growable: false));
 
         columnItems.add(Expanded(
             child: Center(
-                child: FractionallySizedBox(
-          heightFactor: .5,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: widget.menuItems.keys
-                  .skip(widget.numFixedItems)
-                  .map(
-                    (k) => _buildMenuItem(k),
-                  )
-                  .toList(growable: false)),
-        ))));
-
-        // if (model.isInteractive) {
-        //   stickerItems.add(
-        //     IconButton(
-        //         icon: Icon(Icons.undo),
-        //         iconSize: size.width * .04,
-        //         color: Colors.red,
-        //         onPressed: model.canUndo() ? () => model.undo() : null),
-        //   );
-        //   stickerItems.add(
-        //     IconButton(
-        //         icon: Icon(Icons.redo),
-        //         iconSize: size.width * .04,
-        //         color: Colors.red,
-        //         onPressed: model.canRedo() ? () => model.redo() : null),
-        //   );
-        // }
-          columnItems1.add(Expanded(
-            child: FractionallySizedBox(
-                heightFactor: .8,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: stickerItems)),
-          ));
+                    children: widget.menuItems.keys
+                        .skip(widget.numFixedItems)
+                        .map(
+                          (k) => _buildMenuItem(k),
+                        )
+                        .toList(growable: false)))));
+
+        columnItems1.addAll(columnItems);
         
 
         return Stack(
