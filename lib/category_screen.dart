@@ -49,6 +49,10 @@ class CategoryScreenState extends State<CategoryScreen> {
     super.didChangeDependencies();
   }
 
+  Widget _divider = Divider(
+    color: Colors.white,
+    height: 6.0,
+  );
   ScreenMode screenMode = ScreenMode.portrait;
   Color color;
   BlendMode blendMode = BlendMode.dst;
@@ -101,10 +105,7 @@ class CategoryScreenState extends State<CategoryScreen> {
                     ),
                   ),
                 ),
-                Divider(
-                  height: 6.0,
-                  color: Colors.white,
-                ),
+                _divider,
                 Expanded(
                     flex: 1,
                     child: ListView(
@@ -129,10 +130,7 @@ class CategoryScreenState extends State<CategoryScreen> {
                               ))
                           .toList(growable: false),
                     )),
-                Divider(
-                  height: 6.0,
-                  color: Colors.white,
-                ),
+                _divider,
                 Expanded(
                     flex: 7,
                     child: Container(

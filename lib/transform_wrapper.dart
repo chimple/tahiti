@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
 import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
     as rotate;
+import 'package:tahiti/sticker_editor.dart';
 import 'activity_model.dart';
 import 'paper.dart';
 
@@ -59,10 +63,18 @@ class _TransformWrapperState extends State<TransformWrapper>
   }
 
   void onScaleUpdate(rotate.ScaleUpdateDetails details) {
-    if (details.focalPoint.dx > (orientation == Orientation.portrait ? 0.0 : _size/1.5) &&
-        details.focalPoint.dy > (orientation == Orientation.portrait ? _size/1.5 : _size/4) &&
-        (details.focalPoint.dy < (orientation == Orientation.portrait ? widget.constraints.maxHeight+(_size/2) : widget.constraints.maxHeight+(_size/6))) &&
-        (details.focalPoint.dx < (orientation == Orientation.portrait ? widget.constraints.maxWidth+(_size/2) : widget.constraints.maxHeight+(_size/2)))) {
+    if (details.focalPoint.dx >
+            (orientation == Orientation.portrait ? 0.0 : _size / 1.5) &&
+        details.focalPoint.dy >
+            (orientation == Orientation.portrait ? _size / 1.5 : _size / 4) &&
+        (details.focalPoint.dy <
+            (orientation == Orientation.portrait
+                ? widget.constraints.maxHeight + (_size / 2)
+                : widget.constraints.maxHeight + (_size / 6))) &&
+        (details.focalPoint.dx <
+            (orientation == Orientation.portrait
+                ? widget.constraints.maxWidth + (_size / 2)
+                : widget.constraints.maxHeight + (_size / 2)))) {
       setState(() {
         Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
         _translate = _translateAtStart + pos - _focalPointAtStart;
@@ -168,119 +180,149 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
     var matrix1 = Matrix4.identity()..scale(widget.scale);
     // ..rotateZ(rotate);
     return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) =>
-            model.selectedThingId == widget.thing['id']
-                ? Transform(
-                    transform: matrix,
-                    alignment: Alignment.center,
-                    child: Stack(children: <Widget>[
-                      Positioned(
+        builder: (context, child, model) => model.selectedThingId ==
+                widget.thing['id']
+            ? Transform(
+                transform: matrix,
+                alignment: Alignment.center,
+                child: Stack(children: <Widget>[
+                  Positioned(
+                      left: 0.0,
+                      top: 0.0,
+                      child: IconButton(
+                        icon: Icon(Icons.delete_forever),
+                        iconSize: 50.0,
+                        color: Colors.black,
+                        onPressed: () {
+                          widget.model.deleteThing(widget.thing['id']);
+                        },
+                      )),
+                  widget.thing['type'] != 'video'
+                      ? Positioned(
                           left: 0.0,
-                          top: 0.0,
+                          top: 50.0,
                           child: IconButton(
-                            icon: Icon(Icons.delete_forever),
+                            icon: Icon(model.editSelectedThing
+                                ? Icons.done_outline
+                                : Icons.edit),
                             iconSize: 50.0,
                             color: Colors.black,
                             onPressed: () {
-                              widget.model.deleteThing(widget.thing['id']);
+                              setState(() {
+                                model.editSelectedThing
+                                    ? model.editSelectedThing = false
+                                    : model.editSelectedThing = true;
+                                model.selectedThingId = widget.thing['id'];
+                                if (!model.editSelectedThing) {
+                                  model.selectedThingId = '';
+                                } else if (widget.thing['type'] == 'sticker') {
+                                  model.editing = EditingOption.editSticker;
+                                  _editingScreen(model,
+                                      path: widget.thing['asset'],
+                                      type: widget.thing['type'],
+                                      color:
+                                          Color(widget.thing['color'] as int),
+                                      blendMode: BlendMode
+                                          .values[widget.thing['blendMode']]);
+                                }
+                                // if (model.editSelectedThing) {
+                                //   (widget.thing['type'] == 'text')
+                                //       ? widget.model.selectedThing(
+                                //           widget.thing['id'],
+                                //           widget.thing['type'],
+                                //           widget.thing['text'])
+                                //       : widget.model.selectedThing(
+                                //           widget.thing['id'],
+                                //           widget.thing['type'],
+                                //           '');
+                                // } else {
+                                //   (widget.thing['type'] == 'text')
+                                //       ? widget.model.selectedThing(
+                                //           widget.thing['id'],
+                                //           widget.thing['type'],
+                                //           widget.thing['text'])
+                                //       : widget.model.selectedThing(
+                                //           widget.thing['id'],
+                                //           widget.thing['type'],
+                                //           '');
+                                // }
+                              });
                             },
-                          )),
-                      widget.thing['type'] != 'video'
-                          ? Positioned(
-                              left: 0.0,
-                              top: 50.0,
+                          ),
+                        )
+                      : Container(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: model.selectedThingId == widget.thing['id']
+                            ? Border.all(color: Colors.red, width: 4.0)
+                            : null,
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                      child: LimitedBox(
+                        maxWidth: customWidth < 200.0 ? 200.0 : customWidth,
+                        child: widget.child,
+                      ),
+                    ),
+                  ),
+                  widget.thing['type'] == 'text'
+                      ? Positioned(
+                          right: 0.0,
+                          top: 0.0,
+                          child: GestureDetector(
+                              onPanUpdate: onPanUpdate,
                               child: IconButton(
-                                icon: Icon(model.editSelectedThing
-                                    ? Icons.done_outline
-                                    : Icons.edit),
+                                icon: Icon(Icons.swap_horizontal_circle),
                                 iconSize: 50.0,
                                 color: Colors.black,
-                                onPressed: () {
-                                  setState(() {
-                                    model.editSelectedThing
-                                        ? model.editSelectedThing = false
-                                        : model.editSelectedThing = true;
-                                    model.selectedThingId = widget.thing['id'];
-                                    if (!model.editSelectedThing) {
-                                      model.selectedThingId = '';
-                                    }
-                                    // if (model.editSelectedThing) {
-                                    //   (widget.thing['type'] == 'text')
-                                    //       ? widget.model.selectedThing(
-                                    //           widget.thing['id'],
-                                    //           widget.thing['type'],
-                                    //           widget.thing['text'])
-                                    //       : widget.model.selectedThing(
-                                    //           widget.thing['id'],
-                                    //           widget.thing['type'],
-                                    //           '');
-                                    // } else {
-                                    //   (widget.thing['type'] == 'text')
-                                    //       ? widget.model.selectedThing(
-                                    //           widget.thing['id'],
-                                    //           widget.thing['type'],
-                                    //           widget.thing['text'])
-                                    //       : widget.model.selectedThing(
-                                    //           widget.thing['id'],
-                                    //           widget.thing['type'],
-                                    //           '');
-                                    // }
-                                  });
-                                },
-                              ),
-                            )
-                          : Container(),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            border: model.selectedThingId == widget.thing['id']
-                                ? Border.all(color: Colors.red, width: 4.0)
-                                : null,
-                            borderRadius: BorderRadius.circular(2.0),
-                          ),
-                          child: LimitedBox(
-                            maxWidth: customWidth < 200.0 ? 200.0: customWidth,
-                            child: widget.child,
-                          ),
-                        ),
-                      ),
-                      widget.thing['type'] == 'text'
-                          ? Positioned(
-                              right: 0.0,
-                              top: 0.0,
-                              child: GestureDetector(
-                                  onPanUpdate: onPanUpdate,
-                                  child: IconButton(
-                                    icon: Icon(Icons.swap_horizontal_circle),
-                                    iconSize: 50.0,
-                                    color: Colors.black,
-                                    onPressed: () {},
-                                  )))
-                          : Container(),
-                    ]),
-                  )
-                : Transform(
-                    transform: matrix,
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: model.selectedThingId == widget.thing['id']
-                              ? Border.all(color: Colors.red, width: 4.0)
-                              : null,
-                          borderRadius: BorderRadius.circular(2.0),
-                        ),
-                        child: LimitedBox(
-                          // maxHeight: customHeight,
-                          maxWidth: customWidth < 200.0 ? 200.0: customWidth,
-                          child: widget.child,
-                        ),
-                      ),
-                    )));
+                                onPressed: () {},
+                              )))
+                      : Container(),
+                ]),
+              )
+            : Transform(
+                transform: matrix,
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: model.selectedThingId == widget.thing['id']
+                          ? Border.all(color: Colors.red, width: 4.0)
+                          : null,
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
+                    child: LimitedBox(
+                      // maxHeight: customHeight,
+                      maxWidth: customWidth < 200.0 ? 200.0 : customWidth,
+                      child: widget.child,
+                    ),
+                  ),
+                )));
+  }
+
+  Future<bool> _editingScreen(ActivityModel model,
+      {String type, String path, Color color, BlendMode blendMode}) {
+    return showDialog(
+        context: context,
+        child: _buildScreen(model,
+            type: type, path: path, blendMode: blendMode, color: color));
+  }
+
+  Widget _buildScreen(ActivityModel model,
+      {String type, String path, BlendMode blendMode, Color color}) {
+    if (type == 'sticker') {
+      return StickerEditor(
+        model: model,
+        blendMode: blendMode,
+        color: color,
+        primary: path,
+      );
+    } else if (false) {}
+    // TODO::// For other components
   }
 
 //Pan Controller
