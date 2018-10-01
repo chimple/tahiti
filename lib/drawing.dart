@@ -27,24 +27,10 @@ class Drawing extends StatefulWidget {
 class RollerState extends State<Drawing> {
   GlobalKey previewContainer = new GlobalKey();
   int count = 0;
-  ui.Image image;
+
   @override
   void initState() {
-    load('assets/roller_image/sample5.jpg').then((i) {
-      setState(() {
-        image = i;
-      });
-    });
     super.initState();
-  }
-
-  Future<ui.Image> load(String asset) async {
-    ByteData data = await rootBundle.load(asset);
-    ui.Codec codec = await ui.instantiateImageCodec(
-      data.buffer.asUint8List(),
-    );
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return fi.image;
   }
 
   @override
