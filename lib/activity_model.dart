@@ -17,6 +17,7 @@ class ActivityModel extends Model {
   Popped _popped = Popped.noPopup;
   String _highlighted;
   String _imagePath;
+  DrawingType _drawingPath = DrawingType.freeDrawing;
 
   bool _isDrawing = false;
   bool _isLineDrawing = false;
@@ -70,6 +71,11 @@ class ActivityModel extends Model {
   String get imagePath => _imagePath;
   set imagePath(String t) {
     _imagePath = t;
+    notifyListeners();
+  }
+  DrawingType get drawingPath => _drawingPath;
+  set drawingPath(DrawingType t) {
+    _drawingPath = t;
     notifyListeners();
   }
 
@@ -129,17 +135,17 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  bool get isGeometricDrawing => _isGeometricDrawing;
-  set isGeometricDrawing(bool t) {
-    _isGeometricDrawing = t;
-    notifyListeners();
-  }
+  // bool get isGeometricDrawing => _isGeometricDrawing;
+  // set isGeometricDrawing(bool t) {
+  //   _isGeometricDrawing = t;
+  //   notifyListeners();
+  // }
 
-  bool get isLineDrawing => _isLineDrawing;
-  set isLineDrawing(bool t) {
-    _isLineDrawing = t;
-    notifyListeners();
-  }
+  // bool get isLineDrawing => _isLineDrawing;
+  // set isLineDrawing(bool t) {
+  //   _isLineDrawing = t;
+  //   notifyListeners();
+  // }
 
   EditingOption _editingOption = EditingOption.nothing;
   get editing => _editingOption;
@@ -432,9 +438,14 @@ class PathHistory {
 
   void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
-      // context.canvas
-      //     .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
-      context.canvas.drawPath(pathInfo.path, pathInfo._paint);
+       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
+     
+    }
+  }
+  void drawStraightLine(PaintingContext context, Size size) {
+    for (PathInfo pathInfo in paths) {
+      context.canvas
+          .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
     }
   }
 }

@@ -66,7 +66,7 @@ class RollerState extends State<Drawing> {
     PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
     painterController.endCurrent(context);
-     if (model.pathHistory.paths.length > 0) {
+    if (model.pathHistory.paths.length > 0) {
       model.addDrawing(model.pathHistory.paths.last);
     }
     setState(() {
@@ -141,10 +141,7 @@ class _ScratchCardLayout extends SingleChildRenderObjectWidget {
   @override
   RenderObject createRenderObject(BuildContext context) {
     return _ScratchCardRender(
-      strokeWidth: strokeWidth,
-      data: data,
-      path: path,
-    );
+        strokeWidth: strokeWidth, data: data, path: path, context1: context);
   }
 
   @override
@@ -161,6 +158,7 @@ class _ScratchCardRender extends RenderProxyBox {
     RenderBox child,
     double strokeWidth,
     this.path,
+    this.context1,
     PainterController data,
   })  : assert(data != null),
         _strokeWidth = strokeWidth,
@@ -170,7 +168,7 @@ class _ScratchCardRender extends RenderProxyBox {
   double _strokeWidth;
   PainterController _data;
   final PathHistory path;
-
+  BuildContext context1;
   set strokeWidth(double strokeWidth) {
     assert(strokeWidth != null);
     if (_strokeWidth == strokeWidth) {
@@ -207,12 +205,25 @@ class _ScratchCardRender extends RenderProxyBox {
   }
 
   PainterController painterController;
+  
   @override
   void paint(PaintingContext context, Offset offset) {
+    ActivityModel model = ActivityModel.of(context1);
     if (child != null) {
       context.canvas.saveLayer(offset & size, Paint());
       context.paintChild(child, offset);
-      path.draw(context, size);
+      print("model.drawingPath=========================${model.drawingPath}");
+      switch (model.painterController.drawingType) {
+        case DrawingType.freeDrawing:
+          path.draw(context, size);
+          break;
+        case DrawingType.geometricDrawing:
+          path.draw(context, size);
+          break;
+        case DrawingType.lineDrawing:
+          path.drawStraightLine(context, size);
+          break;
+      }
       context.canvas.restore();
     }
   }
@@ -269,7 +280,9 @@ class PainterController extends ChangeNotifier {
       if (model.popped != Popped.noPopup) {
         model.popped = Popped.noPopup;
       }
-      if (model.isDrawing) {
+      if (drawingType == DrawingType.freeDrawing ||
+          drawingType == DrawingType.geometricDrawing ||
+          drawingType == DrawingType.lineDrawing) {
         _inDrag = true;
         pathHistory.add(startPoint,
             paintOption: paintOption,
@@ -277,57 +290,46 @@ class PainterController extends ChangeNotifier {
             sigma: sigma,
             thickness: thickness,
             color: model.selectedColor);
-      } else if (model.isGeometricDrawing) {
-        _inDrag = true;
-        pathHistory.add(startPoint,
-            paintOption: paintOption,
-            blurStyle: blurStyle,
-            sigma: sigma,
-            thickness: thickness,
-            color: model.drawingColor);
-      } else if (model.isLineDrawing) {
-        _inDrag = true;
-        pathHistory.add(startPoint,
-            paintOption: paintOption,
-            blurStyle: blurStyle,
-            sigma: sigma,
-            thickness: thickness,
-            color: model.drawingColor);
       }
     }
   }
 
   void updateCurrent(BuildContext context, Offset nextPoint) {
-    final model = ActivityModel.of(context);
+    // final model = ActivityModel.of(context);
     if (_inDrag) {
-      if (model.isDrawing) {
-        pathHistory.updateFreeDrawing(nextPoint);
-      } else if (model.isGeometricDrawing) {
-        if (nextPoint.dy < initialY + 50.0 && nextPoint.dy > initialY - 50.0) {
-          pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
-          initialX = nextPoint.dx;
-        } else {
-          if (nextPoint.dx > initialX - 50.0 &&
-              nextPoint.dx < initialX + 50.0) {
-            pathHistory.paths.last.addPoint(Offset(initialX, nextPoint.dy));
-          } else {
-            initialX = nextPoint.dx;
-            initialY = nextPoint.dy;
+      switch (drawingType) {
+        case DrawingType.freeDrawing:
+          pathHistory.updateFreeDrawing(nextPoint);
+          break;
+        case DrawingType.geometricDrawing:
+          if (nextPoint.dy < initialY + 50.0 &&
+              nextPoint.dy > initialY - 50.0) {
             pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
+            initialX = nextPoint.dx;
+          } else {
+            if (nextPoint.dx > initialX - 50.0 &&
+                nextPoint.dx < initialX + 50.0) {
+              pathHistory.paths.last.addPoint(Offset(initialX, nextPoint.dy));
+            } else {
+              initialX = nextPoint.dx;
+              initialY = nextPoint.dy;
+              pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
+            }
           }
-        }
-      } else if (model.isLineDrawing) {
-        pathHistory.x = nextPoint.dx;
-        pathHistory.y = nextPoint.dy;
+          break;
+        case DrawingType.lineDrawing:
+          pathHistory.x = nextPoint.dx;
+          pathHistory.y = nextPoint.dy;
+          break;
       }
       notifyListeners();
     }
   }
 
   void endCurrent(BuildContext context) {
-    final model = ActivityModel.of(context);
+    // final model = ActivityModel.of(context);
     _inDrag = false;
-    if (model.isLineDrawing) {
+    if (drawingType == DrawingType.lineDrawing) {
       Path path = paths.last.path;
       path.lineTo(pathHistory.x, pathHistory.y);
     }
