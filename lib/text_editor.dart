@@ -10,8 +10,16 @@ import 'package:tahiti/paper.dart';
 
 class TextEditor extends StatefulWidget {
   final ActivityModel model;
-
-  const TextEditor({Key key, this.model}) : super(key: key);
+  final id;
+  final String userTyped;
+  final Color color;
+  const TextEditor(
+      {Key key,
+      this.id,
+      this.model,
+      this.userTyped = "",
+      this.color = Colors.red})
+      : super(key: key);
 
   @override
   TextEditorState createState() {
@@ -36,10 +44,18 @@ class TextEditorState extends State<TextEditor> {
     'Shadows into light',
   ];
 
-  String userTyped = "";
+  String userTyped;
   int typeIndex = 0;
-  Color color = Colors.red;
+  Color color;
   bool temp = false;
+
+  @override
+  void initState() {
+    color = widget.color;
+    userTyped = widget.userTyped;
+    super.initState();
+  }
+
   void setColor(Color c) {
     setState(() {
       color = c;
@@ -62,6 +78,7 @@ class TextEditorState extends State<TextEditor> {
               bottom: 130.0,
               child: Center(
                 child: TextField(
+                  controller: TextEditingController(text: userTyped),
                   autofocus: true,
                   maxLines: null,
                   onChanged: (str) {
@@ -140,12 +157,22 @@ class TextEditorState extends State<TextEditor> {
                         iconSize: 60.0,
                         icon: Icon(Icons.done),
                         onPressed: () {
-                          if (userTyped != "") {
-                            widget.model.textColor = color;
-                            widget.model
-                                .addText(userTyped, font: textType[typeIndex]);
-                          }
-                          Navigator.pop(context);
+                          setState(() {
+                            if (widget.id == null) {
+                              widget.model.textColor = color;
+                              widget.model.addText(userTyped,
+                                  font: textType[typeIndex]);
+                            } else {
+                              widget.model.textColor = color;
+                              widget.model.selectedThing(
+                                  id: widget.id,
+                                  color: color,
+                                  text: userTyped,
+                                  type: 'text',
+                                  font: textType[typeIndex]);
+                            }
+                            Navigator.pop(context);
+                          });
                         },
                       ),
                     ),

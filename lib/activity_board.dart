@@ -119,12 +119,16 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                                   Orientation.portrait
                               ? Container(
                                   alignment: Alignment.center,
-                                  // color: Colors.green,
+                                  color: Color(0xff2b3f4c),
                                   height:
-                                      MediaQuery.of(context).size.height * .03,
+                                      MediaQuery.of(context).size.height * .04,
                                   child: Text(
                                     "Painting",
-                                    style: TextStyle(fontSize: 20.0),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height *
+                                                .02),
                                   ),
                                 )
                               : Container(),

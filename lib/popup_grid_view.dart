@@ -53,6 +53,13 @@ class PopupGridViewState extends State<PopupGridView> {
   String highlightedButtonItem;
   String highlightedPopUpItem;
   // bool popped = false;
+  List<double> width_val = [
+    2.0,
+    5.0,
+    10.0,
+    15.0,
+    18.0,
+  ];
 
   @override
   void initState() {
@@ -111,7 +118,7 @@ class PopupGridViewState extends State<PopupGridView> {
                           if (title != null) {
                             model.selectedIcon = title;
                             print('icon is ${model.selectedIcon}');
-                            if (title.startsWith('assets/menu/pencil.png')) {
+                            if (title.startsWith('assets/menu/svg/pencil')) {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
@@ -130,7 +137,7 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.painterController.sigma = 15.5;
                               model.isDrawing = true;
                             } else if (title
-                                .startsWith('assets/menu/geometric.png')) {
+                                .startsWith('assets/menu/svg/geometry')) {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
@@ -140,7 +147,7 @@ class PopupGridViewState extends State<PopupGridView> {
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
                             } else if (title
-                                .startsWith('assets/menu/line.png')) {
+                                .startsWith('assets/menu/svg/freegeometry')) {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
@@ -161,7 +168,8 @@ class PopupGridViewState extends State<PopupGridView> {
                             } else if (title.startsWith('assets/menu/roller')) {
                               model.highlighted = title;
                               model.isDrawing = false;
-                            } else if (title.startsWith('assets/menu/eraser')) {
+                            } else if (title
+                                .startsWith('assets/menu/svg/eraser')) {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.erase;
@@ -170,7 +178,7 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.highlighted = null;
                             }
                           }
-                          if (title == 'assets/filter_icon.jpg') {
+                          if (title == 'assets/menu/stickers.png') {
                             showCategorySreen(model, title);
                           } else if (title == 'assets/menu/text.png') {
                             showCategorySreen(model, title);
@@ -188,7 +196,7 @@ class PopupGridViewState extends State<PopupGridView> {
   }
 
   Widget _buildScreen({ActivityModel model, String text}) {
-    if (text == 'assets/filter_icon.jpg') {
+    if (text == 'assets/menu/stickers.png') {
       return CategoryScreen(
         itemCrossAxisCount: 6,
         items: Sticker.allStickers,
@@ -208,6 +216,7 @@ class PopupGridViewState extends State<PopupGridView> {
     MediaQueryData media = MediaQuery.of(context);
     var size = media.size;
     GlobalKey orientationKey = new GlobalKey();
+    double selectedWidth = 2.0;
 
     if (orientation == Orientation.portrait) {
       return ScopedModelDescendant<ActivityModel>(
@@ -236,70 +245,72 @@ class PopupGridViewState extends State<PopupGridView> {
           overflow: Overflow.visible,
           children: <Widget>[
             Container(
-              // color: Colors.purple,
-              height: size.height * .3,
+              decoration: new BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(20.0),
+                    topLeft: Radius.circular(20.0)),
+                color: widget.side == DisplaySide.second
+                    ? Color(0xff2b3f4c)
+                    : null,
+              ),
+              margin: EdgeInsets.all(size.width * .01),
+              height: size.height * .16
               //  width: size.width,
             ),
             Positioned(
-                bottom: widget.side == DisplaySide.second ? 100.0 : null,
-                top: widget.side == DisplaySide.second ? null : 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: widget.side == DisplaySide.second
-                    ? SizedBox(
-                        height: size.height * .04,
-                        child:
-                            ColorPicker(orientation: orientation, model: model),
-                      )
-                    : Container()),
-            AnimatedPositioned(
-              key: orientationKey,
-              bottom: widget.side == DisplaySide.second
-                  ? model.popped == Popped.second ? menuHeight : -200.0
-                  : null,
-              top: widget.side == DisplaySide.first
-                  ? model.popped == Popped.first ? menuHeight : -200.0
-                  : null,
+              bottom: widget.side == DisplaySide.second ? 100.0 : null,
+              top: widget.side == DisplaySide.second ? null : 0.0,
               left: 0.0,
               right: 0.0,
-              duration: Duration(milliseconds: 1000),
-              curve: Curves.elasticOut,
-              child: SizedBox(
-                height: size.height * .1,
-                child: Column(
-                  verticalDirection: widget.side == DisplaySide.second
-                      ? VerticalDirection.down
-                      : VerticalDirection.up,
-                  children: <Widget>[
-                    SizedBox(
-                      height: size.height * .07,
-                      child: GridView.count(
-                          crossAxisCount: 1,
-                          scrollDirection: Axis.horizontal,
-                          children: widget.menuItems[highlightedButtonItem]
-                              .map((itemName) => Container(
-                                    child: InkWell(
-                                        onTap: () => setState(() {
-                                              if (highlightedButtonItem ==
-                                                  "assets/menu/text.png") {
-                                                model.addText('',
-                                                    font: itemName.data);
-                                              }
-                                              widget.onUserPress(itemName.data);
-                                              highlightedPopUpItem =
-                                                  itemName.data;
-                                            }),
-                                        child: widget.buildItem(
-                                            context, itemName, true)),
-                                    color: itemName.data == highlightedPopUpItem
-                                        ? Colors.red
-                                        : Colors.white,
-                                  ))
-                              .toList(growable: false)),
-                    ),
-                  ],
-                ),
-              ),
+              child: widget.side == DisplaySide.second
+                  ? Column(
+                      children: <Widget>[
+                        model.popped == Popped.second
+                            ? SizedBox(
+                                height: size.height * .04,
+                                child: new Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  // mainAxisAlignment:
+                                  // MainAxisAlignment.spaceEvenly,
+                                  // scrollDirection: Axis.horizontal,
+                                  children: width_val
+                                      .map((widthValue) => Center(
+                                              child: RawMaterialButton(
+                                            onPressed: () {
+                                              model.painterController
+                                                  .thickness = widthValue;
+                                              setState(() {
+                                                selectedWidth = widthValue;
+                                              });
+                                            },
+                                            constraints:
+                                                new BoxConstraints.tightFor(
+                                              width: widthValue + 10.0,
+                                              height: widthValue + 10.0,
+                                            ),
+                                            fillColor: new Color(0xffffffff),
+                                            shape: new CircleBorder(
+                                              side: new BorderSide(
+                                                color:
+                                                    widthValue == selectedWidth
+                                                        ? Colors.red
+                                                        : Color(0xffffffff),
+                                                width: 2.0,
+                                              ),
+                                            ),
+                                          )))
+                                      .toList(growable: false),
+                                ),
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: size.height * .04,
+                          child: ColorPicker(
+                              orientation: orientation, model: model),
+                        ),
+                      ],
+                    )
+                  : Container(),
             ),
             Positioned(
                 bottom: widget.side == DisplaySide.second ? 0.0 : null,
@@ -307,10 +318,19 @@ class PopupGridViewState extends State<PopupGridView> {
                 left: 0.0,
                 right: 0.0,
                 child: SizedBox(
-                  height: size.height * .07,
+                  height: widget.side == DisplaySide.second
+                      ? size.height * .07
+                      : size.height * .06,
                   width: size.width,
                   child: Container(
-                    // color: Colors.purple,
+                    padding: widget.side == DisplaySide.first
+                        ? EdgeInsets.all(10.0)
+                        : null,
+                    margin: widget.side == DisplaySide.second
+                        ? EdgeInsets.only(
+                            left: size.width * .01, right: size.width * .01)
+                        : null,
+                    color: Color(0xff2b3f4c),
                     child: Row(
                       children: widget.side == DisplaySide.second
                           ? rowItems
@@ -330,7 +350,7 @@ class PopupGridViewState extends State<PopupGridView> {
         columnItems.add(Expanded(
             child: Center(
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: widget.menuItems.keys
                         .skip(widget.numFixedItems)
                         .map(
@@ -344,84 +364,94 @@ class PopupGridViewState extends State<PopupGridView> {
           overflow: Overflow.visible,
           children: <Widget>[
             Container(
-              height: size.height * .9,
+              //  decoration: new BoxDecoration(
+              //   borderRadius: const BorderRadius.only(
+              //       topRight: Radius.circular(20.0),
+              //       bottomRight: Radius.circular(20.0)),
+              //   color: widget.side == DisplaySide.second
+              //       ? Color(0xff2b3f4c)
+              //       : null,
+              // ),
+              height: size.height,
+              width: size.width,
+              // color: Color(0xff2b3f4c)
             ),
             Positioned(
-              left: widget.side == DisplaySide.second ? 100.0 : null,
+              left: widget.side == DisplaySide.second ? 80.0 : null,
               right: widget.side == DisplaySide.second ? null : 0.0,
               top: 0.0,
               bottom: 0.0,
               child: widget.side == DisplaySide.second
-                  ? FractionallySizedBox(
-                      heightFactor: .8,
+                  ? Container(
+                      color: Color(0xff2b3f4c),
                       child: SizedBox(
-                        width: size.width * .03,
+                        width: size.width * .05,
                         child:
                             ColorPicker(orientation: orientation, model: model),
                       ),
                     )
                   : Container(),
             ),
-            AnimatedPositioned(
-              key: orientationKey,
-              left: widget.side == DisplaySide.second
-                  ? model.popped == Popped.second ? menuWidth : -100.0
-                  : null,
-              right: widget.side == DisplaySide.first
-                  ? model.popped == Popped.first ? menuWidth : -200.0
-                  : null,
-              top: 0.0,
-              bottom: 0.0,
-              duration: Duration(milliseconds: 1000),
-              curve: Curves.elasticOut,
-              child: SizedBox(
-                width: size.width * .12,
-                child: Row(
-                  verticalDirection: widget.side == DisplaySide.second
-                      ? VerticalDirection.down
-                      : VerticalDirection.up,
-                  children: <Widget>[
-                    SizedBox(
-                      height: size.height * .84,
-                      width: size.width * .07,
-                      child: GridView.count(
-                          crossAxisCount: 1,
-                          scrollDirection: Axis.vertical,
-                          children: widget.menuItems[highlightedButtonItem]
-                              .map((itemName) => Container(
-                                    child: InkWell(
-                                        onTap: () => setState(() {
-                                              if (highlightedButtonItem ==
-                                                  "assets/menu/text.png") {
-                                                model.addText('',
-                                                    font: itemName.data);
-                                              }
-                                              widget.onUserPress(itemName.data);
-                                              highlightedPopUpItem =
-                                                  itemName.data;
-                                            }),
-                                        child: widget.buildItem(
-                                            context, itemName, true)),
-                                    color: itemName.data == highlightedPopUpItem
-                                        ? Colors.red
-                                        : Colors.white,
-                                  ))
-                              .toList(growable: false)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // AnimatedPositioned(
+            //   key: orientationKey,
+            //   left: widget.side == DisplaySide.second
+            //       ? model.popped == Popped.second ? menuWidth : -100.0
+            //       : null,
+            //   right: widget.side == DisplaySide.first
+            //       ? model.popped == Popped.first ? menuWidth : -200.0
+            //       : null,
+            //   top: 0.0,
+            //   bottom: 0.0,
+            //   duration: Duration(milliseconds: 1000),
+            //   curve: Curves.elasticOut,
+            //   child: SizedBox(
+            //     width: size.width * .12,
+            //     child: Row(
+            //       verticalDirection: widget.side == DisplaySide.second
+            //           ? VerticalDirection.down
+            //           : VerticalDirection.up,
+            //       children: <Widget>[
+            //         SizedBox(
+            //           height: size.height * .84,
+            //           width: size.width * .07,
+            //           child: GridView.count(
+            //               crossAxisCount: 1,
+            //               scrollDirection: Axis.vertical,
+            //               children: widget.menuItems[highlightedButtonItem]
+            //                   .map((itemName) => Container(
+            //                         child: InkWell(
+            //                             onTap: () => setState(() {
+            //                                   if (highlightedButtonItem ==
+            //                                       "assets/menu/text.png") {
+            //                                     model.addText('',
+            //                                         font: itemName.data);
+            //                                   }
+            //                                   widget.onUserPress(itemName.data);
+            //                                   highlightedPopUpItem =
+            //                                       itemName.data;
+            //                                 }),
+            //                             child: widget.buildItem(
+            //                                 context, itemName, true)),
+            //                         color: itemName.data == highlightedPopUpItem
+            //                             ? Colors.red
+            //                             : Colors.white,
+            //                       ))
+            //                   .toList(growable: false)),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Positioned(
               left: widget.side == DisplaySide.second ? 0.0 : null,
               right: widget.side == DisplaySide.second ? null : 0.0,
-              top: 100.0,
-              bottom: 100.0,
+              top: 0.0,
+              bottom: 0.0,
               child: SizedBox(
                 //  height: size.height * .07,
-                width: size.width * .06,
+                width: size.width * .07,
                 child: Container(
-                  // color: Colors.purple,
+                  color: Color(0xff2b3f4c),
                   child: Column(
                     children: widget.side == DisplaySide.second
                         ? columnItems
