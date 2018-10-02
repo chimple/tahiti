@@ -228,7 +228,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                 } else if (widget.thing['type'] == 'text') {
                                   _editingScreen(
                                     model,
-                                    path: widget.thing['text'],
+                                    text: widget.thing['text'],
                                     type: widget.thing['type'],
                                     color: Color(widget.thing['color'] as int),
                                   );
@@ -321,26 +321,28 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                 )));
   }
 
-  Future<bool> _editingScreen(
-    ActivityModel model, {
-    String type,
-    String path,
-    Color color,
-    BlendMode blendMode,
-  }) {
+  Future<bool> _editingScreen(ActivityModel model,
+      {String type,
+      String path,
+      String text,
+      Color color,
+      BlendMode blendMode}) {
     return showDialog(
         context: context,
         child: _buildScreen(model,
-            type: type, path: path, blendMode: blendMode, color: color));
+            type: type,
+            path: path,
+            text: text,
+            blendMode: blendMode,
+            color: color));
   }
 
-  Widget _buildScreen(
-    ActivityModel model, {
-    String type,
-    String path,
-    BlendMode blendMode,
-    Color color,
-  }) {
+  Widget _buildScreen(ActivityModel model,
+      {String type,
+      String path,
+      String text,
+      BlendMode blendMode,
+      Color color}) {
     if (type == 'sticker') {
       return StickerEditor(
         model: model,
@@ -349,7 +351,12 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
         primary: path,
       );
     } else if (type == 'text') {
-      return TextEditor();
+      return TextEditor(
+        id: widget.thing['id'],
+        model: model,
+        userTyped: text,
+        color: color,
+      );
     } else if (type == 'image') {
       return ImageEditor(
         model,
