@@ -147,7 +147,6 @@ class ColorPickerState extends State<ColorPicker> {
           } catch (exception, e) {
             print(e);
           }
-
           widget.getColor(selectedColor);
         },
         constraints: new BoxConstraints.tightFor(
