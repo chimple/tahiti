@@ -113,9 +113,7 @@ class EditTextViewState extends State<EditTextView> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 40.0,
-                              color: widget.text == ''
-                                  ? Colors.black12
-                                  : widget.color,
+                              color: widget.color,
                               fontWeight: FontWeight.bold,
                               fontStyle: FontStyle.italic,
                               fontFamily: widget.fontType),

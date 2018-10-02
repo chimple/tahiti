@@ -225,16 +225,16 @@ class ActivityModel extends Model {
   }
 
   void selectedThing(
-      {var id, String type, String text, Color color, BlendMode blendMode}) {
+      {var id, String type, String text, String font, Color color, BlendMode blendMode}) {
     paintData.things.forEach((t) {
       if (t['id'] == id) {
         if (type == 'text' || type == 'image') {
           if (type == 'text') {
             t['text'] = text;
+            t['color'] = color;
+            t['font'] = font; 
           }
         }
-      } else {
-        t['select'] = false;
       }
       if (t['id'] == _selectedThingId && t['type'] == 'image') {
         t.forEach((k, v) {
