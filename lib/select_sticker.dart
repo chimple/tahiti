@@ -120,7 +120,7 @@ class SelectStickerState extends State<SelectSticker> {
       child: ImageEditor(
         model,
         imagePath: text,
-        editingMode: EditingMode.adding,
+        editingMode: EditingMode.addingImage,
       ),
     );
   }

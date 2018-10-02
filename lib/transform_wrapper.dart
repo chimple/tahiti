@@ -356,7 +356,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
         blendModel: blendMode,
         imagePath: path,
         color: color,
-        editingMode: EditingMode.edtitImage,
+        editingMode: EditingMode.editImage,
       );
     }
     // TODO::// For other components
@@ -372,4 +372,4 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
   }
 }
 
-enum EditingMode { edtitImage, adding }
+enum EditingMode { editImage, addingImage }
