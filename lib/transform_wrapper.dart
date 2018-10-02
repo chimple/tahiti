@@ -372,4 +372,4 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
   }
 }
 
-enum EditingMode { editImage, addingImage }
+enum EditingMode { editImage, addImage }

@@ -109,7 +109,7 @@ class ImageEditorState extends State<ImageEditor> {
                     color: Colors.white,
                     onPressed: () {
                       if (_imagePath != null) {
-                        if (widget.editingMode == EditingMode.addingImage)
+                        if (widget.editingMode == EditingMode.addImage)
                           widget.model.addImage(
                               _imagePath, selectedColor, selectedBlendMode);
                         else if (widget.editingMode == EditingMode.editImage) {
