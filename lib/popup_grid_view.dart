@@ -418,7 +418,7 @@ class PopupGridViewState extends State<PopupGridView> {
               width: widget.side == DisplaySide.second
                   ? size.width * .13
                   : size.width * .03,
-              height: size.height,
+              height: size.height* .98,
             ),
             Positioned(
               left: widget.side == DisplaySide.second ? 100.0 : null,
