@@ -22,8 +22,8 @@ class PaperActionsState extends State<PaperActions> {
           ? Container(
               child: IconButton(
                   icon: Icon(Icons.arrow_back),
-                  iconSize: 60.0,
-                  color: Colors.purple,
+                  iconSize:  MediaQuery.of(context).size.height * .03,
+                  color: Colors.white,
                   onPressed: () => widget.onClick()),
             )
           : Container(
@@ -31,8 +31,8 @@ class PaperActionsState extends State<PaperActions> {
                 children: <Widget>[
                   IconButton(
                       icon: Icon(Icons.save),
-                      iconSize: 60.0,
-                      color: Colors.red,
+                      iconSize:  MediaQuery.of(context).size.height * .03,
+                      color: Colors.white,
                       onPressed: () {
                         widget.onClick();
                         Scaffold.of(context).showSnackBar(SnackBar(
@@ -49,13 +49,13 @@ class PaperActionsState extends State<PaperActions> {
                       IconButton(
                           icon: Icon(Icons.undo),
                           iconSize: 30.0,
-                          color: Colors.red,
+                          color: Colors.white,
                           onPressed:
                               model.canUndo() ? () => model.undo() : null),
                       IconButton(
                           icon: Icon(Icons.redo),
                           iconSize: 30.0,
-                          color: Colors.red,
+                          color: Colors.white,
                           onPressed:
                               model.canRedo() ? () => model.redo() : null),
                     ],
