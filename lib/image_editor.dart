@@ -11,7 +11,10 @@ class ImageEditor extends StatefulWidget {
   final EditingMode editingMode;
   final BlendMode blendModel;
   ImageEditor(this.model,
-      {this.imagePath, this.color, this.blendModel, this.editingMode})
+      {this.imagePath,
+      this.color = Colors.white,
+      this.blendModel = BlendMode.dst,
+      this.editingMode})
       : super();
   @override
   ImageEditorState createState() {
@@ -52,7 +55,7 @@ class ImageEditorState extends State<ImageEditor> {
   List<BlendMode> listBlendMode = [
     BlendMode.dst, // default
     BlendMode.color, //black_white
-    BlendMode.saturation,
+    BlendMode.darken,
     BlendMode.modulate,
     BlendMode.modulate,
     BlendMode.softLight,
