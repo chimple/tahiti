@@ -139,7 +139,7 @@ class _ScratchCardLayout extends SingleChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return ScratchCardRender(
+    return _ScratchCardRender(
         strokeWidth: strokeWidth,
         data: data,
         path: path,
@@ -148,15 +148,15 @@ class _ScratchCardLayout extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, ScratchCardRender renderObject) {
+      BuildContext context, _ScratchCardRender renderObject) {
     renderObject
       ..strokeWidth = strokeWidth
       ..data = data;
   }
 }
 
-class ScratchCardRender extends RenderProxyBox {
-  ScratchCardRender({
+class _ScratchCardRender extends RenderProxyBox {
+  _ScratchCardRender({
     RenderBox child,
     double strokeWidth,
     this.path,
@@ -339,6 +339,9 @@ class PainterController extends ChangeNotifier {
     if (drawingType == DrawingType.lineDrawing) {
       path.lineTo(pathHistory.x, pathHistory.y);
     }
+    pathHistory.x = pathHistory.startX;
+    pathHistory.y = pathHistory.startY;
+    
   }
   // void endCurrentLine() {
   //   Path path = paths.last.path;
