@@ -19,28 +19,28 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
 
-  'assets/menu/pencil.png': [
+  'assets/menu/svg/pencil': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  'assets/menu/eraser.png': [
+  'assets/menu/svg/eraser': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  'assets/menu/geometric.png': [
+  'assets/menu/svg/geometry': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  'assets/menu/line.png': [
+  'assets/menu/svg/freegeometry': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
@@ -96,7 +96,7 @@ class TopStickers {
       Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
     ],
-    'assets/filter_icon.jpg': [],
+    'assets/menu/stickers.png': [],
   };
 }
 
@@ -162,7 +162,7 @@ class SelectStickerState extends State<SelectSticker> {
                       });
                     }
                     break;
-                  case 'assets/camera/camera1.png':
+                  case 'assets/menu/camera.png':
                     new Camera().openCamera().then((p) {
                       // if (p != null) model.addImage(p);
 
@@ -240,9 +240,18 @@ class SelectStickerState extends State<SelectSticker> {
   }
 
   Widget buildIndexItem(BuildContext context, Iconf conf, bool enabled) {
-    return Image.asset(
-      conf.data,
-      package: 'tahiti',
-    );
+    ActivityModel model = ActivityModel.of(context);
+    if (conf.data.startsWith('assets/menu/svg')) {
+      return DisplaySticker(
+        primary: conf.data,
+        color: model.selectedColor,
+      );
+    } else
+     return SizedBox(
+        child: Image.asset(
+          conf.data,
+          package: 'tahiti',
+        ),
+      );
   }
 }

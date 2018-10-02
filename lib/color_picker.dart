@@ -81,7 +81,7 @@ class ColorPickerState extends State<ColorPicker> {
   Widget build(BuildContext context) {
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
-        flex: 2,
+        flex: 3,
         child: new InkWell(
           onTap: () => _backwardButtonBehaviour(),
           child: new FittedBox(
@@ -104,7 +104,7 @@ class ColorPickerState extends State<ColorPicker> {
     ));
     colorItems.add(
       new Expanded(
-          flex: 2,
+          flex: 3,
           child: new InkWell(
             onTap: () => _forwardButtonBehaviour(),
             child: new FittedBox(
@@ -138,10 +138,10 @@ class ColorPickerState extends State<ColorPicker> {
             selectedColor = color;
           });
           try {
-            if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
-                widget.model.selectedIcon == 'assets/menu/geometric.png') {
+            if (widget.model.selectedIcon == 'assets/menu/svg/pencil' ||
+                widget.model.selectedIcon == 'assets/menu/svg/geometry') {
               widget.model.selectedColor = color;
-            } else if (widget.model.selectedIcon == 'assets/filter_icon.jpg')
+            } else if (widget.model.selectedIcon == 'assets/menu/stickers.png')
               widget.getColor(color);
             else if (false) {}
           } catch (exception, e) {
