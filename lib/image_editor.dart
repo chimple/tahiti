@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/transform_wrapper.dart';
 
@@ -55,12 +56,12 @@ class ImageEditorState extends State<ImageEditor> {
   List<BlendMode> listBlendMode = [
     BlendMode.dst, // default
     BlendMode.color, //black_white
-    BlendMode.darken,
+    BlendMode.saturation,
     BlendMode.modulate,
     BlendMode.modulate,
     BlendMode.softLight,
     BlendMode.hardLight,
-    BlendMode.hue,
+    BlendMode.hue
   ];
   List<int> _colorVal = [];
   List<String> _nameOfFilters = [
