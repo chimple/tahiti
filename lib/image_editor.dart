@@ -28,7 +28,7 @@ class ImageEditorState extends State<ImageEditor> {
   EditingMode editMode;
   List<Color> listColor = [
     const Color(0xFF980000),
-    const Color(0xFFFF0000),
+    const Color(0xffffffff),
     const Color(0xFFFF9900),
     const Color(0xFFFFFF00),
     const Color(0xFF00FF00),
