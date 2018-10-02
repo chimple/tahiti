@@ -71,39 +71,41 @@ class EditTextViewState extends State<EditTextView> {
             //     (constraints.maxWidth * constraints.maxHeight) / 3000;
             // print("maxsize $maxSize");
             return ScopedModelDescendant<ActivityModel>(
-                builder: (context, child, model) => model.editSelectedThing &&
-                        model.selectedThingId == widget.id
-                    ? FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Container(
-                          width: constraints.maxWidth,
-                          child: TextField(
-                            controller: controller,
-                            maxLines: null,
-                            keyboardType: TextInputType.text,
-                            onChanged: (str) {
-                              model.selectedThing(
-                                  id: widget.id, type: "text", text: str);
-                            },
-                            onSubmitted: (str) {
-                              model.selectedThing(
-                                  id: widget.id, type: "text", text: str);
-                              model.editSelectedThing = false;
-                            },
-                            autofocus: true,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 40.0,
-                                color: widget.color,
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                fontFamily: widget.fontType),
-                            decoration: new InputDecoration.collapsed(
-                                hintText: widget.change),
-                          ),
-                        ),
-                      )
-                    : Container(
+                builder: (context, child, model) => 
+                // model.editSelectedThing &&
+                    //     model.selectedThingId == widget.id
+                    // ? FittedBox(
+                    //     fit: BoxFit.scaleDown,
+                    //     child: Container(
+                    //       width: constraints.maxWidth,
+                    //       child: TextField(
+                    //         controller: controller,
+                    //         maxLines: null,
+                    //         keyboardType: TextInputType.text,
+                    //         onChanged: (str) {
+                    //           model.selectedThing(
+                    //               id: widget.id, type: "text", text: str);
+                    //         },
+                    //         onSubmitted: (str) {
+                    //           model.selectedThing(
+                    //               id: widget.id, type: "text", text: str);
+                    //           model.editSelectedThing = false;
+                    //         },
+                    //         autofocus: true,
+                    //         textAlign: TextAlign.center,
+                    //         style: TextStyle(
+                    //             fontSize: 40.0,
+                    //             color: widget.color,
+                    //             fontWeight: FontWeight.bold,
+                    //             fontStyle: FontStyle.italic,
+                    //             fontFamily: widget.fontType),
+                    //         decoration: new InputDecoration.collapsed(
+                    //             hintText: widget.change),
+                    //       ),
+                    //     ),
+                    //   )
+                    // : 
+                    Container(
                         width: constraints.maxWidth,
                         child: Text(
                           widget.text == '' ? widget.change : widget.text,
