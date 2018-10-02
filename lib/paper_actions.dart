@@ -18,51 +18,47 @@ class PaperActionsState extends State<PaperActions> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return ScopedModelDescendant<ActivityModel>(
-      builder: (context, child, model) => widget.action == "backAction"
-          ? Container(
-              child: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  iconSize:  MediaQuery.of(context).size.height * .03,
-                  color: Colors.white,
-                  onPressed: () => widget.onClick()),
-            )
-          : Container(
-              child: Column(
-                children: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.save),
-                      iconSize:  MediaQuery.of(context).size.height * .03,
-                      color: Colors.white,
-                      onPressed: () {
-                        widget.onClick();
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                            duration: Duration(milliseconds: 1000),
-                            content: Container(
-                                height: 50.0,
-                                child: Text(
-                                  "Image saved Successfully",
-                                  style: TextStyle(fontSize: 20.0),
-                                ))));
-                      }),
-                  Row(
-                    children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.undo),
-                          iconSize: 30.0,
-                          color: Colors.white,
-                          onPressed:
-                              model.canUndo() ? () => model.undo() : null),
-                      IconButton(
-                          icon: Icon(Icons.redo),
-                          iconSize: 30.0,
-                          color: Colors.white,
-                          onPressed:
-                              model.canRedo() ? () => model.redo() : null),
-                    ],
-                  )
-                ],
-              ),
-            ),
-    );
+        builder: (context, child, model) {
+      if (widget.action == "backAction") {
+        return Container(
+          child: IconButton(
+              icon: Icon(Icons.arrow_back),
+              iconSize: MediaQuery.of(context).size.height * .03,
+              color: Colors.white,
+              onPressed: () => widget.onClick()),
+        );
+      } else if (widget.action == "saveAction") {
+        return IconButton(
+            icon: Icon(Icons.menu),
+            iconSize: MediaQuery.of(context).size.height * .03,
+            color: Colors.white,
+            onPressed: () {
+              widget.onClick();
+              Scaffold.of(context).showSnackBar(SnackBar(
+                  duration: Duration(milliseconds: 1000),
+                  content: Container(
+                      height: 50.0,
+                      child: Text(
+                        "Image saved Successfully",
+                        style: TextStyle(fontSize: 20.0),
+                      ))));
+            });
+      } else if (widget.action == "UndoRedoAction") {
+        return Row(
+          children: <Widget>[
+            IconButton(
+                icon: Icon(Icons.undo),
+                iconSize: 30.0,
+                color: Colors.white,
+                onPressed: model.canUndo() ? () => model.undo() : null),
+            IconButton(
+                icon: Icon(Icons.redo),
+                iconSize: 30.0,
+                color: Colors.white,
+                onPressed: model.canRedo() ? () => model.redo() : null),
+          ],
+        );
+      }
+    });
   }
 }
