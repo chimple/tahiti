@@ -82,7 +82,6 @@ class TextEditorState extends State<TextEditor> {
               child: ColorPicker(
                   getColor: (color) => setColor(color),
                   model: widget.model,
-                  screenMode: ScreenMode.portrait,
                   orientation: Orientation.portrait),
             ),
             Positioned(
@@ -141,9 +140,11 @@ class TextEditorState extends State<TextEditor> {
                         iconSize: 60.0,
                         icon: Icon(Icons.done),
                         onPressed: () {
-                          widget.model.textColor = color;
-                          widget.model
-                              .addText(userTyped, font: textType[typeIndex]);
+                          if (userTyped != "") {
+                            widget.model.textColor = color;
+                            widget.model
+                                .addText(userTyped, font: textType[typeIndex]);
+                          }
                           Navigator.pop(context);
                         },
                       ),

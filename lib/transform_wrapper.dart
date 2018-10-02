@@ -8,6 +8,7 @@ import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
 import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
     as rotate;
 import 'package:tahiti/sticker_editor.dart';
+import 'package:tahiti/text_editor.dart';
 import 'activity_model.dart';
 import 'paper.dart';
 
@@ -224,6 +225,14 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                           Color(widget.thing['color'] as int),
                                       blendMode: BlendMode
                                           .values[widget.thing['blendMode']]);
+                                } else if (widget.thing['type'] == 'text') {
+                                  model.editing = EditingOption.editText;
+                                  _editingScreen(
+                                    model,
+                                    path: widget.thing['text'],
+                                    type: widget.thing['type'],
+                                    color: Color(widget.thing['color'] as int),
+                                  );
                                 }
                                 // if (model.editSelectedThing) {
                                 //   (widget.thing['type'] == 'text')
@@ -321,7 +330,9 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
         color: color,
         primary: path,
       );
-    } else if (false) {}
+    } else if (type == 'text') {
+      return TextEditor();
+    } else {}
     // TODO::// For other components
   }
 

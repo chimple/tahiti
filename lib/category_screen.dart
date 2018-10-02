@@ -165,7 +165,6 @@ class CategoryScreenState extends State<CategoryScreen> {
                     )),
                 Expanded(
                   child: ColorPicker(
-                    screenMode: screenMode,
                     model: widget.model,
                     getColor: (color) => setColor(color),
                   ),
