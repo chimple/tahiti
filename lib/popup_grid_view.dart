@@ -1,9 +1,14 @@
+import 'dart:async';
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
+import 'package:tahiti/select_sticker.dart';
+import 'package:tahiti/stickers.dart';
+import 'package:tahiti/text_editor.dart';
 
 enum ItemType { text, png, sticker }
 
@@ -114,6 +119,8 @@ class PopupGridViewState extends State<PopupGridView> {
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
                               model.isDrawing = true;
+                              model.isGeometricDrawing = false;
+                              model.isLineDrawing = false;
                             } else if (title
                                 .startsWith('assets/menu/brush1.png')) {
                               model.highlighted = title;
@@ -123,6 +130,28 @@ class PopupGridViewState extends State<PopupGridView> {
                                   BlurStyle.normal;
                               model.painterController.sigma = 15.5;
                               model.isDrawing = true;
+                            } else if (title
+                                .startsWith('assets/menu/geometric.png')) {
+                              model.highlighted = title;
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 0.0;
+                              model.isDrawing = false;
+                              model.isGeometricDrawing = true;
+                              model.isLineDrawing = false;
+                            } else if (title
+                                .startsWith('assets/menu/line.png')) {
+                              model.highlighted = title;
+                              model.painterController.paintOption =
+                                  PaintOption.paint;
+                              model.painterController.blurStyle =
+                                  BlurStyle.normal;
+                              model.painterController.sigma = 0.0;
+                              model.isDrawing = false;
+                              model.isGeometricDrawing = false;
+                              model.isLineDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush.png')) {
                               model.highlighted = title;
@@ -137,18 +166,48 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = false;
                             } else if (title.startsWith('assets/menu/eraser')) {
                               model.highlighted = title;
-                              model.painterController.eraser();
+                              model.painterController.paintOption =
+                                  PaintOption.erase;
                               model.isDrawing = true;
+                              model.isGeometricDrawing = false;
+                              model.isLineDrawing = false;
                             } else {
                               model.highlighted = null;
                               model.isDrawing = false;
+                              model.isGeometricDrawing = false;
+                              model.isLineDrawing = false;
                             }
                           }
+                          if (title == 'assets/filter_icon.jpg') {
+                            showCategorySreen(model, title);
+                          } else if (title == 'assets/menu/text.png') {
+                            showCategorySreen(model, title);
+                          } else if (false) {}
                         },
                       ),
                   child: widget.buildIndexItem(
                       context, Iconf(type: ItemType.text, data: title), true)),
             ));
+  }
+
+  Future<bool> showCategorySreen(ActivityModel model, String text) {
+    return showDialog(
+        context: context, child: _buildScreen(model: model, text: text));
+  }
+
+  Widget _buildScreen({ActivityModel model, String text}) {
+    if (text == 'assets/filter_icon.jpg') {
+      return CategoryScreen(
+        itemCrossAxisCount: 6,
+        items: Sticker.allStickers,
+        model: model,
+      );
+    } else if (text == 'assets/menu/text.png') {
+      return TextEditor(model: model);
+    }
+    // TODO::// for other components
+    else if (false) {
+    } else {}
   }
 
   @override
@@ -163,27 +222,11 @@ class PopupGridViewState extends State<PopupGridView> {
           builder: (context, child, model) {
         List<Widget> rowItems1 = [];
         List<Widget> rowItems = [];
-        // if (widget.numFixedItems > 0) {
-        //   rowItems.add(Container(
-        //   //  color: Colors.purple,
-        //       height: size.height * .1,
-        //       width: size.width * .1,
-        //       child: ListView(
-        //           scrollDirection: Axis.horizontal,
-        //           children: widget.menuItems.keys
-        //               .take(widget.numFixedItems)
-        //               .map(
-        //                 (k) => _buildMenuItem(
-        //                       k,
-        //                       height: size.height * .1,
-        //                     ),
-        //               )
-        //               .toList(growable: false))));
-        // }
         rowItems.add(Expanded(
+          flex: 1,
           child: Center(
-            child: FractionallySizedBox(
-              widthFactor: .7,
+            child: Container(
+              width: 600.0,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: widget.menuItems.keys
@@ -196,22 +239,6 @@ class PopupGridViewState extends State<PopupGridView> {
           ),
         ));
         rowItems1.addAll(rowItems);
-        if (model.isInteractive) {
-          rowItems1.add(
-            IconButton(
-                icon: Icon(Icons.undo),
-                iconSize: size.height * .06,
-                color: Colors.red,
-                onPressed: model.canUndo() ? () => model.undo() : null),
-          );
-          rowItems1.add(
-            IconButton(
-                icon: Icon(Icons.redo),
-                iconSize: size.height * .06,
-                color: Colors.red,
-                onPressed: model.canRedo() ? () => model.redo() : null),
-          );
-        }
 
         return Stack(
           overflow: Overflow.visible,
@@ -229,7 +256,8 @@ class PopupGridViewState extends State<PopupGridView> {
                 child: widget.side == DisplaySide.second
                     ? SizedBox(
                         height: size.height * .04,
-                        child: ColorPicker(orientation: orientation),
+                        child:
+                            ColorPicker(orientation: orientation, model: model),
                       )
                     : Container()),
             AnimatedPositioned(
@@ -306,66 +334,20 @@ class PopupGridViewState extends State<PopupGridView> {
           builder: (context, child, model) {
         List<Widget> columnItems1 = [];
         List<Widget> columnItems = [];
-        List<Widget> stickerItems = [];
-        // if (widget.numFixedItems > 0) {
-        //   columnItems.add(Container(
-        //       height: size.height * .9,
-        //       width: size.width * .15,
-        //       child: ListView(
-        //           scrollDirection: Axis.horizontal,
-        //           children: widget.menuItems.keys
-        //               .take(widget.numFixedItems)
-        //               .map(
-        //                 (k) => _buildMenuItem(k, width: size.width * .1),
-        //               )
-        //               .toList(growable: false))));
-        // }
-
-        stickerItems.addAll(widget.menuItems.keys
-            .skip(widget.numFixedItems)
-            .map(
-              (k) => _buildMenuItem(k),
-            )
-            .toList(growable: false));
 
         columnItems.add(Expanded(
             child: Center(
-                child: FractionallySizedBox(
-          heightFactor: .5,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: widget.menuItems.keys
-                  .skip(widget.numFixedItems)
-                  .map(
-                    (k) => _buildMenuItem(k),
-                  )
-                  .toList(growable: false)),
-        ))));
-
-        if (model.isInteractive) {
-          stickerItems.add(
-            IconButton(
-                icon: Icon(Icons.undo),
-                iconSize: size.width * .04,
-                color: Colors.red,
-                onPressed: model.canUndo() ? () => model.undo() : null),
-          );
-          stickerItems.add(
-            IconButton(
-                icon: Icon(Icons.redo),
-                iconSize: size.width * .04,
-                color: Colors.red,
-                onPressed: model.canRedo() ? () => model.redo() : null),
-          );
-
-          columnItems1.add(Expanded(
-            child: FractionallySizedBox(
-                heightFactor: .8,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: stickerItems)),
-          ));
-        }
+                    children: widget.menuItems.keys
+                        .skip(widget.numFixedItems)
+                        .map(
+                          (k) => _buildMenuItem(k),
+                        )
+                        .toList(growable: false)))));
+
+        columnItems1.addAll(columnItems);
+        
 
         return Stack(
           overflow: Overflow.visible,
@@ -383,7 +365,8 @@ class PopupGridViewState extends State<PopupGridView> {
                       heightFactor: .8,
                       child: SizedBox(
                         width: size.width * .03,
-                        child: ColorPicker(orientation: orientation),
+                        child:
+                            ColorPicker(orientation: orientation, model: model),
                       ),
                     )
                   : Container(),
@@ -441,8 +424,8 @@ class PopupGridViewState extends State<PopupGridView> {
             Positioned(
               left: widget.side == DisplaySide.second ? 0.0 : null,
               right: widget.side == DisplaySide.second ? null : 0.0,
-              top: 0.0,
-              bottom: 0.0,
+              top: 100.0,
+              bottom: 100.0,
               child: SizedBox(
                 //  height: size.height * .07,
                 width: size.width * .06,

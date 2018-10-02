@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
   final Orientation orientation;
-
-  ColorPicker({Key key, this.orientation}) : super(key: key);
+  final ActivityModel model;
+  final Function getColor;
+  final ScreenMode screenMode;
+  ColorPicker(
+      {Key key,
+      this.model,
+      this.screenMode = ScreenMode.portrait,
+      this.orientation,
+      this.getColor})
+      : super(key: key);
   ColorPickerState createState() => ColorPickerState();
 }
 
@@ -46,7 +55,7 @@ const List<Color> mainColors = const <Color>[
 Color textColor;
 Color drawingColor;
 Color stickerColor;
-Color selectedColor;
+Color selectedColor = Color(0xFFFF0000);
 
 class ColorPickerState extends State<ColorPicker> {
   ScrollController _scrollController = new ScrollController();
@@ -91,10 +100,12 @@ class ColorPickerState extends State<ColorPicker> {
       flex: 10,
       child: new SingleChildScrollView(
         controller: _scrollController,
-        scrollDirection: widget.orientation == Orientation.portrait
+        scrollDirection: (widget.orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Axis.horizontal
             : Axis.vertical,
-        child: widget.orientation == Orientation.portrait
+        child: (widget.orientation == Orientation.portrait ||
+                widget.screenMode == ScreenMode.landScape)
             ? Row(children: _mainColors(context))
             : Column(children: _mainColors(context)),
       ),
@@ -126,45 +137,43 @@ class ColorPickerState extends State<ColorPicker> {
   List<Widget> _mainColors(BuildContext context) {
     var children = <Widget>[];
     for (Color color in mainColors) {
-      children.add(ScopedModelDescendant<ActivityModel>(
-          builder: (context, child, model) => RawMaterialButton(
-                onPressed: () {
-                  setState(() {
-                    selectedColor = color;
-                    if (model.selectedIcon == 'assets/menu/body_icon.png' ||
-                        model.selectedIcon == 'assets/menu/clothes.png' ||
-                        model.selectedIcon == 'assets/menu/food_icon.png' ||
-                        model.selectedIcon == 'assets/menu/fruit.png' ||
-                        model.selectedIcon == 'assets/menu/icon.png' ||
-                        model.selectedIcon == 'assets/menu/vegetables.png' ||
-                        model.selectedIcon == 'assets/menu/vehicles.png') {
-                      model.stickerColor = color;
-                    } else if (model.selectedIcon == 'assets/menu/pencil.png' ||
-                        model.selectedIcon == 'assets/menu/brush.png') {
-                      model.drawingColor = color;
-                    } else if (model.selectedIcon == 'assets/menu/text.png') {
-                      model.textColor = color;
-                    } else {
-                      model.selectedColor = color;
-                    }
-                  });
-                },
-                constraints: new BoxConstraints.tightFor(
-                  height:
-                      widget.orientation == Orientation.portrait ? 40.0 : 60.0,
-                  width:
-                      widget.orientation == Orientation.portrait ? 60.0 : 30.0,
-                ),
-                fillColor: color,
-                shape: new CircleBorder(
-                  side: new BorderSide(
-                    color: color == selectedColor
-                        ? Colors.black
-                        : const Color(0xFFD5D7DA),
-                    width: 4.0,
-                  ),
-                ),
-              )));
+      children.add(
+          // ScopedModelDescendant<ActivityModel>(
+          //  builder: (context, child, model) =>
+          RawMaterialButton(
+        onPressed: () {
+          setState(() {
+            selectedColor = color;
+          });
+          try {
+            if (widget.model.selectedIcon == 'assets/menu/pencil.png' ||
+                widget.model.selectedIcon == 'assets/menu/geometric.png') {
+              widget.model.selectedColor = color;
+            } else if (widget.model.selectedIcon == 'assets/filter_icon.jpg')
+              widget.getColor(color);
+            else if (false) {}
+          } catch (exception, e) {
+            print(e);
+          }
+          if (widget.model.editing == EditingOption.editSticker) {
+            widget.getColor(selectedColor);
+          }
+        },
+        constraints: new BoxConstraints.tightFor(
+          height: widget.orientation == Orientation.portrait ? 40.0 : 60.0,
+          width: widget.orientation == Orientation.portrait ? 60.0 : 30.0,
+        ),
+        fillColor: color,
+        shape: new CircleBorder(
+          side: new BorderSide(
+            color:
+                color == selectedColor ? Colors.black : const Color(0xFFD5D7DA),
+            width: 4.0,
+          ),
+        ),
+      ));
+
+      // );
     }
     return children;
   }

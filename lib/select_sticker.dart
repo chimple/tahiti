@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
 import 'package:tahiti/display_sticker.dart';
+import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
+import 'package:uuid/uuid.dart';
 
 final Map<String, List<Iconf>> secondStickers = {
   'assets/menu/brush.png': [
@@ -14,6 +18,7 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
+
   'assets/menu/pencil.png': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
@@ -22,6 +27,20 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
   'assets/menu/eraser.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/geometric.png': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
+  'assets/menu/line.png': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
@@ -56,175 +75,6 @@ final Map<String, List<Iconf>> secondStickers = {
   //   Iconf(type: ItemType.text, data: 'Rock salt'),
   //   Iconf(type: ItemType.text, data: 'Shadows into light'),
   // ],
-  // 'assets/menu/icon.png': [
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/pen'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/ball'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/monkey'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/pot'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/carrot'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bat'),
-  // ],
-  // 'assets/menu/body_icon.png': [
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/back'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/beard'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/chest'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/ear'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/eyes'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/forehead'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/hair'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/leg'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/lips'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/mouth'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/mustache'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/palm'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/bodyparts/toe'),
-  // ],
-  // 'assets/menu/clothes.png': [
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/blazer'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/bow'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/boxers'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/cap'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/coat'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/dress'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/earrings'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/gloves'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/gown'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/hat'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/jacket'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/jeans'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/pajamas'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/pant'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/clothes/hairband'),
-  // ],
-  // 'assets/menu/fruit.png': [
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/apple'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/banana'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/cheery'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/chikoo'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/fig'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/grapefruit'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/grapes'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/guava'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/jackfruit'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/kiwifruit'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/lemon'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/lime'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/lychee'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/mango'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fruits/stawberry'),
-  // ],
-  // 'assets/menu/vegetables.png': [
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/beetroot'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/cabbage'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/capsicum'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/carrot'),
-  //   Iconf(
-  //       type: ItemType.sticker, data: 'assets/svgimage/vegetables/cauliflower'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/celeriac'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/celery'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/cucumber'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/drumstick'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/eggplant'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/fennal'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/garlic'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/ginger'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/kohlrabi'),
-  //   Iconf(
-  //       type: ItemType.sticker, data: 'assets/svgimage/vegetables/ladyfinger'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/mushroom'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/onion'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/peas'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/pepper'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/potato'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/radish'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/rhubarb'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/spinach'),
-  //   Iconf(
-  //       type: ItemType.sticker, data: 'assets/svgimage/vegetables/sweet_corn'),
-  //   Iconf(
-  //       type: ItemType.sticker,
-  //       data: 'assets/svgimage/vegetables/sweet_potato'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/turnip'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vegetables/witloof'),
-  // ],
-  // 'assets/menu/vehicles.png': [
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/ambulance'),
-  //   Iconf(
-  //       type: ItemType.sticker, data: 'assets/svgimage/vehicles/autorickshaw'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/bike'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/boat'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/bulldozer'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/bus'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/car'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/carriage'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/chariot'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/fire_engine'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/jeep'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/lorry'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/police_car'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/rocket'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/scooter'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/ship'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/tank'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/tractor'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/train'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/vehicles/van'),
-  // ],
-  // 'assets/menu/food_icon.png': [
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/almond'),
-  //   Iconf(
-  //       type: ItemType.sticker, data: 'assets/svgimage/fooditem/bar_icecream'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/beer_jug'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/bread'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/burger'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/cake'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/candy'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/cashewnut'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/champaign'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/cheese'),
-  //   Iconf(
-  //       type: ItemType.sticker,
-  //       data: 'assets/svgimage/fooditem/chicken_drumstick'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/chips'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/chocolate'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/cocktail'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/cocoa_bean'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/coffee'),
-  //   Iconf(
-  //       type: ItemType.sticker, data: 'assets/svgimage/fooditem/cone_icecream'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/cookie'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/dates'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/donut'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/dry_coconut'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/dumpling'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/egg'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/hazel_nut'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/honey'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/hotdog'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/juice'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/lollypop'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/meat_can1'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/meat'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/milk'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/mocktail'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/noodles'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/omlet'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/peanuts'),
-  //   Iconf(
-  //       type: ItemType.sticker, data: 'assets/svgimage/fooditem/piece_of_cake'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/pizza'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/popcorn'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/raisin'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/salad'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/sandwich'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/scrat_nut'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/soup'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/sushi'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/tea'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/toffee'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/veg_roll'),
-  //   Iconf(type: ItemType.sticker, data: 'assets/svgimage/fooditem/vine'),
-  // ],
 };
 
 class TopStickers {
@@ -237,17 +87,16 @@ class TopStickers {
     Iconf(type: ItemType.png, data: 'assets/mic/play.png')
   ];
   final Map<String, List<Iconf>> firstStickers = {
+    'assets/menu/text.png': [
+      // Iconf(type: ItemType.png, data: 'assets/menu/text.png'),
+    ],
     'assets/menu/mic.png': playIcon,
     'assets/menu/camera.png': [
       Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
     ],
-
-    //  'assets/menu/bucket.png': [],
-
     'assets/filter_icon.jpg': [],
-    'assets/menu/save.png': [],
   };
 }
 
@@ -264,6 +113,13 @@ class SelectSticker extends StatefulWidget {
 }
 
 class SelectStickerState extends State<SelectSticker> {
+  Future<bool> show(ActivityModel model) {
+    return showDialog(
+      context: context,
+      child: ImageEditor(model),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ActivityModel>(
@@ -308,12 +164,21 @@ class SelectStickerState extends State<SelectSticker> {
                     break;
                   case 'assets/camera/camera1.png':
                     new Camera().openCamera().then((p) {
-                      if (p != null) model.addImage(p);
+                      // if (p != null) model.addImage(p);
+
+                      if (p != null) {
+                        model.imagePath = p;
+                        show(model);
+                      }
                     });
                     break;
                   case 'assets/camera/gallery.png':
                     new Camera().pickImage().then((p) {
-                      if (p != null) model.addImage(p);
+                      //if (p != null) model.addImage(p);
+                      if (p != null) {
+                        model.imagePath = p;
+                        show(model);
+                      }
                     });
                     break;
                   case 'assets/camera/video.png':
@@ -324,7 +189,7 @@ class SelectStickerState extends State<SelectSticker> {
                   default:
                     if (text.startsWith('assets/stickers') ||
                         text.startsWith('assets/svgimage')) {
-                      model.addSticker(text);
+                      // model.addSticker(text);
                     }
                     if (text.startsWith('assets/nima_animation')) {
                       model.addNima(text);

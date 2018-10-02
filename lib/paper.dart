@@ -4,24 +4,22 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/display_nima.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/drawing.dart';
+import 'dart:ui' as ui;
 import 'package:tahiti/edit_text_view.dart';
 import 'package:tahiti/video_scaling.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:ui' as ui;
 import 'package:tahiti/transform_wrapper.dart';
 
 class Paper extends StatelessWidget {
-  Paper({Key key}) : super(key: key) {
-    previewContainerKey = GlobalKey();
-  }
-
   GlobalKey previewContainerKey;
+  Paper({Key key, this.previewContainerKey}) : super(key: key);
 
   Future<Null> getPngImage() async {
     RenderRepaintBoundary boundary =
@@ -89,16 +87,23 @@ class Paper extends StatelessWidget {
             package: 'tahiti',
           );
         } else {
-          return DisplaySticker(
+           return DisplaySticker(
             size: 400.0,
             primary: thing['asset'],
-            blendmode: thing['blendMode'],
+            blendmode: BlendMode.values[thing['blendMode'] as int],
             color: Color(thing['color'] as int),
           );
         }
         break;
       case 'image':
-        return Image.file(File(thing['path']));
+        return Image.file(
+          File(
+            thing['path'],
+          ),
+          color: Color(thing['color'] as int),
+          colorBlendMode: BlendMode.values[thing['blendMode'] as int],
+        );
+
         break;
       case 'nima':
         return new DisplayNima();
