@@ -7,8 +7,6 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'activity_model.g.dart';
 
-enum EditingOption { editSticker, nothing, editImage, editText, editAudio }
-
 class ActivityModel extends Model {
   PaintData paintData;
   List<Map<String, dynamic>> _undoStack = [];
@@ -38,7 +36,6 @@ class ActivityModel extends Model {
   bool _editSelectedThing = false;
   Color cls;
   BlendMode blnd;
-
   ActivityModel({@required this.paintData}) {
     _painterController =
         new PainterController(pathHistory: this.paintData.pathHistory);
@@ -141,14 +138,6 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  EditingOption _editingOption = EditingOption.nothing;
-  get editing => _editingOption;
-  set editing(EditingOption p) {
-    print('caled $p');
-    _editingOption = p;
-    notifyListeners();
-  }
-
   bool get isInteractive => _isInteractive;
   set isInteractive(bool i) => _isInteractive = i;
 
@@ -239,8 +228,8 @@ class ActivityModel extends Model {
       if (t['id'] == _selectedThingId && t['type'] == 'image') {
         t.forEach((k, v) {
           if (k == 'color' || k == 'blendMode') {
-            t['color'] = color;
-            t['blendMode'] = blendMode;
+            t['color'] = color?.value;
+            t['blendMode'] = blendMode.index;
           }
         });
       } else if (t['id'] == _selectedThingId && t['type'] == 'text') {

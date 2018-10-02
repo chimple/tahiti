@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/display_sticker.dart';
+import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
 import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
     as rotate;
@@ -217,7 +218,6 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                 if (!model.editSelectedThing) {
                                   model.selectedThingId = '';
                                 } else if (widget.thing['type'] == 'sticker') {
-                                  model.editing = EditingOption.editSticker;
                                   _editingScreen(model,
                                       path: widget.thing['asset'],
                                       type: widget.thing['type'],
@@ -232,6 +232,15 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                     type: widget.thing['type'],
                                     color: Color(widget.thing['color'] as int),
                                   );
+                                } else if (widget.thing['type'] == 'image') {
+                                  _editingScreen(model,
+                                      path: widget.thing['path'],
+                                      type: widget.thing['type'],
+                                      color: Color(
+                                        widget.thing['color'] as int,
+                                      ),
+                                      blendMode: BlendMode
+                                          .values[widget.thing['blendMode']]);
                                 }
                                 // if (model.editSelectedThing) {
                                 //   (widget.thing['type'] == 'text')
@@ -348,7 +357,15 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
         userTyped: text,
         color: color,
       );
-    } else {}
+    } else if (type == 'image') {
+      return ImageEditor(
+        model,
+        blendModel: blendMode,
+        imagePath: path,
+        color: color,
+        editingMode: EditingMode.editImage,
+      );
+    }
     // TODO::// For other components
   }
 
@@ -361,3 +378,5 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
     });
   }
 }
+
+enum EditingMode { editImage, addImage }
