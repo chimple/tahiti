@@ -33,7 +33,17 @@ class PaperActionsState extends State<PaperActions> {
                       icon: Icon(Icons.save),
                       iconSize: 60.0,
                       color: Colors.red,
-                      onPressed: () => widget.onClick()),
+                      onPressed: () {
+                        widget.onClick();
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                            duration: Duration(milliseconds: 1000),
+                            content: Container(
+                                height: 50.0,
+                                child: Text(
+                                  "Image saved Successfully",
+                                  style: TextStyle(fontSize: 20.0),
+                                ))));
+                      }),
                   Row(
                     children: <Widget>[
                       IconButton(

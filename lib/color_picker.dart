@@ -7,13 +7,7 @@ class ColorPicker extends StatefulWidget {
   final Orientation orientation;
   final ActivityModel model;
   final Function getColor;
-  final ScreenMode screenMode;
-  ColorPicker(
-      {Key key,
-      this.model,
-      this.screenMode = ScreenMode.portrait,
-      this.orientation,
-      this.getColor})
+  ColorPicker({Key key, this.model, this.orientation, this.getColor})
       : super(key: key);
   ColorPickerState createState() => ColorPickerState();
 }
@@ -85,7 +79,6 @@ class ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
         flex: 2,
@@ -101,12 +94,10 @@ class ColorPickerState extends State<ColorPicker> {
       flex: 10,
       child: new SingleChildScrollView(
         controller: _scrollController,
-        scrollDirection: (orientation == Orientation.portrait ||
-                widget.screenMode == ScreenMode.landScape)
+        scrollDirection: (widget.orientation == Orientation.portrait)
             ? Axis.horizontal
             : Axis.vertical,
-        child: (orientation == Orientation.portrait ||
-                widget.screenMode == ScreenMode.landScape)
+        child: (widget.orientation == Orientation.portrait)
             ? Row(children: _mainColors(context))
             : Column(children: _mainColors(context)),
       ),
@@ -159,6 +150,7 @@ class ColorPickerState extends State<ColorPicker> {
           if (widget.model.editing == EditingOption.editSticker) {
             widget.getColor(selectedColor);
           }
+          widget.getColor(selectedColor);
         },
         constraints: new BoxConstraints.tightFor(
           height: widget.orientation == Orientation.portrait ? 40.0 : 60.0,

@@ -36,24 +36,25 @@ class TextEditorState extends State<TextEditor> {
     'Shadows into light',
   ];
 
+  String userTyped = "";
   int typeIndex = 0;
-
+  Color color = Colors.red;
   bool temp = false;
+  void setColor(Color c) {
+    setState(() {
+      color = c;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     print("TextEditor");
     // TODO: implement build
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Material(
-          color: Colors.black87,
-          type: MaterialType.canvas,
-          // elevation: temp ? 100.0 : 200.0,
-          // shadowColor: Color.fromRGBO(random.nextInt(255), random.nextInt(255),
-          //     random.nextInt(255), 0.2),
-          animationDuration: Duration(milliseconds: 1000),
-          child: Stack(children: <Widget>[
+    return Material(
+        animationDuration: Duration(milliseconds: 1000),
+        child: Scaffold(
+          backgroundColor: Colors.black87,
+          body: Stack(children: <Widget>[
             Positioned(
               top: 100.0,
               left: 20.0,
@@ -63,9 +64,11 @@ class TextEditorState extends State<TextEditor> {
                 child: TextField(
                   autofocus: true,
                   maxLines: null,
-                  // onChanged: (str) => changeIndex(),
+                  onChanged: (str) {
+                    userTyped = str;
+                  },
                   style: TextStyle(
-                    color: widget.model.selectedColor,
+                    color: color,
                     fontFamily: textType[typeIndex],
                     fontSize: 30.0,
                   ),
@@ -77,8 +80,8 @@ class TextEditorState extends State<TextEditor> {
               left: 0.0,
               right: 0.0,
               child: ColorPicker(
+                  getColor: (color) => setColor(color),
                   model: widget.model,
-                  screenMode: ScreenMode.portrait,
                   orientation: Orientation.portrait),
             ),
             Positioned(
@@ -137,13 +140,18 @@ class TextEditorState extends State<TextEditor> {
                         iconSize: 60.0,
                         icon: Icon(Icons.done),
                         onPressed: () {
+                          if (userTyped != "") {
+                            widget.model.textColor = color;
+                            widget.model
+                                .addText(userTyped, font: textType[typeIndex]);
+                          }
                           Navigator.pop(context);
                         },
                       ),
                     ),
                   ])),
             ),
-          ])),
-    );
+          ]),
+        ));
   }
 }
