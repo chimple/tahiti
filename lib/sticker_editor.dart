@@ -107,7 +107,6 @@ class _StickerEditorState extends State<StickerEditor>
               Expanded(
                 flex: 2,
                 child: ColorPicker(
-                  screenMode: screenMode,
                   getColor: (c) => setColor(c),
                   model: widget.model,
                 ),
