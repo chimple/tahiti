@@ -17,7 +17,6 @@ class ActivityModel extends Model {
   Popped _popped = Popped.noPopup;
   String _highlighted;
   String _imagePath;
-  DrawingType _drawingPath = DrawingType.freeDrawing;
 
   bool _isDrawing = false;
 
@@ -69,12 +68,6 @@ class ActivityModel extends Model {
   String get imagePath => _imagePath;
   set imagePath(String t) {
     _imagePath = t;
-    notifyListeners();
-  }
-
-  DrawingType get drawingPath => _drawingPath;
-  set drawingPath(DrawingType t) {
-    _drawingPath = t;
     notifyListeners();
   }
 
@@ -439,7 +432,6 @@ class PathHistory {
 
   void drawStraightLine(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
-      // context.canvas.drawPath(pathInfo.path, pathInfo._paint);
       context.canvas
           .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
     }

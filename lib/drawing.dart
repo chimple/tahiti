@@ -276,11 +276,9 @@ class PainterController extends ChangeNotifier {
   void add(BuildContext context, Offset startPoint) {
     initialX = startPoint.dx;
     initialY = startPoint.dy;
-    // Path path = pathHistory.paths.last.path;
+    pathHistory.x = pathHistory.startX = startPoint.dx;
+    pathHistory.y = pathHistory.startY = startPoint.dy;
 
-    pathHistory.startX = startPoint.dx;
-    pathHistory.startY = startPoint.dy;
-    // path.moveTo(pathHistory.startX, pathHistory.startY);
     final model = ActivityModel.of(context);
     if (!_inDrag) {
       if (model.popped != Popped.noPopup) {
@@ -341,15 +339,7 @@ class PainterController extends ChangeNotifier {
     }
     pathHistory.x = pathHistory.startX;
     pathHistory.y = pathHistory.startY;
-    
   }
-  // void endCurrentLine() {
-  //   Path path = paths.last.path;
-  //   _inDrag = false;
-  //   if (drawingType == DrawingType.lineDrawing) {
-  //     path.lineTo(pathHistory.x, pathHistory.y);
-  //   }
-  // }
 
   bool getDragStatus() {
     return _inDrag;

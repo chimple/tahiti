@@ -339,7 +339,6 @@ class PopupGridViewState extends State<PopupGridView> {
                         .toList(growable: false)))));
 
         columnItems1.addAll(columnItems);
-        
 
         return Stack(
           overflow: Overflow.visible,
