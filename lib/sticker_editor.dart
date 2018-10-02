@@ -31,15 +31,8 @@ class _StickerEditorState extends State<StickerEditor>
     super.initState();
   }
 
-  ScreenMode screenMode = ScreenMode.portrait;
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
-    if (orientation == Orientation.portrait) {
-      screenMode = ScreenMode.portrait;
-    } else {
-      screenMode = ScreenMode.landScape;
-    }
     return ScaleTransition(
       scale: animation,
       child: new Material(
@@ -85,7 +78,7 @@ class _StickerEditorState extends State<StickerEditor>
                 color: Colors.white,
               ),
               Expanded(
-                flex: 7,
+                flex: 8,
                 child: Hero(
                   createRectTween: (Rect r, rect) {},
                   tag: DisplaySticker(
@@ -105,8 +98,9 @@ class _StickerEditorState extends State<StickerEditor>
                 color: Colors.white,
               ),
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: ColorPicker(
+                  orientation: Orientation.portrait,
                   getColor: (c) => setColor(c),
                   model: widget.model,
                 ),

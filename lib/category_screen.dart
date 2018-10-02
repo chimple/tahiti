@@ -53,17 +53,10 @@ class CategoryScreenState extends State<CategoryScreen> {
     color: Colors.white,
     height: 6.0,
   );
-  ScreenMode screenMode = ScreenMode.portrait;
   Color color;
   BlendMode blendMode = BlendMode.dst;
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
-    if (orientation == Orientation.portrait) {
-      screenMode = ScreenMode.portrait;
-    } else {
-      screenMode = ScreenMode.landScape;
-    }
     Size size = MediaQuery.of(context).size;
     return Material(
       color: Colors.black54,
@@ -165,6 +158,7 @@ class CategoryScreenState extends State<CategoryScreen> {
                     )),
                 Expanded(
                   child: ColorPicker(
+                    orientation: Orientation.portrait,
                     model: widget.model,
                     getColor: (color) => setColor(color),
                   ),
@@ -219,5 +213,3 @@ class CategoryScreenState extends State<CategoryScreen> {
   //   }
   // }
 }
-
-enum ScreenMode { landScape, portrait }

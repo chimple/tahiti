@@ -8,6 +8,7 @@ import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
+import 'package:tahiti/transform_wrapper.dart';
 import 'package:uuid/uuid.dart';
 
 final Map<String, List<Iconf>> secondStickers = {
@@ -113,10 +114,14 @@ class SelectSticker extends StatefulWidget {
 }
 
 class SelectStickerState extends State<SelectSticker> {
-  Future<bool> show(ActivityModel model) {
+  Future<bool> _showImage(ActivityModel model, {String text}) {
     return showDialog(
       context: context,
-      child: ImageEditor(model),
+      child: ImageEditor(
+        model,
+        imagePath: text,
+        editingMode: EditingMode.addImage,
+      ),
     );
   }
 
@@ -167,8 +172,7 @@ class SelectStickerState extends State<SelectSticker> {
                       // if (p != null) model.addImage(p);
 
                       if (p != null) {
-                        model.imagePath = p;
-                        show(model);
+                        _showImage(model, text: p);
                       }
                     });
                     break;
@@ -176,8 +180,7 @@ class SelectStickerState extends State<SelectSticker> {
                     new Camera().pickImage().then((p) {
                       //if (p != null) model.addImage(p);
                       if (p != null) {
-                        model.imagePath = p;
-                        show(model);
+                        _showImage(model, text: p);
                       }
                     });
                     break;
