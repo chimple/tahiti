@@ -67,20 +67,11 @@ class TemplateListData extends StatelessWidget {
             onPress(templates[index]);
             Navigator.pop(context, 'selected');
           },
-          child: new Column(
-            children: <Widget>[
-              new AspectRatio(
-                  aspectRatio: 1.2,
-                  child: new SvgPicture.asset(
-                    templates[index],
-                  )),
-              new Expanded(
-                  child: new Container(
-                color: Colors.grey,
-                child: new Center(child: new Text(templates[index])),
-              ))
-            ],
-          ),
+          child: new AspectRatio(
+              aspectRatio: 1.2,
+              child: new SvgPicture.asset(
+                templates[index],
+              )),
         ));
   }
 
