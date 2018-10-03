@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
+<g>
+	<ellipse style="opacity:0.2;" cx="123" cy="96.2" rx="60.9" ry="5.7"/>
+	<g id="XMLID_181_">
+		
+			<rect id="XMLID_192_" x="158.5" y="30.5" transform="matrix(0.2027 -0.9792 0.9792 0.2027 97.448 198.328)" style="fill:#FAAF40;" width="24" height="17.7"/>
+		<path id="XMLID_190_" style="fill:#F05A28;" d="M184.1,17.4c0.7-3.3-2.7-6.7-7.4-7.7c-4.8-1-9.2,0.8-9.9,4.1l-2.5,12l17.3,3.6
+			L184.1,17.4z"/>
+		<g id="XMLID_182_">
+			<defs>
+				
+					<rect id="XMLID_183_" x="158.5" y="30.5" transform="matrix(0.2027 -0.9792 0.9792 0.2027 97.448 198.328)" width="24" height="17.7"/>
+			</defs>
+			<clipPath id="XMLID_12_">
+				<use xlink:href="#XMLID_183_"  style="overflow:visible;"/>
+			</clipPath>
+			
+				<line id="XMLID_188_" style="clip-path:url(#XMLID_12_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="160.1" y1="43.8" x2="179.4" y2="47.8"/>
+			
+				<line id="XMLID_187_" style="clip-path:url(#XMLID_12_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="160.9" y1="40" x2="180.1" y2="44"/>
+			
+				<line id="XMLID_186_" style="clip-path:url(#XMLID_12_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="161.7" y1="36" x2="181" y2="40"/>
+			
+				<line id="XMLID_185_" style="clip-path:url(#XMLID_12_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="162.5" y1="32" x2="181.8" y2="36"/>
+			
+				<line id="XMLID_184_" style="clip-path:url(#XMLID_12_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="162.4" y1="28.9" x2="181.7" y2="32.9"/>
+		</g>
+	</g>
+	<g id="XMLID_1_">
+		
+			<rect id="XMLID_11_" x="100.9" y="23" transform="matrix(0.9858 -0.1681 0.1681 0.9858 -4.3161 18.9463)" style="fill:#FAAF40;" width="17.7" height="24"/>
+		<path id="XMLID_10_" style="fill:#F05A28;" d="M114.4,9.6c-0.6-3.3-4.9-5.3-9.7-4.4C99.9,6,96.4,9.3,97,12.6l2.1,12l17.4-3
+			L114.4,9.6z"/>
+		<g id="XMLID_2_">
+			<defs>
+				
+					<rect id="XMLID_3_" x="100.9" y="23" transform="matrix(0.9858 -0.1681 0.1681 0.9858 -4.3161 18.9463)" width="17.7" height="24"/>
+			</defs>
+			<clipPath id="XMLID_13_">
+				<use xlink:href="#XMLID_3_"  style="overflow:visible;"/>
+			</clipPath>
+			
+				<line id="XMLID_8_" style="clip-path:url(#XMLID_13_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="101.7" y1="43" x2="121.1" y2="39.7"/>
+			
+				<line id="XMLID_7_" style="clip-path:url(#XMLID_13_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="101" y1="39.1" x2="120.4" y2="35.8"/>
+			
+				<line id="XMLID_6_" style="clip-path:url(#XMLID_13_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="100.4" y1="35.1" x2="119.8" y2="31.8"/>
+			
+				<line id="XMLID_5_" style="clip-path:url(#XMLID_13_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="99.7" y1="31" x2="119.1" y2="27.7"/>
+			
+				<line id="XMLID_4_" style="clip-path:url(#XMLID_13_);fill:none;stroke:#231F20;stroke-miterlimit:10;" x1="98.4" y1="28.2" x2="117.8" y2="24.9"/>
+		</g>
+	</g>
+	<polygon style="fill:#FFF100;" points="166.9,100.3 176.8,52.6 159.5,49 148.5,101.4 	"/>
+	<polygon style="fill:#FFF100;" points="130.3,101.8 120.5,45 103,48 112,101.8 	"/>
+</g>
+</svg>

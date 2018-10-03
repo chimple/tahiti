@@ -25,7 +25,7 @@ class ImageEditor extends StatefulWidget {
 
 class ImageEditorState extends State<ImageEditor> {
   Color selectedColor = Color(0xffffff);
-  String borderColor = 'Default';
+  Color borderColor = Color(0xFF980000);
   BlendMode selectedBlendMode = BlendMode.dst;
   String _imagePath;
   EditingMode editMode;
@@ -78,6 +78,7 @@ class ImageEditorState extends State<ImageEditor> {
     for (int i = 0; i < 7; i++) _colorVal.add(i);
     selectedBlendMode = widget.blendModel;
     selectedColor = widget.color;
+    if (widget.editingMode == EditingMode.editImage) borderColor = widget.color;
     _imagePath = widget.imagePath;
     editMode = widget.editingMode;
     super.initState();
@@ -172,7 +173,8 @@ class ImageEditorState extends State<ImageEditor> {
                               child: RawMaterialButton(
                             onPressed: () {
                               setState(() {
-                                borderColor = count;
+                                borderColor =
+                                    listColor[_nameOfFilters.indexOf(count)];
                               });
                               _multiColor(
                                   listColor[_nameOfFilters.indexOf(count)],
@@ -196,7 +198,8 @@ class ImageEditorState extends State<ImageEditor> {
                                 : Container(),
                             shape: new BeveledRectangleBorder(
                               side: new BorderSide(
-                                color: count == borderColor
+                                color: _nameOfFilters.indexOf(count) ==
+                                        listColor.indexOf(borderColor)
                                     ? Color(roundColor)
                                     : const Color(0xffffff),
                                 width: 3.0,
