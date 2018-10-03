@@ -91,7 +91,7 @@ class TopStickers {
     'assets/menu/text.png': [
       // Iconf(type: ItemType.png, data: 'assets/menu/text.png'),
     ],
-    'assets/menu/mic.png': playIcon,
+    'assets/menu/mic.png': [],
     'assets/menu/camera.png': [
       Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
@@ -250,7 +250,7 @@ class SelectStickerState extends State<SelectSticker> {
         color: model.selectedColor,
       );
     } else
-     return SizedBox(
+      return SizedBox(
         child: Image.asset(
           conf.data,
           package: 'tahiti',

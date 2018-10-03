@@ -1,5 +1,6 @@
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
+import 'package:tahiti/recorder.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tahiti/drawing.dart';
@@ -138,6 +139,13 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
+  Recorder _recorder = new Recorder();
+  Recorder get recorder => _recorder;
+  set recorderObject(Recorder r) {
+    _recorder = r;
+    notifyListeners();
+  }
+
   bool get isInteractive => _isInteractive;
   set isInteractive(bool i) => _isInteractive = i;
 
@@ -202,7 +210,7 @@ class ActivityModel extends Model {
     }
   }
 
-  void addNima(String name) {
+  void addNima(String name, {bool pause, bool animationState}) {
     addThing({
       'id': Uuid().v4(),
       'type': 'nima',
@@ -210,18 +218,25 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
+      'pause': pause,
+      'animatioState': animationState
     });
   }
 
   void selectedThing(
-      {var id, String type, String text, String font, Color color, BlendMode blendMode}) {
+      {var id,
+      String type,
+      String text,
+      String font,
+      Color color,
+      BlendMode blendMode}) {
     paintData.things.forEach((t) {
       if (t['id'] == id) {
         if (type == 'text' || type == 'image') {
           if (type == 'text') {
             t['text'] = text;
             t['color'] = color;
-            t['font'] = font; 
+            t['font'] = font;
           }
         }
       }

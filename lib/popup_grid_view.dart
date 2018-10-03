@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/audio_editing_screen.dart';
 import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
@@ -190,7 +191,16 @@ class PopupGridViewState extends State<PopupGridView> {
                             showCategorySreen(model, title);
                           } else if (title == 'assets/menu/text.png') {
                             showCategorySreen(model, title);
-                          } else if (false) {}
+                          } else if (title == 'assets/menu/mic.png') {
+                            model.things.forEach((t) {
+                              if (t['type'] == 'nima' && t['asset'] != null) {
+                                model.deleteThing(t['id']);
+                                showCategorySreen(model, title);
+                                model.recorder.stop();
+                              }
+                            });
+                            showCategorySreen(model, title);
+                          }
                         },
                       ),
                   child: widget.buildIndexItem(
@@ -214,7 +224,8 @@ class PopupGridViewState extends State<PopupGridView> {
       return TextEditor(model: model);
     }
     // TODO::// for other components
-    else if (false) {
+    else if (text == 'assets/menu/mic.png') {
+      return AudioEditingScreen(model: model);
     } else {}
   }
 
@@ -253,18 +264,18 @@ class PopupGridViewState extends State<PopupGridView> {
           overflow: Overflow.visible,
           children: <Widget>[
             Container(
-              decoration: new BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(20.0),
-                    topLeft: Radius.circular(20.0)),
-                color: widget.side == DisplaySide.second
-                    ? Color(0xff2b3f4c)
-                    : null,
-              ),
-              margin: EdgeInsets.all(size.width * .01),
-              height: size.height * .16
-              //  width: size.width,
-            ),
+                decoration: new BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(20.0),
+                      topLeft: Radius.circular(20.0)),
+                  color: widget.side == DisplaySide.second
+                      ? Color(0xff2b3f4c)
+                      : null,
+                ),
+                margin: EdgeInsets.all(size.width * .01),
+                height: size.height * .16
+                //  width: size.width,
+                ),
             Positioned(
               bottom: widget.side == DisplaySide.second ? 100.0 : null,
               top: widget.side == DisplaySide.second ? null : 0.0,
