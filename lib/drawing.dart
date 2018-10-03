@@ -64,8 +64,9 @@ class RollerState extends State<Drawing> {
   void _handleDragEnd(DragEndDetails details) {
     ActivityModel model = ActivityModel.of(context);
     PainterController painterController = model.painterController;
-    painterController.endCurrent();
+
     if (model.pathHistory.paths.length > 0) {
+      painterController.endCurrent(context);
       model.addDrawing(model.pathHistory.paths.last);
     }
     setState(() {
@@ -299,9 +300,9 @@ class PainterController extends ChangeNotifier {
   }
 
   void updateCurrent(BuildContext context, Offset nextPoint) {
-    // final model = ActivityModel.of(context);
+    final model = ActivityModel.of(context);
     if (_inDrag) {
-      switch (drawingType) {
+      switch (model.painterController.drawingType) {
         case DrawingType.freeDrawing:
           pathHistory.paths.last.addPoint(nextPoint);
           break;
@@ -331,10 +332,11 @@ class PainterController extends ChangeNotifier {
     }
   }
 
-  void endCurrent() {
+  void endCurrent(BuildContext context) {
+    final model = ActivityModel.of(context);
     Path path = paths.last.path;
     _inDrag = false;
-    if (drawingType == DrawingType.lineDrawing) {
+    if (model.painterController.drawingType == DrawingType.lineDrawing) {
       path.lineTo(pathHistory.x, pathHistory.y);
     }
     pathHistory.x = pathHistory.startX;

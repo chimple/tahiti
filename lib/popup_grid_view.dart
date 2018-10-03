@@ -128,6 +128,7 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.painterController.blurStyle =
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
+                              model.isDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush1.png')) {
                               model.highlighted = title;
@@ -147,6 +148,7 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.painterController.blurStyle =
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
+                              model.isDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/svg/freegeometry')) {
                               model.highlighted = title;
@@ -157,6 +159,7 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.painterController.blurStyle =
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
+                              model.isDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush.png')) {
                               model.highlighted = title;
@@ -179,6 +182,7 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.isDrawing = true;
                             } else {
                               model.highlighted = null;
+                              model.isDrawing = false;
                             }
                           }
                           if (title == 'assets/menu/stickers.png') {
