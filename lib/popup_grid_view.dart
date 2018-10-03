@@ -61,7 +61,7 @@ class PopupGridViewState extends State<PopupGridView> {
     15.0,
     18.0,
   ];
-   double selectedWidth = 2.0;
+  double selectedWidth = 2.0;
 
   @override
   void initState() {
@@ -90,11 +90,15 @@ class PopupGridViewState extends State<PopupGridView> {
 
   Widget _buildMenuItem(String title, {double height, double width}) {
     return ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) => Container(
-              height: height,
+        builder: (context, child, model) => AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              height: widget.side == DisplaySide.second &&
+                      model.highlighted == title
+                  ? 250.0
+                  : 100.0,
               width: width,
-              alignment: Alignment.center,
-              color: _getIconColor(model, title),
+              // alignment: Alignment.center,
+              // color: _getIconColor(model, title),
               padding: const EdgeInsets.all(4.0),
               child: InkWell(
                   onTap: () => setState(
@@ -234,7 +238,6 @@ class PopupGridViewState extends State<PopupGridView> {
     MediaQueryData media = MediaQuery.of(context);
     var size = media.size;
     GlobalKey orientationKey = new GlobalKey();
-   
 
     if (orientation == Orientation.portrait) {
       return ScopedModelDescendant<ActivityModel>(
@@ -242,18 +245,16 @@ class PopupGridViewState extends State<PopupGridView> {
         List<Widget> rowItems1 = [];
         List<Widget> rowItems = [];
         rowItems.add(Expanded(
-          child: Center(
-            child: Container(
-              width: 600.0,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: widget.menuItems.keys
-                      .skip(widget.numFixedItems)
-                      .map(
-                        (k) => _buildMenuItem(k),
-                      )
-                      .toList(growable: false)),
-            ),
+          child: Container(
+            width: 600.0,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: widget.menuItems.keys
+                    .skip(widget.numFixedItems)
+                    .map(
+                      (k) => _buildMenuItem(k),
+                    )
+                    .toList(growable: false)),
           ),
         ));
         rowItems1.add(Expanded(
@@ -349,13 +350,13 @@ class PopupGridViewState extends State<PopupGridView> {
                   : Container(),
             ),
             Positioned(
-                bottom: widget.side == DisplaySide.second ? 0.0 : null,
+                bottom: widget.side == DisplaySide.second ? -30.0 : null,
                 top: widget.side == DisplaySide.second ? null : 0.0,
                 left: 0.0,
                 right: 0.0,
                 child: SizedBox(
                   height: widget.side == DisplaySide.second
-                      ? size.height * .1
+                      ? size.height * .12
                       : size.height * .06,
                   width: size.width,
                   child: Container(
