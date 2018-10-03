@@ -139,7 +139,8 @@ class ColorPickerState extends State<ColorPicker> {
           });
           try {
             if (widget.model.selectedIcon == 'assets/menu/svg/pencil' ||
-                widget.model.selectedIcon == 'assets/menu/svg/geometry') {
+                widget.model.selectedIcon == 'assets/menu/svg/geometry' ||
+                widget.model.selectedIcon == 'assets/menu/svg/freegeometry') {
               widget.model.selectedColor = color;
             } else if (widget.model.selectedIcon == 'assets/menu/stickers.png')
               widget.getColor(color);

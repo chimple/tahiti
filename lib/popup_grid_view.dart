@@ -174,6 +174,8 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.erase;
+                              model.painterController.drawingType =
+                                  DrawingType.freeDrawing;
                               model.isDrawing = true;
                             } else {
                               model.highlighted = null;
