@@ -46,10 +46,15 @@ class Paper extends StatelessWidget {
               final children = <Widget>[];
               if (model.template != null) {
                 children.add(AspectRatio(
-                    aspectRatio: 1.0,
-                    child: SvgPicture.asset(
-                      model.template,
-                    )));
+                  aspectRatio: 1.0,
+                  child: model.template.endsWith('.svg')
+                      ? new SvgPicture.asset(
+                          model.template,
+                        )
+                      : Image.asset(
+                          model.template,
+                        ),
+                ));
               }
               children.add(Drawing(
                 model: model,
@@ -57,7 +62,7 @@ class Paper extends StatelessWidget {
               children
                   .addAll(model.things.where((t) => t['type'] != 'drawing').map(
                         (t) => TransformWrapper(
-                              child: buildWidgetFromThing(t),
+                              child: buildWidgetFromThing(t,model),
                               model: model,
                               constraints: constraints,
                               thing: t,
@@ -76,7 +81,7 @@ class Paper extends StatelessWidget {
     });
   }
 
-  Widget buildWidgetFromThing(Map<String, dynamic> thing) {
+  Widget buildWidgetFromThing(Map<String, dynamic> thing, ActivityModel model) {
     String s1 = '${thing['asset']}1.svg';
     String s2 = '${thing['asset']}2.svg';
     switch (thing['type']) {
@@ -87,7 +92,7 @@ class Paper extends StatelessWidget {
             package: 'tahiti',
           );
         } else {
-           return DisplaySticker(
+          return DisplaySticker(
             size: 400.0,
             primary: thing['asset'],
             blendmode: BlendMode.values[thing['blendMode'] as int],
@@ -106,7 +111,13 @@ class Paper extends StatelessWidget {
 
         break;
       case 'nima':
-        return new DisplayNima();
+        return new DisplayNima(
+          contr: NimaControllerEnum.add,
+          model: model,
+          nimaPath: thing['asset'],
+          pause: thing['pause'],
+          animationStatus: thing['animatioState'],
+        );
         break;
       case 'video':
         return VideoScaling(videoPath: thing['path']);

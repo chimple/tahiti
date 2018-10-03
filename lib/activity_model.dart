@@ -1,5 +1,6 @@
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
+import 'package:tahiti/recorder.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tahiti/drawing.dart';
@@ -17,8 +18,6 @@ class ActivityModel extends Model {
   String _imagePath;
 
   bool _isDrawing = false;
-  bool _isLineDrawing = false;
-  bool _isGeometricDrawing = false;
 
   PainterController _painterController;
 
@@ -126,15 +125,22 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  bool get isGeometricDrawing => _isGeometricDrawing;
-  set isGeometricDrawing(bool t) {
-    _isGeometricDrawing = t;
-    notifyListeners();
-  }
+  // bool get isGeometricDrawing => _isGeometricDrawing;
+  // set isGeometricDrawing(bool t) {
+  //   _isGeometricDrawing = t;
+  //   notifyListeners();
+  // }
 
-  bool get isLineDrawing => _isLineDrawing;
-  set isLineDrawing(bool t) {
-    _isLineDrawing = t;
+  // bool get isLineDrawing => _isLineDrawing;
+  // set isLineDrawing(bool t) {
+  //   _isLineDrawing = t;
+  //   notifyListeners();
+  // }
+
+  Recorder _recorder = new Recorder();
+  Recorder get recorder => _recorder;
+  set recorderObject(Recorder r) {
+    _recorder = r;
     notifyListeners();
   }
 
@@ -202,7 +208,7 @@ class ActivityModel extends Model {
     }
   }
 
-  void addNima(String name) {
+  void addNima(String name, {bool pause, bool animationState}) {
     addThing({
       'id': Uuid().v4(),
       'type': 'nima',
@@ -210,18 +216,25 @@ class ActivityModel extends Model {
       'x': 0.0,
       'y': 0.0,
       'scale': 0.5,
+      'pause': pause,
+      'animatioState': animationState
     });
   }
 
   void selectedThing(
-      {var id, String type, String text, String font, Color color, BlendMode blendMode}) {
+      {var id,
+      String type,
+      String text,
+      String font,
+      Color color,
+      BlendMode blendMode}) {
     paintData.things.forEach((t) {
       if (t['id'] == id) {
         if (type == 'text' || type == 'image') {
           if (type == 'text') {
             t['text'] = text;
             t['color'] = color;
-            t['font'] = font; 
+            t['font'] = font;
           }
         }
       }
@@ -415,15 +428,16 @@ class PathHistory {
         color: color));
   }
 
-  void updateFreeDrawing(Offset nextPoint) {
-    paths.last.addPoint(nextPoint);
-  }
-
   void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
-      // context.canvas
-      //     .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
+    }
+  }
+
+  void drawStraightLine(PaintingContext context, Size size) {
+    for (PathInfo pathInfo in paths) {
+      context.canvas
+          .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
     }
   }
 }
@@ -456,9 +470,9 @@ class PathInfo {
     if (points.length >= 2) {
       _path.moveTo(points[0], points[1]);
     }
-    for (int i = 2; i < points.length - 1; i += 2) {
-      _path.lineTo(points[i], points[i + 1]);
-    }
+    // for (int i = 2; i < points.length - 1; i += 2) {
+    //   _path.lineTo(points[i], points[i + 1]);
+    // }
 
     _paint = Paint()
       ..style = PaintingStyle.stroke

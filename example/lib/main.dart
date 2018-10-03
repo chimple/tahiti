@@ -33,7 +33,12 @@ class _MyAppState extends State<MyApp> {
           templates: [
             'assets/templates/LionSA1.svg',
             'assets/templates/pattern.svg',
-            'assets/templates/pattern1.svg'
+            'assets/templates/pattern1.svg',
+            'assets/filter_image/filterImage1.png',
+            'assets/filter_image/filterImage2.png',
+            'assets/filter_image/filterImage3.png',
+            'assets/filter_image/filterImage4.png',
+            'assets/filter_image/filterImage5.png',
           ],
         ),
       ),

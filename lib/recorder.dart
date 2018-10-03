@@ -3,26 +3,27 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:audio_recorder/audio_recorder.dart';
 import 'package:audioplayer2/audioplayer2.dart';
+import 'package:tahiti/audio_editing_screen.dart';
 
 typedef void OnError(Exception exception);
 
-enum PlayerState { stopped, playing, paused }
+enum PlayerState { stopped, playing, start, shownima }
 
 class Recorder {
   Recording recording = new Recording();
   AudioPlayer audioPlayer;
   bool isRecorded = false;
   bool isRecording = false;
-  Duration duration;
+  Duration duration = new Duration();
   String filePath = "";
 
   Recorder() {
     initState();
   }
 
-  PlayerState playerState = PlayerState.stopped;
+  PlayerState playerState;
   get isPlaying => playerState == PlayerState.playing;
-  get isPaused => playerState == PlayerState.paused;
+  get isPaused => playerState == PlayerState.stopped;
 
   void initState() {
     initAudioPlayer();
@@ -42,7 +43,7 @@ class Recorder {
         File file = new File(filePath);
         try {
           if (file.exists() != null) {
-            print("Deleted the fie in the path");
+            print("Deleted the file in the path");
             await file.delete();
           }
         } catch (e) {
@@ -78,9 +79,9 @@ class Recorder {
   }
 
   Future playAudio() async {
+    print('file path is $filePath');
     await audioPlayer.play(filePath, isLocal: true);
     isRecorded = false;
-    playerState = PlayerState.playing;
     new Future.delayed(duration, () {
       stopAudio();
     });
@@ -88,7 +89,6 @@ class Recorder {
 
   Future stopAudio() async {
     await audioPlayer.stop();
-    print("Music is stopped and finished");
     isRecorded = true;
     playerState = PlayerState.stopped;
   }
