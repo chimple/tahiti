@@ -48,12 +48,12 @@ class PaperActionsState extends State<PaperActions> {
           children: <Widget>[
             IconButton(
                 icon: Icon(Icons.undo),
-                iconSize: 30.0,
+                iconSize: MediaQuery.of(context).orientation == Orientation.portrait ?30.0: 50.0,
                 color: Colors.white,
                 onPressed: model.canUndo() ? () => model.undo() : null),
             IconButton(
                 icon: Icon(Icons.redo),
-                iconSize: 30.0,
+                iconSize: MediaQuery.of(context).orientation == Orientation.portrait ?30.0: 50.0,
                 color: Colors.white,
                 onPressed: model.canRedo() ? () => model.redo() : null),
           ],

@@ -82,7 +82,7 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
   Widget _paperBuilder() {
     return MediaQuery.of(context).orientation == Orientation.portrait
         ? Positioned(
-            top: 120.0,
+            top: MediaQuery.of(context).size.height * .06,
             child: Container(
               height: MediaQuery.of(context).orientation == Orientation.portrait
                   ? MediaQuery.of(context).size.width
@@ -98,8 +98,15 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                   )),
             ),
           )
-        : Center(
+        : Positioned(
+          right: MediaQuery.of(context).size.width * .06,
             child: Container(
+              height: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.height,
               color: Colors.white,
               child: AspectRatio(
                   aspectRatio: 1.0,
@@ -162,18 +169,9 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                       ),
                     ),
                     Positioned(
-                      bottom: MediaQuery.of(context).orientation ==
-                              Orientation.portrait
-                          ? 150.0
-                          : 80.0,
-                      right: MediaQuery.of(context).orientation ==
-                              Orientation.portrait
-                          ? 20.0
-                          : null,
-                      left: MediaQuery.of(context).orientation ==
-                              Orientation.portrait
-                          ? null
-                          : 80.0,
+                      bottom: MediaQuery.of(context).orientation == Orientation.portrait ? 150.0 : 60.0,
+                      right: MediaQuery.of(context).orientation == Orientation.portrait ? 20.0 : null,
+                      left: MediaQuery.of(context).orientation == Orientation.portrait? null: 200.0,
                       child: PaperActions(
                         action: "UndoRedoAction",
                       ),
