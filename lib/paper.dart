@@ -47,7 +47,7 @@ class Paper extends StatelessWidget {
               if (model.template != null) {
                 children.add(AspectRatio(
                   aspectRatio: 1.0,
-                  child: model.template.startsWith('assets/templates/')
+                  child: model.template.endsWith('.svg')
                       ? new SvgPicture.asset(
                           model.template,
                         )
