@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tahiti/popup_grid_view.dart';
 
 class TemplateList extends StatefulWidget {
   TemplateList({key, @required this.onPress, @required this.templates})
@@ -69,9 +70,13 @@ class TemplateListData extends StatelessWidget {
           },
           child: new AspectRatio(
               aspectRatio: 1.2,
-              child: new SvgPicture.asset(
-                templates[index],
-              )),
+              child: templates[index].endsWith('.svg')
+                    ? new SvgPicture.asset(
+                        templates[index],
+                      )
+                    : Image.asset(
+                        templates[index],
+                      ),
         ));
   }
 
