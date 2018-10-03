@@ -74,25 +74,15 @@ class TemplateListData extends StatelessWidget {
             onPress(templates[index]);
             Navigator.pop(context, 'selected');
           },
-          child: new Column(
-            children: <Widget>[
-              new AspectRatio(
-                aspectRatio: 1.2,
-                child: templates[index].startsWith('assets/templates/')
+          child: new AspectRatio(
+              aspectRatio: 1.2,
+              child: templates[index].endsWith('.svg')
                     ? new SvgPicture.asset(
                         templates[index],
                       )
                     : Image.asset(
                         templates[index],
                       ),
-              ),
-              new Expanded(
-                  child: new Container(
-                color: Colors.grey,
-                child: new Center(child: new Text(templates[index])),
-              ))
-            ],
-          ),
         ));
   }
 
