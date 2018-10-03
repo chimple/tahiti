@@ -26,13 +26,13 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
     "assets/nima_animation/pink",
     "assets/nima_animation/red",
     "assets/nima_animation/round",
-    "assets/nima_animation/lips",
+    "assets/nima_animation/monster",
     "assets/nima_animation/line",
     "assets/nima_animation/outline",
-    "assets/nima_animation/pig",
-    "assets/nima_animation/pink",
-    "assets/nima_animation/red",
-    "assets/nima_animation/lips",
+    "assets/nima_animation/baby",
+    "assets/nima_animation/cartoon",
+    "assets/nima_animation/robot",
+    "assets/nima_animation/monster",
     "assets/nima_animation/line",
   ];
   List<bool> listOfPause = [];
@@ -124,7 +124,7 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                   children: <Widget>[
                     Text(''),
                     Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 70.0),
                       child: InkWell(
                           onTap: () {
                             switch (name) {
@@ -165,7 +165,7 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                           )),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 30.0, right: 10.0),
+                      padding: const EdgeInsets.only(top: 30.0, right: 20.0),
                       child: new RaisedButton(
                         onPressed: () {
                           recorder.initState();
