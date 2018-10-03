@@ -54,12 +54,6 @@ class TemplateListState extends State<TemplateList> {
   }
 }
 
-class Iconf {
-  ItemType type;
-  String data;
-  Iconf({this.type, this.data});
-}
-
 class TemplateListData extends StatelessWidget {
   TemplateListData({key, @required this.onPress, @required this.templates})
       : super(key: key);
