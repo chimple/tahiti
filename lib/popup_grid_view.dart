@@ -174,6 +174,8 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.erase;
+                              model.painterController.drawingType =
+                                  DrawingType.freeDrawing;
                               model.isDrawing = true;
                             } else {
                               model.highlighted = null;
@@ -421,7 +423,7 @@ class PopupGridViewState extends State<PopupGridView> {
               width: widget.side == DisplaySide.second
                   ? size.width * .13
                   : size.width * .03,
-              height: size.height* .98,
+              height: size.height * .98,
             ),
             Positioned(
               left: widget.side == DisplaySide.second ? 100.0 : null,
