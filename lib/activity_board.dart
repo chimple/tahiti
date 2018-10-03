@@ -22,9 +22,14 @@ class ActivityBoard extends StatelessWidget {
   final Function saveCallback;
   final List<String> templates;
   final Map<String, dynamic> json;
+  final String title;
 
   ActivityBoard(
-      {Key key, @required this.saveCallback, this.templates, this.json})
+      {Key key,
+      @required this.saveCallback,
+      this.templates,
+      this.json,
+      this.title})
       : super(key: key);
 
   @override
@@ -38,6 +43,7 @@ class ActivityBoard extends StatelessWidget {
         ..saveCallback = saveCallback,
       child: InnerActivityBoard(
         templates: templates,
+        title: title,
       ),
     );
   }
@@ -45,8 +51,9 @@ class ActivityBoard extends StatelessWidget {
 
 class InnerActivityBoard extends StatefulWidget {
   final List<String> templates;
+  final String title;
 
-  InnerActivityBoard({Key key, this.templates}) : super(key: key);
+  InnerActivityBoard({Key key, this.templates, this.title}) : super(key: key);
 
   @override
   InnerActivityBoardState createState() {
@@ -122,20 +129,23 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                         left: 0.0,
                         right: 0.0,
                         child: Row(children: <Widget>[
-                          MediaQuery.of(context).orientation == Orientation.portrait
-                          ? Container(
-                              alignment: Alignment.centerRight,
-                              height: MediaQuery.of(context).size.height * .06,
-                              width: 300.0,
-                              color: Color(0xff2b3f4c),
-                              child: Text(
-                                "Painting",
-                                style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * .03,
-                                      color: Colors.white,
-                                ),
-                              )) : Container(),
+                          MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? Container(
+                                  alignment: Alignment.centerRight,
+                                  height:
+                                      MediaQuery.of(context).size.height * .06,
+                                  width: 300.0,
+                                  color: Color(0xff2b3f4c),
+                                  child: Text(
+                                    widget.title ?? '',
+                                    style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.height *
+                                              .03,
+                                    ),
+                                  ))
+                              : Container(),
                           Expanded(
                               flex: 2,
                               child: SelectSticker(side: DisplaySide.first))

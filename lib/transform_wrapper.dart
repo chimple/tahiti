@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
+import 'package:tahiti/recorder.dart';
 import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
 import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
     as rotate;
@@ -197,6 +198,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                         color: Colors.black,
                         onPressed: () {
                           widget.model.deleteThing(widget.thing['id']);
+                          model.recorder.stopAudio();
                         },
                       )),
                   widget.thing['type'] != 'video'

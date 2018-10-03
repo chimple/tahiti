@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/audio_editing_screen.dart';
 import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/drawing.dart';
@@ -122,12 +123,11 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
+                              model.painterController.drawingType =
+                                  DrawingType.freeDrawing;
                               model.painterController.blurStyle =
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
-                              model.isDrawing = true;
-                              model.isGeometricDrawing = false;
-                              model.isLineDrawing = false;
                             } else if (title
                                 .startsWith('assets/menu/brush1.png')) {
                               model.highlighted = title;
@@ -142,23 +142,21 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
+                              model.painterController.drawingType =
+                                  DrawingType.geometricDrawing;
                               model.painterController.blurStyle =
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
-                              model.isDrawing = false;
-                              model.isGeometricDrawing = true;
-                              model.isLineDrawing = false;
                             } else if (title
                                 .startsWith('assets/menu/svg/freegeometry')) {
                               model.highlighted = title;
                               model.painterController.paintOption =
                                   PaintOption.paint;
+                              model.painterController.drawingType =
+                                  DrawingType.lineDrawing;
                               model.painterController.blurStyle =
                                   BlurStyle.normal;
                               model.painterController.sigma = 0.0;
-                              model.isDrawing = false;
-                              model.isGeometricDrawing = false;
-                              model.isLineDrawing = true;
                             } else if (title
                                 .startsWith('assets/menu/brush.png')) {
                               model.highlighted = title;
@@ -177,20 +175,24 @@ class PopupGridViewState extends State<PopupGridView> {
                               model.painterController.paintOption =
                                   PaintOption.erase;
                               model.isDrawing = true;
-                              model.isGeometricDrawing = false;
-                              model.isLineDrawing = false;
                             } else {
                               model.highlighted = null;
-                              model.isDrawing = false;
-                              model.isGeometricDrawing = false;
-                              model.isLineDrawing = false;
                             }
                           }
                           if (title == 'assets/menu/stickers.png') {
                             showCategorySreen(model, title);
                           } else if (title == 'assets/menu/text.png') {
                             showCategorySreen(model, title);
-                          } else if (false) {}
+                          } else if (title == 'assets/menu/mic.png') {
+                            model.things.forEach((t) {
+                              if (t['type'] == 'nima' && t['asset'] != null) {
+                                model.deleteThing(t['id']);
+                                showCategorySreen(model, title);
+                                model.recorder.stop();
+                              }
+                            });
+                            showCategorySreen(model, title);
+                          }
                         },
                       ),
                   child: widget.buildIndexItem(
@@ -214,7 +216,8 @@ class PopupGridViewState extends State<PopupGridView> {
       return TextEditor(model: model);
     }
     // TODO::// for other components
-    else if (false) {
+    else if (text == 'assets/menu/mic.png') {
+      return AudioEditingScreen(model: model);
     } else {}
   }
 
