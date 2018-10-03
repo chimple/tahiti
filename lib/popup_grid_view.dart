@@ -61,6 +61,7 @@ class PopupGridViewState extends State<PopupGridView> {
     15.0,
     18.0,
   ];
+   double selectedWidth = 2.0;
 
   @override
   void initState() {
@@ -229,7 +230,7 @@ class PopupGridViewState extends State<PopupGridView> {
     MediaQueryData media = MediaQuery.of(context);
     var size = media.size;
     GlobalKey orientationKey = new GlobalKey();
-    double selectedWidth = 2.0;
+   
 
     if (orientation == Orientation.portrait) {
       return ScopedModelDescendant<ActivityModel>(
