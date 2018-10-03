@@ -36,11 +36,13 @@ flutter:
     - assets/camera/gallery.png 
     - assets/camera/video.png
     - assets/menu/
+    - assets/menu/svg/
     - assets/drawing/size1.png
     - assets/drawing/size2.png
     - assets/drawing/size3.png
     - assets/drawing/size4.png
     - assets/drawing/size5.png
+    - assets/menu/stickers.png
     - assets/mic/mic.png
     - assets/mic/play.png
     - assets/mic/stop.png

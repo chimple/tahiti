@@ -8,6 +8,7 @@ import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
+import 'package:tahiti/transform_wrapper.dart';
 import 'package:uuid/uuid.dart';
 
 final Map<String, List<Iconf>> secondStickers = {
@@ -19,28 +20,28 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
 
-  'assets/menu/pencil.png': [
+  'assets/menu/svg/pencil': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  'assets/menu/eraser.png': [
+  'assets/menu/svg/eraser': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  'assets/menu/geometric.png': [
+  'assets/menu/svg/geometry': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  'assets/menu/line.png': [
+  'assets/menu/svg/freegeometry': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
@@ -96,7 +97,7 @@ class TopStickers {
       Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
     ],
-    'assets/filter_icon.jpg': [],
+    'assets/menu/stickers.png': [],
   };
 }
 
@@ -113,10 +114,14 @@ class SelectSticker extends StatefulWidget {
 }
 
 class SelectStickerState extends State<SelectSticker> {
-  Future<bool> show(ActivityModel model) {
+  Future<bool> _showImage(ActivityModel model, {String text}) {
     return showDialog(
       context: context,
-      child: ImageEditor(model),
+      child: ImageEditor(
+        model,
+        imagePath: text,
+        editingMode: EditingMode.addImage,
+      ),
     );
   }
 
@@ -162,13 +167,12 @@ class SelectStickerState extends State<SelectSticker> {
                       });
                     }
                     break;
-                  case 'assets/camera/camera1.png':
+                  case 'assets/menu/camera.png':
                     new Camera().openCamera().then((p) {
                       // if (p != null) model.addImage(p);
 
                       if (p != null) {
-                        model.imagePath = p;
-                        show(model);
+                        _showImage(model, text: p);
                       }
                     });
                     break;
@@ -176,8 +180,7 @@ class SelectStickerState extends State<SelectSticker> {
                     new Camera().pickImage().then((p) {
                       //if (p != null) model.addImage(p);
                       if (p != null) {
-                        model.imagePath = p;
-                        show(model);
+                        _showImage(model, text: p);
                       }
                     });
                     break;
@@ -240,9 +243,18 @@ class SelectStickerState extends State<SelectSticker> {
   }
 
   Widget buildIndexItem(BuildContext context, Iconf conf, bool enabled) {
-    return Image.asset(
-      conf.data,
-      package: 'tahiti',
-    );
+    ActivityModel model = ActivityModel.of(context);
+    if (conf.data.startsWith('assets/menu/svg')) {
+      return DisplaySticker(
+        primary: conf.data,
+        color: model.selectedColor,
+      );
+    } else
+     return SizedBox(
+        child: Image.asset(
+          conf.data,
+          package: 'tahiti',
+        ),
+      );
   }
 }
