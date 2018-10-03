@@ -46,10 +46,15 @@ class Paper extends StatelessWidget {
               final children = <Widget>[];
               if (model.template != null) {
                 children.add(AspectRatio(
-                    aspectRatio: 1.0,
-                    child: SvgPicture.asset(
-                      model.template,
-                    )));
+                  aspectRatio: 1.0,
+                  child: model.template.startsWith('assets/templates/')
+                      ? new SvgPicture.asset(
+                          model.template,
+                        )
+                      : Image.asset(
+                          model.template,
+                        ),
+                ));
               }
               children.add(Drawing(
                 model: model,
@@ -87,7 +92,7 @@ class Paper extends StatelessWidget {
             package: 'tahiti',
           );
         } else {
-           return DisplaySticker(
+          return DisplaySticker(
             size: 400.0,
             primary: thing['asset'],
             blendmode: BlendMode.values[thing['blendMode'] as int],
