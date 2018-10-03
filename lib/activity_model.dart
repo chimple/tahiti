@@ -18,8 +18,6 @@ class ActivityModel extends Model {
   String _imagePath;
 
   bool _isDrawing = false;
-  bool _isLineDrawing = false;
-  bool _isGeometricDrawing = false;
 
   PainterController _painterController;
 
@@ -127,17 +125,17 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  bool get isGeometricDrawing => _isGeometricDrawing;
-  set isGeometricDrawing(bool t) {
-    _isGeometricDrawing = t;
-    notifyListeners();
-  }
+  // bool get isGeometricDrawing => _isGeometricDrawing;
+  // set isGeometricDrawing(bool t) {
+  //   _isGeometricDrawing = t;
+  //   notifyListeners();
+  // }
 
-  bool get isLineDrawing => _isLineDrawing;
-  set isLineDrawing(bool t) {
-    _isLineDrawing = t;
-    notifyListeners();
-  }
+  // bool get isLineDrawing => _isLineDrawing;
+  // set isLineDrawing(bool t) {
+  //   _isLineDrawing = t;
+  //   notifyListeners();
+  // }
 
   Recorder _recorder = new Recorder();
   Recorder get recorder => _recorder;
@@ -430,15 +428,16 @@ class PathHistory {
         color: color));
   }
 
-  void updateFreeDrawing(Offset nextPoint) {
-    paths.last.addPoint(nextPoint);
-  }
-
   void draw(PaintingContext context, Size size) {
     for (PathInfo pathInfo in paths) {
-      // context.canvas
-      //     .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
+    }
+  }
+
+  void drawStraightLine(PaintingContext context, Size size) {
+    for (PathInfo pathInfo in paths) {
+      context.canvas
+          .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
     }
   }
 }
@@ -471,9 +470,9 @@ class PathInfo {
     if (points.length >= 2) {
       _path.moveTo(points[0], points[1]);
     }
-    for (int i = 2; i < points.length - 1; i += 2) {
-      _path.lineTo(points[i], points[i + 1]);
-    }
+    // for (int i = 2; i < points.length - 1; i += 2) {
+    //   _path.lineTo(points[i], points[i + 1]);
+    // }
 
     _paint = Paint()
       ..style = PaintingStyle.stroke
