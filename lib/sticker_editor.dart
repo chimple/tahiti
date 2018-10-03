@@ -36,7 +36,7 @@ class _StickerEditorState extends State<StickerEditor>
     return ScaleTransition(
       scale: animation,
       child: new Material(
-          color: Colors.black87,
+          color: Color(0xff808080).withOpacity(.900),
           child: Column(
             children: <Widget>[
               Expanded(
@@ -78,7 +78,7 @@ class _StickerEditorState extends State<StickerEditor>
                 color: Colors.white,
               ),
               Expanded(
-                flex: 8,
+                flex: 9,
                 child: Hero(
                   createRectTween: (Rect r, rect) {},
                   tag: DisplaySticker(

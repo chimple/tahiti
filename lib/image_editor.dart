@@ -78,7 +78,7 @@ class ImageEditorState extends State<ImageEditor> {
     for (int i = 0; i < 7; i++) _colorVal.add(i);
     selectedBlendMode = widget.blendModel;
     selectedColor = widget.color;
-    borderColor = selectedColor;
+    if (widget.editingMode == EditingMode.editImage) borderColor = widget.color;
     _imagePath = widget.imagePath;
     editMode = widget.editingMode;
     super.initState();
