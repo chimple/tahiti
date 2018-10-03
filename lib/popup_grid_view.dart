@@ -278,12 +278,12 @@ class PopupGridViewState extends State<PopupGridView> {
                   ? EdgeInsets.all(size.width * .01)
                   : null,
               height: widget.side == DisplaySide.second
-                  ? size.height * .16
+                  ? size.height * .198
                   : size.height * .06,
               width: size.width,
             ),
             Positioned(
-              bottom: widget.side == DisplaySide.second ? 100.0 : null,
+              bottom: widget.side == DisplaySide.second ? 150.0 : null,
               top: widget.side == DisplaySide.second ? null : 0.0,
               left: 0.0,
               right: 0.0,
@@ -345,7 +345,7 @@ class PopupGridViewState extends State<PopupGridView> {
                 right: 0.0,
                 child: SizedBox(
                   height: widget.side == DisplaySide.second
-                      ? size.height * .07
+                      ? size.height * .1
                       : size.height * .06,
                   width: size.width,
                   child: Container(
@@ -378,18 +378,18 @@ class PopupGridViewState extends State<PopupGridView> {
         columnItems.add(Expanded(
             child: RotatedBox(
           quarterTurns: 1,
-          child: Center(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: widget.menuItems.keys
-                      .skip(widget.numFixedItems)
-                      .map(
-                        (k) => _buildMenuItem(k),
-                      )
-                      .toList(growable: false))),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: widget.menuItems.keys
+                  .skip(widget.numFixedItems)
+                  .map(
+                    (k) => _buildMenuItem(k),
+                  )
+                  .toList(growable: false)),
         )));
 
         columnItems1.add(Expanded(
+            flex: 1,
             child: Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -413,15 +413,18 @@ class PopupGridViewState extends State<PopupGridView> {
                     : null,
               ),
               margin: widget.side == DisplaySide.second
-                  ? EdgeInsets.all(size.height * .01)
+                  ? EdgeInsets.only(
+                      top: size.height * .01, bottom: size.height * .01)
                   : null,
               width: widget.side == DisplaySide.second
-                  ? size.width * .13
+                  ? size.width * .28
                   : size.width * .03,
-              height: size.height* .98,
+              height: widget.side == DisplaySide.second
+                  ? size.height * .98
+                  : size.height,
             ),
             Positioned(
-              left: widget.side == DisplaySide.second ? 100.0 : null,
+              left: widget.side == DisplaySide.second ? 250.0 : null,
               right: widget.side == DisplaySide.second ? null : 0.0,
               top: 0.0,
               bottom: 0.0,
@@ -432,7 +435,7 @@ class PopupGridViewState extends State<PopupGridView> {
                         children: <Widget>[
                           model.popped == Popped.second
                               ? SizedBox(
-                                  height: size.height * .04,
+                                  height: size.height * .1,
                                   child: new Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: width_val
@@ -483,17 +486,17 @@ class PopupGridViewState extends State<PopupGridView> {
             Positioned(
                 left: widget.side == DisplaySide.second ? 0.0 : null,
                 right: widget.side == DisplaySide.second ? null : 0.0,
-                top: 0.0,
+                top: widget.side == DisplaySide.second ? 50.0 : 0.0,
                 bottom: 0.0,
                 child: SizedBox(
                   width: widget.side == DisplaySide.second
-                      ? size.width * .07
+                      ? size.width * .15
                       : size.width * .06,
-                  height: size.height,
+                  // height: size.height * .1,
                   child: Container(
-                    padding: widget.side == DisplaySide.first
-                        ? EdgeInsets.all(10.0)
-                        : null,
+                    // padding: widget.side == DisplaySide.first
+                    //     ? EdgeInsets.all(10.0)
+                    //     : null,
                     margin: widget.side == DisplaySide.second
                         ? EdgeInsets.only(
                             top: size.height * .01, bottom: size.height * .01)
