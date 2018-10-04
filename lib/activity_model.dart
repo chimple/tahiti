@@ -18,6 +18,7 @@ class ActivityModel extends Model {
   String _imagePath;
 
   bool _isDrawing = false;
+  bool userTouch = false;
 
   PainterController _painterController;
 
@@ -270,7 +271,6 @@ class ActivityModel extends Model {
   }
 
   void addThing(Map<String, dynamic> thing) {
-    selectedThingId = thing['id'];
     _addThing(thing);
     _redoStack.clear();
   }
