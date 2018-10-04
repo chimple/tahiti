@@ -63,10 +63,10 @@ class RollerState extends State<Drawing> {
 
   void _handleDragEnd(DragEndDetails details) {
     ActivityModel model = ActivityModel.of(context);
-    PathHistory pathHistory = model.pathHistory;
     PainterController painterController = model.painterController;
-    painterController.endCurrent(context);
-     if (model.pathHistory.paths.length > 0) {
+
+    if (model.pathHistory.paths.length > 0) {
+      painterController.endCurrent(context);
       model.addDrawing(model.pathHistory.paths.last);
     }
     setState(() {
@@ -141,10 +141,10 @@ class _ScratchCardLayout extends SingleChildRenderObjectWidget {
   @override
   RenderObject createRenderObject(BuildContext context) {
     return _ScratchCardRender(
-      strokeWidth: strokeWidth,
-      data: data,
-      path: path,
-    );
+        strokeWidth: strokeWidth,
+        data: data,
+        path: path,
+        scratchCardContext: context);
   }
 
   @override
@@ -161,6 +161,7 @@ class _ScratchCardRender extends RenderProxyBox {
     RenderBox child,
     double strokeWidth,
     this.path,
+    this.scratchCardContext,
     PainterController data,
   })  : assert(data != null),
         _strokeWidth = strokeWidth,
@@ -170,7 +171,7 @@ class _ScratchCardRender extends RenderProxyBox {
   double _strokeWidth;
   PainterController _data;
   final PathHistory path;
-
+  BuildContext scratchCardContext;
   set strokeWidth(double strokeWidth) {
     assert(strokeWidth != null);
     if (_strokeWidth == strokeWidth) {
@@ -207,12 +208,26 @@ class _ScratchCardRender extends RenderProxyBox {
   }
 
   PainterController painterController;
+
   @override
   void paint(PaintingContext context, Offset offset) {
+    ActivityModel model = ActivityModel.of(scratchCardContext);
     if (child != null) {
       context.canvas.saveLayer(offset & size, Paint());
       context.paintChild(child, offset);
-      path.draw(context, size);
+
+      switch (model.painterController.drawingType) {
+        case DrawingType.freeDrawing:
+          path.draw(context, size);
+          break;
+        case DrawingType.geometricDrawing:
+          path.draw(context, size);
+          break;
+        case DrawingType.lineDrawing:
+          path.draw(context, size);
+          path.drawStraightLine(context, size);
+          break;
+      }
       context.canvas.restore();
     }
   }
@@ -262,14 +277,17 @@ class PainterController extends ChangeNotifier {
   void add(BuildContext context, Offset startPoint) {
     initialX = startPoint.dx;
     initialY = startPoint.dy;
-    pathHistory.startX = startPoint.dx;
-    pathHistory.startY = startPoint.dy;
+    pathHistory.x = pathHistory.startX = startPoint.dx;
+    pathHistory.y = pathHistory.startY = startPoint.dy;
+
     final model = ActivityModel.of(context);
     if (!_inDrag) {
       if (model.popped != Popped.noPopup) {
         model.popped = Popped.noPopup;
       }
-      if (model.isDrawing) {
+      if (drawingType == DrawingType.freeDrawing ||
+          drawingType == DrawingType.geometricDrawing ||
+          drawingType == DrawingType.lineDrawing) {
         _inDrag = true;
         pathHistory.add(startPoint,
             paintOption: paintOption,
@@ -277,22 +295,6 @@ class PainterController extends ChangeNotifier {
             sigma: sigma,
             thickness: thickness,
             color: model.selectedColor);
-      } else if (model.isGeometricDrawing) {
-        _inDrag = true;
-        pathHistory.add(startPoint,
-            paintOption: paintOption,
-            blurStyle: blurStyle,
-            sigma: sigma,
-            thickness: thickness,
-            color: model.drawingColor);
-      } else if (model.isLineDrawing) {
-        _inDrag = true;
-        pathHistory.add(startPoint,
-            paintOption: paintOption,
-            blurStyle: blurStyle,
-            sigma: sigma,
-            thickness: thickness,
-            color: model.drawingColor);
       }
     }
   }
@@ -300,25 +302,31 @@ class PainterController extends ChangeNotifier {
   void updateCurrent(BuildContext context, Offset nextPoint) {
     final model = ActivityModel.of(context);
     if (_inDrag) {
-      if (model.isDrawing) {
-        pathHistory.updateFreeDrawing(nextPoint);
-      } else if (model.isGeometricDrawing) {
-        if (nextPoint.dy < initialY + 50.0 && nextPoint.dy > initialY - 50.0) {
-          pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
-          initialX = nextPoint.dx;
-        } else {
-          if (nextPoint.dx > initialX - 50.0 &&
-              nextPoint.dx < initialX + 50.0) {
-            pathHistory.paths.last.addPoint(Offset(initialX, nextPoint.dy));
-          } else {
-            initialX = nextPoint.dx;
-            initialY = nextPoint.dy;
+      switch (model.painterController.drawingType) {
+        case DrawingType.freeDrawing:
+          pathHistory.paths.last.addPoint(nextPoint);
+          break;
+        case DrawingType.geometricDrawing:
+          if (nextPoint.dy < initialY + 50.0 &&
+              nextPoint.dy > initialY - 50.0) {
             pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
+            initialX = nextPoint.dx;
+          } else {
+            if (nextPoint.dx > initialX - 50.0 &&
+                nextPoint.dx < initialX + 50.0) {
+              pathHistory.paths.last.addPoint(Offset(initialX, nextPoint.dy));
+            } else {
+              initialX = nextPoint.dx;
+              initialY = nextPoint.dy;
+              pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
+            }
           }
-        }
-      } else if (model.isLineDrawing) {
-        pathHistory.x = nextPoint.dx;
-        pathHistory.y = nextPoint.dy;
+          break;
+        case DrawingType.lineDrawing:
+          pathHistory.x = nextPoint.dx;
+          pathHistory.y = nextPoint.dy;
+
+          break;
       }
       notifyListeners();
     }
@@ -326,11 +334,13 @@ class PainterController extends ChangeNotifier {
 
   void endCurrent(BuildContext context) {
     final model = ActivityModel.of(context);
+    Path path = paths.last.path;
     _inDrag = false;
-    if (model.isLineDrawing) {
-      Path path = paths.last.path;
+    if (model.painterController.drawingType == DrawingType.lineDrawing) {
       path.lineTo(pathHistory.x, pathHistory.y);
     }
+    pathHistory.x = pathHistory.startX;
+    pathHistory.y = pathHistory.startY;
   }
 
   bool getDragStatus() {

@@ -54,12 +54,6 @@ class TemplateListState extends State<TemplateList> {
   }
 }
 
-class Iconf {
-  ItemType type;
-  String data;
-  Iconf({this.type, this.data});
-}
-
 class TemplateListData extends StatelessWidget {
   TemplateListData({key, @required this.onPress, @required this.templates})
       : super(key: key);
@@ -74,24 +68,15 @@ class TemplateListData extends StatelessWidget {
             onPress(templates[index]);
             Navigator.pop(context, 'selected');
           },
-          child: new Column(
-            children: <Widget>[
-              new AspectRatio(
-                aspectRatio: 1.2,
-                child: templates[index].startsWith('assets/templates/')
-                    ? new SvgPicture.asset(
-                        templates[index],
-                      )
-                    : Image.asset(
-                        templates[index],
-                      ),
-              ),
-              new Expanded(
-                  child: new Container(
-                color: Colors.grey,
-                child: new Center(child: new Text(templates[index])),
-              ))
-            ],
+          child: new AspectRatio(
+            aspectRatio: 1.2,
+            child: templates[index].endsWith('.svg')
+                ? new SvgPicture.asset(
+                    templates[index],
+                  )
+                : Image.asset(
+                    templates[index],
+                  ),
           ),
         ));
   }

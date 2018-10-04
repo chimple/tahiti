@@ -22,9 +22,14 @@ class ActivityBoard extends StatelessWidget {
   final Function saveCallback;
   final List<String> templates;
   final Map<String, dynamic> json;
+  final String title;
 
   ActivityBoard(
-      {Key key, @required this.saveCallback, this.templates, this.json})
+      {Key key,
+      @required this.saveCallback,
+      this.templates,
+      this.json,
+      this.title})
       : super(key: key);
 
   @override
@@ -38,6 +43,7 @@ class ActivityBoard extends StatelessWidget {
         ..saveCallback = saveCallback,
       child: InnerActivityBoard(
         templates: templates,
+        title: title,
       ),
     );
   }
@@ -45,8 +51,9 @@ class ActivityBoard extends StatelessWidget {
 
 class InnerActivityBoard extends StatefulWidget {
   final List<String> templates;
+  final String title;
 
-  InnerActivityBoard({Key key, this.templates}) : super(key: key);
+  InnerActivityBoard({Key key, this.templates, this.title}) : super(key: key);
 
   @override
   InnerActivityBoardState createState() {
@@ -75,7 +82,7 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
   Widget _paperBuilder() {
     return MediaQuery.of(context).orientation == Orientation.portrait
         ? Positioned(
-            top: 120.0,
+            top: MediaQuery.of(context).size.height * .06,
             child: Container(
               height: MediaQuery.of(context).orientation == Orientation.portrait
                   ? MediaQuery.of(context).size.width
@@ -91,8 +98,15 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                   )),
             ),
           )
-        : Center(
+        : Positioned(
+          right: MediaQuery.of(context).size.width * .06,
             child: Container(
+              height: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.height,
               color: Colors.white,
               child: AspectRatio(
                   aspectRatio: 1.0,
@@ -114,25 +128,27 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                         top: 0.0,
                         left: 0.0,
                         right: 0.0,
-                        child: Column(children: <Widget>[
+                        child: Row(children: <Widget>[
                           MediaQuery.of(context).orientation ==
                                   Orientation.portrait
                               ? Container(
-                                  alignment: Alignment.center,
-                                  color: Color(0xff2b3f4c),
+                                  alignment: Alignment.centerRight,
                                   height:
-                                      MediaQuery.of(context).size.height * .04,
+                                      MediaQuery.of(context).size.height * .06,
+                                  width: 300.0,
+                                  color: Color(0xff2b3f4c),
                                   child: Text(
-                                    "Painting",
+                                    widget.title ?? '',
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize:
-                                            MediaQuery.of(context).size.height *
-                                                .02),
-                                  ),
-                                )
+                                      fontSize:
+                                          MediaQuery.of(context).size.height *
+                                              .03,
+                                    ),
+                                  ))
                               : Container(),
-                          SelectSticker(side: DisplaySide.first)
+                          Expanded(
+                              flex: 2,
+                              child: SelectSticker(side: DisplaySide.first))
                         ])),
                     Positioned(
                         bottom: 0.0,
@@ -150,6 +166,14 @@ class InnerActivityBoardState extends State<InnerActivityBoard> {
                       child: PaperActions(
                         action: "saveAction",
                         onClick: getPngImage,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: MediaQuery.of(context).orientation == Orientation.portrait ? 150.0 : 60.0,
+                      right: MediaQuery.of(context).orientation == Orientation.portrait ? 20.0 : null,
+                      left: MediaQuery.of(context).orientation == Orientation.portrait? null: 200.0,
+                      child: PaperActions(
+                        action: "UndoRedoAction",
                       ),
                     ),
                   ],
