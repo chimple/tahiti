@@ -43,6 +43,7 @@ class Paper extends StatelessWidget {
           key: previewContainerKey,
           child: Container(
             color: Colors.white,
+            child: ScopedModelDescendant<ActivityModel>(
               builder: (context, child, model) {
                 final children = <Widget>[];
                 if (model.template != null) {
@@ -60,7 +61,10 @@ class Paper extends StatelessWidget {
                 children.add(Drawing(
                   model: model,
                 ));
+                children.addAll(
+                    model.things.where((t) => t['type'] != 'drawing').map(
                           (t) => TransformWrapper(
+                                child: buildWidgetFromThing(t, model),
                                 model: model,
                                 constraints: constraints,
                                 thing: t,
