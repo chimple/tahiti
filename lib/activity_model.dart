@@ -136,11 +136,20 @@ class ActivityModel extends Model {
   //   _isLineDrawing = t;
   //   notifyListeners();
   // }
-
+  bool _pause;
+  bool _animationStatus;
   Recorder _recorder = new Recorder();
   Recorder get recorder => _recorder;
+  bool get pause => _pause;
+  bool get animationStatus => _animationStatus;
   set recorderObject(Recorder r) {
     _recorder = r;
+    notifyListeners();
+  }
+
+  void nimaController(bool pause, bool animationStatus) {
+    _pause = pause;
+    _animationStatus = animationStatus;
     notifyListeners();
   }
 
@@ -208,7 +217,7 @@ class ActivityModel extends Model {
     }
   }
 
-  void addNima(String name, {bool pause, bool animationState}) {
+  void addNima(String name) {
     addThing({
       'id': Uuid().v4(),
       'type': 'nima',
@@ -217,7 +226,7 @@ class ActivityModel extends Model {
       'y': 0.0,
       'scale': 0.5,
       'pause': pause,
-      'animatioState': animationState
+      'animatioState': animationStatus
     });
   }
 
@@ -250,6 +259,10 @@ class ActivityModel extends Model {
       } else if (t['id'] == _selectedThingId && t['type'] == 'sticker') {
         t['color'] = color?.value;
         t['blendMode'] = blendMode.index;
+      } else if (t['id'] == _selectedThingId && t['type'] == 'nima') {
+        t['asset'] = text;
+        t['pause'] = false;
+        t['animationStatus'] = true;
       }
     });
     notifyListeners();
@@ -280,7 +293,7 @@ class ActivityModel extends Model {
     thing['op'] = 'add';
     paintData.things.add(thing);
     _undoStack.add(Map.from(thing));
-    print('_addThing: $_undoStack $_redoStack');
+    // print('_addThing: $_undoStack $_redoStack');
     _saveAndNotifyListeners();
   }
 
@@ -290,7 +303,7 @@ class ActivityModel extends Model {
   }
 
   void _updateThing(Map<String, dynamic> thing) {
-    print('updateThing: $thing');
+    // print('updateThing: $thing');
     final index = paintData.things.indexWhere((t) => t['id'] == thing['id']);
     if (index >= 0) {
       paintData.things[index]['op'] = 'update';
@@ -298,7 +311,7 @@ class ActivityModel extends Model {
       thing['op'] = 'update';
       paintData.things[index] = thing;
     }
-    print('updateThing: $_undoStack $_redoStack');
+    // print('updateThing: $_undoStack $_redoStack');
     _saveAndNotifyListeners();
   }
 
@@ -307,7 +320,7 @@ class ActivityModel extends Model {
   }
 
   void undo() {
-    print('undo: $_undoStack $_redoStack');
+    // print('undo: $_undoStack $_redoStack');
     final thing = _undoStack.removeLast();
     if (thing['op'] == 'add') {
       paintData.things.removeWhere((t) => t['id'] == thing['id']);
@@ -325,7 +338,7 @@ class ActivityModel extends Model {
       _redoStack.add(paintData.things[index]);
       paintData.things[index] = thing;
     }
-    print('undo: $_undoStack $_redoStack');
+    // print('undo: $_undoStack $_redoStack');
     _saveAndNotifyListeners();
   }
 
@@ -334,7 +347,7 @@ class ActivityModel extends Model {
   }
 
   void redo() {
-    print('redo: $_undoStack $_redoStack');
+    // print('redo: $_undoStack $_redoStack');
     final thing = _redoStack.removeLast();
     if (thing['op'] == 'add') {
       _addThing(thing);
@@ -347,7 +360,7 @@ class ActivityModel extends Model {
       //assume it is update
       _updateThing(thing);
     }
-    print('redo: $_undoStack $_redoStack');
+    // print('redo: $_undoStack $_redoStack');
   }
 
   void _saveAndNotifyListeners() {
@@ -357,7 +370,7 @@ class ActivityModel extends Model {
 
   String unMaskImagePath;
   void addUnMaskImage(String text) {
-    print("text: $text");
+    // print("text: $text");
     unMaskImagePath = text;
     notifyListeners();
   }
