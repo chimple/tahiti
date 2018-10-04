@@ -41,42 +41,41 @@ class Paper extends StatelessWidget {
       print('Transform wrapper layout builder: $constraints');
       return new RepaintBoundary(
           key: previewContainerKey,
-          child: ScopedModelDescendant<ActivityModel>(
-            builder: (context, child, model) {
-              final children = <Widget>[];
-              if (model.template != null) {
-                children.add(AspectRatio(
-                  aspectRatio: 1.0,
-                  child: model.template.endsWith('.svg')
-                      ? new SvgPicture.asset(
-                          model.template,
-                        )
-                      : Image.asset(
-                          model.template,
-                        ),
+          child: Container(
+            color: Colors.white,
+              builder: (context, child, model) {
+                final children = <Widget>[];
+                if (model.template != null) {
+                  children.add(AspectRatio(
+                    aspectRatio: 1.0,
+                    child: model.template.endsWith('.svg')
+                        ? new SvgPicture.asset(
+                            model.template,
+                          )
+                        : Image.asset(
+                            model.template,
+                          ),
+                  ));
+                }
+                children.add(Drawing(
+                  model: model,
                 ));
-              }
-              children.add(Drawing(
-                model: model,
-              ));
-              children
-                  .addAll(model.things.where((t) => t['type'] != 'drawing').map(
-                        (t) => TransformWrapper(
-                              child: buildWidgetFromThing(t,model),
-                              model: model,
-                              constraints: constraints,
-                              thing: t,
-                            ),
-                      ));
-              return FittedBox(
-                fit: BoxFit.contain,
-                child: SizedBox(
-                  height: 512.0,
-                  width: 512.0,
-                  child: Stack(children: children),
-                ),
-              );
-            },
+                          (t) => TransformWrapper(
+                                model: model,
+                                constraints: constraints,
+                                thing: t,
+                              ),
+                        ));
+                return FittedBox(
+                  fit: BoxFit.contain,
+                  child: SizedBox(
+                    height: 512.0,
+                    width: 512.0,
+                    child: Stack(children: children),
+                  ),
+                );
+              },
+            ),
           ));
     });
   }
