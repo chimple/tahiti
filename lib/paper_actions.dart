@@ -25,7 +25,9 @@ class PaperActionsState extends State<PaperActions> {
               icon: Icon(Icons.arrow_back),
               iconSize: MediaQuery.of(context).size.height * .03,
               color: Colors.white,
-              onPressed: () => widget.onClick()),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
         );
       } else if (widget.action == "saveAction") {
         return IconButton(
