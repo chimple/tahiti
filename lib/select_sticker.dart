@@ -247,7 +247,9 @@ class SelectStickerState extends State<SelectSticker> {
     if (conf.data.startsWith('assets/menu/svg')) {
       return DisplaySticker(
         primary: conf.data,
-        color: model.selectedColor,
+        color: conf.data == model.highlighted
+            ? model.selectedColor == null ? Colors.red : model.selectedColor
+            : Colors.transparent,
       );
     } else
       return SizedBox(
