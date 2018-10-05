@@ -39,6 +39,8 @@ class RollerState extends State<Drawing> {
   }
 
   Drag _handleOnStart(Offset position) {
+    widget.model.selectedThingId='';
+    widget.model.userTouch = false;
     if (count < 1) {
       setState(() {
         count++;
