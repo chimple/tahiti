@@ -287,9 +287,7 @@ class PainterController extends ChangeNotifier {
       if (model.popped != Popped.noPopup) {
         model.popped = Popped.noPopup;
       }
-      if (drawingType == DrawingType.freeDrawing ||
-          drawingType == DrawingType.geometricDrawing ||
-          drawingType == DrawingType.lineDrawing) {
+      if (model.isDrawing) {
         _inDrag = true;
         pathHistory.add(startPoint,
             paintOption: paintOption,
