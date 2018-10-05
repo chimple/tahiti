@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/category_screen.dart';
@@ -36,7 +38,9 @@ class _StickerEditorState extends State<StickerEditor>
     return ScaleTransition(
       scale: animation,
       child: new Material(
-          color: Color(0xff808080).withOpacity(.900),
+        color: Colors.white54,
+        child: BackdropFilter(
+          filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
           child: Column(
             children: <Widget>[
               Expanded(
@@ -106,7 +110,9 @@ class _StickerEditorState extends State<StickerEditor>
                 ),
               )
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 
