@@ -122,6 +122,7 @@ class PopupGridViewState extends State<PopupGridView> {
                           // highlightedButtonItem = title;
 
                           if (title != null) {
+                            model.selectedThingId=null;
                             model.selectedIcon = title;
                             print('icon is ${model.selectedIcon}');
                             if (title.startsWith('assets/menu/svg/pencil')) {
