@@ -435,10 +435,9 @@ class PathHistory {
   }
 
   void drawStraightLine(PaintingContext context, Size size) {
-    for (PathInfo pathInfo in paths) {
-      context.canvas
-          .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
-    }
+    PathInfo pathInfo = paths.last;
+    context.canvas
+        .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
   }
 }
 
@@ -480,6 +479,7 @@ class PathInfo {
       ..strokeJoin = StrokeJoin.round
       ..strokeWidth = thickness
       ..color = color ?? Colors.red;
+
     switch (paintOption) {
       case PaintOption.paint:
         _paint.maskFilter = MaskFilter.blur(blurStyle, sigma);
