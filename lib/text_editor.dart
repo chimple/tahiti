@@ -48,6 +48,7 @@ class TextEditorState extends State<TextEditor> {
   int typeIndex = 0;
   Color color;
   bool temp = false;
+  FocusNode myFocusNode = new FocusNode();
 
   @override
   void initState() {
@@ -55,6 +56,15 @@ class TextEditorState extends State<TextEditor> {
     userTyped = widget.userTyped;
     super.initState();
   }
+
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed
+    myFocusNode.dispose();
+    super.dispose();
+  }
+
 
   void setColor(Color c) {
     setState(() {
@@ -81,6 +91,7 @@ class TextEditorState extends State<TextEditor> {
                   controller: TextEditingController(text: userTyped),
                   autofocus: true,
                   maxLines: null,
+                  focusNode: myFocusNode,
                   onChanged: (str) {
                     userTyped = str;
                   },

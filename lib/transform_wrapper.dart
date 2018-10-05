@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tahiti/audio_editing_screen.dart';
+import 'package:tahiti/display_nima.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/recorder.dart';
@@ -243,6 +245,11 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                       ),
                                       blendMode: BlendMode
                                           .values[widget.thing['blendMode']]);
+                                } else if (widget.thing['type'] == 'nima') {
+                                  _editingScreen(
+                                    model,
+                                    type: widget.thing['type'],
+                                  );
                                 }
                                 // if (model.editSelectedThing) {
                                 //   (widget.thing['type'] == 'text')
@@ -367,6 +374,11 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
         color: color,
         editingMode: EditingMode.editImage,
       );
+    } else if (type == 'nima') {
+      return new AudioEditingScreen(
+        model: model,
+        editingMode: EditingMode.editAudio,
+      );
     }
     // TODO::// For other components
   }
@@ -381,4 +393,9 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
   }
 }
 
-enum EditingMode { editImage, addImage }
+enum EditingMode {
+  editAudio,
+  editImage,
+  addImage,
+  doNothing,
+}
