@@ -833,7 +833,7 @@ class Sticker {
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/aquarius'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/aries'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/cancer'),
-      Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/capricon'),
+      Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/capricorn'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/gemini'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/leo'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/libra'),
