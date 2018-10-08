@@ -92,50 +92,61 @@ class ImageEditorState extends State<ImageEditor> {
     var size = MediaQuery.of(context).size;
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
         Widget>[
-      Expanded(
-        flex: 1,
+      Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(),
-              Text(
-                "Image",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: size.height * .03,
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text(
+                  "Image",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 40.0,
+                  ),
                 ),
               ),
-              IconButton(
-                  iconSize: size.height * .03,
-                  icon: Icon(Icons.done),
-                  color: Colors.white,
-                  onPressed: () {
-                    if (_imagePath != null) {
-                      if (widget.editingMode == EditingMode.addImage)
-                        widget.model.addImage(
-                            _imagePath, selectedColor, selectedBlendMode);
-                      else if (widget.editingMode == EditingMode.editImage) {
-                        widget.model.selectedThing(
-                            type: 'image',
-                            blendMode: selectedBlendMode,
-                            color: selectedColor,
-                            text: widget.imagePath);
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: IconButton(
+                    iconSize: 40.0,
+                    icon: Icon(Icons.done),
+                    color: Colors.green,
+                    onPressed: () {
+                      if (_imagePath != null) {
+                        if (widget.editingMode == EditingMode.addImage)
+                          widget.model.addImage(
+                              _imagePath, selectedColor, selectedBlendMode);
+                        else if (widget.editingMode == EditingMode.editImage) {
+                          widget.model.selectedThing(
+                              type: 'image',
+                              blendMode: selectedBlendMode,
+                              color: selectedColor,
+                              text: widget.imagePath);
+                        }
                       }
-                    }
-                    widget.model.blendMode = selectedBlendMode;
-                    widget.model.color = selectedColor;
-                    Navigator.pop(context);
-                  }),
+                      widget.model.blendMode = selectedBlendMode;
+                      widget.model.color = selectedColor;
+                      Navigator.pop(context);
+                    }),
+              ),
             ]),
       ),
+
       // Material(
 
       // Image.file(File(thing['path'])),
       // ),
+      Divider(
+        height: 6.0,
+        color: Colors.white,
+      ),
       widget.imagePath != null
           ? Expanded(
-              flex: 6,
+              flex: 7,
               child: SizedBox(
                   height: size.height * .59,
                   width: size.width,
@@ -146,12 +157,15 @@ class ImageEditorState extends State<ImageEditor> {
                   )),
             )
           : Expanded(
-              flex: 6,
+              flex: 7,
               child: Container(
                 color: Colors.white70,
               ),
             ),
-
+      Divider(
+        color: Colors.white,
+        height: 6.0,
+      ),
       new Expanded(
           flex: 2,
           child: InkWell(

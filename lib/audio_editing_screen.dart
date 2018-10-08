@@ -82,38 +82,47 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
     int i = 0;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
         Widget>[
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(''),
-          Text('Audio',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 50.0,
-                  fontWeight: FontWeight.w500)),
-          IconButton(
-            onPressed: () {
-              if (_lastNima != null) {
-                if (widget.editingMode == EditingMode.doNothing) {
-                  widget.model.nimaController(false, true);
-                  widget.model.addNima(
-                    _lastNima,
-                  );
-                } else {
-                  widget.model.selectedThing(text: _lastNima);
-                  widget.model.nimaController(false, true);
-                  // widget.model.recorder.playAudio().then((p) {});
-                }
-              }
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.done,
-              color: Colors.white,
-              size: 50.0,
+      Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(''),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Text('Audio',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.w500)),
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                onPressed: () {
+                  if (_lastNima != null) {
+                    if (widget.editingMode == EditingMode.doNothing) {
+                      widget.model.nimaController(false, true);
+                      widget.model.addNima(
+                        _lastNima,
+                      );
+                    } else {
+                      widget.model.selectedThing(text: _lastNima);
+                      widget.model.nimaController(false, true);
+                      // widget.model.recorder.playAudio().then((p) {});
+                    }
+                  }
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.done,
+                  color: Colors.green,
+                  size: 45.0,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
       Divider(
         height: 30.0,

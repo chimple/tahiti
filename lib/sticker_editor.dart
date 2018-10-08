@@ -25,40 +25,40 @@ class _StickerEditorState extends State<StickerEditor>
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(''),
-                Text(
-                  'Sticker',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25.0,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(''),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text('Sticker',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.w500)),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 15.0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.done,
+                    size: 45.0,
+                    color: Colors.green,
                   ),
+                  onPressed: () {
+                    if (color != null)
+                      widget.model
+                          .selectedThing(color: color, blendMode: blendMode);
+                    Navigator.pop(context);
+                  },
                 ),
-                Padding(
-                  padding: EdgeInsets.only(right: 15.0),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.done,
-                      size: 45.0,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      if (color != null)
-                        widget.model
-                            .selectedThing(color: color, blendMode: blendMode);
-                      Navigator.pop(context);
-                    },
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
         Divider(
@@ -67,13 +67,7 @@ class _StickerEditorState extends State<StickerEditor>
         ),
         Expanded(
           flex: 9,
-          child: Hero(
-            createRectTween: (Rect r, rect) {},
-            tag: DisplaySticker(
-              color: color,
-              primary: widget.primary,
-              blendmode: blendMode,
-            ),
+          child: Container(
             child: DisplaySticker(
               color: color,
               primary: widget.primary,
@@ -82,7 +76,7 @@ class _StickerEditorState extends State<StickerEditor>
           ),
         ),
         Divider(
-          height: 6.0,
+          height: 9.0,
           color: Colors.white,
         ),
         Expanded(
