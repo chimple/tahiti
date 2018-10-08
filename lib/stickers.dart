@@ -310,7 +310,7 @@ class Sticker {
           type: ItemType.sticker,
           data: 'assets/svgimage/shape/trade_mark_sign'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/traingle'),
-      Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/women_boots'),
+      Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/womans_boots'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/two_hearts'),
     ],
     'assets/menu/housebuilding.png': [
@@ -833,7 +833,7 @@ class Sticker {
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/aquarius'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/aries'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/cancer'),
-      Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/capricon'),
+      Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/capricorn'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/gemini'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/leo'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/zodiac/libra'),

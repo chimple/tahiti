@@ -6,6 +6,7 @@ import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/audio_editing_screen.dart';
 import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
+import 'package:tahiti/components/custom_buttom_sheet.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/select_sticker.dart';
 import 'package:tahiti/stickers.dart';
@@ -122,7 +123,7 @@ class PopupGridViewState extends State<PopupGridView> {
                           // highlightedButtonItem = title;
 
                           if (title != null) {
-                            model.selectedThingId=null;
+                            model.selectedThingId = null;
                             model.selectedIcon = title;
                             print('icon is ${model.selectedIcon}');
                             if (title.startsWith('assets/menu/svg/pencil')) {
@@ -213,8 +214,11 @@ class PopupGridViewState extends State<PopupGridView> {
   }
 
   Future<bool> showCategorySreen(ActivityModel model, String text) {
-    return showDialog(
-        context: context, child: _buildScreen(model: model, text: text));
+    return showModalCustomBottomSheet(
+        context: context,
+        builder: (context) {
+          return _buildScreen(model: model, text: text);
+        });
   }
 
   Widget _buildScreen({ActivityModel model, String text}) {
