@@ -39,6 +39,8 @@ class RollerState extends State<Drawing> {
   }
 
   Drag _handleOnStart(Offset position) {
+    widget.model.selectedThingId='';
+    widget.model.userTouch = false;
     if (count < 1) {
       setState(() {
         count++;
@@ -285,9 +287,7 @@ class PainterController extends ChangeNotifier {
       if (model.popped != Popped.noPopup) {
         model.popped = Popped.noPopup;
       }
-      if (drawingType == DrawingType.freeDrawing ||
-          drawingType == DrawingType.geometricDrawing ||
-          drawingType == DrawingType.lineDrawing) {
+      if (model.isDrawing) {
         _inDrag = true;
         pathHistory.add(startPoint,
             paintOption: paintOption,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/audio_editing_screen.dart';
+import 'package:tahiti/components/custom_buttom_sheet.dart';
 import 'package:tahiti/display_nima.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
@@ -53,9 +54,14 @@ class _TransformWrapperState extends State<TransformWrapper>
   RenderBox _parentRenderBox;
 
   void onScaleStart(rotate.ScaleStartDetails details) {
+    print('NIKKKKKKK    d   ${widget.thing['type']}  ');
     setState(() {
-      widget.model.selectedThingId = widget.thing['id'];
-      widget.model.editSelectedThing = false;
+      //||widget.model.things['type']=='drawing'
+      if (!widget.model.userTouch) {
+        widget.model.userTouch = true;
+        widget.model.selectedThingId = widget.thing['id'];
+        widget.model.editSelectedThing = false;
+      }
 
       _parentRenderBox =
           (context.ancestorRenderObjectOfType(const TypeMatcher<RenderStack>())
@@ -68,27 +74,30 @@ class _TransformWrapperState extends State<TransformWrapper>
   }
 
   void onScaleUpdate(rotate.ScaleUpdateDetails details) {
-    if (details.focalPoint.dx >
-            (orientation == Orientation.portrait ? 0.0 : _size / 1.5) &&
-        details.focalPoint.dy >
-            (orientation == Orientation.portrait ? _size / 1.5 : _size / 4) &&
-        (details.focalPoint.dy <
-            (orientation == Orientation.portrait
-                ? widget.constraints.maxHeight + (_size / 2)
-                : widget.constraints.maxHeight + (_size / 6))) &&
-        (details.focalPoint.dx <
-            (orientation == Orientation.portrait
-                ? widget.constraints.maxWidth + (_size / 2)
-                : widget.constraints.maxHeight + (_size / 2)))) {
-      setState(() {
-        Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
-        _translate = _translateAtStart + pos - _focalPointAtStart;
-        // _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
-        //     ? _scaleAtStart * details.scale
-        //     : _width * 0.001;
-        _scale = _scaleAtStart * details.scale;
-        _rotate = _rotateAtStart + details.rotation;
-      });
+    if (widget.model.selectedThingId == widget.thing['id'] &&
+        widget.model.userTouch) {
+      if (details.focalPoint.dx >
+              (orientation == Orientation.portrait ? 0.0 : _size / 1.5) &&
+          details.focalPoint.dy >
+              (orientation == Orientation.portrait ? _size / 1.5 : _size / 4) &&
+          (details.focalPoint.dy <
+              (orientation == Orientation.portrait
+                  ? widget.constraints.maxHeight + (_size / 2)
+                  : widget.constraints.maxHeight + (_size / 6))) &&
+          (details.focalPoint.dx <
+              (orientation == Orientation.portrait
+                  ? widget.constraints.maxWidth + (_size / 2)
+                  : widget.constraints.maxHeight + (_size / 2)))) {
+        setState(() {
+          Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
+          _translate = _translateAtStart + pos - _focalPointAtStart;
+          // _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
+          //     ? _scaleAtStart * details.scale
+          //     : _width * 0.001;
+          _scale = _scaleAtStart * details.scale;
+          _rotate = _rotateAtStart + details.rotation;
+        });
+      }
     }
   }
 
@@ -100,6 +109,10 @@ class _TransformWrapperState extends State<TransformWrapper>
     updatedThing['scale'] = _scale;
     updatedThing['rotate'] = _rotate;
     model.updateThing(updatedThing);
+    setState(() {
+      if (widget.model.selectedThingId == widget.thing['id'] &&
+          widget.model.userTouch) widget.model.userTouch = false;
+    });
   }
 
   @override
@@ -336,14 +349,16 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
       String text,
       Color color,
       BlendMode blendMode}) {
-    return showDialog(
+    return showModalCustomBottomSheet(
         context: context,
-        child: _buildScreen(model,
-            type: type,
-            path: path,
-            text: text,
-            blendMode: blendMode,
-            color: color));
+        builder: (context) {
+          return _buildScreen(model,
+              type: type,
+              path: path,
+              text: text,
+              blendMode: blendMode,
+              color: color);
+        });
   }
 
   Widget _buildScreen(ActivityModel model,

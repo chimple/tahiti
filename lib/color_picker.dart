@@ -136,13 +136,10 @@ class ColorPickerState extends State<ColorPicker> {
         onPressed: () {
           setState(() {
             selectedColor = color;
+            widget.model.selectedColor = color;
           });
           try {
-            if (widget.model.selectedIcon == 'assets/menu/svg/pencil' ||
-                widget.model.selectedIcon == 'assets/menu/svg/geometry' ||
-                widget.model.selectedIcon == 'assets/menu/svg/freegeometry') {
-              widget.model.selectedColor = color;
-            } else if (widget.model.selectedIcon == 'assets/menu/stickers.png')
+            if (widget.model.selectedIcon == 'assets/menu/stickers.png')
               widget.getColor(color);
             else if (false) {}
           } catch (exception, e) {
