@@ -76,7 +76,7 @@ class _StickerEditorState extends State<StickerEditor>
           ),
         ),
         Divider(
-          height: 9.0,
+          height: 6.0,
           color: Colors.white,
         ),
         Expanded(
