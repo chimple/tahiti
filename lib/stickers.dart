@@ -310,7 +310,7 @@ class Sticker {
           type: ItemType.sticker,
           data: 'assets/svgimage/shape/trade_mark_sign'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/traingle'),
-      Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/women_boots'),
+      Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/womans_boots'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/two_hearts'),
     ],
     'assets/menu/housebuilding.png': [
