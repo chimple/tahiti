@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
+<rect x="0" style="fill:#FFC06C;" width="256" height="256"/>
+<g style="opacity:0;">
+	<circle style="fill:#FFFFFF;" cx="81.8" cy="104" r="26.7"/>
+	<circle style="fill:#3F3F3F;" cx="81.8" cy="104" r="12.4"/>
+	
+		<polyline style="fill:none;stroke:#3F3F3F;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" points="
+		192.2,85.5 159.5,106.1 192.2,122.8 	"/>
+	<g>
+		<path style="fill:#F95A71;" d="M167,201.6L167,201.6c-6.9,4-15.6,1.6-19.6-5.2l-9.2-15.9l24.8-14.3l9.2,15.9
+			C176.2,188.9,173.9,197.6,167,201.6z"/>
+		
+			<line style="fill:none;stroke:#E84363;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="158.8" y1="187.4" x2="151.2" y2="174.8"/>
+	</g>
+	<path style="fill:none;stroke:#3F3F3F;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
+		M90.7,158.3c0,0,11.7,22,39,22c26.6,0,39-22,39-22"/>
+</g>
+</svg>

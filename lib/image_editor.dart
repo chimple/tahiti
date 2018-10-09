@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -25,7 +26,7 @@ class ImageEditor extends StatefulWidget {
 
 class ImageEditorState extends State<ImageEditor> {
   Color selectedColor = Color(0xffffff);
-  String borderColor = 'Default';
+  Color borderColor = Color(0xFF980000);
   BlendMode selectedBlendMode = BlendMode.dst;
   String _imagePath;
   EditingMode editMode;
@@ -78,6 +79,7 @@ class ImageEditorState extends State<ImageEditor> {
     for (int i = 0; i < 7; i++) _colorVal.add(i);
     selectedBlendMode = widget.blendModel;
     selectedColor = widget.color;
+    if (widget.editingMode == EditingMode.editImage) borderColor = widget.color;
     _imagePath = widget.imagePath;
     editMode = widget.editingMode;
     super.initState();
@@ -85,32 +87,34 @@ class ImageEditorState extends State<ImageEditor> {
 
   @override
   Widget build(BuildContext context) {
-    print('widgetadsadsadsadsadsadsdsadsadsa ${widget.editingMode}');
     int roundColor = 0xffffffff;
     int i = 0;
     var size = MediaQuery.of(context).size;
-    return Material(
-      color: Colors.black87,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
-          Widget>[
-        Expanded(
-          flex: 1,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(),
-                Text(
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
+        Widget>[
+      Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text(
                   "Image",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
-                    fontSize: size.height * .03,
+                    fontSize: 40.0,
                   ),
                 ),
-                IconButton(
-                    iconSize: size.height * .03,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: IconButton(
+                    iconSize: 40.0,
                     icon: Icon(Icons.done),
-                    color: Colors.white,
+                    color: Colors.green,
                     onPressed: () {
                       if (_imagePath != null) {
                         if (widget.editingMode == EditingMode.addImage)
@@ -128,93 +132,103 @@ class ImageEditorState extends State<ImageEditor> {
                       widget.model.color = selectedColor;
                       Navigator.pop(context);
                     }),
-              ]),
-        ),
-        // Material(
-
-        // Image.file(File(thing['path'])),
-        // ),
-        widget.imagePath != null
-            ? Expanded(
-                flex: 6,
-                child: SizedBox(
-                    height: size.height * .59,
-                    width: size.width,
-                    child: Image.file(
-                      File(_imagePath),
-                      color: selectedColor,
-                      colorBlendMode: selectedBlendMode,
-                    )),
-              )
-            : Expanded(
-                flex: 6,
-                child: Container(
-                  color: Colors.white70,
-                ),
               ),
+            ]),
+      ),
 
-        new Expanded(
-            flex: 2,
-            child: InkWell(
-              onTap: () {
-                // widget.model.isEditing = false;
-                // if (widget.model.imagePath != null)
-                //   widget.model.addImage(
-                //       widget.model.imagePath, Colors.white, BlendMode.color);
-              },
-              child: new ListView(
-                scrollDirection: Axis.horizontal,
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                // scrollDirection: Axis.horizontal,
-                children: _nameOfFilters
-                    .map((count) => Column(children: <Widget>[
-                          Center(
-                              child: RawMaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                borderColor = count;
-                              });
-                              _multiColor(
-                                  listColor[_nameOfFilters.indexOf(count)],
-                                  listBlendMode[_nameOfFilters.indexOf(count)]);
-                            },
-                            constraints: new BoxConstraints.tightFor(
-                              width: size.width * .19,
-                              height: size.height * .19,
-                            ),
-                            child: widget.imagePath != null
-                                ? Padding(
-                                    padding: EdgeInsets.all(2.0),
-                                    child: Image.file(
-                                      File(widget.imagePath),
-                                      color: listColor[
-                                          _nameOfFilters.indexOf(count)],
-                                      colorBlendMode: listBlendMode[
-                                          _nameOfFilters.indexOf(count)],
-                                    ),
-                                  )
-                                : Container(),
-                            shape: new BeveledRectangleBorder(
-                              side: new BorderSide(
-                                color: count == borderColor
-                                    ? Color(roundColor)
-                                    : const Color(0xffffff),
-                                width: 3.0,
-                              ),
-                            ),
-                          )),
-                          Text(
-                            _nameOfFilters[i++],
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ]))
-                    .toList(growable: false),
+      // Material(
+
+      // Image.file(File(thing['path'])),
+      // ),
+      Divider(
+        height: 6.0,
+        color: Colors.white,
+      ),
+      widget.imagePath != null
+          ? Expanded(
+              flex: 7,
+              child: SizedBox(
+                  height: size.height * .59,
+                  width: size.width,
+                  child: Image.file(
+                    File(_imagePath),
+                    color: selectedColor,
+                    colorBlendMode: selectedBlendMode,
+                  )),
+            )
+          : Expanded(
+              flex: 7,
+              child: Container(
+                color: Colors.white70,
               ),
-            ))
+            ),
+      Divider(
+        color: Colors.white,
+        height: 6.0,
+      ),
+      new Expanded(
+          flex: 2,
+          child: InkWell(
+            onTap: () {
+              // widget.model.isEditing = false;
+              // if (widget.model.imagePath != null)
+              //   widget.model.addImage(
+              //       widget.model.imagePath, Colors.white, BlendMode.color);
+            },
+            child: new ListView(
+              scrollDirection: Axis.horizontal,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              // scrollDirection: Axis.horizontal,
+              children: _nameOfFilters
+                  .map((count) => Column(children: <Widget>[
+                        Center(
+                            child: RawMaterialButton(
+                          onPressed: () {
+                            setState(() {
+                              borderColor =
+                                  listColor[_nameOfFilters.indexOf(count)];
+                            });
+                            _multiColor(
+                                listColor[_nameOfFilters.indexOf(count)],
+                                listBlendMode[_nameOfFilters.indexOf(count)]);
+                          },
+                          constraints: new BoxConstraints.tightFor(
+                            width: size.width * .19,
+                            height: size.height * .19,
+                          ),
+                          child: widget.imagePath != null
+                              ? Padding(
+                                  padding: EdgeInsets.all(2.0),
+                                  child: Image.file(
+                                    File(widget.imagePath),
+                                    color: listColor[
+                                        _nameOfFilters.indexOf(count)],
+                                    colorBlendMode: listBlendMode[
+                                        _nameOfFilters.indexOf(count)],
+                                  ),
+                                )
+                              : Container(),
+                          shape: new BeveledRectangleBorder(
+                            side: new BorderSide(
+                              color: _nameOfFilters.indexOf(count) ==
+                                      listColor.indexOf(borderColor)
+                                  ? Color(roundColor)
+                                  : const Color(0xffffff),
+                              width: 3.0,
+                            ),
+                          ),
+                        )),
+                        Text(
+                          _nameOfFilters[i++],
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ]))
+                  .toList(growable: false),
+            ),
+          ))
 
-        // ),
-      ]),
-    );
+      // ),
+    ]);
   }
 
   _multiColor(Color color, BlendMode bld) {

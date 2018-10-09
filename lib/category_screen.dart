@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/color_picker.dart';
@@ -58,117 +60,106 @@ class CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Material(
-      color: Colors.black54,
-      child: SizedBox(
-        height: size.height,
-        width: size.width,
-        child: Stack(
-          overflow: Overflow.visible,
-          fit: StackFit.loose,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(''),
-                        Text('Sticker',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold)),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Icons.done,
-                            color: Colors.white,
-                            size: 40.0,
-                          ),
-                        )
-                      ],
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(''),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Text('Sticker',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.w500)),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.done,
+                    color: Colors.green,
+                    size: 40.0,
                   ),
                 ),
-                _divider,
-                Expanded(
-                    flex: 1,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: _itemRange
-                          .map((e) => Container(
-                                color: e.item1 == highlightedItem
-                                    ? Color(0XFFF4F4F4)
-                                    : Colors.transparent,
-                                child: InkWell(
-                                    onTap: () {
-                                      final offset = (_scrollController
-                                                  .position.maxScrollExtent +
-                                              _scrollController
-                                                  .position.viewportDimension) *
-                                          e.item2 /
-                                          _itemCount;
-                                      _scrollController.jumpTo(offset);
-                                    },
-                                    child: buildIndexItem(context, e.item1,
-                                        e.item1 == highlightedItem)),
-                              ))
-                          .toList(growable: false),
-                    )),
-                _divider,
-                Expanded(
-                    flex: 7,
-                    child: Container(
-                      child: CustomScrollView(
-                          controller: _scrollController,
-                          scrollDirection: Axis.vertical,
-                          slivers: widget.items.keys
-                              .map((e) => SliverGrid(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount:
-                                                widget.itemCrossAxisCount),
-                                    delegate: SliverChildBuilderDelegate(
-                                        (BuildContext context, int index) {
-                                      return InkWell(
-                                          onTap: () {
-                                            widget.model.addSticker(
-                                                widget.items[e][index].data,
-                                                color,
-                                                blendMode);
-
-                                            Navigator.pop(context);
-                                          },
-                                          child: Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: buildItem(context,
-                                                widget.items[e][index], true),
-                                          ));
-                                    }, childCount: widget.items[e].length),
-                                  ))
-                              .toList(growable: false)),
-                    )),
-                Expanded(
-                  child: ColorPicker(
-                    orientation: Orientation.portrait,
-                    model: widget.model,
-                    getColor: (color) => setColor(color),
-                  ),
-                  flex: 2,
-                ),
-              ],
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
+        _divider,
+        Expanded(
+            flex: 1,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: _itemRange
+                  .map((e) => Container(
+                        child: InkWell(
+                            onTap: () {
+                              final offset =
+                                  (_scrollController.position.maxScrollExtent +
+                                          _scrollController
+                                              .position.viewportDimension) *
+                                      e.item2 /
+                                      _itemCount;
+                              _scrollController.jumpTo(offset);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: buildIndexItem(
+                                  context, e.item1, e.item1 == highlightedItem),
+                            )),
+                      ))
+                  .toList(growable: false),
+            )),
+        _divider,
+        Expanded(
+            flex: 9,
+            child: Container(
+              child: CustomScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.vertical,
+                  slivers: widget.items.keys
+                      .map((e) => SliverGrid(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: widget.itemCrossAxisCount),
+                            delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                              return InkWell(
+                                  onTap: () {
+                                    widget.model.addSticker(
+                                        widget.items[e][index].data,
+                                        color,
+                                        blendMode);
+
+                                    Navigator.pop(context);
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(30.0),
+                                    child: buildItem(
+                                        context, widget.items[e][index], true),
+                                  ));
+                            }, childCount: widget.items[e].length),
+                          ))
+                      .toList(growable: false)),
+            )),
+        _divider,
+        Expanded(
+          child: ColorPicker(
+            orientation: Orientation.portrait,
+            model: widget.model,
+            getColor: (color) => setColor(color),
+          ),
+          flex: 1,
+        ),
+      ],
     );
   }
 
@@ -198,9 +189,13 @@ class CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildIndexItem(BuildContext context, String text, bool enabled) {
-    return Image.asset(
-      text,
-      package: 'tahiti',
+    return Padding(
+      padding: EdgeInsets.only(left: 0.0, right: 25.0),
+      child: Image.asset(
+        text,
+        package: 'tahiti',
+        color: text == highlightedItem ? Color(0XFFF4F4F4) : null,
+      ),
     );
   }
 

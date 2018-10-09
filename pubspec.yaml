@@ -21,6 +21,7 @@ dependencies:
   tuple: ^1.0.1
   nima: ^1.0.1
   json_annotation: ^1.1.0
+  shared_preferences: ^0.4.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -46,20 +47,6 @@ flutter:
     - assets/mic/mic.png
     - assets/mic/play.png
     - assets/mic/stop.png
-    - assets/text.png
-    - assets/icon.png
-    - assets/svgimage/monkey1.svg
-    - assets/svgimage/monkey2.svg
-    - assets/svgimage/pen1.svg
-    - assets/svgimage/pen2.svg
-    - assets/svgimage/pot1.svg
-    - assets/svgimage/pot2.svg
-    - assets/svgimage/carrot1.svg
-    - assets/svgimage/carrot2.svg
-    - assets/svgimage/bat1.svg
-    - assets/svgimage/bat2.svg
-    - assets/svgimage/ball1.svg
-    - assets/svgimage/ball2.svg
     - assets/filter_icon.jpg
     - assets/roller_image/sample1.jpg
     - assets/roller_image/sample2.jpg
@@ -76,13 +63,22 @@ flutter:
     - assets/svgimage/fooditem/
     - assets/svgimage/clothes/
     - assets/svgimage/fruits/
-    - assets/svgimage/vegetables/
     - assets/svgimage/vehicles/
     - assets/svgimage/shape/
     - assets/svgimage/number/
     - assets/svgimage/emotion/
     - assets/svgimage/furniture/
     - assets/svgimage/grains/
+    - assets/svgimage/alphabet/
+    - assets/svgimage/animals/
+    - assets/svgimage/electronics/
+    - assets/svgimage/homeutility/
+    - assets/svgimage/housebuilding/
+    - assets/svgimage/occupation_men/
+    - assets/svgimage/occupation_women/
+    - assets/svgimage/stationary/
+    - assets/svgimage/tools/
+    - assets/svgimage/zodiac/
     - assets/nima_animation/
   fonts:
     - family: Bungee

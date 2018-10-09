@@ -18,6 +18,7 @@ class ActivityModel extends Model {
   String _imagePath;
 
   bool _isDrawing = false;
+  bool userTouch = false;
 
   PainterController _painterController;
 
@@ -283,7 +284,6 @@ class ActivityModel extends Model {
   }
 
   void addThing(Map<String, dynamic> thing) {
-    selectedThingId = thing['id'];
     _addThing(thing);
     _redoStack.clear();
   }
@@ -448,10 +448,9 @@ class PathHistory {
   }
 
   void drawStraightLine(PaintingContext context, Size size) {
-    for (PathInfo pathInfo in paths) {
-      context.canvas
-          .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
-    }
+    PathInfo pathInfo = paths.last;
+    context.canvas
+        .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
   }
 }
 
@@ -483,9 +482,9 @@ class PathInfo {
     if (points.length >= 2) {
       _path.moveTo(points[0], points[1]);
     }
-    // for (int i = 2; i < points.length - 1; i += 2) {
-    //   _path.lineTo(points[i], points[i + 1]);
-    // }
+    for (int i = 2; i < points.length - 1; i += 2) {
+      _path.lineTo(points[i], points[i + 1]);
+    }
 
     _paint = Paint()
       ..style = PaintingStyle.stroke
@@ -493,6 +492,7 @@ class PathInfo {
       ..strokeJoin = StrokeJoin.round
       ..strokeWidth = thickness
       ..color = color ?? Colors.red;
+
     switch (paintOption) {
       case PaintOption.paint:
         _paint.maskFilter = MaskFilter.blur(blurStyle, sigma);

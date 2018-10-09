@@ -8,6 +8,7 @@ import 'package:tahiti/display_nima.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/recorder.dart';
+import 'package:tahiti/components/custom_buttom_sheet.dart';
 import 'package:tahiti/rotate/rotation_gesture/gesture_detector.dart';
 import 'package:tahiti/rotate/rotation_gesture/rotate_scale_gesture_recognizer.dart'
     as rotate;
@@ -53,9 +54,14 @@ class _TransformWrapperState extends State<TransformWrapper>
   RenderBox _parentRenderBox;
 
   void onScaleStart(rotate.ScaleStartDetails details) {
+    print('NIKKKKKKK    d   ${widget.thing['type']}  ');
     setState(() {
-      widget.model.selectedThingId = widget.thing['id'];
-      widget.model.editSelectedThing = false;
+      //||widget.model.things['type']=='drawing'
+      if (!widget.model.userTouch) {
+        widget.model.userTouch = true;
+        widget.model.selectedThingId = widget.thing['id'];
+        widget.model.editSelectedThing = false;
+      }
 
       _parentRenderBox =
           (context.ancestorRenderObjectOfType(const TypeMatcher<RenderStack>())
@@ -68,27 +74,30 @@ class _TransformWrapperState extends State<TransformWrapper>
   }
 
   void onScaleUpdate(rotate.ScaleUpdateDetails details) {
-    if (details.focalPoint.dx >
-            (orientation == Orientation.portrait ? 0.0 : _size / 1.5) &&
-        details.focalPoint.dy >
-            (orientation == Orientation.portrait ? _size / 1.5 : _size / 4) &&
-        (details.focalPoint.dy <
-            (orientation == Orientation.portrait
-                ? widget.constraints.maxHeight + (_size / 2)
-                : widget.constraints.maxHeight + (_size / 6))) &&
-        (details.focalPoint.dx <
-            (orientation == Orientation.portrait
-                ? widget.constraints.maxWidth + (_size / 2)
-                : widget.constraints.maxHeight + (_size / 2)))) {
-      setState(() {
-        Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
-        _translate = _translateAtStart + pos - _focalPointAtStart;
-        // _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
-        //     ? _scaleAtStart * details.scale
-        //     : _width * 0.001;
-        _scale = _scaleAtStart * details.scale;
-        _rotate = _rotateAtStart + details.rotation;
-      });
+    if (widget.model.selectedThingId == widget.thing['id'] &&
+        widget.model.userTouch) {
+      if (details.focalPoint.dx >
+              (orientation == Orientation.portrait ? 0.0 : _size / 1.5) &&
+          details.focalPoint.dy >
+              (orientation == Orientation.portrait ? _size / 1.5 : _size / 4) &&
+          (details.focalPoint.dy <
+              (orientation == Orientation.portrait
+                  ? widget.constraints.maxHeight + (_size / 2)
+                  : widget.constraints.maxHeight + (_size / 6))) &&
+          (details.focalPoint.dx <
+              (orientation == Orientation.portrait
+                  ? widget.constraints.maxWidth + (_size / 2)
+                  : widget.constraints.maxHeight + (_size / 2)))) {
+        setState(() {
+          Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
+          _translate = _translateAtStart + pos - _focalPointAtStart;
+          // _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
+          //     ? _scaleAtStart * details.scale
+          //     : _width * 0.001;
+          _scale = _scaleAtStart * details.scale;
+          _rotate = _rotateAtStart + details.rotation;
+        });
+      }
     }
   }
 
@@ -100,6 +109,10 @@ class _TransformWrapperState extends State<TransformWrapper>
     updatedThing['scale'] = _scale;
     updatedThing['rotate'] = _rotate;
     model.updateThing(updatedThing);
+    setState(() {
+      if (widget.model.selectedThingId == widget.thing['id'] &&
+          widget.model.userTouch) widget.model.userTouch = false;
+    });
   }
 
   @override
@@ -179,137 +192,87 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
 
   @override
   Widget build(BuildContext context) {
-    var matrix = Matrix4.identity()
+    var x;
+    var left;
+    bool isImage = widget.thing['type'] == 'image';
+    if (isImage) {
+      if (widget.scale <= 1) {
+        x = 1.0 - widget.scale;
+        x = x * 210;
+        left = x * 1.2;
+      } else {
+        x = widget.scale - 1.0;
+        x = -(x * 190);
+        left = x;
+        x = x * 10;
+      }
+    } else {
+      if (widget.scale <= 1) {
+        x = 1.0 - widget.scale;
+        x = x * 210;
+        left = x;
+      } else {
+        x = widget.scale - 1.0;
+        x = -(x * 210);
+        left = x;
+      }
+    }
+    print('dd   $x  ${widget.scale}');
+    var matrix5 = Matrix4.identity()
       ..scale(widget.scale)
       ..rotateZ(widget.rotate);
-    var matrix1 = Matrix4.identity()..scale(widget.scale);
+    var matrix = Matrix4.identity()..scale(widget.scale);
+    //..rotateZ(widget.rotate);
+    var matrix2 = Matrix4.identity()
+      // ..scale(widget.scale)
+      ..rotateZ(widget.rotate);
+    //  var matrix1 = Matrix4.identity()..scale(widget.scale);
     // ..rotateZ(rotate);
     return ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) => model.selectedThingId ==
                 widget.thing['id']
             ? Transform(
-                transform: matrix,
+                transform: matrix2,
                 alignment: Alignment.center,
-                child: Stack(children: <Widget>[
-                  Positioned(
-                      left: 0.0,
-                      top: 0.0,
-                      child: IconButton(
-                        icon: Icon(Icons.delete_forever),
-                        iconSize: 50.0,
-                        color: Colors.black,
-                        onPressed: () {
-                          widget.model.deleteThing(widget.thing['id']);
-                          model.recorder.stopAudio();
-                        },
-                      )),
-                  widget.thing['type'] != 'video'
-                      ? Positioned(
-                          left: 0.0,
-                          top: 50.0,
-                          child: IconButton(
-                            icon: Icon(model.editSelectedThing
-                                ? Icons.done_outline
-                                : Icons.edit),
-                            iconSize: 50.0,
-                            color: Colors.black,
-                            onPressed: () {
-                              setState(() {
-                                model.editSelectedThing
-                                    ? model.editSelectedThing = false
-                                    : model.editSelectedThing = true;
-                                model.selectedThingId = widget.thing['id'];
-                                if (!model.editSelectedThing) {
-                                  model.selectedThingId = '';
-                                } else if (widget.thing['type'] == 'sticker') {
-                                  _editingScreen(model,
-                                      path: widget.thing['asset'],
-                                      type: widget.thing['type'],
-                                      color:
-                                          Color(widget.thing['color'] as int),
-                                      blendMode: BlendMode
-                                          .values[widget.thing['blendMode']]);
-                                } else if (widget.thing['type'] == 'text') {
-                                  _editingScreen(
-                                    model,
-                                    text: widget.thing['text'],
-                                    type: widget.thing['type'],
-                                    color: Color(widget.thing['color'] as int),
-                                  );
-                                } else if (widget.thing['type'] == 'image') {
-                                  _editingScreen(model,
-                                      path: widget.thing['path'],
-                                      type: widget.thing['type'],
-                                      color: Color(
-                                        widget.thing['color'] as int,
-                                      ),
-                                      blendMode: BlendMode
-                                          .values[widget.thing['blendMode']]);
-                                } else if (widget.thing['type'] == 'nima') {
-                                  _editingScreen(
-                                    model,
-                                    type: widget.thing['type'],
-                                  );
-                                }
-                                // if (model.editSelectedThing) {
-                                //   (widget.thing['type'] == 'text')
-                                //       ? widget.model.selectedThing(
-                                //           widget.thing['id'],
-                                //           widget.thing['type'],
-                                //           widget.thing['text'])
-                                //       : widget.model.selectedThing(
-                                //           widget.thing['id'],
-                                //           widget.thing['type'],
-                                //           '');
-                                // } else {
-                                //   (widget.thing['type'] == 'text')
-                                //       ? widget.model.selectedThing(
-                                //           widget.thing['id'],
-                                //           widget.thing['type'],
-                                //           widget.thing['text'])
-                                //       : widget.model.selectedThing(
-                                //           widget.thing['id'],
-                                //           widget.thing['type'],
-                                //           '');
-                                // }
-                              });
-                            },
-                          ),
-                        )
-                      : Container(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: 60.0, top: 50.0, right: 60.0, bottom: 20.0),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        border: model.selectedThingId == widget.thing['id']
-                            ? Border.all(color: Colors.red, width: 4.0)
-                            : null,
-                        borderRadius: BorderRadius.circular(2.0),
+                child: Row(
+                   children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.delete_forever),
+                    iconSize: 40.0,
+                    color: Colors.black,
+                    onPressed: () {
+                      widget.model.deleteThing(widget.thing['id']);
+                      model.recorder.stopAudio();
+                    },
+                  ),
+                  
+                  Transform(
+                    transform: matrix,
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 60.0,
+                        top: 50.0,
                       ),
-                      child: LimitedBox(
-                        maxWidth: customWidth < 200.0 ? 200.0 : customWidth,
-                        child: widget.child,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: model.selectedThingId == widget.thing['id']
+                              ? Border.all(color: Colors.red, width: 4.0)
+                              : null,
+                          borderRadius: BorderRadius.circular(2.0),
+                        ),
+                        child: LimitedBox(
+                          maxWidth: customWidth < 200.0 ? 200.0 : customWidth,
+                          child: widget.child,
+                        ),
                       ),
                     ),
                   ),
-                  widget.thing['type'] == 'text'
-                      ? Positioned(
-                          right: 0.0,
-                          top: 0.0,
-                          child: GestureDetector(
-                              onPanUpdate: onPanUpdate,
-                              child: IconButton(
-                                icon: Icon(Icons.swap_horizontal_circle),
-                                iconSize: 50.0,
-                                color: Colors.black,
-                                onPressed: () {},
-                              )))
-                      : Container(),
+                
                 ]),
               )
             : Transform(
-                transform: matrix,
+                transform: matrix5,
                 alignment: Alignment.center,
                 child: Padding(
                   padding: EdgeInsets.only(
@@ -327,7 +290,8 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                       child: widget.child,
                     ),
                   ),
-                )));
+                ),
+              ));
   }
 
   Future<bool> _editingScreen(ActivityModel model,
