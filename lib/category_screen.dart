@@ -41,15 +41,20 @@ class CategoryScreenState extends State<CategoryScreen> {
               _scrollController.position.viewportDimension -
               8.0);
       final highlight = _itemRange.firstWhere((e) => e.item3 >= offset);
+
       setState(() {
+        _scrollController1.animateTo(offset * widget.items.length,
+            curve: Curves.linear, duration: Duration(milliseconds: 100));
         highlightedItem = highlight.item1;
       });
     });
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  dispose() {
+    _scrollController.dispose();
+    _scrollController1.dispose();
+    super.dispose();
   }
 
   Widget _divider = Divider(
@@ -155,28 +160,41 @@ class CategoryScreenState extends State<CategoryScreen> {
                   slivers: widget.items.keys
                       .map((e) => FutureBuilder(
                             builder: (context, asyn) {
-                              return SliverGrid(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount:
-                                            widget.itemCrossAxisCount),
-                                delegate: SliverChildBuilderDelegate(
+                              if (e != 'divider')
+                                return SliverGrid(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount:
+                                              widget.itemCrossAxisCount),
+                                  delegate: SliverChildBuilderDelegate(
+                                      (BuildContext context, int index) {
+                                    return InkWell(
+                                        onTap: () {
+                                          widget.model.addSticker(
+                                              widget.items[e][index].data,
+                                              color,
+                                              blendMode);
+                                          Navigator.pop(context);
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.all(30.0),
+                                          child: buildItem(context,
+                                              widget.items[e][index], true),
+                                        ));
+                                  }, childCount: widget.items[e].length),
+                                );
+                              else {
+                                return SliverGrid(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 1),
+                                  delegate: SliverChildBuilderDelegate(
                                     (BuildContext context, int index) {
-                                  return InkWell(
-                                      onTap: () {
-                                        widget.model.addSticker(
-                                            widget.items[e][index].data,
-                                            color,
-                                            blendMode);
-                                        Navigator.pop(context);
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.all(30.0),
-                                        child: buildItem(context,
-                                            widget.items[e][index], true),
-                                      ));
-                                }, childCount: widget.items[e].length),
-                              );
+                                      return Divider(color: Colors.white);
+                                    },
+                                  ),
+                                );
+                              }
                             },
                           ))
                       .toList(growable: false)),
@@ -206,7 +224,9 @@ class CategoryScreenState extends State<CategoryScreen> {
   }
 
   Widget buildItem(BuildContext context, Iconf conf, bool enabled) {
-    if (conf.type == ItemType.sticker) {
+    if (conf.data == 'divider') {
+      return Divider(color: Colors.red);
+    } else if (conf.type == ItemType.sticker) {
       return DisplaySticker(
         primary: conf.data,
         color: color,
