@@ -20,6 +20,7 @@ class CategoryScreen extends StatefulWidget {
 
 class CategoryScreenState extends State<CategoryScreen> {
   ScrollController _scrollController;
+  ScrollController _scrollController1 = new ScrollController();
   int _itemCount = 0;
   List<Tuple3<String, int, int>> _itemRange = List<Tuple3<String, int, int>>();
   String highlightedItem;
@@ -96,28 +97,54 @@ class CategoryScreenState extends State<CategoryScreen> {
         _divider,
         Expanded(
             flex: 1,
-            child: ListView(
+            child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              children: _itemRange
-                  .map((e) => Container(
-                        child: InkWell(
-                            onTap: () {
-                              final offset =
-                                  (_scrollController.position.maxScrollExtent +
-                                          _scrollController
-                                              .position.viewportDimension) *
-                                      e.item2 /
-                                      _itemCount;
-                              _scrollController.jumpTo(offset);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: buildIndexItem(
-                                  context, e.item1, e.item1 == highlightedItem),
-                            )),
-                      ))
-                  .toList(growable: false),
-            )),
+              controller: _scrollController1,
+              child: Row(
+                children: _itemRange
+                    .map((e) => Container(
+                          child: InkWell(
+                              onTap: () {
+                                final offset = (_scrollController
+                                            .position.maxScrollExtent +
+                                        _scrollController
+                                            .position.viewportDimension) *
+                                    e.item2 /
+                                    _itemCount;
+                                _scrollController.jumpTo(offset);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: buildIndexItem(context, e.item1,
+                                    e.item1 == highlightedItem),
+                              )),
+                        ))
+                    .toList(growable: false),
+              ),
+            )
+            // child: ListView(
+            //   scrollDirection: Axis.horizontal,
+            // children: _itemRange
+            //     .map((e) => Container(
+            //           child: InkWell(
+            //               onTap: () {
+            //                 final offset =
+            //                     (_scrollController.position.maxScrollExtent +
+            //                             _scrollController
+            //                                 .position.viewportDimension) *
+            //                         e.item2 /
+            //                         _itemCount;
+            //                 _scrollController.jumpTo(offset);
+            //               },
+            //               child: Padding(
+            //                 padding: const EdgeInsets.all(20.0),
+            //                 child: buildIndexItem(
+            //                     context, e.item1, e.item1 == highlightedItem),
+            //               )),
+            //         ))
+            //     .toList(growable: false),
+            // )
+            ),
         _divider,
         Expanded(
             flex: 9,
@@ -126,27 +153,31 @@ class CategoryScreenState extends State<CategoryScreen> {
                   controller: _scrollController,
                   scrollDirection: Axis.vertical,
                   slivers: widget.items.keys
-                      .map((e) => SliverGrid(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: widget.itemCrossAxisCount),
-                            delegate: SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                              return InkWell(
-                                  onTap: () {
-                                    widget.model.addSticker(
-                                        widget.items[e][index].data,
-                                        color,
-                                        blendMode);
-
-                                    Navigator.pop(context);
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.all(30.0),
-                                    child: buildItem(
-                                        context, widget.items[e][index], true),
-                                  ));
-                            }, childCount: widget.items[e].length),
+                      .map((e) => FutureBuilder(
+                            builder: (context, asyn) {
+                              return SliverGrid(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount:
+                                            widget.itemCrossAxisCount),
+                                delegate: SliverChildBuilderDelegate(
+                                    (BuildContext context, int index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        widget.model.addSticker(
+                                            widget.items[e][index].data,
+                                            color,
+                                            blendMode);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.all(30.0),
+                                        child: buildItem(context,
+                                            widget.items[e][index], true),
+                                      ));
+                                }, childCount: widget.items[e].length),
+                              );
+                            },
                           ))
                       .toList(growable: false)),
             )),
@@ -194,7 +225,7 @@ class CategoryScreenState extends State<CategoryScreen> {
       child: Image.asset(
         text,
         package: 'tahiti',
-        color: text == highlightedItem ? Color(0XFFF4F4F4) : null,
+        color: text == highlightedItem ? Color(0XFFF4F4F4) : Colors.black26,
       ),
     );
   }
