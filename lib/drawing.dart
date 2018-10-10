@@ -39,7 +39,7 @@ class RollerState extends State<Drawing> {
   }
 
   Drag _handleOnStart(Offset position) {
-    widget.model.selectedThingId = '';
+    widget.model.selectedThingId='';
     widget.model.userTouch = false;
     if (count < 1) {
       setState(() {
@@ -217,7 +217,19 @@ class _ScratchCardRender extends RenderProxyBox {
     if (child != null) {
       context.canvas.saveLayer(offset & size, Paint());
       context.paintChild(child, offset);
-      path.draw(context, size);
+
+      switch (model.painterController.drawingType) {
+        case DrawingType.freeDrawing:
+          path.draw(context, size);
+          break;
+        case DrawingType.geometricDrawing:
+          path.draw(context, size);
+          break;
+        case DrawingType.lineDrawing:
+          path.draw(context, size);
+          path.drawStraightLine(context, size);
+          break;
+      }
       context.canvas.restore();
     }
   }

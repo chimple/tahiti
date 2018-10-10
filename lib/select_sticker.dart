@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
-import 'package:tahiti/components/custom_buttom_sheet.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/popup_grid_view.dart';
@@ -116,15 +115,14 @@ class SelectSticker extends StatefulWidget {
 
 class SelectStickerState extends State<SelectSticker> {
   Future<bool> _showImage(ActivityModel model, {String text}) {
-    return showModalCustomBottomSheet(
-        context: context,
-        builder: (context) {
-          return ImageEditor(
-            model,
-            imagePath: text,
-            editingMode: EditingMode.addImage,
-          );
-        });
+    return showDialog(
+      context: context,
+      child: ImageEditor(
+        model,
+        imagePath: text,
+        editingMode: EditingMode.addImage,
+      ),
+    );
   }
 
   @override
