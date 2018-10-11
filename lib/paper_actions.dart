@@ -26,7 +26,7 @@ class PaperActionsState extends State<PaperActions> {
               iconSize: MediaQuery.of(context).size.height * .03,
               color: Colors.white,
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop('refresh');
               }),
         );
       } else if (widget.action == "saveAction") {

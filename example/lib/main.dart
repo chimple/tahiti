@@ -180,13 +180,16 @@ class DrawingListState extends State<DrawingList> {
       crossAxisSpacing: 8.0,
       children: _drawings
           .map((d) => RaisedButton(
-                onPressed: () => Navigator.of(context).push(
+                onPressed: () {Navigator.of(context).push(
                         MaterialPageRoute<void>(
                             builder: (BuildContext context) {
                       return DrawingWrapper(
                         jsonMap: json.decode(d),
                       );
-                    })),
+                    }))
+                    .then((onValue){
+                      print('$onValue');
+                });},
                 child: ScopedModel<ActivityModel>(
                   model: ActivityModel(
                       paintData: PaintData.fromJson(json.decode(d)))
