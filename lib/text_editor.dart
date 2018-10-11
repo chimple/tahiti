@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/category_screen.dart';
@@ -57,14 +58,13 @@ class TextEditorState extends State<TextEditor> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed
     myFocusNode.dispose();
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.dispose();
   }
-
 
   void setColor(Color c) {
     setState(() {

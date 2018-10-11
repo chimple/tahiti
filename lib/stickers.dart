@@ -309,7 +309,7 @@ class Sticker {
       Iconf(
           type: ItemType.sticker,
           data: 'assets/svgimage/shape/trade_mark_sign'),
-      Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/traingle'),
+      Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/triangle'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/womans_boots'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/shape/two_hearts'),
     ],
@@ -507,7 +507,7 @@ class Sticker {
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/animals/sheep'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/animals/snail'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/animals/snake'),
-      Iconf(type: ItemType.sticker, data: 'assets/svgimage/animals/squiral'),
+      Iconf(type: ItemType.sticker, data: 'assets/svgimage/animals/squirrel'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/animals/tiger'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/animals/tortoise'),
       Iconf(type: ItemType.sticker, data: 'assets/svgimage/animals/turtle'),
@@ -545,7 +545,7 @@ class Sticker {
           data: 'assets/svgimage/homeutility/fire_extinguisher'),
       Iconf(
           type: ItemType.sticker,
-          data: 'assets/svgimage/homeutility/first_add_kit'),
+          data: 'assets/svgimage/homeutility/first_aid_kit'),
       Iconf(
           type: ItemType.sticker,
           data: 'assets/svgimage/homeutility/flashlight'),
@@ -736,7 +736,7 @@ class Sticker {
           data: 'assets/svgimage/occupation_women/female_soldier'),
       Iconf(
           type: ItemType.sticker,
-          data: 'assets/svgimage/occupationwomen/femaale_teacher'),
+          data: 'assets/svgimage/occupationwomen/female_teacher'),
     ],
     'assets/menu/stationary.png': [
       Iconf(
@@ -769,7 +769,7 @@ class Sticker {
           data: 'assets/svgimage/stationary/magnifying_glass'),
       Iconf(
           type: ItemType.sticker,
-          data: 'assets/svgimage/stationary/marker_pan'),
+          data: 'assets/svgimage/stationary/marker_pen'),
       Iconf(
           type: ItemType.sticker,
           data: 'assets/svgimage/stationary/meter_tape'),
