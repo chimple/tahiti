@@ -482,9 +482,9 @@ class PathInfo {
     if (points.length >= 2) {
       _path.moveTo(points[0], points[1]);
     }
-    // for (int i = 2; i < points.length - 1; i += 2) {
-    //   _path.lineTo(points[i], points[i + 1]);
-    // }
+    for (int i = 2; i < points.length - 1; i += 2) {
+      _path.lineTo(points[i], points[i + 1]);
+    }
 
     _paint = Paint()
       ..style = PaintingStyle.stroke

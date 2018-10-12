@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,14 +59,76 @@ class Home extends StatelessWidget {
             new IconButton(
               icon: new Icon(Icons.add_circle),
               tooltip: 'Create new drawing',
-              onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return DrawingWrapper();
-                  })),
+              onPressed: () async => await showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => _buildDialog(context),
+                  ).then((result) {
+                    if (result != null) {
+                      Navigator.of(context).push(
+                        new MaterialPageRoute(
+                            builder: (BuildContext context) => DrawingWrapper(
+                                  template: result,
+                                )),
+                      );
+                    }
+                  }),
             )
           ],
         ),
         body: DrawingList());
+  }
+
+  Widget _buildDialog(BuildContext context) {
+    return SimpleDialog(
+      titlePadding: EdgeInsets.all(0.0),
+      title: new Container(
+          height: MediaQuery.of(context).size.height * .06,
+          color: Colors.blue,
+          child: new Center(child: new Text("Choose a template"))),
+      children: <Widget>[
+        new Container(
+            width: MediaQuery.of(context).size.width / 1.5,
+            height: MediaQuery.of(context).size.height / 1.6,
+            child: TemplateGrid(
+              templates: templates,
+            )),
+      ],
+    );
+  }
+}
+
+class TemplateGrid extends StatelessWidget {
+  final String cardId;
+  final List<String> templates;
+
+  TemplateGrid({key, this.cardId, this.templates}) : super(key: key);
+
+  Widget _buildTile(BuildContext context, String template) {
+    return Card(
+      elevation: 5.0,
+      child: new InkWell(
+        onTap: () => Navigator.pop(context, template),
+        child: new AspectRatio(
+          aspectRatio: 1.0,
+          child: template.endsWith('.svg')
+              ? new SvgPicture.asset(
+                  template,
+                )
+              : Image.asset(
+                  template,
+                ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 3,
+      children:
+          templates.map((t) => _buildTile(context, t)).toList(growable: false),
+    );
   }
 }
 
@@ -138,15 +201,16 @@ class DrawingListState extends State<DrawingList> {
 
 class DrawingWrapper extends StatelessWidget {
   Map<String, dynamic> jsonMap;
+  String template;
 
-  DrawingWrapper({Key key, this.jsonMap}) : super(key: key);
+  DrawingWrapper({Key key, this.jsonMap, this.template}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ActivityBoard(
         json: jsonMap,
-        templates: jsonMap == null ? templates : null,
+        template: jsonMap == null ? template : null,
         title: 'Test',
         saveCallback: ({Map<String, dynamic> jsonMap}) async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
