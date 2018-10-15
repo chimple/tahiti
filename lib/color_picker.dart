@@ -148,15 +148,15 @@ class ColorPickerState extends State<ColorPicker> {
           widget.getColor(selectedColor);
         },
         constraints: new BoxConstraints.tightFor(
-          height: widget.orientation == Orientation.portrait ? 40.0 : 60.0,
-          width: widget.orientation == Orientation.portrait ? 60.0 : 30.0,
+          height: widget.orientation == Orientation.portrait ?  MediaQuery.of(context).size.width * .04 : MediaQuery.of(context).size.width * .04,
+          width: widget.orientation == Orientation.portrait ? MediaQuery.of(context).size.width * .04 : MediaQuery.of(context).size.width * .04
         ),
         fillColor: color,
         shape: new CircleBorder(
           side: new BorderSide(
             color:
                 color == selectedColor ? Colors.black : const Color(0xFFD5D7DA),
-            width: 4.0,
+            width: widget.orientation == Orientation.portrait ?  MediaQuery.of(context).size.width * .005 : MediaQuery.of(context).size.width * .003,
           ),
         ),
       ));
