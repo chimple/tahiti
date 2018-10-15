@@ -166,65 +166,55 @@ class ImageEditorState extends State<ImageEditor> {
         color: Colors.white,
         height: 6.0,
       ),
-      new Expanded(
-          flex: 2,
-          child: InkWell(
-            onTap: () {
-              // widget.model.isEditing = false;
-              // if (widget.model.imagePath != null)
-              //   widget.model.addImage(
-              //       widget.model.imagePath, Colors.white, BlendMode.color);
-            },
-            child: new ListView(
-              scrollDirection: Axis.horizontal,
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              // scrollDirection: Axis.horizontal,
-              children: _nameOfFilters
-                  .map((count) => Column(children: <Widget>[
-                        Center(
-                            child: RawMaterialButton(
-                          onPressed: () {
-                            setState(() {
-                              borderColor =
-                                  listColor[_nameOfFilters.indexOf(count)];
-                            });
-                            _multiColor(
-                                listColor[_nameOfFilters.indexOf(count)],
-                                listBlendMode[_nameOfFilters.indexOf(count)]);
-                          },
-                          constraints: new BoxConstraints.tightFor(
-                            width: size.width * .19,
-                            height: size.height * .19,
+      new Container(
+          height: size.height * .178,
+          // flex: 2,
+          child: new ListView(
+            scrollDirection: Axis.horizontal,
+            children: _nameOfFilters
+                .map((count) => Column(children: <Widget>[
+                      Center(
+                          child: RawMaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            borderColor =
+                                listColor[_nameOfFilters.indexOf(count)];
+                          });
+                          _multiColor(listColor[_nameOfFilters.indexOf(count)],
+                              listBlendMode[_nameOfFilters.indexOf(count)]);
+                        },
+                        constraints: new BoxConstraints.tightFor(
+                          width: size.width * .14,
+                          height: size.height * .159,
+                        ),
+                        child: widget.imagePath != null
+                            ? Padding(
+                                padding: EdgeInsets.all(2.0),
+                                child: Image.file(
+                                  File(widget.imagePath),
+                                  color:
+                                      listColor[_nameOfFilters.indexOf(count)],
+                                  colorBlendMode: listBlendMode[
+                                      _nameOfFilters.indexOf(count)],
+                                ),
+                              )
+                            : Container(),
+                        shape: new BeveledRectangleBorder(
+                          side: new BorderSide(
+                            color: _nameOfFilters.indexOf(count) ==
+                                    listColor.indexOf(borderColor)
+                                ? Color(roundColor)
+                                : const Color(0xffffff),
+                            width: 3.0,
                           ),
-                          child: widget.imagePath != null
-                              ? Padding(
-                                  padding: EdgeInsets.all(2.0),
-                                  child: Image.file(
-                                    File(widget.imagePath),
-                                    color: listColor[
-                                        _nameOfFilters.indexOf(count)],
-                                    colorBlendMode: listBlendMode[
-                                        _nameOfFilters.indexOf(count)],
-                                  ),
-                                )
-                              : Container(),
-                          shape: new BeveledRectangleBorder(
-                            side: new BorderSide(
-                              color: _nameOfFilters.indexOf(count) ==
-                                      listColor.indexOf(borderColor)
-                                  ? Color(roundColor)
-                                  : const Color(0xffffff),
-                              width: 3.0,
-                            ),
-                          ),
-                        )),
-                        Text(
-                          _nameOfFilters[i++],
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ]))
-                  .toList(growable: false),
-            ),
+                        ),
+                      )),
+                      Text(
+                        _nameOfFilters[i++],
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ]))
+                .toList(growable: false),
           ))
 
       // ),

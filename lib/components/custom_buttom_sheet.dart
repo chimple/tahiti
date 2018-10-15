@@ -7,6 +7,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 const Duration _kBottomSheetDuration = Duration(milliseconds: 400);
@@ -187,6 +188,14 @@ class _ModalBottomSheet<T> extends StatefulWidget {
 }
 
 class _ModalBottomSheetState<T> extends State<_ModalBottomSheet<T>> {
+  @override
+  initState() {
+    SystemChrome.setEnabledSystemUIOverlays(
+      [SystemUiOverlay.bottom],
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new GestureDetector(

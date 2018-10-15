@@ -21,6 +21,12 @@ class _StickerEditorState extends State<StickerEditor>
     with SingleTickerProviderStateMixin {
   Animation<double> animation;
   AnimationController controller;
+  @override
+  initState() {
+    color = widget.color;
+    blendMode = widget.blendMode;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
