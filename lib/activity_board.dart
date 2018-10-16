@@ -66,53 +66,85 @@ class ActivityBoardState extends State<ActivityBoard> {
       child: ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) => Stack(
               children: <Widget>[
-                _paperBuilder(),
+                // _paperBuilder(),
+                Center(
+                  child: Container(
+                    height: orientation == Orientation.portrait
+                        ? size.width
+                        : size.height,
+                    width: orientation == Orientation.portrait
+                        ? size.width
+                        : size.height,
+                    color: Colors.white,
+                    child: AspectRatio(
+                        aspectRatio: 1.0,
+                        child: Paper(
+                          previewContainerKey: _previewContainerKey,
+                        )),
+                  ),
+                ),
                 Positioned(
                   top: 0.0,
-                  left: orientation == Orientation.portrait?0.0:null,
+                  left: orientation == Orientation.portrait ? 0.0 : null,
                   right: 0.0,
-                  bottom: orientation == Orientation.portrait?null:0.0,
+                  bottom: orientation == Orientation.portrait ? null : 0.0,
                   child: Container(
                     alignment: Alignment.centerRight,
-                    height: orientation == Orientation.portrait? (size.height - size.width) * .25:(size.width - size.height) * .25,
-                    width: orientation == Orientation.portrait? (size.height - size.width) * .4:(size.width - size.height) * .15,
+                    height: orientation == Orientation.portrait
+                        ? (size.height - size.width) / 2
+                        : (size.width - size.height) * .25,
+                    width: orientation == Orientation.portrait
+                        ? (size.height - size.width) * .4
+                        : (size.width - size.height) / 2,
                     color: Color(0xff2b3f4c),
                   ),
                 ),
                 Positioned(
                   bottom: 0.0,
-                  right: orientation == Orientation.portrait?0.0:null,
+                  right: orientation == Orientation.portrait ? 0.0 : null,
                   left: 0.0,
-                  top: orientation == Orientation.portrait?null:0.0,
+                  top: orientation == Orientation.portrait ? null : 0.0,
                   child: Container(
                     alignment: Alignment.centerRight,
-                    height: orientation == Orientation.portrait?(size.height - size.width) * .8:(size.width - size.height) * .8,
-                    width: orientation == Orientation.portrait? (size.height - size.width) * .4: (size.width - size.height) * .4,
+                    height: orientation == Orientation.portrait
+                        ? (size.height - size.width) / 2
+                        : (size.width - size.height) * .8,
+                    width: orientation == Orientation.portrait
+                        ? (size.height - size.width) * .4
+                        : (size.width - size.height) / 2,
                     color: Color(0xff2b3f4c),
                   ),
                 ),
                 Positioned(
-                    top: (size.height-size.width) * .04,
+                    top: 0.0,
                     left: 0.0,
-                    right: size.width * .08,
-                    child: Stack(children: <Widget>[
-                      orientation == Orientation.portrait
-                          ? Container(
-                              alignment: Alignment.centerRight,
-                              height: size.height * .06,
-                              width: size.width * .4,
-                              child: Text(
-                                widget.title ?? '',
-                                style: TextStyle(
-                                  fontSize: size.height * .03,
-                                ),
-                              ))
-                          : Container(),
-                      Positioned(
-                          left: size.width * .4,
-                          right: 0.0,
-                          child: SelectSticker(side: DisplaySide.first))
-                    ])),
+                    right: 0.0,
+                    child: orientation == Orientation.portrait
+                        ? Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: Colors.black,
+                                      width: (size.height - size.width) * .01)),
+                            ),
+                            alignment: Alignment.center,
+                            height: (size.height - size.width) * .2,
+                            // width: size.width * .4,
+                            child: Text(
+                              widget.title ?? '',
+                              style: TextStyle(
+                                fontSize: (size.height - size.width) * .1,
+                              ),
+                            ))
+                        : Container()),
+                Positioned(
+                    top: orientation == Orientation.portrait
+                        ? (size.height - size.width) / 4
+                        : 0.0,
+                    right: orientation == Orientation.portrait ?0.0:null,
+                    left: orientation == Orientation.portrait ? 0.0: (size.width - size.height) /6,
+                    bottom: orientation == Orientation.portrait ? null : 0.0,
+                    child: SelectSticker(side: DisplaySide.first)),
                 Positioned(
                     bottom: 0.0,
                     left: 0.0,
@@ -140,15 +172,10 @@ class ActivityBoardState extends State<ActivityBoard> {
                   ),
                 ),
                 Positioned(
-                  bottom: orientation == Orientation.portrait
-                      ? (size.height-size.width) * .6
-                      : (size.height-size.width) * .2,
+                  top: 0.0,
                   right: orientation == Orientation.portrait
-                      ? (size.height-size.width) * .05
-                      : null,
-                  left: orientation == Orientation.portrait
-                      ? null
-                      : (size.height-size.width) * .25,
+                      ? size.width * .08
+                      : size.width * .06,
                   child: PaperActions(
                     action: "UndoRedoAction",
                   ),

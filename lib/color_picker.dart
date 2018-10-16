@@ -54,6 +54,7 @@ Color selectedColor = Color(0xFFFF0000);
 class ColorPickerState extends State<ColorPicker> {
   ScrollController _scrollController = new ScrollController();
   Offset scrollOffset;
+  Size size;
 
   _backwardButtonBehaviour() {
     setState(() {
@@ -79,6 +80,7 @@ class ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
         flex: 3,
@@ -148,15 +150,15 @@ class ColorPickerState extends State<ColorPicker> {
           widget.getColor(selectedColor);
         },
         constraints: new BoxConstraints.tightFor(
-          height: widget.orientation == Orientation.portrait ?  MediaQuery.of(context).size.width * .04 : MediaQuery.of(context).size.width * .04,
-          width: widget.orientation == Orientation.portrait ? MediaQuery.of(context).size.width * .04 : MediaQuery.of(context).size.width * .04
+          height: widget.orientation == Orientation.portrait ?  size.width * .04 : size.height * .045,
+          width: widget.orientation == Orientation.portrait ? size.width * .04 : size.height * .045
         ),
         fillColor: color,
         shape: new CircleBorder(
           side: new BorderSide(
             color:
                 color == selectedColor ? Colors.black : const Color(0xFFD5D7DA),
-            width: widget.orientation == Orientation.portrait ?  MediaQuery.of(context).size.width * .005 : MediaQuery.of(context).size.width * .003,
+            width: widget.orientation == Orientation.portrait ?  size.width * .005 : size.width * .003,
           ),
         ),
       ));
