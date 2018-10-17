@@ -433,7 +433,7 @@ class PathHistory {
       double thickness,
       Color color}) {
     paths.add(PathInfo(
-        points: [startPoint.dx, startPoint.dy],
+        points: [startPoint.dx.toInt(), startPoint.dy.toInt()],
         paintOption: paintOption,
         blurStyle: blurStyle,
         sigma: sigma,
@@ -462,7 +462,7 @@ class PathInfo {
 
   get path => _path;
 
-  List<double> points;
+  List<int> points;
   PaintOption paintOption;
   @JsonKey(fromJson: _blurStyleFromInt, toJson: _intFromBlurStyle)
   BlurStyle blurStyle;
@@ -480,10 +480,10 @@ class PathInfo {
       this.color = Colors.red}) {
     _path = new Path();
     if (points.length >= 2) {
-      _path.moveTo(points[0], points[1]);
+      _path.moveTo(points[0].toDouble(), points[1].toDouble());
     }
     for (int i = 2; i < points.length - 1; i += 2) {
-      _path.lineTo(points[i], points[i + 1]);
+      _path.lineTo(points[i].toDouble(), points[i + 1].toDouble());
     }
 
     _paint = Paint()
@@ -513,7 +513,7 @@ class PathInfo {
 
   addPoint(Offset nextPoint) {
     _path.lineTo(nextPoint.dx, nextPoint.dy);
-    points.addAll([nextPoint.dx, nextPoint.dy]);
+    points.addAll([nextPoint.dx.toInt(), nextPoint.dy.toInt()]);
   }
 }
 
