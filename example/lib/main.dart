@@ -10,7 +10,7 @@ void main() => runApp(new MyApp());
 
 final templates = [
   'assets/templates/LionSA1.svg',
-  'assets/templates/pattern.svg',
+  // 'assets/templates/pattern.svg',
   'assets/templates/pattern1.svg',
   'assets/filter_image/filterImage1.png',
   'assets/filter_image/filterImage2.png',
