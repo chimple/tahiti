@@ -188,7 +188,7 @@ class DrawingListState extends State<DrawingList> {
                       );
                     }))
                     .then((onValue){
-                      print('$onValue');
+                      //print('$onValue');
                 });},
                 child: ScopedModel<ActivityModel>(
                   model: ActivityModel(
