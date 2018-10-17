@@ -8,6 +8,7 @@ import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
 import 'package:tahiti/components/custom_buttom_sheet.dart';
 import 'package:tahiti/drawing.dart';
+import 'package:tahiti/masking.dart';
 import 'package:tahiti/select_sticker.dart';
 import 'package:tahiti/stickers.dart';
 import 'package:tahiti/text_editor.dart';
@@ -196,6 +197,8 @@ class PopupGridViewState extends State<PopupGridView> {
                             showCategorySreen(model, title);
                           } else if (title == 'assets/menu/text.png') {
                             showCategorySreen(model, title);
+                          } else if (title == 'assets/menu/masking.jpg') {
+                            showCategorySreen(model, title);
                           } else if (title == 'assets/menu/mic.png') {
                             model.things.forEach((t) {
                               if (t['type'] == 'nima' && t['asset'] != null) {
@@ -230,6 +233,10 @@ class PopupGridViewState extends State<PopupGridView> {
       );
     } else if (text == 'assets/menu/text.png') {
       return TextEditor(model: model);
+    } else if (text == 'assets/menu/masking.jpg') {
+      return Masking(
+        model: model,
+      );
     }
     // TODO::// for other components
     else if (text == 'assets/menu/mic.png') {

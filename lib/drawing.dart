@@ -277,12 +277,15 @@ class PainterController extends ChangeNotifier {
       }
       if (model.isDrawing) {
         _inDrag = true;
-        pathHistory.add(startPoint,
-            paintOption: paintOption,
-            blurStyle: blurStyle,
-            sigma: sigma,
-            thickness: thickness,
-            color: model.selectedColor);
+        pathHistory.add(
+          startPoint,
+          paintOption: paintOption,
+          blurStyle: blurStyle,
+          sigma: sigma,
+          thickness: thickness,
+          color: model.selectedColor,
+          image: model.getImage,
+        );
       }
     }
   }
@@ -319,6 +322,7 @@ class PainterController extends ChangeNotifier {
       notifyListeners();
     }
   }
+  
 
   void endCurrent(BuildContext context) {
     final model = ActivityModel.of(context);
@@ -362,11 +366,11 @@ class PainterController extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void doUnMask() {
-    paintOption = PaintOption.unMask;
+  void doMask() {
+    paintOption = PaintOption.masking;
     notifyListeners();
   }
 }
 
-enum PaintOption { paint, erase, unMask }
+enum PaintOption { paint, erase, masking }
 enum DrawingType { freeDrawing, geometricDrawing, lineDrawing }
