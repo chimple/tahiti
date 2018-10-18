@@ -5,7 +5,7 @@ class Masking extends StatelessWidget {
   final ActivityModel model;
 
   Masking({Key key, this.model}) : super(key: key);
-  List<String> listOfImage = [
+  static final List<String> listOfImage = [
     'assets/masking/pattern1.png',
     'assets/masking/pattern2.jpg',
     'assets/masking/pattern3.png',

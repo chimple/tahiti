@@ -284,10 +284,11 @@ class PainterController extends ChangeNotifier {
           startPoint,
           paintOption: paintOption,
           blurStyle: blurStyle,
-          sigma: sigma,
+          sigma: paintOption == PaintOption.masking ? 10.0 : sigma,
           thickness: thickness,
           color: model.selectedColor,
-          image: model.getImage,
+          maskImage:
+              paintOption == PaintOption.masking ? model.maskImageName : null,
         );
       }
     }
@@ -325,7 +326,6 @@ class PainterController extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
 
   void endCurrent(BuildContext context, Offset nextPoint) {
     final model = ActivityModel.of(context);

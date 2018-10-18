@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:tahiti/masking.dart';
 import 'package:tahiti/paper_actions.dart';
 import 'dart:io';
 import 'dart:async';
@@ -38,7 +39,7 @@ class ActivityBoard extends StatefulWidget {
 class ActivityBoardState extends State<ActivityBoard> {
   ActivityModel _activityModel;
   GlobalKey _previewContainerKey;
-
+  bool _isLoading = true;
   Size size;
   Orientation orientation;
   @override
@@ -46,6 +47,12 @@ class ActivityBoardState extends State<ActivityBoard> {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     _previewContainerKey = GlobalKey();
+    _initData();
+  }
+
+  void _initData() async {
+    await Future.forEach(
+        Masking.listOfImage, (i) async => ActivityModel.cacheImage(i));
     _activityModel = (widget.json != null
         ? ActivityModel(paintData: PaintData.fromJson(widget.json))
         : ActivityModel(
@@ -55,10 +62,20 @@ class ActivityBoardState extends State<ActivityBoard> {
                 template: widget.template,
                 pathHistory: PathHistory())))
       ..saveCallback = widget.saveCallback;
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return new SizedBox(
+        width: 20.0,
+        height: 20.0,
+        child: new CircularProgressIndicator(),
+      );
+    }
     orientation = MediaQuery.of(context).orientation;
     size = MediaQuery.of(context).size;
     return ScopedModel<ActivityModel>(
@@ -141,8 +158,10 @@ class ActivityBoardState extends State<ActivityBoard> {
                     top: orientation == Orientation.portrait
                         ? (size.height - size.width) / 4
                         : 0.0,
-                    right: orientation == Orientation.portrait ?0.0:null,
-                    left: orientation == Orientation.portrait ? 0.0: (size.width - size.height) /6,
+                    right: orientation == Orientation.portrait ? 0.0 : null,
+                    left: orientation == Orientation.portrait
+                        ? 0.0
+                        : (size.width - size.height) / 6,
                     bottom: orientation == Orientation.portrait ? null : 0.0,
                     child: SelectSticker(side: DisplaySide.first)),
                 Positioned(

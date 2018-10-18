@@ -13,6 +13,8 @@ import 'dart:ui' as ui;
 import 'dart:ui' as ui show Image;
 part 'activity_model.g.dart';
 
+Map<String, ui.Image> maskImageMap = {};
+
 class ActivityModel extends Model {
   PaintData paintData;
   List<Map<String, dynamic>> _undoStack = [];
@@ -41,6 +43,8 @@ class ActivityModel extends Model {
   bool _editSelectedThing = false;
   Color cls;
   BlendMode blnd;
+  String maskImageName;
+
   ActivityModel({@required this.paintData}) {
     _painterController =
         new PainterController(pathHistory: this.paintData.pathHistory);
@@ -373,28 +377,30 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  ui.Image _image;
-  ui.Image get getImage => _image;
   void addMaskImage(String text) {
     painterController.paintOption = PaintOption.masking;
     painterController.drawingType = DrawingType.freeDrawing;
     painterController.blurStyle = BlurStyle.normal;
     painterController.sigma = 10.0;
     isDrawing = true;
-
-    load(text).then((i) {
-      _image = i;
-    });
+    cacheImage(text);
+    maskImageName = text;
     notifyListeners();
   }
 
-  Future<ui.Image> load(String asset) async {
-    ByteData data = await rootBundle.load(asset);
-    ui.Codec codec = await ui.instantiateImageCodec(
-      data.buffer.asUint8List(),
-    );
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return fi.image;
+  static Future<void> cacheImage(String asset) async {
+    if (maskImageMap[asset] == null) {
+      try {
+        ByteData data = await rootBundle.load(asset);
+        ui.Codec codec = await ui.instantiateImageCodec(
+          data.buffer.asUint8List(),
+        );
+        ui.FrameInfo fi = await codec.getNextFrame();
+        maskImageMap[asset] = fi.image;
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 }
 
@@ -454,7 +460,7 @@ class PathHistory {
       double sigma,
       double thickness,
       Color color,
-      ui.Image image}) {
+      String maskImage}) {
     paths.add(PathInfo(
         points: [startPoint.dx.toInt(), startPoint.dy.toInt()],
         paintOption: paintOption,
@@ -462,7 +468,7 @@ class PathHistory {
         sigma: sigma,
         thickness: thickness,
         color: color,
-        image: image));
+        maskImage: maskImage));
   }
 
   void draw(PaintingContext context, Size size) {
@@ -491,7 +497,7 @@ class PathInfo {
   @JsonKey(fromJson: _blurStyleFromInt, toJson: _intFromBlurStyle)
   BlurStyle blurStyle;
   double sigma;
-  ui.Image image;
+  String maskImage;
   double thickness;
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
   Color color;
@@ -503,7 +509,7 @@ class PathInfo {
       this.sigma = 0.0,
       this.thickness = 8.0,
       this.color = Colors.red,
-      this.image}) {
+      this.maskImage}) {
     _path = new Path();
     if (points.length >= 2) {
       _path.moveTo(points[0].toDouble(), points[1].toDouble());
@@ -528,10 +534,10 @@ class PathInfo {
         _paint.maskFilter = MaskFilter.blur(blurStyle, sigma);
         break;
       case PaintOption.masking:
-        if (image != null)
+        if (maskImage != null && maskImageMap[maskImage] != null)
           // _paint.color = color;
-          _paint.shader = ImageShader(
-              image, TileMode.repeated, TileMode.repeated, deviceTransform);
+          _paint.shader = ImageShader(maskImageMap[maskImage],
+              TileMode.repeated, TileMode.repeated, deviceTransform);
 
         break;
       case PaintOption.erase:
