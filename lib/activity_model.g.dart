@@ -94,5 +94,5 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
 const _$PaintOptionEnumMap = <PaintOption, dynamic>{
   PaintOption.paint: 'paint',
   PaintOption.erase: 'erase',
-  PaintOption.unMask: 'unMask'
+  PaintOption.masking: 'unMask'
 };

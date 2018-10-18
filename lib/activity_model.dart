@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:flutter/services.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
 import 'package:tahiti/recorder.dart';
@@ -6,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'dart:ui' as ui;
+import 'dart:ui' as ui show Image;
 part 'activity_model.g.dart';
 
 class ActivityModel extends Model {
@@ -368,11 +373,28 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  String unMaskImagePath;
-  void addUnMaskImage(String text) {
-    // print("text: $text");
-    unMaskImagePath = text;
+  ui.Image _image;
+  ui.Image get getImage => _image;
+  void addMaskImage(String text) {
+    painterController.paintOption = PaintOption.masking;
+    painterController.drawingType = DrawingType.freeDrawing;
+    painterController.blurStyle = BlurStyle.normal;
+    painterController.sigma = 10.0;
+    isDrawing = true;
+
+    load(text).then((i) {
+      _image = i;
+    });
     notifyListeners();
+  }
+
+  Future<ui.Image> load(String asset) async {
+    ByteData data = await rootBundle.load(asset);
+    ui.Codec codec = await ui.instantiateImageCodec(
+      data.buffer.asUint8List(),
+    );
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return fi.image;
   }
 }
 
@@ -431,14 +453,16 @@ class PathHistory {
       BlurStyle blurStyle,
       double sigma,
       double thickness,
-      Color color}) {
+      Color color,
+      ui.Image image}) {
     paths.add(PathInfo(
         points: [startPoint.dx.toInt(), startPoint.dy.toInt()],
         paintOption: paintOption,
         blurStyle: blurStyle,
         sigma: sigma,
         thickness: thickness,
-        color: color));
+        color: color,
+        image: image));
   }
 
   void draw(PaintingContext context, Size size) {
@@ -467,17 +491,19 @@ class PathInfo {
   @JsonKey(fromJson: _blurStyleFromInt, toJson: _intFromBlurStyle)
   BlurStyle blurStyle;
   double sigma;
+  ui.Image image;
   double thickness;
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
   Color color;
-
+  final double devicePixelRatio = ui.window.devicePixelRatio;
   PathInfo(
       {this.points,
       this.paintOption = PaintOption.paint,
       this.blurStyle = BlurStyle.normal,
       this.sigma = 0.0,
       this.thickness = 8.0,
-      this.color = Colors.red}) {
+      this.color = Colors.red,
+      this.image}) {
     _path = new Path();
     if (points.length >= 2) {
       _path.moveTo(points[0].toDouble(), points[1].toDouble());
@@ -485,7 +511,11 @@ class PathInfo {
     for (int i = 2; i < points.length - 1; i += 2) {
       _path.lineTo(points[i].toDouble(), points[i + 1].toDouble());
     }
-
+    final Float64List deviceTransform = new Float64List(16)
+      ..[0] = devicePixelRatio
+      ..[5] = devicePixelRatio
+      ..[10] = 1.0
+      ..[15] = 4.0;
     _paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
@@ -497,8 +527,12 @@ class PathInfo {
       case PaintOption.paint:
         _paint.maskFilter = MaskFilter.blur(blurStyle, sigma);
         break;
-      case PaintOption.unMask:
-        _paint.blendMode = BlendMode.clear;
+      case PaintOption.masking:
+        if (image != null)
+          // _paint.color = color;
+          _paint.shader = ImageShader(
+              image, TileMode.repeated, TileMode.repeated, deviceTransform);
+
         break;
       case PaintOption.erase:
         _paint.blendMode = BlendMode.clear;
