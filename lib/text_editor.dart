@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/category_screen.dart';
@@ -47,6 +48,7 @@ class TextEditorState extends State<TextEditor> {
   String userTyped;
   int typeIndex = 0;
   Color color;
+  Size size;
   bool temp = false;
   FocusNode myFocusNode = new FocusNode();
 
@@ -57,14 +59,13 @@ class TextEditorState extends State<TextEditor> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed
     myFocusNode.dispose();
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.dispose();
   }
-
 
   void setColor(Color c) {
     setState(() {
@@ -75,6 +76,7 @@ class TextEditorState extends State<TextEditor> {
   @override
   Widget build(BuildContext context) {
     print("TextEditor");
+    size = MediaQuery.of(context).size;
     // TODO: implement build
     return Material(
         animationDuration: Duration(milliseconds: 1000),
@@ -85,7 +87,7 @@ class TextEditorState extends State<TextEditor> {
               top: 100.0,
               left: 20.0,
               right: 20.0,
-              bottom: 130.0,
+              bottom: size.height * .18,
               child: Center(
                 child: TextField(
                   controller: TextEditingController(text: userTyped),
@@ -105,18 +107,22 @@ class TextEditorState extends State<TextEditor> {
             ),
             Positioned(
               bottom: 70.0,
-              left: 0.0,
-              right: 0.0,
-              child: ColorPicker(
-                  getColor: (color) => setColor(color),
-                  model: widget.model,
-                  orientation: Orientation.portrait),
+              left: size.width * .15,
+              right: size.width * .15,
+              child: SizedBox(
+                height: size.height * .05,
+                child: ColorPicker(
+                    getColor: (color) => setColor(color),
+                    model: widget.model,
+                    orientation: Orientation.portrait),
+              ),
             ),
             Positioned(
                 bottom: 0.0,
                 right: 0.0,
                 left: 0.0,
                 child: Container(
+                  color: Colors.red,
                   height: 60.0,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -152,7 +158,7 @@ class TextEditorState extends State<TextEditor> {
               right: 0.0,
               left: 0.0,
               child: Container(
-                  height: MediaQuery.of(context).size.height * .06,
+                  height: size.height * .1,
                   color: Colors.blueGrey[100],
                   child: Row(children: <Widget>[
                     Expanded(
@@ -160,12 +166,12 @@ class TextEditorState extends State<TextEditor> {
                         child: Center(
                             child: Text(
                           "Text",
-                          style: TextStyle(fontSize: 60.0),
+                          style: TextStyle(fontSize: size.height * .06),
                         ))),
                     Center(
                       child: IconButton(
                         color: Colors.black,
-                        iconSize: 60.0,
+                        iconSize: size.height * .06,
                         icon: Icon(Icons.done),
                         onPressed: () {
                           setState(() {

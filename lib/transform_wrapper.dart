@@ -46,7 +46,7 @@ class _TransformWrapperState extends State<TransformWrapper>
   double _scale;
   double _scaleAtStart;
 
-  double _size;
+  Size _size;
   Orientation orientation;
 
   double _rotate;
@@ -77,17 +77,17 @@ class _TransformWrapperState extends State<TransformWrapper>
     if (widget.model.selectedThingId == widget.thing['id'] &&
         widget.model.userTouch) {
       if (details.focalPoint.dx >
-              (orientation == Orientation.portrait ? 0.0 : _size / 1.5) &&
+              (orientation == Orientation.portrait ? _size.width * .03 : _size.width * .298) &&
           details.focalPoint.dy >
-              (orientation == Orientation.portrait ? _size / 1.5 : _size / 4) &&
+              (orientation == Orientation.portrait ? _size.height * .09 : 50.0) &&
           (details.focalPoint.dy <
               (orientation == Orientation.portrait
-                  ? widget.constraints.maxHeight + (_size / 2)
-                  : widget.constraints.maxHeight + (_size / 6))) &&
+                  ? widget.constraints.maxHeight + (_size.height * .02)
+                  : widget.constraints.maxHeight- (_size.width * .02))) &&
           (details.focalPoint.dx <
               (orientation == Orientation.portrait
-                  ? widget.constraints.maxWidth + (_size / 2)
-                  : widget.constraints.maxHeight + (_size / 2)))) {
+                  ? widget.constraints.maxWidth - (_size.width * .04)
+                  : widget.constraints.maxWidth + (_size.width * .25)))) {
         setState(() {
           Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
           _translate = _translateAtStart + pos - _focalPointAtStart;
@@ -132,11 +132,12 @@ class _TransformWrapperState extends State<TransformWrapper>
   @override
   Widget build(BuildContext context) {
     orientation = MediaQuery.of(context).orientation;
-    _size = MediaQuery.of(context).size.width >
-            MediaQuery.of(context).size.height
-        ? MediaQuery.of(context).size.width - MediaQuery.of(context).size.height
-        : MediaQuery.of(context).size.height -
-            MediaQuery.of(context).size.width;
+    _size = MediaQuery.of(context).size;
+//        >
+//            MediaQuery.of(context).size.height
+//        ? MediaQuery.of(context).size.width - MediaQuery.of(context).size.height
+//        : MediaQuery.of(context).size.height -
+//            MediaQuery.of(context).size.width;
     final model = ActivityModel.of(context);
     return Positioned(
       left: _translate.dx,

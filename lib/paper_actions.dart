@@ -14,8 +14,12 @@ class PaperActions extends StatefulWidget {
 }
 
 class PaperActionsState extends State<PaperActions> {
+  Orientation orientation;
+  Size size;
   @override
   Widget build(BuildContext context) {
+    orientation = MediaQuery.of(context).orientation;
+    size = MediaQuery.of(context).size;
     // TODO: implement build
     return ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) {
@@ -23,16 +27,21 @@ class PaperActionsState extends State<PaperActions> {
         return Container(
           child: IconButton(
               icon: Icon(Icons.arrow_back),
-              iconSize: MediaQuery.of(context).size.height * .03,
+              iconSize:
+                  MediaQuery.of(context).orientation == Orientation.portrait
+                      ? size.width * .04
+                      : size.width * .04,
               color: Colors.white,
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop('refresh');
               }),
         );
       } else if (widget.action == "saveAction") {
         return IconButton(
             icon: Icon(Icons.menu),
-            iconSize: MediaQuery.of(context).size.height * .03,
+            iconSize: MediaQuery.of(context).orientation == Orientation.portrait
+                ? size.width * .04
+                : size.width * .05,
             color: Colors.white,
             onPressed: () {
               widget.onClick();
@@ -50,12 +59,18 @@ class PaperActionsState extends State<PaperActions> {
           children: <Widget>[
             IconButton(
                 icon: Icon(Icons.undo),
-                iconSize: MediaQuery.of(context).orientation == Orientation.portrait ?30.0: 50.0,
+                iconSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? size.height * .04
+                        : size.height * .05,
                 color: Colors.white,
                 onPressed: model.canUndo() ? () => model.undo() : null),
             IconButton(
                 icon: Icon(Icons.redo),
-                iconSize: MediaQuery.of(context).orientation == Orientation.portrait ?30.0: 50.0,
+                iconSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? size.height * .04
+                        : size.height * .05,
                 color: Colors.white,
                 onPressed: model.canRedo() ? () => model.redo() : null),
           ],

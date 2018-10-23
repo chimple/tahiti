@@ -30,17 +30,25 @@ PathHistory _$PathHistoryFromJson(Map<String, dynamic> json) {
     ..paths = (json['paths'] as List)
         ?.map((e) =>
             e == null ? null : PathInfo.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+        ?.toList()
+    ..startX = (json['startX'] as num)?.toDouble()
+    ..startY = (json['startY'] as num)?.toDouble()
+    ..x = (json['x'] as num)?.toDouble()
+    ..y = (json['y'] as num)?.toDouble();
 }
 
 Map<String, dynamic> _$PathHistoryToJson(PathHistory instance) =>
-    <String, dynamic>{'paths': instance.paths};
+    <String, dynamic>{
+      'paths': instance.paths,
+      'startX': instance.startX,
+      'startY': instance.startY,
+      'x': instance.x,
+      'y': instance.y
+    };
 
 PathInfo _$PathInfoFromJson(Map<String, dynamic> json) {
   return PathInfo(
-      points: (json['points'] as List)
-          ?.map((e) => (e as num)?.toDouble())
-          ?.toList(),
+      points: (json['points'] as List)?.map((e) => e as int)?.toList(),
       paintOption:
           _$enumDecodeNullable(_$PaintOptionEnumMap, json['paintOption']),
       blurStyle: json['blurStyle'] == null
@@ -48,8 +56,8 @@ PathInfo _$PathInfoFromJson(Map<String, dynamic> json) {
           : _blurStyleFromInt(json['blurStyle'] as int),
       sigma: (json['sigma'] as num)?.toDouble(),
       thickness: (json['thickness'] as num)?.toDouble(),
-      color:
-          json['color'] == null ? null : _colorFromInt(json['color'] as int));
+      color: json['color'] == null ? null : _colorFromInt(json['color'] as int),
+      maskImage: json['maskImage'] as String);
 }
 
 Map<String, dynamic> _$PathInfoToJson(PathInfo instance) => <String, dynamic>{
@@ -59,6 +67,7 @@ Map<String, dynamic> _$PathInfoToJson(PathInfo instance) => <String, dynamic>{
           ? null
           : _intFromBlurStyle(instance.blurStyle),
       'sigma': instance.sigma,
+      'maskImage': instance.maskImage,
       'thickness': instance.thickness,
       'color': instance.color == null ? null : _intFromColor(instance.color)
     };
@@ -86,5 +95,5 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
 const _$PaintOptionEnumMap = <PaintOption, dynamic>{
   PaintOption.paint: 'paint',
   PaintOption.erase: 'erase',
-  PaintOption.unMask: 'unMask'
+  PaintOption.masking: 'masking'
 };

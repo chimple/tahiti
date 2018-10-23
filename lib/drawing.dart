@@ -27,7 +27,7 @@ class Drawing extends StatefulWidget {
 class RollerState extends State<Drawing> {
   GlobalKey previewContainer = new GlobalKey();
   int count = 0;
-
+  Offset pos;
   @override
   void initState() {
     super.initState();
@@ -51,7 +51,6 @@ class RollerState extends State<Drawing> {
   }
 
   void _handleDragUpdate(DragUpdateDetails update) {
-    Offset pos;
     PainterController painterController =
         ActivityModel.of(context).painterController;
     pos = (context.findRenderObject() as RenderBox)
@@ -66,9 +65,8 @@ class RollerState extends State<Drawing> {
   void _handleDragEnd(DragEndDetails details) {
     ActivityModel model = ActivityModel.of(context);
     PainterController painterController = model.painterController;
-
     if (model.pathHistory.paths.length > 0) {
-      painterController.endCurrent(context);
+      painterController.endCurrent(context, pos);
       model.addDrawing(model.pathHistory.paths.last);
     }
     setState(() {
@@ -217,7 +215,12 @@ class _ScratchCardRender extends RenderProxyBox {
     if (child != null) {
       context.canvas.saveLayer(offset & size, Paint());
       context.paintChild(child, offset);
-      path.draw(context, size);
+      if (model.painterController.drawingType == DrawingType.lineDrawing) {
+        path.draw(context, size);
+        path.drawStraightLine(context, size);
+      } else {
+        path.draw(context, size);
+      }
       context.canvas.restore();
     }
   }
@@ -277,12 +280,16 @@ class PainterController extends ChangeNotifier {
       }
       if (model.isDrawing) {
         _inDrag = true;
-        pathHistory.add(startPoint,
-            paintOption: paintOption,
-            blurStyle: blurStyle,
-            sigma: sigma,
-            thickness: thickness,
-            color: model.selectedColor);
+        pathHistory.add(
+          startPoint,
+          paintOption: paintOption,
+          blurStyle: blurStyle,
+          sigma: paintOption == PaintOption.masking ? 10.0 : sigma,
+          thickness: thickness,
+          color: model.selectedColor,
+          maskImage:
+              paintOption == PaintOption.masking ? model.maskImageName : null,
+        );
       }
     }
   }
@@ -320,12 +327,11 @@ class PainterController extends ChangeNotifier {
     }
   }
 
-  void endCurrent(BuildContext context) {
+  void endCurrent(BuildContext context, Offset nextPoint) {
     final model = ActivityModel.of(context);
-    Path path = paths.last.path;
     _inDrag = false;
     if (model.painterController.drawingType == DrawingType.lineDrawing) {
-      path.lineTo(pathHistory.x, pathHistory.y);
+      pathHistory.paths.last.addPoint(nextPoint);
     }
     pathHistory.x = pathHistory.startX;
     pathHistory.y = pathHistory.startY;
@@ -362,11 +368,11 @@ class PainterController extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void doUnMask() {
-    paintOption = PaintOption.unMask;
+  void doMask() {
+    paintOption = PaintOption.masking;
     notifyListeners();
   }
 }
 
-enum PaintOption { paint, erase, unMask }
+enum PaintOption { paint, erase, masking }
 enum DrawingType { freeDrawing, geometricDrawing, lineDrawing }

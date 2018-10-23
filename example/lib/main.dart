@@ -1,16 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tahiti/masking.dart';
 import 'package:tahiti/tahiti.dart';
 
 void main() => runApp(new MyApp());
 
 final templates = [
   'assets/templates/LionSA1.svg',
-  'assets/templates/pattern.svg',
+  // 'assets/templates/pattern.svg',
   'assets/templates/pattern1.svg',
   'assets/filter_image/filterImage1.png',
   'assets/filter_image/filterImage2.png',
@@ -154,6 +156,9 @@ class DrawingListState extends State<DrawingList> {
 
   void _initData() async {
     prefs = await SharedPreferences.getInstance();
+    await Future.forEach(
+        Masking.listOfImage, (i) async => ActivityModel.cacheImage(i));
+
     setState(() {
       _isLoading = false;
     });
@@ -180,13 +185,16 @@ class DrawingListState extends State<DrawingList> {
       crossAxisSpacing: 8.0,
       children: _drawings
           .map((d) => RaisedButton(
-                onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                            builder: (BuildContext context) {
-                      return DrawingWrapper(
-                        jsonMap: json.decode(d),
-                      );
-                    })),
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute<void>(builder: (BuildContext context) {
+                    return DrawingWrapper(
+                      jsonMap: json.decode(d),
+                    );
+                  })).then((onValue) {
+                    //print('$onValue');
+                  });
+                },
                 child: ScopedModel<ActivityModel>(
                   model: ActivityModel(
                       paintData: PaintData.fromJson(json.decode(d)))
