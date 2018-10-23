@@ -76,30 +76,30 @@ class RollerState extends State<Drawing> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, box) {
-        return ClipRect(
-            child: RawGestureDetector(
-                behavior: HitTestBehavior.opaque,
-                gestures: <Type, GestureRecognizerFactory>{
-                  ImmediateMultiDragGestureRecognizer:
-                      GestureRecognizerFactoryWithHandlers<
-                          ImmediateMultiDragGestureRecognizer>(
-                    () => ImmediateMultiDragGestureRecognizer(),
-                    (ImmediateMultiDragGestureRecognizer instance) {
-                      instance..onStart = _handleOnStart;
-                    },
-                  ),
-                },
-                child: RepaintBoundary(
-                  key: previewContainer,
+    return RepaintBoundary(
+      key: previewContainer,
+      child: LayoutBuilder(
+        builder: (context, box) {
+          return ClipRect(
+              child: RawGestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  gestures: <Type, GestureRecognizerFactory>{
+                    ImmediateMultiDragGestureRecognizer:
+                        GestureRecognizerFactoryWithHandlers<
+                            ImmediateMultiDragGestureRecognizer>(
+                      () => ImmediateMultiDragGestureRecognizer(),
+                      (ImmediateMultiDragGestureRecognizer instance) {
+                        instance..onStart = _handleOnStart;
+                      },
+                    ),
+                  },
                   child: _ScratchCardLayout(
                     child: Container(),
                     path: widget.model.pathHistory,
                     data: widget.model.painterController,
-                  ),
-                )));
-      },
+                  )));
+        },
+      ),
     );
   }
 }
