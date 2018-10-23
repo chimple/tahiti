@@ -44,7 +44,9 @@ flutter:
     - assets/filter_image/filterImage5.png
     - assets/filter_image/filterImage6.png
     - assets/nima_animation/
-      # For details regarding adding assets from package dependencies, see
+    - assets/masking/
+    
+   # For details regarding adding assets from package dependencies, see
   # https://flutter.io/assets-and-images/#from-packages
 
   # To add custom fonts to your application, add a fonts section here,

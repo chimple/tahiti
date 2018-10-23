@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
 import 'package:tahiti/recorder.dart';
@@ -6,7 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'dart:ui' as ui;
+import 'dart:ui' as ui show Image;
 part 'activity_model.g.dart';
+
+Map<String, ui.Image> maskImageMap = {};
 
 class ActivityModel extends Model {
   PaintData paintData;
@@ -36,6 +43,8 @@ class ActivityModel extends Model {
   bool _editSelectedThing = false;
   Color cls;
   BlendMode blnd;
+  String maskImageName;
+
   ActivityModel({@required this.paintData}) {
     _painterController =
         new PainterController(pathHistory: this.paintData.pathHistory);
@@ -368,11 +377,30 @@ class ActivityModel extends Model {
     notifyListeners();
   }
 
-  String unMaskImagePath;
-  void addUnMaskImage(String text) {
-    // print("text: $text");
-    unMaskImagePath = text;
+  void addMaskImage(String text) {
+    painterController.paintOption = PaintOption.masking;
+    painterController.drawingType = DrawingType.freeDrawing;
+    painterController.blurStyle = BlurStyle.normal;
+    painterController.sigma = 10.0;
+    isDrawing = true;
+    cacheImage(text);
+    maskImageName = text;
     notifyListeners();
+  }
+
+  static Future<void> cacheImage(String asset) async {
+    if (maskImageMap[asset] == null) {
+      try {
+        ByteData data = await rootBundle.load(asset);
+        ui.Codec codec = await ui.instantiateImageCodec(
+          data.buffer.asUint8List(),
+        );
+        ui.FrameInfo fi = await codec.getNextFrame();
+        maskImageMap[asset] = fi.image;
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 }
 
@@ -431,14 +459,16 @@ class PathHistory {
       BlurStyle blurStyle,
       double sigma,
       double thickness,
-      Color color}) {
+      Color color,
+      String maskImage}) {
     paths.add(PathInfo(
         points: [startPoint.dx.toInt(), startPoint.dy.toInt()],
         paintOption: paintOption,
         blurStyle: blurStyle,
         sigma: sigma,
         thickness: thickness,
-        color: color));
+        color: color,
+        maskImage: maskImage));
   }
 
   void draw(PaintingContext context, Size size) {
@@ -467,17 +497,19 @@ class PathInfo {
   @JsonKey(fromJson: _blurStyleFromInt, toJson: _intFromBlurStyle)
   BlurStyle blurStyle;
   double sigma;
+  String maskImage;
   double thickness;
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
   Color color;
-
+  final double devicePixelRatio = ui.window.devicePixelRatio;
   PathInfo(
       {this.points,
       this.paintOption = PaintOption.paint,
       this.blurStyle = BlurStyle.normal,
       this.sigma = 0.0,
       this.thickness = 8.0,
-      this.color = Colors.red}) {
+      this.color = Colors.red,
+      this.maskImage}) {
     _path = new Path();
     if (points.length >= 2) {
       _path.moveTo(points[0].toDouble(), points[1].toDouble());
@@ -485,7 +517,11 @@ class PathInfo {
     for (int i = 2; i < points.length - 1; i += 2) {
       _path.lineTo(points[i].toDouble(), points[i + 1].toDouble());
     }
-
+    final Float64List deviceTransform = new Float64List(16)
+      ..[0] = devicePixelRatio
+      ..[5] = devicePixelRatio
+      ..[10] = 1.0
+      ..[15] = 4.0;
     _paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
@@ -497,8 +533,12 @@ class PathInfo {
       case PaintOption.paint:
         _paint.maskFilter = MaskFilter.blur(blurStyle, sigma);
         break;
-      case PaintOption.unMask:
-        _paint.blendMode = BlendMode.clear;
+      case PaintOption.masking:
+        if (maskImage != null && maskImageMap[maskImage] != null)
+          // _paint.color = color;
+          _paint.shader = ImageShader(maskImageMap[maskImage],
+              TileMode.repeated, TileMode.repeated, deviceTransform);
+
         break;
       case PaintOption.erase:
         _paint.blendMode = BlendMode.clear;

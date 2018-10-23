@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:tahiti/masking.dart';
 import 'package:tahiti/paper_actions.dart';
 import 'dart:io';
 import 'dart:async';
@@ -38,12 +39,20 @@ class ActivityBoard extends StatefulWidget {
 class ActivityBoardState extends State<ActivityBoard> {
   ActivityModel _activityModel;
   GlobalKey _previewContainerKey;
-
+  bool _isLoading = true;
+  Size size;
+  Orientation orientation;
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     _previewContainerKey = GlobalKey();
+    _initData();
+  }
+
+  void _initData() async {
+    await Future.forEach(
+        Masking.listOfImage, (i) async => ActivityModel.cacheImage(i));
     _activityModel = (widget.json != null
         ? ActivityModel(paintData: PaintData.fromJson(widget.json))
         : ActivityModel(
@@ -53,70 +62,139 @@ class ActivityBoardState extends State<ActivityBoard> {
                 template: widget.template,
                 pathHistory: PathHistory())))
       ..saveCallback = widget.saveCallback;
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return new SizedBox(
+        width: 20.0,
+        height: 20.0,
+        child: new CircularProgressIndicator(),
+      );
+    }
+    orientation = MediaQuery.of(context).orientation;
+    size = MediaQuery.of(context).size;
     return ScopedModel<ActivityModel>(
       model: _activityModel,
       child: ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) => Stack(
               children: <Widget>[
-                _paperBuilder(),
+                // _paperBuilder(),
+                Center(
+                  child: Container(
+                    height: orientation == Orientation.portrait
+                        ? size.width
+                        : size.height,
+                    width: orientation == Orientation.portrait
+                        ? size.width
+                        : size.height,
+                    color: Colors.white,
+                    child: AspectRatio(
+                        aspectRatio: 1.0,
+                        child: Paper(
+                          previewContainerKey: _previewContainerKey,
+                        )),
+                  ),
+                ),
+                Positioned(
+                  top: 0.0,
+                  left: orientation == Orientation.portrait ? 0.0 : null,
+                  right: 0.0,
+                  bottom: orientation == Orientation.portrait ? null : 0.0,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    height: orientation == Orientation.portrait
+                        ? (size.height - size.width) / 2
+                        : (size.width - size.height) * .25,
+                    width: orientation == Orientation.portrait
+                        ? (size.height - size.width) * .4
+                        : (size.width - size.height) / 2,
+                    color: Color(0xff2b3f4c),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0.0,
+                  right: orientation == Orientation.portrait ? 0.0 : null,
+                  left: 0.0,
+                  top: orientation == Orientation.portrait ? null : 0.0,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    height: orientation == Orientation.portrait
+                        ? (size.height - size.width) / 2
+                        : (size.width - size.height) * .8,
+                    width: orientation == Orientation.portrait
+                        ? (size.height - size.width) * .4
+                        : (size.width - size.height) / 2,
+                    color: Color(0xff2b3f4c),
+                  ),
+                ),
                 Positioned(
                     top: 0.0,
                     left: 0.0,
                     right: 0.0,
-                    child: Row(children: <Widget>[
-                      MediaQuery.of(context).orientation == Orientation.portrait
-                          ? Container(
-                              alignment: Alignment.centerRight,
-                              height: MediaQuery.of(context).size.height * .06,
-                              width: 300.0,
-                              color: Color(0xff2b3f4c),
-                              child: Text(
-                                widget.title ?? '',
-                                style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * .03,
-                                ),
-                              ))
-                          : Container(),
-                      Expanded(
-                          flex: 2,
-                          child: SelectSticker(side: DisplaySide.first))
-                    ])),
+                    child: orientation == Orientation.portrait
+                        ? Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color: Colors.black,
+                                      width: (size.height - size.width) * .01)),
+                            ),
+                            alignment: Alignment.center,
+                            height: (size.height - size.width) * .2,
+                            // width: size.width * .4,
+                            child: Text(
+                              widget.title ?? '',
+                              style: TextStyle(
+                                fontSize: (size.height - size.width) * .1,
+                              ),
+                            ))
+                        : Container()),
+                Positioned(
+                    top: orientation == Orientation.portrait
+                        ? (size.height - size.width) / 4
+                        : 0.0,
+                    right: orientation == Orientation.portrait ? 0.0 : null,
+                    left: orientation == Orientation.portrait
+                        ? 0.0
+                        : (size.width - size.height) / 6,
+                    bottom: orientation == Orientation.portrait ? null : 0.0,
+                    child: SelectSticker(side: DisplaySide.first)),
                 Positioned(
                     bottom: 0.0,
                     left: 0.0,
                     right: 0.0,
                     child: SelectSticker(side: DisplaySide.second)),
                 Positioned(
-                  top: 0.0,
-                  left: 0.0,
+                  top: orientation == Orientation.portrait
+                      ? (size.height - size.width) * .015
+                      : (size.height - size.width) * .01,
+                  left: orientation == Orientation.portrait
+                      ? (size.height - size.width) * .01
+                      : (size.height - size.width) * .01,
                   child: PaperActions(action: "backAction"),
                 ),
                 Positioned(
-                  top: 0.0,
-                  right: 0.0,
+                  top: orientation == Orientation.portrait
+                      ? (size.height - size.width) * .01
+                      : (size.height - size.width) * .01,
+                  right: orientation == Orientation.portrait
+                      ? (size.height - size.width) * .01
+                      : (size.height - size.width) * .01,
                   child: PaperActions(
                     action: "saveAction",
                     onClick: getPngImage,
                   ),
                 ),
                 Positioned(
-                  bottom:
-                      MediaQuery.of(context).orientation == Orientation.portrait
-                          ? 150.0
-                          : 60.0,
-                  right:
-                      MediaQuery.of(context).orientation == Orientation.portrait
-                          ? 20.0
-                          : null,
-                  left:
-                      MediaQuery.of(context).orientation == Orientation.portrait
-                          ? null
-                          : 200.0,
+                  top: 0.0,
+                  right: orientation == Orientation.portrait
+                      ? size.width * .08
+                      : size.width * .06,
                   child: PaperActions(
                     action: "UndoRedoAction",
                   ),
@@ -128,16 +206,16 @@ class ActivityBoardState extends State<ActivityBoard> {
   }
 
   Widget _paperBuilder() {
-    return MediaQuery.of(context).orientation == Orientation.portrait
+    return orientation == Orientation.portrait
         ? Positioned(
-            top: MediaQuery.of(context).size.height * .06,
+            top: (size.height - size.width) * .25,
             child: Container(
-              height: MediaQuery.of(context).orientation == Orientation.portrait
-                  ? MediaQuery.of(context).size.width
-                  : MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).orientation == Orientation.portrait
-                  ? MediaQuery.of(context).size.width
-                  : MediaQuery.of(context).size.height,
+              height: orientation == Orientation.portrait
+                  ? size.width
+                  : size.height,
+              width: orientation == Orientation.portrait
+                  ? size.width
+                  : size.height,
               color: Colors.white,
               child: AspectRatio(
                   aspectRatio: 1.0,
@@ -147,14 +225,14 @@ class ActivityBoardState extends State<ActivityBoard> {
             ),
           )
         : Positioned(
-            right: MediaQuery.of(context).size.width * .06,
+            right: (size.width - size.height) * .06,
             child: Container(
-              height: MediaQuery.of(context).orientation == Orientation.portrait
-                  ? MediaQuery.of(context).size.width
-                  : MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).orientation == Orientation.portrait
-                  ? MediaQuery.of(context).size.width
-                  : MediaQuery.of(context).size.height,
+              height: orientation == Orientation.portrait
+                  ? size.width
+                  : size.height,
+              width: orientation == Orientation.portrait
+                  ? size.width
+                  : size.height,
               color: Colors.white,
               child: AspectRatio(
                   aspectRatio: 1.0,
