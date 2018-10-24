@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/audio_editing_screen.dart';
-import 'package:tahiti/components/custom_buttom_sheet.dart';
+import 'package:tahiti/components/custom_bottom_sheet.dart';
 import 'package:tahiti/display_nima.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
@@ -77,13 +77,17 @@ class _TransformWrapperState extends State<TransformWrapper>
     if (widget.model.selectedThingId == widget.thing['id'] &&
         widget.model.userTouch) {
       if (details.focalPoint.dx >
-              (orientation == Orientation.portrait ? _size.width * .03 : _size.width * .298) &&
+              (orientation == Orientation.portrait
+                  ? _size.width * .03
+                  : _size.width * .298) &&
           details.focalPoint.dy >
-              (orientation == Orientation.portrait ? _size.height * .09 : 50.0) &&
+              (orientation == Orientation.portrait
+                  ? _size.height * .09
+                  : 50.0) &&
           (details.focalPoint.dy <
               (orientation == Orientation.portrait
                   ? widget.constraints.maxHeight + (_size.height * .02)
-                  : widget.constraints.maxHeight- (_size.width * .02))) &&
+                  : widget.constraints.maxHeight - (_size.width * .02))) &&
           (details.focalPoint.dx <
               (orientation == Orientation.portrait
                   ? widget.constraints.maxWidth - (_size.width * .04)
