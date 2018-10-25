@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:tahiti/dot_sketch.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
 import 'package:tahiti/recorder.dart';
@@ -238,6 +239,10 @@ class ActivityModel extends Model {
       'pause': pause,
       'animatioState': animationStatus
     });
+  }
+
+  void addDotData(Map<String, List<int>> dotData) {
+    addThing({'id': Uuid().v4(), 'type': 'dot', 'dotData': dotData});
   }
 
   void selectedThing(

@@ -10,6 +10,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/display_nima.dart';
 import 'package:tahiti/display_sticker.dart';
+import 'package:tahiti/dot_sketch.dart';
 import 'package:tahiti/drawing.dart';
 import 'dart:ui' as ui;
 import 'package:tahiti/edit_text_view.dart';
@@ -56,6 +57,14 @@ class Paper extends StatelessWidget {
                         : Image.asset(
                             model.template,
                           ),
+                  ));
+                }
+                final dotThing = model.things
+                    .firstWhere((t) => t['type'] == 'dot', orElse: () => null);
+                if (dotThing != null) {
+                  children.add(DotSketch(
+                    model: model,
+                    thing: dotThing,
                   ));
                 }
                 children.add(Drawing(
