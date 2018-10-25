@@ -478,9 +478,8 @@ class PathHistory {
   }
 
   void drawStraightLine(PaintingContext context, Size size) {
-    PathInfo pathInfo = paths.last;
     context.canvas
-        .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
+        .drawLine(Offset(startX, startY), Offset(x, y), paths.last._paint);
   }
 }
 
