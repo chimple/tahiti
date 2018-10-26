@@ -7,7 +7,7 @@ import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/audio_editing_screen.dart';
 import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
-import 'package:tahiti/components/custom_buttom_sheet.dart';
+import 'package:tahiti/components/custom_bottom_sheet.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/masking.dart';
 import 'package:tahiti/select_sticker.dart';

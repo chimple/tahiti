@@ -147,8 +147,8 @@ class ActivityModel extends Model {
   //   _isLineDrawing = t;
   //   notifyListeners();
   // }
-  bool _pause;
-  bool _animationStatus;
+  bool _pause = true;
+  bool _animationStatus = false;
   Recorder _recorder = new Recorder();
   Recorder get recorder => _recorder;
   bool get pause => _pause;
