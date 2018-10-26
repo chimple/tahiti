@@ -198,6 +198,7 @@ class PopupGridViewState extends State<PopupGridView> {
                             } else {
                               model.highlighted = null;
                               model.isDrawing = false;
+                              model.painterController.drawingType = null;
                             }
                           }
                           if (title == 'assets/menu/stickers.png') {
