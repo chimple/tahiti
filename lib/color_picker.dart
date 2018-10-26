@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:tahiti/category_screen.dart';
+// import 'package:scoped_model/scoped_model.dart';
+// import 'package:tahiti/category_screen.dart';
 
 class ColorPicker extends StatefulWidget {
   final Orientation orientation;
@@ -141,24 +141,30 @@ class ColorPickerState extends State<ColorPicker> {
             widget.model.selectedColor = color;
           });
           try {
-            if (widget.model.selectedIcon == 'assets/menu/stickers.png')
+            if (widget.model.selectedIcon == 'assets/menu/stickers.png' ||
+                widget.model.selectedIcon == 'assets/menu/text.png')
               widget.getColor(color);
             else if (false) {}
           } catch (exception, e) {
             print(e);
           }
-          widget.getColor(selectedColor);
+          // widget.getColor(selectedColor);
         },
         constraints: new BoxConstraints.tightFor(
-          height: widget.orientation == Orientation.portrait ?  size.width * .04 : size.height * .045,
-          width: widget.orientation == Orientation.portrait ? size.width * .04 : size.height * .045
-        ),
+            height: widget.orientation == Orientation.portrait
+                ? size.width * .04
+                : size.height * .045,
+            width: widget.orientation == Orientation.portrait
+                ? size.width * .04
+                : size.height * .045),
         fillColor: color,
         shape: new CircleBorder(
           side: new BorderSide(
             color:
                 color == selectedColor ? Colors.black : const Color(0xFFD5D7DA),
-            width: widget.orientation == Orientation.portrait ?  size.width * .005 : size.width * .003,
+            width: widget.orientation == Orientation.portrait
+                ? size.width * .005
+                : size.width * .003,
           ),
         ),
       ));

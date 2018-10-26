@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/audio_editing_screen.dart';
-import 'package:tahiti/components/custom_buttom_sheet.dart';
+import 'package:tahiti/components/custom_bottom_sheet.dart';
 import 'package:tahiti/display_nima.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
