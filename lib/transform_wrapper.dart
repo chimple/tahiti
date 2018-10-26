@@ -77,28 +77,23 @@ class _TransformWrapperState extends State<TransformWrapper>
     if (widget.model.selectedThingId == widget.thing['id'] &&
         widget.model.userTouch) {
       if (details.focalPoint.dx >
-              (orientation == Orientation.portrait
-                  ? _size.width * .03
-                  : _size.width * .298) &&
+              (orientation == Orientation.portrait ? (_size.height - _size.width)* .1 : (_size.width - _size.height)/2) &&
           details.focalPoint.dy >
-              (orientation == Orientation.portrait
-                  ? _size.height * .09
-                  : 50.0) &&
+              (orientation == Orientation.portrait ? (_size.height - _size.width)/2 : (_size.width - _size.height)*.1) &&
           (details.focalPoint.dy <
               (orientation == Orientation.portrait
-                  ? widget.constraints.maxHeight + (_size.height * .02)
-                  : widget.constraints.maxHeight - (_size.width * .02))) &&
+                  ? widget.constraints.maxHeight + (_size.height - _size.width)/2
+                  : widget.constraints.maxHeight- (_size.width - _size.height)*.1)) &&
           (details.focalPoint.dx <
               (orientation == Orientation.portrait
-                  ? widget.constraints.maxWidth - (_size.width * .04)
-                  : widget.constraints.maxWidth + (_size.width * .25)))) {
+                  ? widget.constraints.maxWidth - (_size.height - _size.width)* .1
+                  : widget.constraints.maxWidth + (_size.width - _size.height)/2))) {
         setState(() {
           Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
           _translate = _translateAtStart + pos - _focalPointAtStart;
-          // _scale = ((_scaleAtStart * details.scale) <= _width * 0.001)
-          //     ? _scaleAtStart * details.scale
-          //     : _width * 0.001;
-          _scale = _scaleAtStart * details.scale;
+          _scale = ((_scaleAtStart * details.scale) <= 1.0)
+              ? _scaleAtStart * details.scale
+              : 1.0;
           _rotate = _rotateAtStart + details.rotation;
         });
       }
