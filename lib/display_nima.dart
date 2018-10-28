@@ -8,22 +8,26 @@ import 'package:tahiti/transform_wrapper.dart';
 enum NimaControllerEnum { add, nothing }
 
 class DisplayNima extends StatefulWidget {
-  bool pause;
-  bool animationStatus;
+  final bool pause;
+  final bool animationStatus;
   final PlayerState playerState;
   final String nimaPath;
   final ActivityModel model;
   final NimaControllerEnum contr;
   final EditingMode editingMode;
-  DisplayNima({
-    this.playerState,
-    this.editingMode,
-    this.model,
-    this.pause = true,
-    this.contr = NimaControllerEnum.nothing,
-    this.animationStatus = false,
-    this.nimaPath,
-  }) : super();
+  final String audioPath;
+  final String status;
+  DisplayNima(
+      {this.playerState,
+      this.editingMode,
+      this.model,
+      this.pause = true,
+      this.contr = NimaControllerEnum.nothing,
+      this.animationStatus = false,
+      this.nimaPath,
+      this.audioPath,
+      this.status = 'stopNima'})
+      : super();
   @override
   DisplayNimaState createState() {
     return new DisplayNimaState();
@@ -33,25 +37,38 @@ class DisplayNima extends StatefulWidget {
 class DisplayNimaState extends State<DisplayNima> {
   String animationName = "lipsync";
   NimaController controller;
-  bool pause;
+  bool pause = true;
   PlayerState state = PlayerState.playing;
-  Recorder recorder;
-  bool animationStatus;
+  Recorder recorder = Recorder();
+  bool animationStatus = false;
+
   void initState() {
     super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    recorder.filePath = widget.audioPath;
+    super.didChangeDependencies();
+  }
+
+  @override
   didUpdateWidget(DisplayNima oldWidget) {
-    if (!widget.model.pause)
-      widget.model.recorder.stopAudio().then((p) {
-        widget.model.recorder.playAudio();
-        new Future.delayed(widget.model.recorder.duration-Duration(milliseconds:700), () {
-          widget.model.nimaController(true, false);
-        });
-      });
-    setState(() {});
     super.didUpdateWidget(oldWidget);
+  }
+
+  void onComplete() {
+    setState(() {
+      recorder.stopAudio();
+      pause = true;
+      animationStatus = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    recorder.stopAudio();
+    super.dispose();
   }
 
   @override
@@ -61,19 +78,22 @@ class DisplayNimaState extends State<DisplayNima> {
       child: new Stack(fit: StackFit.loose, children: <Widget>[
         InkWell(
           onTap: () {
-            widget.model.nimaController(false, true);
+            recorder.stopAudio().then((k) {
+              recorder.playAudio(onComplete);
+            });
+            setState(() {
+              pause = false;
+              animationStatus = true;
+            });
           },
           child: NimaActor(widget.nimaPath,
               controller: controller,
-              paused: widget.model.pause ? true : false,
+              paused: pause,
               alignment: Alignment.center,
               fit: BoxFit.contain,
-              animation: widget.model.animationStatus ? 'lipsync' : null,
+              animation: animationStatus ? 'lipsync' : null,
               mixSeconds: 0.2, completed: (String animationName) {
-            widget.model.recorder.stopAudio();
-            // setState(() {
-            //   animationName = "lipsync";
-            // });
+            recorder.stopAudio();
           }),
         ),
       ]),

@@ -258,11 +258,10 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                       ),
                                       blendMode: BlendMode
                                           .values[widget.thing['blendMode']]);
-                                } else if (widget.thing['type'] == 'nima') {
-                                  _editingScreen(
-                                    model,
-                                    type: widget.thing['type'],
-                                  );
+                               } else if (widget.thing['type'] == 'nima') {
+                                  _editingScreen(model,
+                                      type: widget.thing['type'],
+                                      path: widget.thing['audioPath']);
                                 }
                                 // if (model.editSelectedThing) {
                                 //   (widget.thing['type'] == 'text')
