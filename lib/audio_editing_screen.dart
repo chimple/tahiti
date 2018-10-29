@@ -80,6 +80,7 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
   String _icon = 'assets/menu/mic.png';
   var name = 'start';
   PlayerState playerState = PlayerState.shownima;
+  RecordingState recordingState;
   List<Widget> children = [];
   List<Widget> animationChildren = [];
   bool trigerToStop = false;
@@ -127,7 +128,8 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                       widget.model.nimaController(false, true);
                     }
                   }
-                  if (playerState != PlayerState.start) Navigator.pop(context);
+                  if (recordingState != RecordingState.recording)
+                    Navigator.pop(context);
                 },
                 icon: Icon(
                   Icons.done,
@@ -156,9 +158,11 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                     setState(() {
                       _icon = 'assets/menu/record.gif';
                       playerState = PlayerState.shownima;
-                    //  playerState = PlayerState.start;
+                      recordingState = RecordingState.recording;
+                      //
                     });
                     name = 'stop';
+                    //  playerState = PlayerState.start;
                     break;
                   case 'stop':
                     recorder.stop();
@@ -166,6 +170,7 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                       _icon = 'assets/mic/play.png';
                       name = 'play';
                       playerState = PlayerState.playing;
+                      recordingState = RecordingState.stop;
                       pause = false;
                       animationStatus = true;
                     });
@@ -197,6 +202,7 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                 _icon = 'assets/menu/record.gif';
                 name = 'stop';
                 playerState = PlayerState.shownima;
+                recordingState = RecordingState.recording;
               });
             },
             child: new Text(

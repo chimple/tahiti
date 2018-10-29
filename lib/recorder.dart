@@ -8,6 +8,7 @@ import 'package:tahiti/audio_editing_screen.dart';
 typedef void OnError(Exception exception);
 
 enum PlayerState { stopped, playing, start, shownima }
+enum RecordingState { recording, stop }
 
 class Recorder {
   Recording recording = new Recording();
@@ -22,6 +23,7 @@ class Recorder {
   }
 
   PlayerState playerState;
+  RecordingState recordingState;
   get isPlaying => playerState == PlayerState.playing;
   get isPaused => playerState == PlayerState.stopped;
 
@@ -37,7 +39,7 @@ class Recorder {
   void start() async {
     try {
       if (await AudioRecorder.hasPermissions) {
-        playerState = PlayerState.start;
+        recordingState = RecordingState.recording;
         print('state in recording issssssssss $playerState');
         String path = "recorder.m4a";
         Directory appDocDirectory = await getExternalStorageDirectory();
