@@ -150,6 +150,7 @@ class ActivityBoardState extends State<ActivityBoard> {
                             child: Text(
                               widget.title ?? '',
                               style: TextStyle(
+                                color: Colors.white,
                                 fontSize: (size.height - size.width) * .1,
                               ),
                             ))
