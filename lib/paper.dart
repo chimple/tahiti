@@ -124,12 +124,13 @@ class Paper extends StatelessWidget {
         break;
       case 'nima':
         return new DisplayNima(
-          contr: NimaControllerEnum.add,
-          model: model,
-          nimaPath: thing['asset'],
-          pause: thing['pause'],
-          animationStatus: thing['animatioState'],
-        );
+            contr: NimaControllerEnum.add,
+            model: model,
+            nimaPath: thing['asset'],
+            pause: thing['pause'],
+            animationStatus: thing['animationState'],
+            audioPath: thing['audioPath'],
+            status: thing['status']);
         break;
       case 'video':
         return VideoScaling(videoPath: thing['path']);

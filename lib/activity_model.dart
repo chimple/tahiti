@@ -227,8 +227,8 @@ class ActivityModel extends Model {
       });
     }
   }
-
-  void addNima(String name) {
+ void addNima(String name,
+      {String audioPath, String status, bool pause, bool animationStatus}) {
     addThing({
       'id': Uuid().v4(),
       'type': 'nima',
@@ -237,7 +237,9 @@ class ActivityModel extends Model {
       'y': 0.0,
       'scale': 0.5,
       'pause': pause,
-      'animatioState': animationStatus
+      'animationState': animationStatus,
+      'audioPath': audioPath,
+      'status': status
     });
   }
 
