@@ -77,7 +77,7 @@ class DisplayNimaState extends State<DisplayNima> {
       constraints: BoxConstraints.tight(Size(400.0, 400.0)),
       child: new Stack(fit: StackFit.loose, children: <Widget>[
         InkWell(
-          onTap: () {
+          onTap: widget.model.isInteractive? () {
             recorder.stopAudio().then((k) {
               recorder.playAudio(onComplete);
             });
@@ -85,7 +85,7 @@ class DisplayNimaState extends State<DisplayNima> {
               pause = false;
               animationStatus = true;
             });
-          },
+          }:null,
           child: NimaActor(widget.nimaPath,
               controller: controller,
               paused: pause,

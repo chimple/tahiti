@@ -156,7 +156,7 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                     setState(() {
                       _icon = 'assets/menu/record.gif';
                       playerState = PlayerState.shownima;
-                      playerState = PlayerState.start;
+                    //  playerState = PlayerState.start;
                     });
                     name = 'stop';
                     break;

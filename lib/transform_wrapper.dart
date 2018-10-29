@@ -392,6 +392,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
       return new AudioEditingScreen(
         model: model,
         editingMode: EditingMode.editAudio,
+        audioPath: path,
       );
     }
     // TODO::// For other components
