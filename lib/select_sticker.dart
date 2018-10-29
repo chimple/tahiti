@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
-import 'package:tahiti/components/custom_buttom_sheet.dart';
+import 'package:tahiti/components/custom_bottom_sheet.dart';
 import 'package:tahiti/display_sticker.dart';
 import 'package:tahiti/image_editor.dart';
 import 'package:tahiti/popup_grid_view.dart';
@@ -50,6 +50,13 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
 
+  'assets/menu/svg/roll': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
   // 'assets/menu/brush1.png': [
   //   Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
   //   Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
@@ -90,7 +97,6 @@ class TopStickers {
     Iconf(type: ItemType.png, data: 'assets/mic/play.png')
   ];
   final Map<String, List<Iconf>> firstStickers = {
-    'assets/menu/masking.jpg': [],
     'assets/menu/text.png': [
       // Iconf(type: ItemType.png, data: 'assets/menu/text.png'),
     ],

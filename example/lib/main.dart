@@ -158,7 +158,10 @@ class DrawingListState extends State<DrawingList> {
     prefs = await SharedPreferences.getInstance();
     await Future.forEach(
         Masking.listOfImage, (i) async => ActivityModel.cacheImage(i));
-
+    if (prefs.getString('dot') == null) {
+      prefs.setString('dot',
+          '{"id":"dot","pathHistory":{"paths":[],"startX":null,"startY":null,"x":null,"y":null},"things":[{"id":"dot","type":"dot","dotData":{"x":[128, 150, 180, 200, 220, 240, 260, 280, 300, 340],"y":[256, 340, 220, 160, 170, 180, 200, 230, 300, 340],"c":[1,1,0,0,0,0,0,0,0,0]}}]}');
+    }
     setState(() {
       _isLoading = false;
     });

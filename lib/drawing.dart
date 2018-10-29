@@ -39,6 +39,7 @@ class RollerState extends State<Drawing> {
   }
 
   Drag _handleOnStart(Offset position) {
+    print('handleOnStart');
     widget.model.selectedThingId = '';
     widget.model.userTouch = false;
     if (count < 1) {
@@ -76,28 +77,34 @@ class RollerState extends State<Drawing> {
 
   @override
   Widget build(BuildContext context) {
+    ActivityModel model = ActivityModel.of(context);
+    print('drawing: isDrawing ${model.isDrawing}');
+    Widget scratchCardLayout = _ScratchCardLayout(
+      child: Container(),
+      path: widget.model.pathHistory,
+      data: widget.model.painterController,
+    );
+
     return RepaintBoundary(
       key: previewContainer,
       child: LayoutBuilder(
         builder: (context, box) {
-          return ClipRect(
-              child: RawGestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  gestures: <Type, GestureRecognizerFactory>{
-                    ImmediateMultiDragGestureRecognizer:
-                        GestureRecognizerFactoryWithHandlers<
-                            ImmediateMultiDragGestureRecognizer>(
-                      () => ImmediateMultiDragGestureRecognizer(),
-                      (ImmediateMultiDragGestureRecognizer instance) {
-                        instance..onStart = _handleOnStart;
+          return model.isDrawing
+              ? ClipRect(
+                  child: RawGestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      gestures: <Type, GestureRecognizerFactory>{
+                        ImmediateMultiDragGestureRecognizer:
+                            GestureRecognizerFactoryWithHandlers<
+                                ImmediateMultiDragGestureRecognizer>(
+                          () => ImmediateMultiDragGestureRecognizer(),
+                          (ImmediateMultiDragGestureRecognizer instance) {
+                            instance..onStart = _handleOnStart;
+                          },
+                        ),
                       },
-                    ),
-                  },
-                  child: _ScratchCardLayout(
-                    child: Container(),
-                    path: widget.model.pathHistory,
-                    data: widget.model.painterController,
-                  )));
+                      child: scratchCardLayout))
+              : scratchCardLayout;
         },
       ),
     );
