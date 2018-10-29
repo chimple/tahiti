@@ -7,7 +7,7 @@ import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/audio_editing_screen.dart';
 import 'package:tahiti/category_screen.dart';
 import 'package:tahiti/color_picker.dart';
-import 'package:tahiti/components/custom_buttom_sheet.dart';
+import 'package:tahiti/components/custom_bottom_sheet.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/masking.dart';
 import 'package:tahiti/select_sticker.dart';
@@ -205,7 +205,7 @@ class PopupGridViewState extends State<PopupGridView> {
                             showCategorySreen(model, title);
                           } else if (title == 'assets/menu/text.png') {
                             showCategorySreen(model, title);
-                          } else if (title == 'assets/menu/masking.jpg') {
+                          } else if (title == 'assets/menu/svg/roll') {
                             showCategorySreen(model, title);
                           } else if (title == 'assets/menu/mic.png') {
                             model.things.forEach((t) {
@@ -241,7 +241,7 @@ class PopupGridViewState extends State<PopupGridView> {
       );
     } else if (text == 'assets/menu/text.png') {
       return TextEditor(model: model);
-    } else if (text == 'assets/menu/masking.jpg') {
+    } else if (text == 'assets/menu/svg/roll') {
       return Masking(
         model: model,
       );
