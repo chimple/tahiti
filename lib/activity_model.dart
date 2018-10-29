@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:tahiti/dot_sketch.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:uuid/uuid.dart';
 import 'package:tahiti/recorder.dart';
@@ -146,8 +147,8 @@ class ActivityModel extends Model {
   //   _isLineDrawing = t;
   //   notifyListeners();
   // }
-  bool _pause;
-  bool _animationStatus;
+  bool _pause = true;
+  bool _animationStatus = false;
   Recorder _recorder = new Recorder();
   Recorder get recorder => _recorder;
   bool get pause => _pause;
@@ -238,6 +239,10 @@ class ActivityModel extends Model {
       'pause': pause,
       'animatioState': animationStatus
     });
+  }
+
+  void addDotData(Map<String, List<int>> dotData) {
+    addThing({'id': Uuid().v4(), 'type': 'dot', 'dotData': dotData});
   }
 
   void selectedThing(
@@ -478,9 +483,8 @@ class PathHistory {
   }
 
   void drawStraightLine(PaintingContext context, Size size) {
-    PathInfo pathInfo = paths.last;
     context.canvas
-        .drawLine(Offset(startX, startY), Offset(x, y), pathInfo._paint);
+        .drawLine(Offset(startX, startY), Offset(x, y), paths.last._paint);
   }
 }
 
