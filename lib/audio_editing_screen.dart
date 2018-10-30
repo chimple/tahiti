@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tahiti/display_nima.dart';
@@ -9,8 +8,12 @@ import 'package:tahiti/transform_wrapper.dart';
 class AudioEditingScreen extends StatefulWidget {
   final ActivityModel model;
   final EditingMode editingMode;
+  final String audioPath;
   const AudioEditingScreen(
-      {Key key, this.model, this.editingMode = EditingMode.doNothing})
+      {Key key,
+      this.model,
+      this.editingMode = EditingMode.doNothing,
+      this.audioPath})
       : super(key: key);
   @override
   _AudioEditingScreenState createState() => _AudioEditingScreenState();
@@ -62,6 +65,12 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
     }
   }
 
+  @override
+  void dispose() {
+    recorder.stopAudio();
+    super.dispose();
+  }
+
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (widget.editingMode == EditingMode.doNothing)
@@ -71,12 +80,19 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
   String _icon = 'assets/menu/mic.png';
   var name = 'start';
   PlayerState playerState = PlayerState.shownima;
+  RecordingState recordingState;
   List<Widget> children = [];
   List<Widget> animationChildren = [];
   bool trigerToStop = false;
   String _lastNima;
   int lastindex;
   int animate = -1;
+  void onComplete() {
+    setState(() {
+      animate = -1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     int i = 0;
@@ -102,17 +118,18 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                 onPressed: () {
                   if (_lastNima != null) {
                     if (widget.editingMode == EditingMode.doNothing) {
-                      widget.model.nimaController(false, true);
-                      widget.model.addNima(
-                        _lastNima,
-                      );
+                      widget.model.addNima(_lastNima,
+                          audioPath: recorder.filePath,
+                          status: 'playNima',
+                          pause: false,
+                          animationStatus: true);
                     } else {
                       widget.model.selectedThing(text: _lastNima);
                       widget.model.nimaController(false, true);
-                      // widget.model.recorder.playAudio().then((p) {});
                     }
                   }
-                  Navigator.pop(context);
+                  if (recordingState != RecordingState.recording)
+                    Navigator.pop(context);
                 },
                 icon: Icon(
                   Icons.done,
@@ -141,9 +158,11 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                     setState(() {
                       _icon = 'assets/menu/record.gif';
                       playerState = PlayerState.shownima;
+                      recordingState = RecordingState.recording;
+                      //
                     });
                     name = 'stop';
-
+                    //  playerState = PlayerState.start;
                     break;
                   case 'stop':
                     recorder.stop();
@@ -151,6 +170,7 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                       _icon = 'assets/mic/play.png';
                       name = 'play';
                       playerState = PlayerState.playing;
+                      recordingState = RecordingState.stop;
                       pause = false;
                       animationStatus = true;
                     });
@@ -158,9 +178,10 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                   case 'play':
                     audioPlaying = true;
                     if (widget.editingMode == EditingMode.editAudio) {
-                      widget.model.recorder.playAudio();
+                      recorder.filePath = widget.audioPath;
+                      recorder.playAudio(onComplete);
                     } else {
-                      recorder.playAudio();
+                      recorder.playAudio(onComplete);
                     }
                     break;
                 }
@@ -181,6 +202,7 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                 _icon = 'assets/menu/record.gif';
                 name = 'stop';
                 playerState = PlayerState.shownima;
+                recordingState = RecordingState.recording;
               });
             },
             child: new Text(
@@ -203,10 +225,8 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
       Expanded(
         flex: 1,
         child: GridView.count(
-          //mainAxisSpacing: .0,
           crossAxisCount: 4,
           crossAxisSpacing: 10.0,
-
           children:
               listOfNima.map((p) => _showNima(p, i++)).toList(growable: false),
         ),
@@ -223,29 +243,18 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                 widget.model.nimaController(false, true);
                 setState(() {
                   animate = i;
-                  recorder
-                      .stopAudio()
-                      .then((p) => recorder.playAudio().then((p) {}));
                 });
-                Future.delayed(recorder.duration - Duration(milliseconds: 700),
-                    () {
-                  setState(() {
-                    animate = -1;
-                  });
-                });
+                recorder
+                    .stopAudio()
+                    .then((p) => recorder.playAudio(onComplete).then((p) {}));
               } else {
+                recorder.filePath = widget.audioPath;
                 _lastNima = t;
+                recorder
+                    .stopAudio()
+                    .then((p) => recorder.playAudio(onComplete).then((p) {}));
                 setState(() {
                   animate = i;
-                  widget.model.recorder.stopAudio().then(
-                      (p) => widget.model.recorder.playAudio().then((p) {}));
-                });
-                Future.delayed(
-                    widget.model.recorder.duration -
-                        Duration(milliseconds: 700), () {
-                  setState(() {
-                    animate = -1;
-                  });
                 });
               }
             }

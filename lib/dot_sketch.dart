@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/components/pulse_animation.dart';
 
 class DotPainter extends ChangeNotifier implements CustomPainter {
   Color strokeColor;
@@ -34,9 +35,11 @@ class DotPainter extends ChangeNotifier implements CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint strokePaint = new Paint();
-    strokePaint.color = Colors.black;
-    strokePaint.strokeWidth = 4.0;
+    Paint strokePaint = new Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..strokeWidth = 5.0;
 
     Path dotPath = Path();
     Path connectPath = Path();
@@ -46,12 +49,14 @@ class DotPainter extends ChangeNotifier implements CustomPainter {
       final y = dotData['y'][i].toDouble();
       final offset = Offset(x, y);
       dotPath.moveTo(x, y);
-      dotPath.addOval(Rect.fromCircle(center: offset, radius: 10.0));
+      dotPath.addOval(Rect.fromCircle(center: offset, radius: 5.0));
+
       if (isConnect) {
         if (i == 0) {
           connectPath.moveTo(x, y);
         } else {
           connectPath.lineTo(x, y);
+          // canvas.drawLine(p1, p2, strokePaint);
         }
         isConnect = dotData['c'][i] != 0;
       }
@@ -100,7 +105,7 @@ class _DotSketchState extends State<DotSketch> {
   Offset lastPos;
 
   void panStart(DragStartDetails details) {
-    print('panStart');
+    print('================================panStart=========================');
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
     final dist = (pos - currentDot).distanceSquared;
@@ -111,6 +116,7 @@ class _DotSketchState extends State<DotSketch> {
   }
 
   void panUpdate(DragUpdateDetails details) {
+   
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
     if (isDrawing) {
@@ -183,9 +189,14 @@ class _DotSketchState extends State<DotSketch> {
       child: isInteractive ? touch : Container(),
     );
 
-    return new Container(
-      constraints: const BoxConstraints.expand(),
-      child: ClipRect(child: canvas),
-    );
+    return Stack(children: <Widget>[
+      Positioned(
+          left: nextDot.dx - 20.0,
+          top: nextDot.dy - 20.0,
+          child: PulseAnimation(
+            color: Colors.red,
+          )),
+      canvas,
+    ]);
   }
 }
