@@ -302,9 +302,8 @@ class PainterController extends ChangeNotifier {
   }
 
   void updateCurrent(BuildContext context, Offset nextPoint) {
-    final model = ActivityModel.of(context);
     if (_inDrag) {
-      switch (model.painterController.drawingType) {
+      switch (drawingType) {
         case DrawingType.freeDrawing:
           pathHistory.paths.last.addPoint(nextPoint);
           break;
@@ -335,9 +334,8 @@ class PainterController extends ChangeNotifier {
   }
 
   void endCurrent(BuildContext context, Offset nextPoint) {
-    final model = ActivityModel.of(context);
     _inDrag = false;
-    if (model.painterController.drawingType == DrawingType.lineDrawing) {
+    if (drawingType == DrawingType.lineDrawing) {
       pathHistory.paths.last.addPoint(nextPoint);
     }
     pathHistory.x = pathHistory.startX;

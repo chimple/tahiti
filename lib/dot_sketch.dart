@@ -116,7 +116,6 @@ class _DotSketchState extends State<DotSketch> {
   }
 
   void panUpdate(DragUpdateDetails details) {
-   
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
     if (isDrawing) {
@@ -163,6 +162,8 @@ class _DotSketchState extends State<DotSketch> {
           (currentIndex + 1 >= dotData['c'].length) ? 0 : currentIndex + 1;
       nextDot = Offset(dotData['x'][nextIndex].toDouble(),
           dotData['y'][nextIndex].toDouble());
+    } else if (currentIndex == -1) {
+      widget.model.isDotSketch = false;
     }
   }
 
