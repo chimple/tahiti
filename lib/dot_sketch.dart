@@ -124,12 +124,12 @@ class _DotSketchState extends State<DotSketch> {
     if (isDrawing) {
       dotPainter.updateStroke(pos);
       lastPos = pos;
-      //  if ((pos - nextDot).distanceSquared < 100) {
-      //     final currentIndex = dotData['c'].indexWhere((c) => c == 0);
-      //     if (currentIndex != -1) dotData['c'][currentIndex] = 1;
-      //     model.updateThing(
-      //         {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
-      //   }
+      // if ((pos - nextDot).distanceSquared < 100) {
+      //   final currentIndex = dotData['c'].indexWhere((c) => c == 0);
+      //   if (currentIndex != -1) dotData['c'][currentIndex] = 1;
+      //   model.updateThing(
+      //       {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
+      // }
     }
   }
 
@@ -139,7 +139,9 @@ class _DotSketchState extends State<DotSketch> {
       dotPainter.endStroke();
       if ((lastPos - nextDot).distanceSquared < 100) {
         final currentIndex = dotData['c'].indexWhere((c) => c == 0);
+        print("currentIndex   === $currentIndex");
         if (currentIndex != -1) dotData['c'][currentIndex] = 1;
+        print("dotData['c'][currentIndex]   === ${dotData['c'][currentIndex]}");
         model.updateThing(
             {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
         setState(() {
@@ -201,24 +203,26 @@ class _DotSketchState extends State<DotSketch> {
       child: isInteractive ? touch : Container(),
     );
 
-    return isDrawing
-        ? Stack(children: <Widget>[
-            Positioned(
-                left: nextDot.dx - 20.0,
-                top: nextDot.dy - 20.0,
-                child: PulseAnimation(
-                  color: Colors.red,
-                )),
-            canvas,
-          ])
-        : Stack(children: <Widget>[
-            Positioned(
-                left: currentDot.dx - 20.0,
-                top: currentDot.dy - 20.0,
-                child: PulseAnimation(
-                  color: Colors.red,
-                )),
-            canvas,
-          ]);
+    return widget.model.isDotSketch
+        ? isDrawing
+            ? Stack(children: <Widget>[
+                Positioned(
+                    left: nextDot.dx - 20.0,
+                    top: nextDot.dy - 20.0,
+                    child: PulseAnimation(
+                      color: Colors.black,
+                    )),
+                canvas,
+              ])
+            : Stack(children: <Widget>[
+                Positioned(
+                    left: currentDot.dx - 20.0,
+                    top: currentDot.dy - 20.0,
+                    child: PulseAnimation(
+                      color: Colors.black,
+                    )),
+                canvas,
+              ])
+        : canvas;
   }
 }
