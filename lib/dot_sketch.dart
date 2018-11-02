@@ -118,18 +118,17 @@ class _DotSketchState extends State<DotSketch> {
   }
 
   void panUpdate(DragUpdateDetails details) {
-    // ActivityModel model = ActivityModel.of(context);
+    ActivityModel model = ActivityModel.of(context);
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
     if (isDrawing) {
       dotPainter.updateStroke(pos);
-      lastPos = pos;
-      // if ((pos - nextDot).distanceSquared < 100) {
-      //   final currentIndex = dotData['c'].indexWhere((c) => c == 0);
-      //   if (currentIndex != -1) dotData['c'][currentIndex] = 1;
-      //   model.updateThing(
-      //       {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
-      // }
+      if ((pos - nextDot).distanceSquared < 30) {
+        final currentIndex = dotData['c'].indexWhere((c) => c == 0);
+        if (currentIndex != -1) dotData['c'][currentIndex] = 1;
+        model.updateThing(
+            {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
+      }
     }
   }
 
@@ -137,7 +136,7 @@ class _DotSketchState extends State<DotSketch> {
     ActivityModel model = ActivityModel.of(context);
     if (isDrawing) {
       dotPainter.endStroke();
-      if ((lastPos - nextDot).distanceSquared < 100) {
+      if ((lastPos - nextDot).distanceSquared < 50) {
         final currentIndex = dotData['c'].indexWhere((c) => c == 0);
         print("currentIndex   === $currentIndex");
         if (currentIndex != -1) dotData['c'][currentIndex] = 1;
