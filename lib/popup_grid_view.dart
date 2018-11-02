@@ -270,7 +270,7 @@ class PopupGridViewState extends State<PopupGridView> {
         List<Widget> rowItems1 = [];
         List<Widget> rowItems = [];
         rowItems.add(Expanded(
-                  child: SizedBox( 
+          child: SizedBox(
             // height: (size.height - size.width) / 4,
             // width: (size.height- size.width) * .02,
             child: Row(
@@ -302,26 +302,15 @@ class PopupGridViewState extends State<PopupGridView> {
         ));
 
         return Stack(
+          alignment: Alignment.bottomCenter,
           overflow: Overflow.visible,
           children: <Widget>[
             Container(
-              // color: Colors.green,
-              // decoration: new BoxDecoration(
-              //   borderRadius: const BorderRadius.only(
-              //       topRight: Radius.circular(20.0),
-              //       topLeft: Radius.circular(20.0)),
-              //   color: widget.side == DisplaySide.second
-              //       ? Colors.green
-              //       : null,
-              // ),
-              // margin: widget.side == DisplaySide.second
-              //     ? EdgeInsets.all(size.width * .01)
-              //     : null,
+              color: Color(0xff2b3f4c),
               height: widget.side == DisplaySide.second
-                  ? (size.height - size.width) / 1.5
+                  ? (size.height - size.width) / 2
                   : (size.height - size.width) / 6,
-              width:
-                  widget.side == DisplaySide.second ? size.width : size.width,
+              width: size.width,
             ),
             Positioned(
               bottom: widget.side == DisplaySide.second
@@ -443,8 +432,8 @@ class PopupGridViewState extends State<PopupGridView> {
           quarterTurns: 3,
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: widget.menuItems.keys
                   .skip(widget.numFixedItems)
                   .map(
@@ -466,23 +455,14 @@ class PopupGridViewState extends State<PopupGridView> {
                         .toList(growable: false)))));
 
         return Stack(
+          alignment: Alignment.centerRight,
           overflow: Overflow.visible,
           children: <Widget>[
             Container(
-              // color: Colors.green,
-              // decoration: new BoxDecoration(
-              //   borderRadius: const BorderRadius.only(
-              //       topRight: Radius.circular(20.0),
-              //       bottomRight: Radius.circular(20.0)),
-              //   color: Colors.green,
-              // ),
-              // margin: widget.side == DisplaySide.second
-              //     ? EdgeInsets.only(
-              //         top: size.height * .01, bottom: size.height * .01)
-              //     : null,
+              color: Color(0xff2b3f4c),
               width: widget.side == DisplaySide.second
                   ? (size.width - size.height) / 2
-                  : (size.width - size.height) / 2,
+                  : (size.width - size.height) / 6,
               height: size.height,
             ),
             Positioned(
