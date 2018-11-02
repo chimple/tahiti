@@ -44,6 +44,7 @@ class DotPainter extends ChangeNotifier implements CustomPainter {
     Path dotPath = Path();
     Path connectPath = Path();
     bool isConnect = true;
+
     for (int i = 0; i < dotData['x'].length; i++) {
       final x = dotData['x'][i].toDouble();
       final y = dotData['y'][i].toDouble();
@@ -61,10 +62,10 @@ class DotPainter extends ChangeNotifier implements CustomPainter {
         isConnect = dotData['c'][i] != 0;
       }
     }
+
     if (to != null) connectPath.lineTo(to.dx, to.dy);
     canvas.drawPath(dotPath, strokePaint);
 
-    strokePaint.style = PaintingStyle.stroke;
     if (dotData['c'].last != 0) connectPath.close();
     canvas.drawPath(connectPath, strokePaint);
   }
@@ -105,22 +106,30 @@ class _DotSketchState extends State<DotSketch> {
   Offset lastPos;
 
   void panStart(DragStartDetails details) {
-    print('================================panStart=========================');
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
     final dist = (pos - currentDot).distanceSquared;
-    if ((pos - currentDot).distanceSquared < 100) {
-      isDrawing = true;
+    if (dist < 100) {
+      setState(() {
+        isDrawing = true;
+      });
       dotPainter.startStroke(currentDot);
     }
   }
 
   void panUpdate(DragUpdateDetails details) {
+    // ActivityModel model = ActivityModel.of(context);
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
     if (isDrawing) {
       dotPainter.updateStroke(pos);
       lastPos = pos;
+      //  if ((pos - nextDot).distanceSquared < 100) {
+      //     final currentIndex = dotData['c'].indexWhere((c) => c == 0);
+      //     if (currentIndex != -1) dotData['c'][currentIndex] = 1;
+      //     model.updateThing(
+      //         {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
+      //   }
     }
   }
 
@@ -133,7 +142,9 @@ class _DotSketchState extends State<DotSketch> {
         if (currentIndex != -1) dotData['c'][currentIndex] = 1;
         model.updateThing(
             {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
-        isDrawing = false;
+        setState(() {
+          isDrawing = false;
+        });
       }
     }
   }
@@ -190,14 +201,24 @@ class _DotSketchState extends State<DotSketch> {
       child: isInteractive ? touch : Container(),
     );
 
-    return Stack(children: <Widget>[
-      Positioned(
-          left: nextDot.dx - 20.0,
-          top: nextDot.dy - 20.0,
-          child: PulseAnimation(
-            color: Colors.red,
-          )),
-      canvas,
-    ]);
+    return isDrawing
+        ? Stack(children: <Widget>[
+            Positioned(
+                left: nextDot.dx - 20.0,
+                top: nextDot.dy - 20.0,
+                child: PulseAnimation(
+                  color: Colors.red,
+                )),
+            canvas,
+          ])
+        : Stack(children: <Widget>[
+            Positioned(
+                left: currentDot.dx - 20.0,
+                top: currentDot.dy - 20.0,
+                child: PulseAnimation(
+                  color: Colors.red,
+                )),
+            canvas,
+          ]);
   }
 }

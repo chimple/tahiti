@@ -64,6 +64,9 @@ class ActivityBoardState extends State<ActivityBoard> {
       ..saveCallback = widget.saveCallback;
     setState(() {
       _isLoading = false;
+      widget.json == null
+          ? _activityModel.isDotSketch = false
+          : _activityModel.isDotSketch = true;
     });
   }
 
@@ -78,71 +81,83 @@ class ActivityBoardState extends State<ActivityBoard> {
     }
     orientation = MediaQuery.of(context).orientation;
     size = MediaQuery.of(context).size;
+    Widget dotSketchScreen = Center(
+      child: Container(
+        height: orientation == Orientation.portrait ? size.width : size.height,
+        width: orientation == Orientation.portrait ? size.width : size.height,
+        color: Colors.white,
+        child: AspectRatio(
+            aspectRatio: 1.0,
+            child: Paper(
+              previewContainerKey: _previewContainerKey,
+            )),
+      ),
+    );
+    Widget drawingScreen = Stack(
+      children: <Widget>[
+        Center(
+          child: Container(
+            height:
+                orientation == Orientation.portrait ? size.width : size.height,
+            width:
+                orientation == Orientation.portrait ? size.width : size.height,
+            color: Colors.white,
+            child: AspectRatio(
+                aspectRatio: 1.0,
+                child: Paper(
+                  previewContainerKey: _previewContainerKey,
+                )),
+          ),
+        ),
+        Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: orientation == Orientation.portrait ? 0.0 : null,
+            bottom: orientation == Orientation.portrait ? null : 0.0,
+            child: TopMenu(widget.title)),
+        Positioned(
+            top: orientation == Orientation.portrait ? null : 0.0,
+            bottom: 0.0,
+            left: orientation == Orientation.portrait ? 0.0 : null,
+            right: 0.0,
+            child: BottomMenu()),
+        Positioned(
+          top: orientation == Orientation.portrait
+              ? (size.height - size.width) * .015
+              : (size.height - size.width) * .01,
+          left: orientation == Orientation.portrait
+              ? (size.height - size.width) * .01
+              : (size.height - size.width) * .01,
+          child: PaperActions(action: "backAction"),
+        ),
+        Positioned(
+          top: orientation == Orientation.portrait
+              ? (size.height - size.width) * .01
+              : (size.height - size.width) * .01,
+          right: orientation == Orientation.portrait
+              ? (size.height - size.width) * .01
+              : (size.height - size.width) * .01,
+          child: PaperActions(
+            action: "saveAction",
+            onClick: getPngImage,
+          ),
+        ),
+        Positioned(
+          top: 0.0,
+          right: orientation == Orientation.portrait
+              ? size.width * .08
+              : size.width * .06,
+          child: PaperActions(
+            action: "UndoRedoAction",
+          ),
+        ),
+      ],
+    );
     return ScopedModel<ActivityModel>(
       model: _activityModel,
       child: ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) => Stack(
-              children: <Widget>[
-                Center(
-                  child: Container(
-                    height: orientation == Orientation.portrait
-                        ? size.width
-                        : size.height,
-                    width: orientation == Orientation.portrait
-                        ? size.width
-                        : size.height,
-                    color: Colors.white,
-                    child: AspectRatio(
-                        aspectRatio: 1.0,
-                        child: Paper(
-                          previewContainerKey: _previewContainerKey,
-                        )),
-                  ),
-                ),
-                Positioned(
-                    top: 0.0,
-                    left: 0.0,
-                    right: orientation == Orientation.portrait?0.0:null,
-                    bottom: orientation == Orientation.portrait? null:0.0,
-                    child: TopMenu(widget.title)),
-                Positioned(
-                  top: orientation == Orientation.portrait?null:0.0,
-                    bottom: 0.0,
-                    left: orientation == Orientation.portrait?0.0:null,
-                    right: 0.0,
-                    child: BottomMenu()),
-                Positioned(
-                  top: orientation == Orientation.portrait
-                      ? (size.height - size.width) * .015
-                      : (size.height - size.width) * .01,
-                  left: orientation == Orientation.portrait
-                      ? (size.height - size.width) * .01
-                      : (size.height - size.width) * .01,
-                  child: PaperActions(action: "backAction"),
-                ),
-                Positioned(
-                  top: orientation == Orientation.portrait
-                      ? (size.height - size.width) * .01
-                      : (size.height - size.width) * .01,
-                  right: orientation == Orientation.portrait
-                      ? (size.height - size.width) * .01
-                      : (size.height - size.width) * .01,
-                  child: PaperActions(
-                    action: "saveAction",
-                    onClick: getPngImage,
-                  ),
-                ),
-                Positioned(
-                  top: 0.0,
-                  right: orientation == Orientation.portrait
-                      ? size.width * .08
-                      : size.width * .06,
-                  child: PaperActions(
-                    action: "UndoRedoAction",
-                  ),
-                ),
-              ],
-            ),
+        builder: (context, child, model) =>
+            model.isDotSketch ? dotSketchScreen : drawingScreen,
       ),
     );
   }

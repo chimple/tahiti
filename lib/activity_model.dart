@@ -26,7 +26,7 @@ class ActivityModel extends Model {
   String _imagePath;
 
   bool _isDrawing = false;
-  bool _isdotSketch =true;
+  bool _isdotSketch =false;
   bool userTouch = false;
 
   PainterController _painterController;
@@ -254,6 +254,8 @@ class ActivityModel extends Model {
 
   void addDotData(Map<String, List<int>> dotData) {
     addThing({'id': Uuid().v4(), 'type': 'dot', 'dotData': dotData});
+    _isdotSketch=true;
+    notifyListeners();
   }
 
   void selectedThing(
