@@ -102,13 +102,13 @@ class ActivityBoardState extends State<ActivityBoard> {
                 Positioned(
                     top: 0.0,
                     left: 0.0,
-                    right: orientation == Orientation.portrait?0.0:null,
-                    bottom: orientation == Orientation.portrait? null:0.0,
+                    right: orientation == Orientation.portrait ? 0.0 : null,
+                    bottom: orientation == Orientation.portrait ? null : 0.0,
                     child: TopMenu(widget.title)),
                 Positioned(
-                  top: orientation == Orientation.portrait?null:0.0,
+                    top: orientation == Orientation.portrait ? null : 0.0,
                     bottom: 0.0,
-                    left: orientation == Orientation.portrait?0.0:null,
+                    left: orientation == Orientation.portrait ? 0.0 : null,
                     right: 0.0,
                     child: BottomMenu()),
                 Positioned(

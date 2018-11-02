@@ -20,7 +20,6 @@ class TopMenu extends StatelessWidget {
       width: orientation == Orientation.portrait
           ? (size.height - size.width) * .4
           : (size.width - size.height) / 2,
-      color: Color(0xff2b3f4c),
       child: Stack(
         children: <Widget>[
           Positioned(
