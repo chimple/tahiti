@@ -64,9 +64,13 @@ class ActivityBoardState extends State<ActivityBoard> {
       ..saveCallback = widget.saveCallback;
     setState(() {
       _isLoading = false;
-      widget.json == null
-          ? _activityModel.isDotSketch = false
-          : _activityModel.isDotSketch = true;
+      try {
+        widget.json['id'] == 'dot'
+            ? _activityModel.isDotSketch = true
+            : _activityModel.isDotSketch = false;
+      } catch (a) {
+        print(a);
+      }
     });
   }
 
