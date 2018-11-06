@@ -202,7 +202,14 @@ class PopupGridViewState extends State<PopupGridView> {
                             model.painterController.drawingType =
                                 DrawingType.freeDrawing;
                             model.isDrawing = true;
-                          } else {
+                          } else if (title
+                              .startsWith('assets/menu/bucket.png')) {
+                            model.highlighted = title;
+                            model.painterController.paintOption =
+                                PaintOption.bucketFill;
+                            model.isDrawing = true;
+                          }
+                          else {
                             model.highlighted = null;
                             model.isDrawing = false;
                             model.painterController.drawingType = null;

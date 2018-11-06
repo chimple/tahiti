@@ -57,13 +57,8 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  // 'assets/menu/brush1.png': [
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
-  // ],
+  'assets/menu/bucket.png': [
+  ],
   //     'assets/menu/roller.png': [
   //   Iconf(type: ItemType.png, data: 'assets/roller_image/sample1.jpg'),
   //   Iconf(type: ItemType.png, data: 'assets/roller_image/sample2.jpg'),

@@ -46,6 +46,8 @@ class ActivityModel extends Model {
   Color cls;
   BlendMode blnd;
   String maskImageName;
+  Offset _fillOffset;
+  bool _fillPath = false;
 
   ActivityModel({@required this.paintData}) {
     _painterController =
@@ -72,6 +74,17 @@ class ActivityModel extends Model {
   String get selectedThingId => _selectedThingId;
   set selectedThingId(String id) {
     _selectedThingId = id;
+    notifyListeners();
+  }
+   Offset get fillOffset => _fillOffset;
+  set fillOffset(Offset t) {
+    _fillOffset = t;
+    notifyListeners();
+  }
+
+    bool get fillPath => _fillPath;
+  set fillPath(bool t) {
+    _fillPath = t;
     notifyListeners();
   }
 
@@ -477,6 +490,7 @@ class PathHistory {
       BlurStyle blurStyle,
       double sigma,
       double thickness,
+      Offset fillPath,
       Color color,
       String maskImage}) {
     paths.add(PathInfo(
@@ -485,13 +499,28 @@ class PathHistory {
         blurStyle: blurStyle,
         sigma: sigma,
         thickness: thickness,
+        fillPath: fillPath,
         color: color,
         maskImage: maskImage));
   }
 
-  void draw(PaintingContext context, Size size) {
+void draw(PaintingContext context, Size size, ActivityModel model) {
+      
     for (PathInfo pathInfo in paths) {
-      context.canvas.drawPath(pathInfo.path, pathInfo._paint);
+      //  if(pathInfo.fillPath != null ){
+      //     // print("pathInfo.path : ${pathInfo.path}");
+      //     print("pathInfo.path.contains(pathInfo.fillOffset) : ${pathInfo._path.contains(pathInfo.fillPath)}");
+      //     print("pathInfo.path.contains(model.fillOffset) : ${pathInfo._path.contains(model.fillOffset)}");
+      //     print("pathInfo.paintOption == PaintOption.bucketFill : ${(pathInfo.paintOption == PaintOption.bucketFill)}");
+      //  }
+
+      if (model.fillOffset != null &&
+          pathInfo.path.contains(model.fillOffset) &&
+          model.painterController.paintOption == PaintOption.bucketFill) {
+        pathInfo.path.fillType = PathFillType.evenOdd;
+        context.canvas.drawPath(pathInfo.path, pathInfo._paint2);
+      } else 
+       context.canvas.drawPath(pathInfo.path, pathInfo._paint);
     }
   }
 
@@ -503,7 +532,7 @@ class PathHistory {
 
 @JsonSerializable()
 class PathInfo {
-  Paint _paint;
+  Paint _paint, _paint2;
 
   Path _path;
 
@@ -516,6 +545,7 @@ class PathInfo {
   double sigma;
   String maskImage;
   double thickness;
+  Offset fillPath;
   @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
   Color color;
   final double devicePixelRatio = ui.window.devicePixelRatio;
@@ -525,6 +555,7 @@ class PathInfo {
       this.blurStyle = BlurStyle.normal,
       this.sigma = 0.0,
       this.thickness = 8.0,
+      this.fillPath,
       this.color = Colors.red,
       this.maskImage}) {
     _path = new Path();
@@ -540,11 +571,14 @@ class PathInfo {
       ..[10] = 1.0
       ..[15] = 4.0;
     _paint = Paint()
-      ..style = PaintingStyle.stroke
+      ..style = paintOption== PaintOption.bucketFill ? PaintingStyle.fill: PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
       ..strokeWidth = thickness
       ..color = color ?? Colors.red;
+
+       _paint2 = Paint()
+    ..color = color ?? Colors.red;
 
     switch (paintOption) {
       case PaintOption.paint:
@@ -559,6 +593,8 @@ class PathInfo {
         break;
       case PaintOption.erase:
         _paint.blendMode = BlendMode.clear;
+        break;
+        case PaintOption.bucketFill: 
         break;
     }
   }

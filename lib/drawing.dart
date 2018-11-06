@@ -52,14 +52,22 @@ class RollerState extends State<Drawing> {
   }
 
   void _handleDragUpdate(DragUpdateDetails update) {
+    ActivityModel model = ActivityModel.of(context);
     PainterController painterController =
         ActivityModel.of(context).painterController;
     pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(update.globalPosition);
     if (painterController.getDragStatus()) {
-      painterController.updateCurrent(context, pos);
+      painterController.paintOption == PaintOption.bucketFill
+          ? painterController.updateCurrent(context, null)
+          : painterController.updateCurrent(context, pos);
     } else {
       painterController.add(context, pos);
+      painterController.paintOption == PaintOption.bucketFill
+          ? model.fillOffset = pos
+          : model.fillOffset = Offset(0.0, 0.0);
+      print(
+          "position issssssssssssssssssssssssssssssssssssssssssss ${model.fillOffset}");
     }
   }
 
@@ -223,10 +231,10 @@ class _ScratchCardRender extends RenderProxyBox {
       context.canvas.saveLayer(offset & size, Paint());
       context.paintChild(child, offset);
       if (model.painterController.drawingType == DrawingType.lineDrawing) {
-        path.draw(context, size);
+        path.draw(context, size, model);
         path.drawStraightLine(context, size);
       } else {
-        path.draw(context, size);
+        path.draw(context, size, model);
       }
       context.canvas.restore();
     }
@@ -293,9 +301,9 @@ class PainterController extends ChangeNotifier {
           blurStyle: blurStyle,
           sigma: paintOption == PaintOption.masking ? 10.0 : sigma,
           thickness: thickness,
+          fillPath: model.fillOffset,
           color: model.selectedColor,
-          maskImage:
-              paintOption == PaintOption.masking ? model.maskImageName : null,
+          maskImage: paintOption == PaintOption.masking ? model.maskImageName : null,
         );
       }
     }
@@ -326,7 +334,6 @@ class PainterController extends ChangeNotifier {
         case DrawingType.lineDrawing:
           pathHistory.x = nextPoint.dx;
           pathHistory.y = nextPoint.dy;
-
           break;
       }
       notifyListeners();
@@ -379,5 +386,5 @@ class PainterController extends ChangeNotifier {
   }
 }
 
-enum PaintOption { paint, erase, masking }
+enum PaintOption { paint, erase, masking , bucketFill }
 enum DrawingType { freeDrawing, geometricDrawing, lineDrawing }
