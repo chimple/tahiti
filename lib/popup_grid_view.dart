@@ -95,133 +95,139 @@ class PopupGridViewState extends State<PopupGridView> {
   Widget _buildMenuItem(String title, {double height, double width}) {
     return ScopedModelDescendant<ActivityModel>(
         builder: (context, child, model) => AnimatedContainer(
-              duration: Duration(milliseconds: 250),
-              height: MediaQuery.of(context).orientation == Orientation.portrait
-                  ? widget.side == DisplaySide.second &&
-                          model.highlighted == title
-                      ? (size.height - size.width) / 4
-                      : (size.height - size.width) / 5
-                  : widget.side == DisplaySide.second &&
-                          model.highlighted == title
-                      ? (size.width - size.height) / 4
-                      : (size.width - size.height) / 5,
-              width: width,
-              // alignment: Alignment.center,
-              // color: _getIconColor(model, title),
-              padding: const EdgeInsets.all(4.0),
-              child: InkWell(
-                  onTap: () => setState(
-                        () {
-                          if ((model.popped == Popped.second ||
-                                  model.popped == Popped.first) &&
-                              highlightedButtonItem == title) {
-                            model.popped = Popped.noPopup;
-                          } else if (widget.side == DisplaySide.second &&
-                              model.highlighted == title) {
-                            model.popped = Popped.second;
-                            highlightedButtonItem = title;
-                            widget.onUserPress(title);
-                          } else if (widget.side == DisplaySide.first) {
-                            model.popped = Popped.first;
-                            highlightedButtonItem = title;
-                            widget.onUserPress(title);
-                          } else {
-                            model.popped = Popped.noPopup;
-                          }
-                          // highlightedButtonItem = title;
+            duration: Duration(milliseconds: 250),
+            height: MediaQuery.of(context).orientation == Orientation.portrait
+                ? widget.side == DisplaySide.second &&
+                        model.highlighted == title
+                    ? (size.height - size.width) / 4
+                    : (size.height - size.width) / 5
+                : widget.side == DisplaySide.second &&
+                        model.highlighted == title
+                    ? (size.width - size.height) / 4
+                    : (size.width - size.height) / 5,
+            width: width,
+            // alignment: MediaQuery.of(context).orientation == Orientation.portrait
+            //     ? widget.side == DisplaySide.second &&
+            //             model.highlighted == title
+            //         ? Alignment.bottomCenter
+            //         : Alignment.topCenter
+            //     : widget.side == DisplaySide.second &&
+            //             model.highlighted == title
+            //         ? Alignment.bottomCenter
+            //         : Alignment.topCenter,
+            // color: Colors.green,
+            // padding: const EdgeInsets.all(4.0),
+            child: InkWell(
+                onTap: () => setState(
+                      () {
+                        if ((model.popped == Popped.second ||
+                                model.popped == Popped.first) &&
+                            highlightedButtonItem == title) {
+                          model.popped = Popped.noPopup;
+                        } else if (widget.side == DisplaySide.second &&
+                            model.highlighted == title) {
+                          model.popped = Popped.second;
+                          highlightedButtonItem = title;
+                          widget.onUserPress(title);
+                        } else if (widget.side == DisplaySide.first) {
+                          model.popped = Popped.first;
+                          highlightedButtonItem = title;
+                          widget.onUserPress(title);
+                        } else {
+                          model.popped = Popped.noPopup;
+                        }
+                        // highlightedButtonItem = title;
 
-                          if (title != null) {
-                            model.selectedThingId = null;
-                            model.selectedIcon = title;
-                            print('icon is ${model.selectedIcon}');
-                            if (title.startsWith('assets/menu/svg/pencil')) {
-                              model.highlighted = title;
-                              model.painterController.paintOption =
-                                  PaintOption.paint;
-                              model.painterController.drawingType =
-                                  DrawingType.freeDrawing;
-                              model.painterController.blurStyle =
-                                  BlurStyle.normal;
-                              model.painterController.sigma = 0.0;
-                              model.isDrawing = true;
-                            } else if (title
-                                .startsWith('assets/menu/brush1.png')) {
-                              model.highlighted = title;
-                              model.painterController.paintOption =
-                                  PaintOption.paint;
-                              model.painterController.blurStyle =
-                                  BlurStyle.normal;
-                              model.painterController.sigma = 15.5;
-                              model.isDrawing = true;
-                            } else if (title
-                                .startsWith('assets/menu/svg/geometry')) {
-                              model.highlighted = title;
-                              model.painterController.paintOption =
-                                  PaintOption.paint;
-                              model.painterController.drawingType =
-                                  DrawingType.geometricDrawing;
-                              model.painterController.blurStyle =
-                                  BlurStyle.normal;
-                              model.painterController.sigma = 0.0;
-                              model.isDrawing = true;
-                            } else if (title
-                                .startsWith('assets/menu/svg/freegeometry')) {
-                              model.highlighted = title;
-                              model.painterController.paintOption =
-                                  PaintOption.paint;
-                              model.painterController.drawingType =
-                                  DrawingType.lineDrawing;
-                              model.painterController.blurStyle =
-                                  BlurStyle.normal;
-                              model.painterController.sigma = 0.0;
-                              model.isDrawing = true;
-                            } else if (title
-                                .startsWith('assets/menu/brush.png')) {
-                              model.highlighted = title;
-                              model.painterController.paintOption =
-                                  PaintOption.paint;
-                              model.painterController.blurStyle =
-                                  BlurStyle.inner;
-                              model.painterController.sigma = 15.5;
-                              model.isDrawing = true;
-                            } else if (title.startsWith('assets/menu/roller')) {
-                              model.highlighted = title;
-                              model.isDrawing = false;
-                            } else if (title
-                                .startsWith('assets/menu/svg/eraser')) {
-                              model.highlighted = title;
-                              model.painterController.paintOption =
-                                  PaintOption.erase;
-                              model.painterController.drawingType =
-                                  DrawingType.freeDrawing;
-                              model.isDrawing = true;
-                            } else {
-                              model.highlighted = null;
-                              model.isDrawing = false;
-                              model.painterController.drawingType = null;
+                        if (title != null) {
+                          model.selectedThingId = null;
+                          model.selectedIcon = title;
+                          print('icon is ${model.selectedIcon}');
+                          if (title.startsWith('assets/menu/svg/pencil')) {
+                            model.highlighted = title;
+                            model.painterController.paintOption =
+                                PaintOption.paint;
+                            model.painterController.drawingType =
+                                DrawingType.freeDrawing;
+                            model.painterController.blurStyle =
+                                BlurStyle.normal;
+                            model.painterController.sigma = 0.0;
+                            model.isDrawing = true;
+                          } else if (title
+                              .startsWith('assets/menu/brush1.png')) {
+                            model.highlighted = title;
+                            model.painterController.paintOption =
+                                PaintOption.paint;
+                            model.painterController.blurStyle =
+                                BlurStyle.normal;
+                            model.painterController.sigma = 15.5;
+                            model.isDrawing = true;
+                          } else if (title
+                              .startsWith('assets/menu/svg/geometry')) {
+                            model.highlighted = title;
+                            model.painterController.paintOption =
+                                PaintOption.paint;
+                            model.painterController.drawingType =
+                                DrawingType.geometricDrawing;
+                            model.painterController.blurStyle =
+                                BlurStyle.normal;
+                            model.painterController.sigma = 0.0;
+                            model.isDrawing = true;
+                          } else if (title
+                              .startsWith('assets/menu/svg/freegeometry')) {
+                            model.highlighted = title;
+                            model.painterController.paintOption =
+                                PaintOption.paint;
+                            model.painterController.drawingType =
+                                DrawingType.lineDrawing;
+                            model.painterController.blurStyle =
+                                BlurStyle.normal;
+                            model.painterController.sigma = 0.0;
+                            model.isDrawing = true;
+                          } else if (title
+                              .startsWith('assets/menu/brush.png')) {
+                            model.highlighted = title;
+                            model.painterController.paintOption =
+                                PaintOption.paint;
+                            model.painterController.blurStyle = BlurStyle.inner;
+                            model.painterController.sigma = 15.5;
+                            model.isDrawing = true;
+                          } else if (title.startsWith('assets/menu/roller')) {
+                            model.highlighted = title;
+                            model.isDrawing = false;
+                          } else if (title
+                              .startsWith('assets/menu/svg/eraser')) {
+                            model.highlighted = title;
+                            model.painterController.paintOption =
+                                PaintOption.erase;
+                            model.painterController.drawingType =
+                                DrawingType.freeDrawing;
+                            model.isDrawing = true;
+                          } else {
+                            model.highlighted = null;
+                            model.isDrawing = false;
+                            model.painterController.drawingType = null;
+                          }
+                        }
+                        if (title == 'assets/menu/stickers.png') {
+                          showCategorySreen(model, title);
+                        } else if (title == 'assets/menu/text.png') {
+                          showCategorySreen(model, title);
+                        } else if (title == 'assets/menu/svg/roll') {
+                          showCategorySreen(model, title);
+                        } else if (title == 'assets/menu/mic.png') {
+                          model.things.forEach((t) {
+                            if (t['type'] == 'nima' && t['asset'] != null) {
+                              model.deleteThing(t['id']);
+                              showCategorySreen(model, title);
+                              model.recorder.stop();
                             }
-                          }
-                          if (title == 'assets/menu/stickers.png') {
-                            showCategorySreen(model, title);
-                          } else if (title == 'assets/menu/text.png') {
-                            showCategorySreen(model, title);
-                          } else if (title == 'assets/menu/svg/roll') {
-                            showCategorySreen(model, title);
-                          } else if (title == 'assets/menu/mic.png') {
-                            model.things.forEach((t) {
-                              if (t['type'] == 'nima' && t['asset'] != null) {
-                                model.deleteThing(t['id']);
-                                showCategorySreen(model, title);
-                                model.recorder.stop();
-                              }
-                            });
-                            showCategorySreen(model, title);
-                          }
-                        },
-                      ),
-                  child: widget.buildIndexItem(
-                      context, Iconf(type: ItemType.text, data: title), true)),
-            ));
+                          });
+                          showCategorySreen(model, title);
+                        }
+                      },
+                    ),
+                child: widget.buildIndexItem(
+                    context, Iconf(type: ItemType.text, data: title), true))));
   }
 
   Future<bool> showCategorySreen(ActivityModel model, String text) {
@@ -265,10 +271,12 @@ class PopupGridViewState extends State<PopupGridView> {
         List<Widget> rowItems = [];
         rowItems.add(Expanded(
           child: SizedBox(
-            height: (size.height - size.width) / 4,
+            // height: (size.height - size.width) / 4,
             // width: (size.height- size.width) * .02,
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: widget.menuItems.keys
                     .skip(widget.numFixedItems)
                     .map(
@@ -294,26 +302,15 @@ class PopupGridViewState extends State<PopupGridView> {
         ));
 
         return Stack(
+          alignment: Alignment.bottomCenter,
           overflow: Overflow.visible,
           children: <Widget>[
             Container(
-              // color: Colors.green,
-              // decoration: new BoxDecoration(
-              //   borderRadius: const BorderRadius.only(
-              //       topRight: Radius.circular(20.0),
-              //       topLeft: Radius.circular(20.0)),
-              //   color: widget.side == DisplaySide.second
-              //       ? Colors.green
-              //       : null,
-              // ),
-              // margin: widget.side == DisplaySide.second
-              //     ? EdgeInsets.all(size.width * .01)
-              //     : null,
+              color: Color(0xff2b3f4c),
               height: widget.side == DisplaySide.second
-                  ? (size.height - size.width) / 1.5
+                  ? (size.height - size.width) / 2
                   : (size.height - size.width) / 6,
-              width:
-                  widget.side == DisplaySide.second ? size.width : size.width,
+              width: size.width,
             ),
             Positioned(
               bottom: widget.side == DisplaySide.second
@@ -434,7 +431,9 @@ class PopupGridViewState extends State<PopupGridView> {
             child: RotatedBox(
           quarterTurns: 3,
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: widget.menuItems.keys
                   .skip(widget.numFixedItems)
                   .map(
@@ -456,23 +455,14 @@ class PopupGridViewState extends State<PopupGridView> {
                         .toList(growable: false)))));
 
         return Stack(
+          alignment: Alignment.centerRight,
           overflow: Overflow.visible,
           children: <Widget>[
             Container(
-              // color: Colors.green,
-              // decoration: new BoxDecoration(
-              //   borderRadius: const BorderRadius.only(
-              //       topRight: Radius.circular(20.0),
-              //       bottomRight: Radius.circular(20.0)),
-              //   color: Colors.green,
-              // ),
-              // margin: widget.side == DisplaySide.second
-              //     ? EdgeInsets.only(
-              //         top: size.height * .01, bottom: size.height * .01)
-              //     : null,
+              color: Color(0xff2b3f4c),
               width: widget.side == DisplaySide.second
                   ? (size.width - size.height) / 2
-                  : (size.width - size.height) / 2,
+                  : (size.width - size.height) / 6,
               height: size.height,
             ),
             Positioned(
@@ -551,12 +541,10 @@ class PopupGridViewState extends State<PopupGridView> {
                 left: widget.side == DisplaySide.second ? null : 0.0,
                 top: widget.side == DisplaySide.second ? 0.0 : 0.0,
                 bottom: 0.0,
-                child: Center(
-                  child: Column(
-                    children: widget.side == DisplaySide.second
-                        ? columnItems
-                        : columnItems1,
-                  ),
+                child: Column(
+                  children: widget.side == DisplaySide.second
+                      ? columnItems
+                      : columnItems1,
                 )),
           ],
         );

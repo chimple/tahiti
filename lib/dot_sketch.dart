@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tahiti/activity_model.dart';
+import 'package:tahiti/components/pulse_animation.dart';
 
 class DotPainter extends ChangeNotifier implements CustomPainter {
   Color strokeColor;
@@ -34,32 +35,37 @@ class DotPainter extends ChangeNotifier implements CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint strokePaint = new Paint();
-    strokePaint.color = Colors.black;
-    strokePaint.strokeWidth = 4.0;
+    Paint strokePaint = new Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..strokeWidth = 5.0;
 
     Path dotPath = Path();
     Path connectPath = Path();
     bool isConnect = true;
+
     for (int i = 0; i < dotData['x'].length; i++) {
       final x = dotData['x'][i].toDouble();
       final y = dotData['y'][i].toDouble();
       final offset = Offset(x, y);
       dotPath.moveTo(x, y);
-      dotPath.addOval(Rect.fromCircle(center: offset, radius: 10.0));
+      dotPath.addOval(Rect.fromCircle(center: offset, radius: 5.0));
+
       if (isConnect) {
         if (i == 0) {
           connectPath.moveTo(x, y);
         } else {
           connectPath.lineTo(x, y);
+          // canvas.drawLine(p1, p2, strokePaint);
         }
         isConnect = dotData['c'][i] != 0;
       }
     }
+
     if (to != null) connectPath.lineTo(to.dx, to.dy);
     canvas.drawPath(dotPath, strokePaint);
 
-    strokePaint.style = PaintingStyle.stroke;
     if (dotData['c'].last != 0) connectPath.close();
     canvas.drawPath(connectPath, strokePaint);
   }
@@ -100,22 +106,29 @@ class _DotSketchState extends State<DotSketch> {
   Offset lastPos;
 
   void panStart(DragStartDetails details) {
-    print('panStart');
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
     final dist = (pos - currentDot).distanceSquared;
-    if ((pos - currentDot).distanceSquared < 100) {
-      isDrawing = true;
+    if (dist < 100) {
+      setState(() {
+        isDrawing = true;
+      });
       dotPainter.startStroke(currentDot);
     }
   }
 
   void panUpdate(DragUpdateDetails details) {
+    ActivityModel model = ActivityModel.of(context);
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
     if (isDrawing) {
       dotPainter.updateStroke(pos);
-      lastPos = pos;
+      if ((pos - nextDot).distanceSquared < 30) {
+        final currentIndex = dotData['c'].indexWhere((c) => c == 0);
+        if (currentIndex != -1) dotData['c'][currentIndex] = 1;
+        model.updateThing(
+            {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
+      }
     }
   }
 
@@ -123,12 +136,16 @@ class _DotSketchState extends State<DotSketch> {
     ActivityModel model = ActivityModel.of(context);
     if (isDrawing) {
       dotPainter.endStroke();
-      if ((lastPos - nextDot).distanceSquared < 100) {
+      if ((lastPos - nextDot).distanceSquared < 50) {
         final currentIndex = dotData['c'].indexWhere((c) => c == 0);
+        print("currentIndex   === $currentIndex");
         if (currentIndex != -1) dotData['c'][currentIndex] = 1;
+        print("dotData['c'][currentIndex]   === ${dotData['c'][currentIndex]}");
         model.updateThing(
             {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
-        isDrawing = false;
+        setState(() {
+          isDrawing = false;
+        });
       }
     }
   }
@@ -157,6 +174,8 @@ class _DotSketchState extends State<DotSketch> {
           (currentIndex + 1 >= dotData['c'].length) ? 0 : currentIndex + 1;
       nextDot = Offset(dotData['x'][nextIndex].toDouble(),
           dotData['y'][nextIndex].toDouble());
+    } else if (currentIndex == -1) {
+      widget.model.isDotSketch = false;
     }
   }
 
@@ -183,9 +202,26 @@ class _DotSketchState extends State<DotSketch> {
       child: isInteractive ? touch : Container(),
     );
 
-    return new Container(
-      constraints: const BoxConstraints.expand(),
-      child: ClipRect(child: canvas),
-    );
+    return widget.model.isDotSketch
+        ? isDrawing
+            ? Stack(children: <Widget>[
+                Positioned(
+                    left: nextDot.dx - 20.0,
+                    top: nextDot.dy - 20.0,
+                    child: PulseAnimation(
+                      color: Colors.black,
+                    )),
+                canvas,
+              ])
+            : Stack(children: <Widget>[
+                Positioned(
+                    left: currentDot.dx - 20.0,
+                    top: currentDot.dy - 20.0,
+                    child: PulseAnimation(
+                      color: Colors.black,
+                    )),
+                canvas,
+              ])
+        : canvas;
   }
 }

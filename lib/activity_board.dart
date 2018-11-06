@@ -1,17 +1,17 @@
 import 'package:flutter/services.dart';
+import 'package:tahiti/bottom_menu.dart';
 import 'package:tahiti/masking.dart';
 import 'package:tahiti/paper_actions.dart';
 import 'dart:io';
 import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
+import 'package:tahiti/top_menu.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/paper.dart';
-import 'package:tahiti/popup_grid_view.dart';
-import 'package:tahiti/select_sticker.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
@@ -64,6 +64,13 @@ class ActivityBoardState extends State<ActivityBoard> {
       ..saveCallback = widget.saveCallback;
     setState(() {
       _isLoading = false;
+      try {
+        widget.json['id'] == 'dot'
+            ? _activityModel.isDotSketch = true
+            : _activityModel.isDotSketch = false;
+      } catch (a) {
+        print(a);
+      }
     });
   }
 
@@ -78,169 +85,85 @@ class ActivityBoardState extends State<ActivityBoard> {
     }
     orientation = MediaQuery.of(context).orientation;
     size = MediaQuery.of(context).size;
+    Widget dotSketchScreen = Center(
+      child: Container(
+        height: orientation == Orientation.portrait ? size.width : size.height,
+        width: orientation == Orientation.portrait ? size.width : size.height,
+        color: Colors.white,
+        child: AspectRatio(
+            aspectRatio: 1.0,
+            child: Paper(
+              previewContainerKey: _previewContainerKey,
+            )),
+      ),
+    );
+    Widget drawingScreen = Stack(
+      children: <Widget>[
+        Center(
+          child: Container(
+            height:
+                orientation == Orientation.portrait ? size.width : size.height,
+            width:
+                orientation == Orientation.portrait ? size.width : size.height,
+            color: Colors.white,
+            child: AspectRatio(
+                aspectRatio: 1.0,
+                child: Paper(
+                  previewContainerKey: _previewContainerKey,
+                )),
+          ),
+        ),
+        Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: orientation == Orientation.portrait ? 0.0 : null,
+            bottom: orientation == Orientation.portrait ? null : 0.0,
+            child: TopMenu(widget.title)),
+        Positioned(
+            top: orientation == Orientation.portrait ? null : 0.0,
+            bottom: 0.0,
+            left: orientation == Orientation.portrait ? 0.0 : null,
+            right: 0.0,
+            child: BottomMenu()),
+        Positioned(
+          top: orientation == Orientation.portrait
+              ? (size.height - size.width) * .015
+              : (size.height - size.width) * .01,
+          left: orientation == Orientation.portrait
+              ? (size.height - size.width) * .01
+              : (size.height - size.width) * .01,
+          child: PaperActions(action: "backAction"),
+        ),
+        Positioned(
+          top: orientation == Orientation.portrait
+              ? (size.height - size.width) * .01
+              : (size.height - size.width) * .01,
+          right: orientation == Orientation.portrait
+              ? (size.height - size.width) * .01
+              : (size.height - size.width) * .01,
+          child: PaperActions(
+            action: "saveAction",
+            onClick: getPngImage,
+          ),
+        ),
+        Positioned(
+          top: 0.0,
+          right: orientation == Orientation.portrait
+              ? size.width * .08
+              : size.width * .06,
+          child: PaperActions(
+            action: "UndoRedoAction",
+          ),
+        ),
+      ],
+    );
     return ScopedModel<ActivityModel>(
       model: _activityModel,
       child: ScopedModelDescendant<ActivityModel>(
-        builder: (context, child, model) => Stack(
-              children: <Widget>[
-                // _paperBuilder(),
-                Center(
-                  child: Container(
-                    height: orientation == Orientation.portrait
-                        ? size.width
-                        : size.height,
-                    width: orientation == Orientation.portrait
-                        ? size.width
-                        : size.height,
-                    color: Colors.white,
-                    child: AspectRatio(
-                        aspectRatio: 1.0,
-                        child: Paper(
-                          previewContainerKey: _previewContainerKey,
-                        )),
-                  ),
-                ),
-                Positioned(
-                  top: 0.0,
-                  left: orientation == Orientation.portrait ? 0.0 : null,
-                  right: 0.0,
-                  bottom: orientation == Orientation.portrait ? null : 0.0,
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    height: orientation == Orientation.portrait
-                        ? (size.height - size.width) / 2
-                        : (size.width - size.height) * .25,
-                    width: orientation == Orientation.portrait
-                        ? (size.height - size.width) * .4
-                        : (size.width - size.height) / 2,
-                    color: Color(0xff2b3f4c),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0.0,
-                  right: orientation == Orientation.portrait ? 0.0 : null,
-                  left: 0.0,
-                  top: orientation == Orientation.portrait ? null : 0.0,
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    height: orientation == Orientation.portrait
-                        ? (size.height - size.width) / 2
-                        : (size.width - size.height) * .8,
-                    width: orientation == Orientation.portrait
-                        ? (size.height - size.width) * .4
-                        : (size.width - size.height) / 2,
-                    color: Color(0xff2b3f4c),
-                  ),
-                ),
-                Positioned(
-                    top: 0.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: orientation == Orientation.portrait
-                        ? Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                                      color: Colors.black,
-                                      width: (size.height - size.width) * .01)),
-                            ),
-                            alignment: Alignment.center,
-                            height: (size.height - size.width) * .2,
-                            // width: size.width * .4,
-                            child: Text(
-                              widget.title ?? '',
-                              style: TextStyle(
-                                fontSize: (size.height - size.width) * .1,
-                              ),
-                            ))
-                        : Container()),
-                Positioned(
-                    top: orientation == Orientation.portrait
-                        ? (size.height - size.width) / 4
-                        : 0.0,
-                    right: orientation == Orientation.portrait ? 0.0 : null,
-                    left: orientation == Orientation.portrait
-                        ? 0.0
-                        : (size.width - size.height) / 6,
-                    bottom: orientation == Orientation.portrait ? null : 0.0,
-                    child: SelectSticker(side: DisplaySide.first)),
-                Positioned(
-                    bottom: 0.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: SelectSticker(side: DisplaySide.second)),
-                Positioned(
-                  top: orientation == Orientation.portrait
-                      ? (size.height - size.width) * .015
-                      : (size.height - size.width) * .01,
-                  left: orientation == Orientation.portrait
-                      ? (size.height - size.width) * .01
-                      : (size.height - size.width) * .01,
-                  child: PaperActions(action: "backAction"),
-                ),
-                Positioned(
-                  top: orientation == Orientation.portrait
-                      ? (size.height - size.width) * .01
-                      : (size.height - size.width) * .01,
-                  right: orientation == Orientation.portrait
-                      ? (size.height - size.width) * .01
-                      : (size.height - size.width) * .01,
-                  child: PaperActions(
-                    action: "saveAction",
-                    onClick: getPngImage,
-                  ),
-                ),
-                Positioned(
-                  top: 0.0,
-                  right: orientation == Orientation.portrait
-                      ? size.width * .08
-                      : size.width * .06,
-                  child: PaperActions(
-                    action: "UndoRedoAction",
-                  ),
-                ),
-              ],
-            ),
+        builder: (context, child, model) =>
+            model.isDotSketch ? dotSketchScreen : drawingScreen,
       ),
     );
-  }
-
-  Widget _paperBuilder() {
-    return orientation == Orientation.portrait
-        ? Positioned(
-            top: (size.height - size.width) * .25,
-            child: Container(
-              height: orientation == Orientation.portrait
-                  ? size.width
-                  : size.height,
-              width: orientation == Orientation.portrait
-                  ? size.width
-                  : size.height,
-              color: Colors.white,
-              child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Paper(
-                    previewContainerKey: _previewContainerKey,
-                  )),
-            ),
-          )
-        : Positioned(
-            right: (size.width - size.height) * .06,
-            child: Container(
-              height: orientation == Orientation.portrait
-                  ? size.width
-                  : size.height,
-              width: orientation == Orientation.portrait
-                  ? size.width
-                  : size.height,
-              color: Colors.white,
-              child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Paper(
-                    previewContainerKey: _previewContainerKey,
-                  )),
-            ),
-          );
   }
 
   Future<Null> getPngImage() async {

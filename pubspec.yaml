@@ -12,7 +12,7 @@ dependencies:
 # following page: https://www.dartlang.org/tools/pub/pubspec
   flutter_svg: ^0.5.1
   audio_recorder: ^0.0.4
-  audioplayer2: ^0.5.1
+  audioplayers: ^0.7.8 
   path_provider: ^0.4.1
   scoped_model: ^0.3.0
   image_picker: ^0.4.6
