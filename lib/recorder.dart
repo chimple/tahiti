@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:audio_recorder/audio_recorder.dart';
-import 'package:audioplayer2/audioplayer2.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:tahiti/audio_editing_screen.dart';
 
 typedef void OnError(Exception exception);
 
 enum PlayerState { stopped, playing, start, shownima }
+enum RecordingState { recording, stop }
 
 class Recorder {
   Recording recording = new Recording();
@@ -22,6 +23,7 @@ class Recorder {
   }
 
   PlayerState playerState;
+  RecordingState recordingState;
   get isPlaying => playerState == PlayerState.playing;
   get isPaused => playerState == PlayerState.stopped;
 
@@ -29,6 +31,7 @@ class Recorder {
     initAudioPlayer();
   }
 
+  void dispose() {}
   void initAudioPlayer() {
     audioPlayer = new AudioPlayer();
   }
@@ -36,6 +39,8 @@ class Recorder {
   void start() async {
     try {
       if (await AudioRecorder.hasPermissions) {
+        recordingState = RecordingState.recording;
+        print('state in recording issssssssss $playerState');
         String path = "recorder.m4a";
         Directory appDocDirectory = await getExternalStorageDirectory();
         String filePath = appDocDirectory.path + '/' + path;
@@ -78,13 +83,16 @@ class Recorder {
     filePath = record.path;
   }
 
-  Future playAudio() async {
+  Future playAudio(
+    Function onComplete,
+  ) async {
     print('file path is $filePath');
     await audioPlayer.play(filePath, isLocal: true);
     isRecorded = false;
-    new Future.delayed(duration, () {
+    audioPlayer.completionHandler = () {
+      onComplete();
       stopAudio();
-    });
+    };
   }
 
   Future stopAudio() async {
