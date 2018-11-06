@@ -514,6 +514,8 @@ void draw(PaintingContext context, Size size, ActivityModel model) {
       //     print("pathInfo.paintOption == PaintOption.bucketFill : ${(pathInfo.paintOption == PaintOption.bucketFill)}");
       //  }
 
+      // pathInfo.path.contains(pathInfo.fillOffset) always show false
+
       if (model.fillOffset != null &&
           pathInfo.path.contains(model.fillOffset) &&
           model.painterController.paintOption == PaintOption.bucketFill) {

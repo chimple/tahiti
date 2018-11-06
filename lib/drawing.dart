@@ -23,7 +23,6 @@ class Drawing extends StatefulWidget {
     return new RollerState();
   }
 }
-
 class RollerState extends State<Drawing> {
   GlobalKey previewContainer = new GlobalKey();
   int count = 0;
@@ -66,8 +65,6 @@ class RollerState extends State<Drawing> {
       painterController.paintOption == PaintOption.bucketFill
           ? model.fillOffset = pos
           : model.fillOffset = Offset(0.0, 0.0);
-      print(
-          "position issssssssssssssssssssssssssssssssssssssssssss ${model.fillOffset}");
     }
   }
 
