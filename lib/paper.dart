@@ -53,9 +53,11 @@ class Paper extends StatelessWidget {
                     child: model.template.endsWith('.svg')
                         ? new SvgPicture.asset(
                             model.template,
+                            package: 'maui_assets',
                           )
                         : Image.asset(
                             model.template,
+                            package: 'maui_assets',
                           ),
                   ));
                 }
