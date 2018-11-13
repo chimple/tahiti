@@ -16,6 +16,7 @@ class PaperActions extends StatefulWidget {
 class PaperActionsState extends State<PaperActions> {
   Orientation orientation;
   Size size;
+  bool share_image = false;
   @override
   Widget build(BuildContext context) {
     orientation = MediaQuery.of(context).orientation;
@@ -38,21 +39,26 @@ class PaperActionsState extends State<PaperActions> {
         );
       } else if (widget.action == "saveAction") {
         return IconButton(
-            icon: Icon(Icons.menu),
+            icon: share_image
+                ? Icon(Icons.favorite, color: Colors.red)
+                : Icon(Icons.favorite_border, color: Colors.black),
             iconSize: MediaQuery.of(context).orientation == Orientation.portrait
                 ? size.width * .04
                 : size.width * .05,
             color: Colors.white,
             onPressed: () {
-              widget.onClick();
+              setState(() {
+                share_image = share_image ? false : true;
+              });
+              share_image ? widget.onClick(): widget.onClick(null);
               Scaffold.of(context).showSnackBar(SnackBar(
                   duration: Duration(milliseconds: 1000),
                   content: Container(
                       height: 50.0,
-                      child: Text(
-                        "Image saved Successfully",
+                      child:share_image ? Text(
+                        "Image Shared Successfully",
                         style: TextStyle(fontSize: 20.0),
-                      ))));
+                      ):Container() )));
             });
       } else if (widget.action == "UndoRedoAction") {
         return Row(
