@@ -43,8 +43,8 @@ class PaperActionsState extends State<PaperActions> {
                 ? Icon(Icons.favorite, color: Colors.red)
                 : Icon(Icons.favorite_border, color: Colors.white),
             iconSize: MediaQuery.of(context).orientation == Orientation.portrait
-                ? size.width * .04
-                : size.width * .05,
+                ? size.width * .05
+                : size.width * .04,
             color: Colors.white,
             onPressed: () {
               setState(() {
@@ -54,7 +54,7 @@ class PaperActionsState extends State<PaperActions> {
               Scaffold.of(context).showSnackBar(SnackBar(
                   duration: Duration(milliseconds: 1000),
                   content: Container(
-                      height: 50.0,
+                      height:  60.0,
                       child:share_image ? Text(
                         "Image Shared Successfully",
                         style: TextStyle(fontSize: 20.0),
