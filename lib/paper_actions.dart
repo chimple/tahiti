@@ -41,7 +41,7 @@ class PaperActionsState extends State<PaperActions> {
         return IconButton(
             icon: share_image
                 ? Icon(Icons.favorite, color: Colors.red)
-                : Icon(Icons.favorite_border, color: Colors.black),
+                : Icon(Icons.favorite_border, color: Colors.white),
             iconSize: MediaQuery.of(context).orientation == Orientation.portrait
                 ? size.width * .04
                 : size.width * .05,
@@ -68,7 +68,7 @@ class PaperActionsState extends State<PaperActions> {
                 iconSize:
                     MediaQuery.of(context).orientation == Orientation.portrait
                         ? size.height * .04
-                        : size.height * .05,
+                        : size.height * .06,
                 color: Colors.white,
                 onPressed: model.canUndo() ? () => model.undo() : null),
             IconButton(
@@ -76,7 +76,7 @@ class PaperActionsState extends State<PaperActions> {
                 iconSize:
                     MediaQuery.of(context).orientation == Orientation.portrait
                         ? size.height * .04
-                        : size.height * .05,
+                        : size.height * .06,
                 color: Colors.white,
                 onPressed: model.canRedo() ? () => model.redo() : null),
           ],
