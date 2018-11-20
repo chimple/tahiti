@@ -51,11 +51,13 @@ class TextEditorState extends State<TextEditor> {
   Size size;
   bool temp = false;
   FocusNode myFocusNode = new FocusNode();
+  TextEditingController _textEditingController;
 
   @override
   void initState() {
     color = widget.color;
     userTyped = widget.userTyped;
+   _textEditingController = new TextEditingController(text:userTyped);
     super.initState();
   }
 
@@ -75,9 +77,7 @@ class TextEditorState extends State<TextEditor> {
 
   @override
   Widget build(BuildContext context) {
-    print("TextEditor");
     size = MediaQuery.of(context).size;
-    // TODO: implement build
     return Material(
         animationDuration: Duration(milliseconds: 1000),
         child: Scaffold(
@@ -90,13 +90,13 @@ class TextEditorState extends State<TextEditor> {
               bottom: size.height * .18,
               child: Center(
                 child: TextField(
-                 // controller: TextEditingController(text: userTyped),
+                  controller: _textEditingController,
                   autofocus: true,
                   maxLines: null,
                   focusNode: myFocusNode,
-                  onChanged: (str) {
-                    userTyped = str;
-                  },
+                  // onChanged: (str) {
+                  //   userTyped = str;
+                  // },
                   style: TextStyle(
                     color: color,
                     fontFamily: textType[typeIndex],
@@ -177,14 +177,14 @@ class TextEditorState extends State<TextEditor> {
                           setState(() {
                             if (widget.id == null) {
                               widget.model.textColor = color;
-                              widget.model.addText(userTyped,
+                              widget.model.addText(_textEditingController.text,
                                   font: textType[typeIndex]);
                             } else {
                               widget.model.textColor = color;
                               widget.model.selectedThing(
                                   id: widget.id,
                                   color: color,
-                                  text: userTyped,
+                                  text: _textEditingController.text,
                                   type: 'text',
                                   font: textType[typeIndex]);
                             }
