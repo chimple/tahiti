@@ -90,7 +90,7 @@ class TextEditorState extends State<TextEditor> {
               bottom: size.height * .18,
               child: Center(
                 child: TextField(
-                  controller: TextEditingController(text: userTyped),
+                 // controller: TextEditingController(text: userTyped),
                   autofocus: true,
                   maxLines: null,
                   focusNode: myFocusNode,
