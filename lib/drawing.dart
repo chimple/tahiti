@@ -241,8 +241,8 @@ class PainterController extends ChangeNotifier {
   double thickness;
   BlurStyle blurStyle = BlurStyle.normal;
   double sigma = 0.0;
-  PaintOption paintOption;
-  DrawingType drawingType;
+  PaintOption paintOption = PaintOption.paint;
+  DrawingType drawingType = DrawingType.freeDrawing;
   Paint _currentPaint;
   bool _inDrag = false;
   double initialY;
