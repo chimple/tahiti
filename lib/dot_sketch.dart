@@ -120,6 +120,7 @@ class _DotSketchState extends State<DotSketch> {
   void panUpdate(DragUpdateDetails details) {
     Offset pos = (context.findRenderObject() as RenderBox)
         .globalToLocal(details.globalPosition);
+    lastPos = pos;
     if (isDrawing) {
       dotPainter.updateStroke(pos);
       if ((pos - nextDot).distanceSquared < 50) {
@@ -134,14 +135,12 @@ class _DotSketchState extends State<DotSketch> {
             {'id': widget.thing['id'], 'type': 'dot', 'dotData': dotData});
         dotPainter.endStroke();
       }
-      lastPos = pos;
     }
   }
 
   void panEnd(DragEndDetails details) {
     if (isDrawing) {
       dotPainter.endStroke();
-
       if ((lastPos - nextDot).distanceSquared < 50) {
         final currentIndex = dotData['c'].indexWhere((c) => c == 0);
         if (currentIndex != -1) dotData['c'][currentIndex] = 1;

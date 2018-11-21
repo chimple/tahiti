@@ -62,10 +62,11 @@ class ActivityBoardState extends State<ActivityBoard> {
                 template: widget.template,
                 pathHistory: PathHistory())))
       ..saveCallback = widget.saveCallback;
+
     setState(() {
       _isLoading = false;
       try {
-        widget.json['id'] == 'dot'
+        widget.json['things'][0]['type'] == 'dot'
             ? _activityModel.isDotSketch = true
             : _activityModel.isDotSketch = false;
       } catch (a) {
