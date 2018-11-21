@@ -21,12 +21,14 @@ class ActivityBoard extends StatefulWidget {
   final String template;
   final Map<String, dynamic> json;
   final String title;
+  final String extStorageDir;
 
   ActivityBoard(
       {Key key,
       @required this.saveCallback,
       this.template,
       this.json,
+      this.extStorageDir,
       this.title})
       : super(key: key);
 
@@ -54,8 +56,11 @@ class ActivityBoardState extends State<ActivityBoard> {
     await Future.forEach(
         Masking.listOfImage, (i) async => ActivityModel.cacheImage(i));
     _activityModel = (widget.json != null
-        ? ActivityModel(paintData: PaintData.fromJson(widget.json))
+        ? ActivityModel(
+            extStorageDir: widget.extStorageDir,
+            paintData: PaintData.fromJson(widget.json))
         : ActivityModel(
+            extStorageDir: widget.extStorageDir,
             paintData: PaintData(
                 id: Uuid().v4(),
                 things: [],
