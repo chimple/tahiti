@@ -26,7 +26,7 @@ class ActivityModel extends Model {
   String _imagePath;
 
   bool _isDrawing = true;
-  bool _isdotSketch =false;
+  bool _isdotSketch = false;
   bool userTouch = false;
 
   PainterController _painterController;
@@ -46,8 +46,9 @@ class ActivityModel extends Model {
   Color cls;
   BlendMode blnd;
   String maskImageName;
+  String extStorageDir;
 
-  ActivityModel({@required this.paintData}) {
+  ActivityModel({@required this.paintData, @required this.extStorageDir}) {
     _painterController =
         new PainterController(pathHistory: this.paintData.pathHistory);
   }
