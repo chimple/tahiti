@@ -51,13 +51,11 @@ class Paper extends StatelessWidget {
                   children.add(AspectRatio(
                     aspectRatio: 1.0,
                     child: model.template.endsWith('.svg')
-                        ? new SvgPicture.asset(
-                            model.template,
-                            package: 'maui_assets',
+                        ? new SvgPicture.file(
+                            File(model.extStorageDir + model.template),
                           )
-                        : Image.asset(
-                            model.template,
-                            package: 'maui_assets',
+                        : Image.file(
+                            File(model.extStorageDir + model.template),
                           ),
                   ));
                 }

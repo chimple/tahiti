@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -7,18 +8,15 @@ import 'package:simple_permissions/simple_permissions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tahiti/masking.dart';
 import 'package:tahiti/tahiti.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() => runApp(new MyApp());
 
 final templates = [
-  'assets/templates/LionSA1.svg',
-  // 'assets/templates/pattern.svg',
-  'assets/templates/pattern1.svg',
-  'assets/filter_image/filterImage1.png',
-  'assets/filter_image/filterImage2.png',
-  'assets/filter_image/filterImage3.png',
-  'assets/filter_image/filterImage4.png',
-  'assets/filter_image/filterImage5.png',
+  'assets/topic/306950.svg',
+  'assets/topic/bus_tire.svg',
+  'assets/topic/animal-animal-photography-big-cat-792381.jpg',
+  'assets/topic/mammal-908445__340.png',
 ];
 
 class MyApp extends StatefulWidget {
@@ -50,9 +48,41 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  HomeState createState() {
+    return new HomeState();
+  }
+}
+
+class HomeState extends State<Home> {
+  String extStorageDir;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initData();
+  }
+
+  void _initData() async {
+    await getExternalStorageDirectory()
+        .then((d) => extStorageDir = '${d.path}/');
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return new Center(
+          child: new SizedBox(
+        width: 20.0,
+        height: 20.0,
+        child: new CircularProgressIndicator(),
+      ));
+    }
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -69,6 +99,7 @@ class Home extends StatelessWidget {
                       Navigator.of(context).push(
                         new MaterialPageRoute(
                             builder: (BuildContext context) => DrawingWrapper(
+                                  extStorageDir: extStorageDir,
                                   template: result,
                                 )),
                       );
@@ -77,7 +108,9 @@ class Home extends StatelessWidget {
             )
           ],
         ),
-        body: DrawingList());
+        body: DrawingList(
+          extStorageDir: extStorageDir,
+        ));
   }
 
   Widget _buildDialog(BuildContext context) {
@@ -93,6 +126,7 @@ class Home extends StatelessWidget {
             height: MediaQuery.of(context).size.height / 1.6,
             child: TemplateGrid(
               templates: templates,
+              extStorageDir: extStorageDir,
             )),
       ],
     );
@@ -102,8 +136,10 @@ class Home extends StatelessWidget {
 class TemplateGrid extends StatelessWidget {
   final String cardId;
   final List<String> templates;
+  final String extStorageDir;
 
-  TemplateGrid({key, this.cardId, this.templates}) : super(key: key);
+  TemplateGrid({key, this.cardId, this.templates, this.extStorageDir})
+      : super(key: key);
 
   Widget _buildTile(BuildContext context, String template) {
     return Card(
@@ -113,11 +149,11 @@ class TemplateGrid extends StatelessWidget {
         child: new AspectRatio(
           aspectRatio: 1.0,
           child: template.endsWith('.svg')
-              ? new SvgPicture.asset(
-                  template,
+              ? new SvgPicture.file(
+                  File(extStorageDir + template),
                 )
-              : Image.asset(
-                  template,
+              : Image.file(
+                  File(extStorageDir + template),
                 ),
         ),
       ),
@@ -135,7 +171,8 @@ class TemplateGrid extends StatelessWidget {
 }
 
 class DrawingList extends StatefulWidget {
-  const DrawingList({Key key}) : super(key: key);
+  final String extStorageDir;
+  const DrawingList({Key key, this.extStorageDir}) : super(key: key);
 
   @override
   DrawingListState createState() {
@@ -162,6 +199,7 @@ class DrawingListState extends State<DrawingList> {
       prefs.setString('dot',
           '{"id":"dot","pathHistory":{"paths":[],"startX":null,"startY":null,"x":null,"y":null},"things":[{"id":"dot","type":"dot","dotData":{"x":[128, 150, 180, 200, 220, 240, 260, 280, 300, 340],"y":[256, 340, 220, 160, 170, 180, 200, 230, 300, 340],"c":[1,1,0,0,0,0,0,0,0,0]}}]}');
     }
+
     setState(() {
       _isLoading = false;
     });
@@ -192,6 +230,7 @@ class DrawingListState extends State<DrawingList> {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
                     return DrawingWrapper(
+                      extStorageDir: widget.extStorageDir,
                       jsonMap: json.decode(d),
                     );
                   })).then((onValue) {
@@ -200,6 +239,7 @@ class DrawingListState extends State<DrawingList> {
                 },
                 child: ScopedModel<ActivityModel>(
                   model: ActivityModel(
+                      extStorageDir: widget.extStorageDir,
                       paintData: PaintData.fromJson(json.decode(d)))
                     ..isInteractive = false,
                   child: Paper(),
@@ -213,8 +253,10 @@ class DrawingListState extends State<DrawingList> {
 class DrawingWrapper extends StatelessWidget {
   Map<String, dynamic> jsonMap;
   String template;
+  String extStorageDir;
 
-  DrawingWrapper({Key key, this.jsonMap, this.template}) : super(key: key);
+  DrawingWrapper({Key key, this.jsonMap, this.template, this.extStorageDir})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -223,6 +265,7 @@ class DrawingWrapper extends StatelessWidget {
         json: jsonMap,
         template: jsonMap == null ? template : null,
         title: 'Test',
+        extStorageDir: extStorageDir,
         saveCallback: ({Map<String, dynamic> jsonMap}) async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString(jsonMap['id'], json.encode(jsonMap));
