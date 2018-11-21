@@ -65,7 +65,7 @@ class PopupGridViewState extends State<PopupGridView> {
     15.0,
     18.0,
   ];
-  double selectedWidth = 2.0;
+  double selectedWidth = 5.0;
 
   @override
   void initState() {
@@ -308,7 +308,7 @@ class PopupGridViewState extends State<PopupGridView> {
             Container(
               color: Color(0xff2b3f4c),
               height: widget.side == DisplaySide.second
-                  ? (size.height - size.width) / 2
+                  ? (size.height - size.width) / 1.65
                   : (size.height - size.width) / 6,
               width: size.width,
             ),
@@ -330,22 +330,11 @@ class PopupGridViewState extends State<PopupGridView> {
                         //           width: size.width,
                         //           height: (size.height - size.width) * .9,
                         //         )),
-                        model.popped == Popped.second
-                            ? BackdropFilter(
-                                filter: new ImageFilter.blur(
-                                    sigmaX: 1.0, sigmaY: 2.0),
-                                child: Container(
-                                  color: Colors.black38,
-                                  width: size.width,
-                                  height: (size.height - size.width) * .15,
-                                  child: FittedBox(
+                        FittedBox(
                                     fit: BoxFit.fitHeight,
                                     child: new Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      // mainAxisAlignment:
-                                      // MainAxisAlignment.spaceEvenly,
-                                      // scrollDirection: Axis.horizontal,
                                       children: width_val
                                           .map((widthValue) => Center(
                                                   child: RawMaterialButton(
@@ -381,12 +370,9 @@ class PopupGridViewState extends State<PopupGridView> {
                                               )))
                                           .toList(growable: false),
                                     ),
-                                  ),
-                                ),
-                              )
-                            : Container(),
+                              ),
                         SizedBox(
-                          height: (size.height - size.width) * .25,
+                          height: (size.height - size.width) * .2,
                           width: size.width * .9,
                           child: ColorPicker(
                               orientation: Orientation.portrait, model: model),
@@ -466,24 +452,13 @@ class PopupGridViewState extends State<PopupGridView> {
               height: size.height,
             ),
             Positioned(
-              right: (size.width - size.height) / 3,
-              left: widget.side == DisplaySide.second ? null : size.width * .5,
+              right: (size.width - size.height) / 4,
+              left: widget.side == DisplaySide.second ? null : size.width ,
               top: 0.0,
               bottom: 0.0,
               child: widget.side == DisplaySide.second
                   ? Row(
-                      children: <Widget>[
-                        model.popped == Popped.second
-                            ? BackdropFilter(
-                                filter: new ImageFilter.blur(
-                                    sigmaX: 2.0, sigmaY: 1.0),
-                                child: Container(
-                                    // decoration: new BoxDecoration(color: Colors.black),
-                                    // padding: EdgeInsets.all(10.0),
-                                    color: Colors.black38,
-                                    width: (size.width - size.height) * .15,
-                                    height: size.height,
-                                    child: RotatedBox(
+                      children: <Widget>[ RotatedBox(
                                       quarterTurns: 1,
                                       child: SizedBox(
                                         height: size.height * .1,
@@ -521,25 +496,23 @@ class PopupGridViewState extends State<PopupGridView> {
                                                     ),
                                                   )))
                                               .toList(growable: false),
-                                        ),
-                                      ),
-                                    )),
-                              )
-                            : Container(),
+                                        )),
+                              ),
                         SizedBox(
                           height: size.height * .9,
-                          width: (size.width - size.height) * .16,
+                          width: (size.width - size.height) * .11,
                           child: ColorPicker(
                               orientation: Orientation.landscape, model: model),
                         ),
-                      ],
+                            ],
+                        
                     )
                   : Container(),
             ),
             Positioned(
                 right: widget.side == DisplaySide.second ? 0.0 : null,
                 left: widget.side == DisplaySide.second ? null : 0.0,
-                top: widget.side == DisplaySide.second ? 0.0 : 0.0,
+                top: widget.side == DisplaySide.second ? size.height * .08  : 0.0,
                 bottom: 0.0,
                 child: Column(
                   children: widget.side == DisplaySide.second

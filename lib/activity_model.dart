@@ -22,10 +22,10 @@ class ActivityModel extends Model {
   List<Map<String, dynamic>> _redoStack = [];
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
-  String _highlighted;
+  String _highlighted = 'assets/menu/svg/pencil';
   String _imagePath;
 
-  bool _isDrawing = false;
+  bool _isDrawing = true;
   bool _isdotSketch =false;
   bool userTouch = false;
 
@@ -136,6 +136,7 @@ class ActivityModel extends Model {
     _isDrawing = t;
     notifyListeners();
   }
+
   bool get isDotSketch => _isdotSketch;
   set isDotSketch(bool t) {
     _isdotSketch = t;
@@ -236,7 +237,8 @@ class ActivityModel extends Model {
       });
     }
   }
- void addNima(String name,
+
+  void addNima(String name,
       {String audioPath, String status, bool pause, bool animationStatus}) {
     addThing({
       'id': Uuid().v4(),
@@ -254,7 +256,7 @@ class ActivityModel extends Model {
 
   void addDotData(Map<String, List<int>> dotData) {
     addThing({'id': Uuid().v4(), 'type': 'dot', 'dotData': dotData});
-    _isdotSketch=true;
+    _isdotSketch = true;
     notifyListeners();
   }
 
@@ -318,7 +320,7 @@ class ActivityModel extends Model {
   void _addThing(Map<String, dynamic> thing) {
     print('_addThing: $thing');
     thing['op'] = 'add';
-    paintData.things.add(thing);
+    if (thing['type'] != 'drawing') paintData.things.add(thing);
     _undoStack.add(Map.from(thing));
     // print('_addThing: $_undoStack $_redoStack');
     _saveAndNotifyListeners();
