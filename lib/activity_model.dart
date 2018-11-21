@@ -22,10 +22,10 @@ class ActivityModel extends Model {
   List<Map<String, dynamic>> _redoStack = [];
   Function _saveCallback;
   Popped _popped = Popped.noPopup;
-  String _highlighted;
+  String _highlighted = 'assets/menu/svg/pencil';
   String _imagePath;
 
-  bool _isDrawing = false;
+  bool _isDrawing = true;
   bool _isdotSketch = false;
   bool userTouch = false;
 
@@ -46,8 +46,9 @@ class ActivityModel extends Model {
   Color cls;
   BlendMode blnd;
   String maskImageName;
+  String extStorageDir;
 
-  ActivityModel({@required this.paintData}) {
+  ActivityModel({@required this.paintData, @required this.extStorageDir}) {
     _painterController =
         new PainterController(pathHistory: this.paintData.pathHistory);
   }
