@@ -70,6 +70,8 @@ class PopupGridViewState extends State<PopupGridView> {
   @override
   void initState() {
     super.initState();
+    ActivityModel model = ActivityModel.of(context);
+    model.isDrawing = true;
     highlightedButtonItem = widget.menuItems.keys.first;
   }
 
