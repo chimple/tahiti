@@ -25,7 +25,7 @@ class ActivityModel extends Model {
   String _highlighted = 'assets/menu/svg/pencil';
   String _imagePath;
 
-  bool _isDrawing = true;
+  bool _isDrawing =  false;
   bool _isdotSketch = false;
   bool userTouch = false;
 
