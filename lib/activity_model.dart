@@ -25,7 +25,7 @@ class ActivityModel extends Model {
   String _highlighted = 'assets/menu/svg/pencil';
   String _imagePath;
 
-  bool _isDrawing =  false;
+  bool _isDrawing = false;
   bool _isdotSketch = false;
   bool userTouch = false;
 
@@ -541,7 +541,7 @@ class PathInfo {
       ..[0] = devicePixelRatio
       ..[5] = devicePixelRatio
       ..[10] = 1.0
-      ..[15] = 4.0;
+      ..[15] = 3.5;
     _paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round

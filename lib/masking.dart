@@ -6,30 +6,37 @@ class Masking extends StatefulWidget {
 
   Masking({Key key, this.model}) : super(key: key);
   static final List<String> listOfImage = [
-    'assets/masking/pattern1.png',
-    'assets/masking/pattern2.jpg',
-    'assets/masking/pattern3.png',
-    'assets/masking/pattern4.png',
-    'assets/masking/pattern5.jpg',
-    'assets/masking/pattern6.png',
-    'assets/masking/pattern7.png',
-    'assets/masking/pattern8.png',
-    'assets/masking/pattern9.png',
-    'assets/masking/pattern10.jpg',
-    'assets/masking/pattern11.jpg',
-    'assets/masking/pattern12.jpg',
-    'assets/masking/pattern1.png',
-    'assets/masking/pattern2.jpg',
-    'assets/masking/pattern3.png',
-    'assets/masking/pattern4.png',
-    'assets/masking/pattern5.jpg',
-    'assets/masking/pattern6.png',
-    'assets/masking/pattern7.png',
-    'assets/masking/pattern8.png',
-    'assets/masking/pattern9.png',
-    'assets/masking/pattern10.jpg',
-    'assets/masking/pattern11.jpg',
-    'assets/masking/pattern12.jpg',
+    'assets/masking/pattern_01.png',
+    'assets/masking/pattern_02.png',
+    'assets/masking/pattern_03.png',
+    'assets/masking/pattern_04.png',
+    'assets/masking/pattern_05.png',
+    'assets/masking/pattern_06.png',
+    'assets/masking/pattern_07.png',
+    'assets/masking/pattern_08.png',
+    'assets/masking/pattern_09.png',
+    'assets/masking/pattern_10.png',
+    'assets/masking/pattern_11.png',
+    'assets/masking/pattern_12.png',
+    'assets/masking/pattern_13.png',
+    'assets/masking/pattern_14.png',
+    'assets/masking/pattern_15.png',
+    'assets/masking/pattern_16.png',
+    'assets/masking/pattern_17.png',
+    'assets/masking/pattern_18.png',
+    'assets/masking/pattern_19.png',
+    'assets/masking/pattern_20.png',
+    'assets/masking/pattern_21.png',
+    'assets/masking/pattern_22.png',
+    'assets/masking/pattern_23.png',
+    'assets/masking/pattern_24.png',
+    'assets/masking/pattern_25.png',
+    'assets/masking/pattern_26.png',
+    'assets/masking/pattern_27.png',
+    'assets/masking/pattern_28.png',
+    'assets/masking/pattern_29.png',
+    'assets/masking/pattern_30.png',
+    'assets/masking/pattern_32.png',
   ];
 
   @override
@@ -39,17 +46,11 @@ class Masking extends StatefulWidget {
 }
 
 class MaskingState extends State<Masking> {
-  List<double> widthValue = [
-    3.0,
-    6.0,
-    11.0,
-    16.0,
-    19.0,
-  ];
   double selectedWidth = 3.0;
   @override
   void didChangeDependencies() {
     selectedWidth = widget.model.painterController.thickness;
+
     super.didChangeDependencies();
   }
 
@@ -68,66 +69,33 @@ class MaskingState extends State<Masking> {
                     fontWeight: FontWeight.w500)),
           ),
           Expanded(
-            flex: 9,
+            flex: 1,
             child: GridView.count(
-              crossAxisCount: 3,
+              crossAxisCount: 5,
               children: Masking.listOfImage
                   .map((t) => _buildTile(context, t))
                   .toList(growable: false),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: widthValue
-                    .map((width) => Expanded(
-                          flex: 2,
-                          child: Center(
-                              child: RawMaterialButton(
-                            onPressed: () {
-                              widget.model.painterController.thickness = width;
-                              setState(() {
-                                selectedWidth = width;
-                              });
-                            },
-                            constraints: new BoxConstraints.tightFor(
-                              width: width + (size.height - size.width) * .02,
-                              height: width + (size.height - size.width) * .02,
-                            ),
-                            fillColor: new Color(0xffffffff),
-                            shape: new CircleBorder(
-                              side: new BorderSide(
-                                color: width == selectedWidth
-                                    ? Colors.red
-                                    : Color(0xffffffff),
-                                width: 2.0,
-                              ),
-                            ),
-                          )),
-                        ))
-                    .toList(growable: false),
-              ),
             ),
           ),
         ]);
   }
 
   Widget _buildTile(BuildContext context, String text) {
-    return Card(
-      elevation: 3.0,
-      child: new InkWell(
-        onTap: () {
-          widget.model.addMaskImage(text);
-          Navigator.pop(context);
-        },
-        child: new AspectRatio(
-          aspectRatio: 1.0,
-          child: Image.asset(
-            text,
-          ),
+    return new InkWell(
+      onTap: () {
+        widget.model.addMaskImage(text);
+        Navigator.pop(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(38.0),
+        child: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                    text,
+                  ),
+                  repeat: ImageRepeat.repeat),
+              borderRadius: BorderRadius.all(new Radius.circular(15.0))),
         ),
       ),
     );
