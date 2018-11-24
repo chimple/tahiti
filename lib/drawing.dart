@@ -248,6 +248,7 @@ class PainterController extends ChangeNotifier {
   double initialY;
   double initialX;
   double breakPointY;
+  double breakPointX;
   double slope;
   PainterController({this.pathHistory}) {
     thickness = 5.0;
