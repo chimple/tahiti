@@ -314,16 +314,16 @@ class PainterController extends ChangeNotifier {
           if (slope <= 1.0 && slope >= -1) {
             initialY = breakPointY;
             pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
-            if (nextPoint.dx >= initialX + 50)
-              initialX = nextPoint.dx - 20;
-            else if (nextPoint.dx < initialX - 50) initialX = nextPoint.dx + 20;
+            if (nextPoint.dx >= initialX + 80)
+              initialX = nextPoint.dx - 40;
+            else if (nextPoint.dx < initialX - 80) initialX = nextPoint.dx + 40;
             breakPointX = nextPoint.dx;
           } else {
             initialX = breakPointX;
             pathHistory.paths.last.addPoint(Offset(breakPointX, nextPoint.dy));
-            if (nextPoint.dy <= initialY - 50)
-              initialY = nextPoint.dy + 20;
-            else if (nextPoint.dy > initialY + 50) initialY = nextPoint.dy - 20;
+            if (nextPoint.dy <= initialY - 80)
+              initialY = nextPoint.dy + 40;
+            else if (nextPoint.dy > initialY + 80) initialY = nextPoint.dy - 40;
             breakPointY = nextPoint.dy;
           }
           break;
