@@ -323,7 +323,7 @@ class PainterController extends ChangeNotifier {
             pathHistory.paths.last.addPoint(Offset(breakPointX, nextPoint.dy));
             if (nextPoint.dy <= initialY - 50)
               initialY = nextPoint.dy + 20;
-            else if (nextPoint.dx > initialX + 50) initialY = nextPoint.dy - 20;
+            else if (nextPoint.dy > initialY + 50) initialY = nextPoint.dy - 20;
             breakPointY = nextPoint.dy;
           }
           break;
