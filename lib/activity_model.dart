@@ -141,6 +141,7 @@ class ActivityModel extends Model {
   bool get isDotSketch => _isdotSketch;
   set isDotSketch(bool t) {
     _isdotSketch = t;
+    _isDrawing = false;
     notifyListeners();
   }
 

@@ -247,7 +247,9 @@ class PainterController extends ChangeNotifier {
   bool _inDrag = false;
   double initialY;
   double initialX;
-
+  double breakPointY;
+  double breakPointX;
+  double slope;
   PainterController({this.pathHistory}) {
     thickness = 5.0;
 // _updatePaint();
@@ -275,8 +277,8 @@ class PainterController extends ChangeNotifier {
 //  }
 
   void add(BuildContext context, Offset startPoint) {
-    initialX = startPoint.dx;
-    initialY = startPoint.dy;
+    breakPointX = initialX = startPoint.dx;
+    breakPointY = initialY = startPoint.dy;
     pathHistory.x = pathHistory.startX = startPoint.dx;
     pathHistory.y = pathHistory.startY = startPoint.dy;
 
@@ -308,19 +310,21 @@ class PainterController extends ChangeNotifier {
           pathHistory.paths.last.addPoint(nextPoint);
           break;
         case DrawingType.geometricDrawing:
-          if (nextPoint.dy < initialY + 50.0 &&
-              nextPoint.dy > initialY - 50.0) {
+          slope = (nextPoint.dy - initialY) / (nextPoint.dx - initialX);
+          if (slope <= 1.0 && slope >= -1) {
+            initialY = breakPointY;
             pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
-            initialX = nextPoint.dx;
+            if (nextPoint.dx >= initialX + 50)
+              initialX = nextPoint.dx - 20;
+            else if (nextPoint.dx < initialX - 50) initialX = nextPoint.dx + 20;
+            breakPointX = nextPoint.dx;
           } else {
-            if (nextPoint.dx > initialX - 50.0 &&
-                nextPoint.dx < initialX + 50.0) {
-              pathHistory.paths.last.addPoint(Offset(initialX, nextPoint.dy));
-            } else {
-              initialX = nextPoint.dx;
-              initialY = nextPoint.dy;
-              pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
-            }
+            initialX = breakPointX;
+            pathHistory.paths.last.addPoint(Offset(breakPointX, nextPoint.dy));
+            if (nextPoint.dy <= initialY - 50)
+              initialY = nextPoint.dy + 20;
+            else if (nextPoint.dy > initialY + 50) initialY = nextPoint.dy - 20;
+            breakPointY = nextPoint.dy;
           }
           break;
         case DrawingType.lineDrawing:
