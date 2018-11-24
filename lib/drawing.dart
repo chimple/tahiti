@@ -46,7 +46,7 @@ class RollerState extends State<Drawing> {
       setState(() {
         count++;
       });
-      return _DragHandler(_handleDragUpdate, _handleDragEnd);
+      return _DragHandler(_handleDragUpdate, _handleDragEnd, onCancel);
     }
     return null;
   }
@@ -64,6 +64,18 @@ class RollerState extends State<Drawing> {
   }
 
   void _handleDragEnd(DragEndDetails details) {
+    ActivityModel model = ActivityModel.of(context);
+    PainterController painterController = model.painterController;
+    if (model.pathHistory.paths.length > 0) {
+      painterController.endCurrent(context, pos);
+      model.addDrawing(model.pathHistory.paths.last);
+    }
+    setState(() {
+      count = 0;
+    });
+  }
+
+  void onCancel() {
     ActivityModel model = ActivityModel.of(context);
     PainterController painterController = model.painterController;
     if (model.pathHistory.paths.length > 0) {
@@ -112,11 +124,11 @@ class RollerState extends State<Drawing> {
 }
 
 class _DragHandler extends Drag {
-  _DragHandler(this.onUpdate, this.onEnd);
+  _DragHandler(this.onUpdate, this.onEnd, this.onCancel);
 
   final GestureDragUpdateCallback onUpdate;
   final GestureDragEndCallback onEnd;
-
+  final Function onCancel;
   @override
   void update(DragUpdateDetails details) {
     onUpdate(details);
@@ -125,6 +137,12 @@ class _DragHandler extends Drag {
   @override
   void end(DragEndDetails details) {
     onEnd(details);
+  }
+
+  @override
+  void cancel() {
+    onCancel();
+    super.cancel();
   }
 }
 

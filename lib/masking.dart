@@ -56,28 +56,30 @@ class MaskingState extends State<Masking> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Text('Roller',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.w500)),
-          ),
-          Expanded(
-            flex: 1,
-            child: GridView.count(
-              crossAxisCount: 5,
-              children: Masking.listOfImage
-                  .map((t) => _buildTile(context, t))
-                  .toList(growable: false),
+    return Container(
+      color: Colors.transparent,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Text('Roller',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.w500)),
             ),
-          ),
-        ]);
+            Expanded(
+              flex: 1,
+              child: GridView.count(
+                crossAxisCount: 5,
+                children: Masking.listOfImage
+                    .map((t) => _buildTile(context, t))
+                    .toList(growable: false),
+              ),
+            ),
+          ]),
+    );
   }
 
   Widget _buildTile(BuildContext context, String text) {
