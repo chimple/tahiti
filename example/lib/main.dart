@@ -270,6 +270,7 @@ class DrawingWrapper extends StatelessWidget {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString(jsonMap['id'], json.encode(jsonMap));
         },
+        backCallback: () => Navigator.of(context).pop(),
       ),
     );
   }
