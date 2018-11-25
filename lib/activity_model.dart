@@ -21,11 +21,12 @@ class ActivityModel extends Model {
   List<Map<String, dynamic>> _undoStack = [];
   List<Map<String, dynamic>> _redoStack = [];
   Function _saveCallback;
+  Function backCallback;
   Popped _popped = Popped.noPopup;
   String _highlighted = 'assets/menu/svg/pencil';
   String _imagePath;
 
-  bool _isDrawing =  false;
+  bool _isDrawing = false;
   bool _isdotSketch = false;
   bool userTouch = false;
 
