@@ -197,7 +197,7 @@ class DrawingListState extends State<DrawingList> {
         Masking.listOfImage, (i) async => ActivityModel.cacheImage(i));
     if (prefs.getString('dot') == null) {
       prefs.setString('dot',
-          '{"id":"dot","pathHistory":{"paths":[],"startX":null,"startY":null,"x":null,"y":null},"things":[{"id":"dot","type":"dot","dotData":{"x":[128, 150, 180, 200, 220, 240, 260, 280, 300, 340],"y":[256, 340, 220, 160, 170, 180, 200, 230, 300, 340],"c":[1,1,0,0,0,0,0,0,0,0]}}]}');
+          '{"id":"dot","pathHistory":{"paths":[],"startX":null,"startY":null,"x":null,"y":null},"things":[{"id":"dot","type":"dot","dotData":{"x":[65,69,83,104,133,170,213,262,310,351,387,417,441,460,474,482,476,445,415,410,410,410,410,410,410,410,410,410,386,356,326,296,266,236,206,176,146,116,101,103,105,107,108,110,112,113,115,116,97,47,42,51],"y":[101,98,92,83,74,64,57,52,52,55,61,71,83,96,112,129,159,175,180,196,226,256,286,316,346,376,406,436,443,443,444,444,445,445,446,446,447,447,433,403,374,344,314,284,254,224,194,170,171,169,138,118],"c":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}}]}');
     }
 
     setState(() {
@@ -270,6 +270,7 @@ class DrawingWrapper extends StatelessWidget {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString(jsonMap['id'], json.encode(jsonMap));
         },
+        backCallback: () => Navigator.of(context).pop(),
       ),
     );
   }

@@ -21,11 +21,12 @@ class ActivityModel extends Model {
   List<Map<String, dynamic>> _undoStack = [];
   List<Map<String, dynamic>> _redoStack = [];
   Function _saveCallback;
+  Function backCallback;
   Popped _popped = Popped.noPopup;
   String _highlighted = 'assets/menu/svg/pencil';
   String _imagePath;
 
-  bool _isDrawing = true;
+  bool _isDrawing = false;
   bool _isdotSketch = false;
   bool userTouch = false;
 
@@ -141,6 +142,7 @@ class ActivityModel extends Model {
   bool get isDotSketch => _isdotSketch;
   set isDotSketch(bool t) {
     _isdotSketch = t;
+    _isDrawing = false;
     notifyListeners();
   }
 
@@ -541,7 +543,7 @@ class PathInfo {
       ..[0] = devicePixelRatio
       ..[5] = devicePixelRatio
       ..[10] = 1.0
-      ..[15] = 4.0;
+      ..[15] = 3.5;
     _paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round

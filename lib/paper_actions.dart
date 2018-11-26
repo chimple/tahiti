@@ -33,9 +33,7 @@ class PaperActionsState extends State<PaperActions> {
                       ? size.width * .04
                       : size.width * .04,
               color: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pop('refresh');
-              }),
+              onPressed: model.backCallback),
         );
       } else if (widget.action == "saveAction") {
         return IconButton(
@@ -50,15 +48,17 @@ class PaperActionsState extends State<PaperActions> {
               setState(() {
                 share_image = share_image ? false : true;
               });
-              share_image ? widget.onClick(): widget.onClick(null);
+              share_image ? widget.onClick() : widget.onClick(null);
               Scaffold.of(context).showSnackBar(SnackBar(
                   duration: Duration(milliseconds: 1000),
                   content: Container(
-                      height:  60.0,
-                      child:share_image ? Text(
-                        "Image Shared Successfully",
-                        style: TextStyle(fontSize: 20.0),
-                      ):Container() )));
+                      height: 60.0,
+                      child: share_image
+                          ? Text(
+                              "Image Shared Successfully",
+                              style: TextStyle(fontSize: 20.0),
+                            )
+                          : Container())));
             });
       } else if (widget.action == "UndoRedoAction") {
         return Row(
