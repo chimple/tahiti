@@ -18,6 +18,7 @@ import 'dart:typed_data';
 
 class ActivityBoard extends StatefulWidget {
   final Function saveCallback;
+  final Function backCallback;
   final String template;
   final Map<String, dynamic> json;
   final String title;
@@ -26,6 +27,7 @@ class ActivityBoard extends StatefulWidget {
   ActivityBoard(
       {Key key,
       @required this.saveCallback,
+      @required this.backCallback,
       this.template,
       this.json,
       this.extStorageDir,
@@ -66,7 +68,8 @@ class ActivityBoardState extends State<ActivityBoard> {
                 things: [],
                 template: widget.template,
                 pathHistory: PathHistory())))
-      ..saveCallback = widget.saveCallback;
+      ..saveCallback = widget.saveCallback
+      ..backCallback = widget.backCallback;
 
     setState(() {
       _isLoading = false;
