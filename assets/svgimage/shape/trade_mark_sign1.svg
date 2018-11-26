@@ -2,6 +2,15 @@
 <!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
-<circle style="fill:none;stroke:#232323;stroke-width:10;stroke-miterlimit:10;" cx="129.7" cy="122.5" r="114"/>
-<text transform="matrix(1 0 0 1 43.2139 164.3457)" style="fill:#232323; font-family:'ArialMT'; font-size:115.9632px;">TM</text>
+<style type="text/css">
+	.st0{fill:none;stroke:#232323;stroke-width:10;stroke-miterlimit:10;}
+	.st1{enable-background:new    ;}
+	.st2{fill:#232323;}
+</style>
+<circle class="st0" cx="129.7" cy="122.5" r="114"/>
+<g class="st1">
+	<path class="st2" d="M73.3,164.3V91.1H45.9v-9.8h65.8v9.8H84.3v73.2H73.3z"/>
+	<path class="st2" d="M122.7,164.3v-83h16.5l19.6,58.8c1.8,5.5,3.1,9.6,4,12.3c0.9-3,2.4-7.5,4.4-13.3l19.9-57.8h14.8v83h-10.6V94.9
+		l-24.1,69.5h-9.9l-24-70.7v70.7H122.7z"/>
+</g>
 </svg>

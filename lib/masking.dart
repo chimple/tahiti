@@ -36,11 +36,16 @@ class Masking extends StatefulWidget {
     'assets/masking/pattern_28.png',
     'assets/masking/pattern_29.png',
     'assets/masking/pattern_30.png',
+    'assets/masking/pattern_31.png',
     'assets/masking/pattern_32.png',
     'assets/masking/pattern_33.png',
     'assets/masking/pattern_34.png',
     'assets/masking/pattern_35.png',
     'assets/masking/pattern_36.png',
+    'assets/masking/pattern_37.png',
+    'assets/masking/pattern_38.png',
+    'assets/masking/pattern_39.png',
+    'assets/masking/pattern_40.png',
   ];
 
   @override
