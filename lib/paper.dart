@@ -32,14 +32,12 @@ class Paper extends StatelessWidget {
     File imgFile = new File(
         '$directory/screenshot_${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
-    print('Screenshot Path:' + imgFile.path);
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      print('Transform wrapper layout builder: $constraints');
       return new RepaintBoundary(
           key: previewContainerKey,
           child: Container(

@@ -185,6 +185,5 @@ class ActivityBoardState extends State<ActivityBoard> {
     File imgFile = new File(
         '$directory/screenshot_${DateTime.now().millisecondsSinceEpoch}.png');
     imgFile.writeAsBytes(pngBytes);
-    print('Screenshot Path:' + imgFile.path);
   }
 }

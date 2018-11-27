@@ -193,7 +193,6 @@ class _DotSketchState extends State<DotSketch> {
 
   @override
   Widget build(BuildContext context) {
-    print('dot_sketch: isInteractive $isInteractive');
     touch = new GestureDetector(
       onPanStart: panStart,
       onPanUpdate: panUpdate,

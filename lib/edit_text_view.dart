@@ -62,7 +62,6 @@ class EditTextViewState extends State<EditTextView> {
   Widget build(BuildContext context) {
     // customWidth = 400.0;
     // customHeight = 200.0;
-    print("id: ${widget.id}");
 
     return widget.fontType != null
         ? LayoutBuilder(
@@ -71,8 +70,8 @@ class EditTextViewState extends State<EditTextView> {
             //     (constraints.maxWidth * constraints.maxHeight) / 3000;
             // print("maxsize $maxSize");
             return ScopedModelDescendant<ActivityModel>(
-                builder: (context, child, model) => 
-                // model.editSelectedThing &&
+                builder: (context, child, model) =>
+                    // model.editSelectedThing &&
                     //     model.selectedThingId == widget.id
                     // ? FittedBox(
                     //     fit: BoxFit.scaleDown,
@@ -104,21 +103,21 @@ class EditTextViewState extends State<EditTextView> {
                     //       ),
                     //     ),
                     //   )
-                    // : 
+                    // :
                     Container(
-                        width: constraints.maxWidth,
-                        child: Text(
-                          widget.text == '' ? widget.change : widget.text,
-                          maxLines: null,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 40.0,
-                              color: widget.color,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              fontFamily: widget.fontType),
-                        ),
-                      ));
+                      width: constraints.maxWidth,
+                      child: Text(
+                        widget.text == '' ? widget.change : widget.text,
+                        maxLines: null,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 40.0,
+                            color: widget.color,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontFamily: widget.fontType),
+                      ),
+                    ));
           })
         : Container();
   }

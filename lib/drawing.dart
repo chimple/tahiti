@@ -39,7 +39,6 @@ class RollerState extends State<Drawing> {
   }
 
   Drag _handleOnStart(Offset position) {
-    print('handleOnStart');
     widget.model.selectedThingId = '';
     widget.model.userTouch = false;
     if (count < 1) {
@@ -90,7 +89,6 @@ class RollerState extends State<Drawing> {
   @override
   Widget build(BuildContext context) {
     ActivityModel model = ActivityModel.of(context);
-    print('drawing: isDrawing ${model.isDrawing}');
     Widget scratchCardLayout = _ScratchCardLayout(
       child: Container(),
       path: widget.model.pathHistory,
