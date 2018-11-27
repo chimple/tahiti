@@ -92,7 +92,6 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
     _scaleAnimationController.stop();
     _positionAnimationController.stop();
     _rotationAnimationController.stop();
-    print("_onScaleStart : $details");
     setState(() {
       _offset = details.focalPoint;
     });
@@ -101,7 +100,6 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
   void onScaleUpdate(rotate.ScaleUpdateDetails details) {
     final double newScale = (_scaleBefore * details.scale);
     final Offset delta = (details.focalPoint - _normalizedPosition);
-    print("onScaleUpdate : $details");
     if (details.scale != 1.0) {
       widget.onStartPanning();
     }
@@ -123,7 +121,6 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
     //animate back to maxScale if gesture exceeded the maxscale specified
     if ((widget.maxScale != null) && (this._scale > widget.maxScale)) {
       double scaleComebackRatio = widget.maxScale / this._scale;
-      print(scaleComebackRatio);
 
       animateScale(_scale, widget.maxScale);
       animatePosition(_position, clampPosition(_position * scaleComebackRatio));
@@ -253,8 +250,6 @@ class _PhotoViewImageWrapperState extends State<PhotoViewImageWrapper>
         builder: (BuildContext context, BoxConstraints constraints) {
       _width = constraints.maxWidth;
       _height = constraints.maxHeight;
-      print("fullwidth: ${cont.width}, fullheight: ${cont.height}");
-      print("width: $_width, height: $_height");
       return new RotateGestureDetector(
         child: Stack(children: <Widget>[
           Positioned(
