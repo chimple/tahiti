@@ -310,13 +310,13 @@ class PopupGridViewState extends State<PopupGridView> {
             Container(
               color: Color(0xff2b3f4c),
               height: widget.side == DisplaySide.second
-                  ? (size.height - size.width) / 1.65
+                  ? (size.height - size.width) / 2
                   : (size.height - size.width) / 6,
               width: size.width,
             ),
             Positioned(
               bottom: widget.side == DisplaySide.second
-                  ? (size.height - size.width) / 4
+                  ? (size.height - size.width) / 4.2
                   : null,
               // top: widget.side == DisplaySide.second ? null : 200.0,
               left: 0.0,
@@ -374,8 +374,8 @@ class PopupGridViewState extends State<PopupGridView> {
                                     ),
                               ),
                         SizedBox(
-                          height: (size.height - size.width) * .2,
-                          width: size.width * .9,
+                          height: (size.height - size.width) *.15,
+                          width: size.width ,
                           child: ColorPicker(
                               orientation: Orientation.portrait, model: model),
                         ),
