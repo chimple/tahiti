@@ -321,7 +321,6 @@ class ActivityModel extends Model {
   }
 
   void _addThing(Map<String, dynamic> thing) {
-    print('_addThing: $thing');
     thing['op'] = 'add';
     if (thing['type'] != 'drawing') paintData.things.add(thing);
     _undoStack.add(Map.from(thing));

@@ -39,14 +39,13 @@ class RollerState extends State<Drawing> {
   }
 
   Drag _handleOnStart(Offset position) {
-    print('handleOnStart');
     widget.model.selectedThingId = '';
     widget.model.userTouch = false;
     if (count < 1) {
       setState(() {
         count++;
       });
-      return _DragHandler(_handleDragUpdate, _handleDragEnd);
+      return _DragHandler(_handleDragUpdate, _handleDragEnd, onCancel);
     }
     return null;
   }
@@ -75,10 +74,21 @@ class RollerState extends State<Drawing> {
     });
   }
 
+  void onCancel() {
+    ActivityModel model = ActivityModel.of(context);
+    PainterController painterController = model.painterController;
+    if (model.pathHistory.paths.length > 0) {
+      painterController.endCurrent(context, pos);
+      model.addDrawing(model.pathHistory.paths.last);
+    }
+    setState(() {
+      count = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ActivityModel model = ActivityModel.of(context);
-    print('drawing: isDrawing ${model.isDrawing}');
     Widget scratchCardLayout = _ScratchCardLayout(
       child: Container(),
       path: widget.model.pathHistory,
@@ -112,11 +122,11 @@ class RollerState extends State<Drawing> {
 }
 
 class _DragHandler extends Drag {
-  _DragHandler(this.onUpdate, this.onEnd);
+  _DragHandler(this.onUpdate, this.onEnd, this.onCancel);
 
   final GestureDragUpdateCallback onUpdate;
   final GestureDragEndCallback onEnd;
-
+  final Function onCancel;
   @override
   void update(DragUpdateDetails details) {
     onUpdate(details);
@@ -125,6 +135,12 @@ class _DragHandler extends Drag {
   @override
   void end(DragEndDetails details) {
     onEnd(details);
+  }
+
+  @override
+  void cancel() {
+    onCancel();
+    super.cancel();
   }
 }
 
@@ -314,16 +330,16 @@ class PainterController extends ChangeNotifier {
           if (slope <= 1.0 && slope >= -1) {
             initialY = breakPointY;
             pathHistory.paths.last.addPoint(Offset(nextPoint.dx, initialY));
-            if (nextPoint.dx >= initialX + 50)
-              initialX = nextPoint.dx - 20;
-            else if (nextPoint.dx < initialX - 50) initialX = nextPoint.dx + 20;
+            if (nextPoint.dx >= initialX + 80)
+              initialX = nextPoint.dx - 40;
+            else if (nextPoint.dx < initialX - 80) initialX = nextPoint.dx + 40;
             breakPointX = nextPoint.dx;
           } else {
             initialX = breakPointX;
             pathHistory.paths.last.addPoint(Offset(breakPointX, nextPoint.dy));
-            if (nextPoint.dy <= initialY - 50)
-              initialY = nextPoint.dy + 20;
-            else if (nextPoint.dy > initialY + 50) initialY = nextPoint.dy - 20;
+            if (nextPoint.dy <= initialY - 80)
+              initialY = nextPoint.dy + 40;
+            else if (nextPoint.dy > initialY + 80) initialY = nextPoint.dy - 40;
             breakPointY = nextPoint.dy;
           }
           break;

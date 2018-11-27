@@ -13,7 +13,6 @@ class ImageScaling extends StatelessWidget {
         : LayoutBuilder(
             builder: (BuildContext cotext, constraints) {
               Size size = constraints.biggest * .50;
-              print('size: $size');
               return Container(
                   width: size.width,
                   height: size.height,

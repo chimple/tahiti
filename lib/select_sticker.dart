@@ -141,7 +141,6 @@ class SelectStickerState extends State<SelectSticker> {
         builder: (context, child, model) => PopupGridView(
               side: widget.side,
               onUserPress: (text) {
-                print(text);
                 switch (text) {
                   case 'assets/drawing/size1.png':
                     model.painterController.thickness = 1.2;
@@ -205,7 +204,7 @@ class SelectStickerState extends State<SelectSticker> {
                       // model.addSticker(text);
                     }
                     if (text.startsWith('assets/nima_animation')) {
-                    //  model.addNima(text);
+                      //  model.addNima(text);
                     }
                     if (text.startsWith('assets/roller_image')) {
                       model.isDrawing = true;

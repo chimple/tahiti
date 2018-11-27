@@ -736,7 +736,7 @@ class Sticker {
           data: 'assets/svgimage/occupation_women/female_soldier'),
       Iconf(
           type: ItemType.sticker,
-          data: 'assets/svgimage/occupationwomen/female_teacher'),
+          data: 'assets/svgimage/occupation_women/female_teacher'),
     ],
     'assets/menu/stationary.png': [
       Iconf(

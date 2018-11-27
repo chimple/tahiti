@@ -43,22 +43,23 @@ class WidgetViewState extends State<WidgetView> {
         builder: (BuildContext context, BoxConstraints constraints) {
       _width = constraints.maxWidth;
       _height = constraints.maxHeight;
-      print("width: $_width, height: $_height");
       return RotateGestureDetector(
         onScaleStart: onScaleStart,
         onScaleUpdate: onScaleUpdate,
         child: Stack(children: <Widget>[
-          Positioned( 
+          Positioned(
             left: _offset.dx < ((cont.width - _width) / 2.0)
                 ? 0.0
                 : _offset.dx > (_width + ((cont.width - _width) / 2.0))
                     ? _width
-                    : (_offset.dx-(200.0*_scale)) - ((cont.width - _width) / 2.0),
+                    : (_offset.dx - (200.0 * _scale)) -
+                        ((cont.width - _width) / 2.0),
             top: _offset.dy < ((cont.height - _height) / 1.3)
                 ? 0.0
                 : _offset.dy > (_height + ((cont.height - _height) / 2.0))
                     ? _height - 100.0
-                    : (_offset.dy - (100.0*_scale)) - ((cont.height - _height) / 2.0),
+                    : (_offset.dy - (100.0 * _scale)) -
+                        ((cont.height - _height) / 2.0),
             child: Transform(
                 child: Transform(
                   child: LimitedBox(
@@ -89,7 +90,6 @@ class WidgetViewState extends State<WidgetView> {
     // _scaleAnimationController.stop();
     // _positionAnimationController.stop();
     // _rotationAnimationController.stop();
-    print("onScaleStart : $details");
     setState(() {
       _offset = details.focalPoint;
     });
@@ -101,7 +101,6 @@ class WidgetViewState extends State<WidgetView> {
     // if (details.scale != 1.0) {
     //   widget.onStartPanning();
     // }
-    print("onScaleUpdate : $details");
     setState(() {
       _offset = details.focalPoint;
       _newscale = _beforescale * details.scale;
