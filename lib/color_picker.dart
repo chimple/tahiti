@@ -20,7 +20,6 @@ const List<Color> mainColors = const <Color>[
   const Color(0xFFE91E63),
   const Color(0xFF9C27B0),
   const Color(0xFF673AB7),
-  const Color(0xFF654AB7),
   const Color(0xFF3F51B5),
   const Color(0xFF2196F3),
   const Color(0xFF00BCD4),
@@ -147,13 +146,6 @@ class ColorPickerState extends State<ColorPicker> {
           }
           // widget.getColor(selectedColor);
         },
-        shape: new CircleBorder(
-          side: new BorderSide(
-            color:
-                color == selectedColor ? borderColor : color,
-            width: color == selectedColor ? size.width * .008 : 0.0,
-          ),
-        ),
         constraints: new BoxConstraints.tightFor(
             height: widget.orientation == Orientation.portrait
                 ? size.width * .04
@@ -162,6 +154,12 @@ class ColorPickerState extends State<ColorPicker> {
                 ? size.width * .08
                 : size.height * .045),
         fillColor: color,
+        shape: new CircleBorder(
+          side: new BorderSide(
+            color: color == selectedColor ? borderColor : color,
+            width: color == selectedColor ? size.width * .006 : 0.0,
+          ),
+        ),
       ));
 
       // );
