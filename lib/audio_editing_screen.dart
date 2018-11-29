@@ -22,26 +22,23 @@ class AudioEditingScreen extends StatefulWidget {
 class _AudioEditingScreenState extends State<AudioEditingScreen>
     with SingleTickerProviderStateMixin {
   List<String> listOfNima = [
-    "assets/nima_animation/round",
-    "assets/nima_animation/lips",
+    "assets/nima_animation/baby",
+    "assets/nima_animation/braces",
+    "assets/nima_animation/cartoon",
+    "assets/nima_animation/glitter",
     "assets/nima_animation/line",
+    "assets/nima_animation/lips",
+    "assets/nima_animation/monster",
     "assets/nima_animation/outline",
     "assets/nima_animation/pig",
     "assets/nima_animation/pink",
-    "assets/nima_animation/red",
     "assets/nima_animation/round",
-    "assets/nima_animation/monster",
-    "assets/nima_animation/line",
-    "assets/nima_animation/outline",
-    "assets/nima_animation/baby",
-    "assets/nima_animation/cartoon",
     "assets/nima_animation/robot",
-    "assets/nima_animation/monster",
-    "assets/nima_animation/line",
-    "assets/nima_animation/cartoon",
-    "assets/nima_animation/robot",
-    "assets/nima_animation/monster",
-    "assets/nima_animation/line",
+    "assets/nima_animation/shark",
+    "assets/nima_animation/toothless",
+    "assets/nima_animation/vampire",
+    "assets/nima_animation/round_line",
+    "assets/nima_animation/vampire_girl",
   ];
   List<bool> listOfPause = [];
   List<bool> listOfanimationStatus = [];
@@ -224,11 +221,14 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
       ),
       Expanded(
         flex: 1,
-        child: GridView.count(
-          crossAxisCount: 4,
-          crossAxisSpacing: 10.0,
-          children:
-              listOfNima.map((p) => _showNima(p, i++)).toList(growable: false),
+        child: Center(
+          child: GridView.count(
+            crossAxisCount: 4,
+            crossAxisSpacing: 10.0,
+            children: listOfNima
+                .map((p) => _showNima(p, i++))
+                .toList(growable: false),
+          ),
         ),
       )
     ]);
