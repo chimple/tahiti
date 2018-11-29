@@ -20,14 +20,13 @@ const List<Color> mainColors = const <Color>[
   const Color(0xFFE91E63),
   const Color(0xFF9C27B0),
   const Color(0xFF673AB7),
-  const Color(0xFF673AB7),
   const Color(0xFF3F51B5),
   const Color(0xFF2196F3),
   const Color(0xFF00BCD4),
   const Color(0xFF009688),
   const Color(0xFF8BC34A),
   const Color(0xFFCDDC39),
-   const Color(0xFFFFC107),
+  const Color(0xFFFFC107),
   const Color(0xFFFF9800),
   const Color(0xFFFF5722),
   const Color(0xFF795548),
@@ -72,14 +71,14 @@ class ColorPickerState extends State<ColorPicker> {
     size = MediaQuery.of(context).size;
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
-        flex: 3,
+        flex: 2,
         child: new InkWell(
           onTap: () => _backwardButtonBehaviour(),
           child: new FittedBox(
               fit: BoxFit.fill,
               child: widget.orientation == Orientation.landscape
-                  ? const Icon(Icons.arrow_drop_up)
-                  : const Icon(Icons.arrow_left)),
+                  ? const Icon(Icons.arrow_drop_up, color: Colors.white)
+                  : const Icon(Icons.arrow_left, color: Colors.white)),
         )));
     colorItems.add(new Expanded(
       flex: 10,
@@ -95,7 +94,7 @@ class ColorPickerState extends State<ColorPicker> {
     ));
     colorItems.add(
       new Expanded(
-          flex: 3,
+          flex: 2,
           child: new InkWell(
             onTap: () => _forwardButtonBehaviour(),
             child: new FittedBox(
@@ -103,9 +102,11 @@ class ColorPickerState extends State<ColorPicker> {
                 child: widget.orientation == Orientation.landscape
                     ? const Icon(
                         Icons.arrow_drop_down,
+                        color: Colors.white,
                       )
                     : const Icon(
                         Icons.arrow_right,
+                        color: Colors.white,
                       )),
           )),
     );
@@ -119,6 +120,12 @@ class ColorPickerState extends State<ColorPicker> {
 
   List<Widget> _mainColors(BuildContext context) {
     var children = <Widget>[];
+    Color borderColor;
+    if (selectedColor == Color(0xFFFFFFFF)) {
+      borderColor = Colors.black;
+    } else {
+      borderColor = Colors.white;
+    }
     for (Color color in mainColors) {
       children.add(
           // ScopedModelDescendant<ActivityModel>(
@@ -142,18 +149,15 @@ class ColorPickerState extends State<ColorPicker> {
         constraints: new BoxConstraints.tightFor(
             height: widget.orientation == Orientation.portrait
                 ? size.width * .04
-                : size.height * .045,
+                : size.height * .08,
             width: widget.orientation == Orientation.portrait
-                ? size.width * .04
+                ? size.width * .08
                 : size.height * .045),
         fillColor: color,
         shape: new CircleBorder(
           side: new BorderSide(
-            color:
-                color == selectedColor ? Colors.black : const Color(0xFFD5D7DA),
-            width: widget.orientation == Orientation.portrait
-                ? size.width * .005
-                : size.width * .003,
+            color: color == selectedColor ? borderColor : color,
+            width: color == selectedColor ? size.width * .006 : 0.0,
           ),
         ),
       ));

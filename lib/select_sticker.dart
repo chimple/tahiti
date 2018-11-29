@@ -28,13 +28,6 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  'assets/menu/svg/eraser': [
-    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
-    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
-  ],
   'assets/menu/svg/geometry': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
@@ -50,6 +43,13 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
 
+  'assets/menu/svg/eraser': [
+    Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
+    Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
+  ],
   'assets/menu/svg/roll': [
     Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
@@ -57,34 +57,6 @@ final Map<String, List<Iconf>> secondStickers = {
     Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
     Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
   ],
-  // 'assets/menu/brush1.png': [
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size1.png'),
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size2.png'),
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size3.png'),
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size4.png'),
-  //   Iconf(type: ItemType.png, data: 'assets/drawing/size5.png'),
-  // ],
-  //     'assets/menu/roller.png': [
-  //   Iconf(type: ItemType.png, data: 'assets/roller_image/sample1.jpg'),
-  //   Iconf(type: ItemType.png, data: 'assets/roller_image/sample2.jpg'),
-  //   Iconf(type: ItemType.png, data: 'assets/roller_image/sample3.jpg'),
-  //   Iconf(type: ItemType.png, data: 'assets/roller_image/sample4.jpg'),
-  //   Iconf(type: ItemType.png, data: 'assets/roller_image/sample5.jpg'),
-  // ],
-  // 'assets/menu/text.png': [
-  //   Iconf(type: ItemType.text, data: 'Bungee'),
-  //   Iconf(type: ItemType.text, data: 'Chela one'),
-  //   Iconf(type: ItemType.text, data: 'Gloria Hallelujah'),
-  //   Iconf(type: ItemType.text, data: 'Great vibes'),
-  //   Iconf(type: ItemType.text, data: 'Homemade apple'),
-  //   Iconf(type: ItemType.text, data: 'Indie Flower'),
-  //   Iconf(type: ItemType.text, data: 'Kirang Haerang'),
-  //   Iconf(type: ItemType.text, data: 'Pacifico'),
-  //   Iconf(type: ItemType.text, data: 'Patrick Hand'),
-  //   Iconf(type: ItemType.text, data: 'Roboto'),
-  //   Iconf(type: ItemType.text, data: 'Rock salt'),
-  //   Iconf(type: ItemType.text, data: 'Shadows into light'),
-  // ],
 };
 
 class TopStickers {
@@ -97,16 +69,16 @@ class TopStickers {
     Iconf(type: ItemType.png, data: 'assets/mic/play.png')
   ];
   final Map<String, List<Iconf>> firstStickers = {
+    'assets/menu/stickers.png': [],
     'assets/menu/text.png': [
       // Iconf(type: ItemType.png, data: 'assets/menu/text.png'),
     ],
-    'assets/menu/mic.png': [],
     'assets/menu/camera.png': [
       Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
     ],
-    'assets/menu/stickers.png': [],
+    'assets/menu/mic.png': [],
   };
 }
 
