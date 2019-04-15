@@ -135,6 +135,9 @@ class ColorPickerState extends State<ColorPicker> {
           setState(() {
             selectedColor = color;
             widget.model.selectedColor = color;
+            if (widget.model.drawText != null) {
+              widget.model.textClr = color;
+            }
           });
           try {
             if (widget.model.selectedIcon == 'assets/menu/stickers.png' ||
@@ -148,7 +151,7 @@ class ColorPickerState extends State<ColorPicker> {
         },
         constraints: new BoxConstraints.tightFor(
             height: widget.orientation == Orientation.portrait
-                ? size.width * .04
+                ? size.width * .06
                 : size.height * .08,
             width: widget.orientation == Orientation.portrait
                 ? size.width * .08
@@ -161,8 +164,6 @@ class ColorPickerState extends State<ColorPicker> {
           ),
         ),
       ));
-
-      // );
     }
     return children;
   }

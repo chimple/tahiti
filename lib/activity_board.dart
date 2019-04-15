@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/services.dart';
 import 'package:tahiti/bottom_menu.dart';
 import 'package:tahiti/masking.dart';
@@ -23,6 +25,8 @@ class ActivityBoard extends StatefulWidget {
   final Map<String, dynamic> json;
   final String title;
   final String extStorageDir;
+  final String drawText;
+  final Color textColor;
 
   ActivityBoard(
       {Key key,
@@ -31,6 +35,8 @@ class ActivityBoard extends StatefulWidget {
       this.template,
       this.json,
       this.extStorageDir,
+      this.textColor,
+      this.drawText,
       this.title})
       : super(key: key);
 
@@ -67,6 +73,8 @@ class ActivityBoardState extends State<ActivityBoard> {
                 id: Uuid().v4(),
                 things: [],
                 template: widget.template,
+                drawText: widget.drawText,
+                textColor: widget.textColor,
                 pathHistory: PathHistory())))
       ..saveCallback = widget.saveCallback
       ..backCallback = widget.backCallback;
@@ -94,6 +102,7 @@ class ActivityBoardState extends State<ActivityBoard> {
     }
     orientation = MediaQuery.of(context).orientation;
     size = MediaQuery.of(context).size;
+
     Widget dotSketchScreen = Center(
       child: Container(
         height: orientation == Orientation.portrait ? size.width : size.height,
@@ -103,9 +112,11 @@ class ActivityBoardState extends State<ActivityBoard> {
             aspectRatio: 1.0,
             child: Paper(
               previewContainerKey: _previewContainerKey,
+              drawText: widget.drawText,
             )),
       ),
     );
+
     Widget drawingScreen = Stack(
       children: <Widget>[
         Center(
@@ -114,20 +125,23 @@ class ActivityBoardState extends State<ActivityBoard> {
                 orientation == Orientation.portrait ? size.width : size.height,
             width:
                 orientation == Orientation.portrait ? size.width : size.height,
-            color: Colors.white,
             child: AspectRatio(
-                aspectRatio: 1.0,
-                child: Paper(
-                  previewContainerKey: _previewContainerKey,
-                )),
+              aspectRatio: 1.0,
+              child: Paper(
+                previewContainerKey: _previewContainerKey,
+                drawText: widget.drawText,
+              ),
+            ),
           ),
         ),
-        Positioned(
-            top: 0.0,
-            left: 0.0,
-            right: orientation == Orientation.portrait ? 0.0 : null,
-            bottom: orientation == Orientation.portrait ? null : 0.0,
-            child: TopMenu(widget.title)),
+        widget.drawText != null
+            ? Container()
+            : Positioned(
+                top: 0.0,
+                left: 0.0,
+                right: orientation == Orientation.portrait ? 0.0 : null,
+                bottom: orientation == Orientation.portrait ? null : 0.0,
+                child: TopMenu(widget.title)),
         Positioned(
             top: orientation == Orientation.portrait ? null : 0.0,
             bottom: 0.0,
@@ -166,6 +180,7 @@ class ActivityBoardState extends State<ActivityBoard> {
         ),
       ],
     );
+
     return ScopedModel<ActivityModel>(
       model: _activityModel,
       child: ScopedModelDescendant<ActivityModel>(
