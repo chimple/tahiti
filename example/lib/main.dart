@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -234,7 +235,7 @@ class DrawingListState extends State<DrawingList> {
                       jsonMap: json.decode(d),
                     );
                   })).then((onValue) {
-                    //print('$onValue');
+                    // print('$onValue');a
                   });
                 },
                 child: ScopedModel<ActivityModel>(
@@ -254,8 +255,10 @@ class DrawingWrapper extends StatelessWidget {
   Map<String, dynamic> jsonMap;
   String template;
   String extStorageDir;
+  String drawText;
 
-  DrawingWrapper({Key key, this.jsonMap, this.template, this.extStorageDir})
+  DrawingWrapper(
+      {Key key, this.jsonMap, this.template, this.extStorageDir, this.drawText})
       : super(key: key);
 
   @override
@@ -264,6 +267,7 @@ class DrawingWrapper extends StatelessWidget {
       body: ActivityBoard(
         json: jsonMap,
         template: jsonMap == null ? template : null,
+        drawText: jsonMap == null ? drawText : null,
         title: 'Test',
         extStorageDir: extStorageDir,
         saveCallback: ({Map<String, dynamic> jsonMap}) async {
