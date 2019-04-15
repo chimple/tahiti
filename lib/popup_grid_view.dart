@@ -71,7 +71,7 @@ class PopupGridViewState extends State<PopupGridView> {
   void initState() {
     super.initState();
     ActivityModel model = ActivityModel.of(context);
-    model.isDrawing = true;
+    model.isDrawing = model.drawText != null ? false : true;
     highlightedButtonItem = widget.menuItems.keys.first;
   }
 
@@ -301,9 +301,7 @@ class PopupGridViewState extends State<PopupGridView> {
             model.drawText != null
                 ? AnimatedPositioned(
                     bottom: widget.side == DisplaySide.second
-                        ? model.popped == Popped.second
-                            ? menuHeight
-                            : -30.0
+                        ? model.popped == Popped.second ? menuHeight : -30.0
                         : null,
                     left: 0.0,
                     right: 0.0,
