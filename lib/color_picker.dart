@@ -164,8 +164,6 @@ class ColorPickerState extends State<ColorPicker> {
           ),
         ),
       ));
-
-      // );
     }
     return children;
   }

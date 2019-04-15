@@ -26,7 +26,7 @@ class ActivityBoard extends StatefulWidget {
   final String title;
   final String extStorageDir;
   final String drawText;
-  final Color color;
+  final Color textColor;
 
   ActivityBoard(
       {Key key,
@@ -35,7 +35,7 @@ class ActivityBoard extends StatefulWidget {
       this.template,
       this.json,
       this.extStorageDir,
-      this.color,
+      this.textColor,
       this.drawText,
       this.title})
       : super(key: key);
@@ -74,7 +74,7 @@ class ActivityBoardState extends State<ActivityBoard> {
                 things: [],
                 template: widget.template,
                 drawText: widget.drawText,
-                textColor: widget.color,
+                textColor: widget.textColor,
                 pathHistory: PathHistory())))
       ..saveCallback = widget.saveCallback
       ..backCallback = widget.backCallback;
@@ -125,9 +125,12 @@ class ActivityBoardState extends State<ActivityBoard> {
                 orientation == Orientation.portrait ? size.width : size.height,
             width:
                 orientation == Orientation.portrait ? size.width : size.height,
-            child: Paper(
-              previewContainerKey: _previewContainerKey,
-              drawText: widget.drawText,
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: Paper(
+                previewContainerKey: _previewContainerKey,
+                drawText: widget.drawText,
+              ),
             ),
           ),
         ),
