@@ -269,7 +269,7 @@ class SelectStickerState extends State<SelectSticker> {
                   default:
                     if (text.startsWith('assets/stickers') ||
                         text.startsWith('assets/svgimage')) {
-                      // model.addSticker(text);
+                      model.addSticker(text, Colors.white, BlendMode.dst);
                     }
                     if (text.startsWith('assets/nima_animation')) {
                       //  model.addNima(text);

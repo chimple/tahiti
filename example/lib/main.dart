@@ -235,7 +235,7 @@ class DrawingListState extends State<DrawingList> {
                       jsonMap: json.decode(d),
                     );
                   })).then((onValue) {
-                    // print('$onValue');a
+                    // print('$onValue');
                   });
                 },
                 child: ScopedModel<ActivityModel>(
