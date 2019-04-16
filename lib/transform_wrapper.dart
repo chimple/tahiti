@@ -222,7 +222,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                           model.recorder.stopAudio();
                         },
                       )),
-                  widget.thing['type'] != 'video'
+                  widget.thing['type'] != 'video' && model.drawText == null
                       ? Positioned(
                           left: 0.0,
                           top: 50.0,
