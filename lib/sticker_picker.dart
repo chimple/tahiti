@@ -49,6 +49,25 @@ class _StickerPickerState extends State<StickerPicker> {
     });
   }
 
+  List<Widget> _stickers(BuildContext context) {
+    var children = <Widget>[];
+    widget.menuItems[widget.highlightedButtonItem]
+        .map((itemName) => children.add(Container(
+              color: itemName.data == highlightedPopUpItem
+                  ? Colors.blue
+                  : Colors.transparent,
+              child: InkWell(
+                  onTap: () => setState(() {
+                        widget.onUserPress(itemName.data);
+                        highlightedPopUpItem = itemName.data;
+                      }),
+                  child: widget.buildItem(context, itemName, true)),
+            )))
+        .toList(growable: false);
+
+    return children;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> colorItems = [];
@@ -69,20 +88,9 @@ class _StickerPickerState extends State<StickerPicker> {
             scrollDirection: (widget.orientation == Orientation.portrait)
                 ? Axis.horizontal
                 : Axis.vertical,
-            child: Row(
-                children: widget.menuItems[widget.highlightedButtonItem]
-                    .map((itemName) => Container(
-                          color: itemName.data == highlightedPopUpItem
-                              ? Colors.blue
-                              : Colors.transparent,
-                          child: InkWell(
-                              onTap: () => setState(() {
-                                    widget.onUserPress(itemName.data);
-                                    highlightedPopUpItem = itemName.data;
-                                  }),
-                              child: widget.buildItem(context, itemName, true)),
-                        ))
-                    .toList(growable: false)))));
+            child: (widget.orientation == Orientation.portrait)
+                ? Row(children: _stickers(context))
+                : Column(children: _stickers(context)))));
     colorItems.add(
       new Expanded(
           flex: 2,
