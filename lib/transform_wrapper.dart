@@ -98,10 +98,14 @@ class _TransformWrapperState extends State<TransformWrapper>
         setState(() {
           Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
           _translate = _translateAtStart + pos - _focalPointAtStart;
-          _scale = ((_scaleAtStart * details.scale) <= 1.0)
-              ? _scaleAtStart * details.scale
-              : 1.0;
-          _rotate = _rotateAtStart + details.rotation;
+          _scale = widget.model.drawText != null
+              ? _scaleAtStart
+              : ((_scaleAtStart * details.scale) <= 1.0)
+                  ? _scaleAtStart * details.scale
+                  : 1.0;
+          _rotate = widget.model.drawText != null
+              ? _rotateAtStart
+              : _rotateAtStart + details.rotation;
         });
       }
     }
@@ -198,6 +202,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
 
   @override
   Widget build(BuildContext context) {
+    customWidth = widget.model.drawText != null ? 60.0 : 500.0;
     var matrix = Matrix4.identity()
       ..scale(widget.scale)
       ..rotateZ(widget.rotate);
@@ -222,7 +227,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                           model.recorder.stopAudio();
                         },
                       )),
-                  widget.thing['type'] != 'video'
+                  widget.thing['type'] != 'video' && model.drawText == null
                       ? Positioned(
                           left: 0.0,
                           top: 50.0,

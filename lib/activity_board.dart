@@ -169,15 +169,17 @@ class ActivityBoardState extends State<ActivityBoard> {
             onClick: getPngImage,
           ),
         ),
-        Positioned(
-          top: 0.0,
-          right: orientation == Orientation.portrait
-              ? size.width * .08
-              : size.width * .06,
-          child: PaperActions(
-            action: "UndoRedoAction",
-          ),
-        ),
+        widget.drawText != null
+            ? Container()
+            : Positioned(
+                top: 0.0,
+                right: orientation == Orientation.portrait
+                    ? size.width * .08
+                    : size.width * .06,
+                child: PaperActions(
+                  action: "UndoRedoAction",
+                ),
+              ),
       ],
     );
 
