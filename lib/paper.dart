@@ -20,7 +20,8 @@ import 'package:tahiti/transform_wrapper.dart';
 
 class Paper extends StatelessWidget {
   GlobalKey previewContainerKey;
-  Paper({Key key, this.previewContainerKey}) : super(key: key);
+  String drawText;
+  Paper({Key key, this.previewContainerKey, this.drawText}) : super(key: key);
 
   Future<Null> getPngImage() async {
     RenderRepaintBoundary boundary =
@@ -56,6 +57,19 @@ class Paper extends StatelessWidget {
                             File(model.extStorageDir + model.template),
                           ),
                   ));
+                }
+                if (model.drawText != null) {
+                  children.add(AspectRatio(
+                      aspectRatio: 1.0,
+                      child: Center(
+                          child: Text(
+                        model.drawText,
+                        textScaleFactor: 30.0,
+                        style: TextStyle(
+                          color: model.textClr,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ))));
                 }
                 final dotThing = model.things
                     .firstWhere((t) => t['type'] == 'dot', orElse: () => null);

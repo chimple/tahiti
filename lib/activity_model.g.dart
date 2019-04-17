@@ -15,14 +15,21 @@ PaintData _$PaintDataFromJson(Map<String, dynamic> json) {
       template: json['template'] as String,
       pathHistory: json['pathHistory'] == null
           ? null
-          : PathHistory.fromJson(json['pathHistory'] as Map<String, dynamic>));
+          : PathHistory.fromJson(json['pathHistory'] as Map<String, dynamic>),
+      textColor: json['textColor'] == null
+          ? null
+          : _colorFromInt(json['textColor'] as int),
+      drawText: json['drawText'] as String);
 }
 
 Map<String, dynamic> _$PaintDataToJson(PaintData instance) => <String, dynamic>{
       'id': instance.id,
       'things': instance.things,
       'template': instance.template,
-      'pathHistory': instance.pathHistory
+      'pathHistory': instance.pathHistory,
+      'textColor':
+          instance.textColor == null ? null : _intFromColor(instance.textColor),
+      'drawText': instance.drawText
     };
 
 PathHistory _$PathHistoryFromJson(Map<String, dynamic> json) {
