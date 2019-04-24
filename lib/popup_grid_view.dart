@@ -11,6 +11,7 @@ import 'package:tahiti/components/custom_bottom_sheet.dart';
 import 'package:tahiti/drawing.dart';
 import 'package:tahiti/masking.dart';
 import 'package:tahiti/select_sticker.dart';
+import 'package:tahiti/sticker_picker.dart';
 import 'package:tahiti/stickers.dart';
 import 'package:tahiti/text_editor.dart';
 
@@ -296,12 +297,13 @@ class PopupGridViewState extends State<PopupGridView> {
           overflow: Overflow.visible,
           children: <Widget>[
             Container(
-                color: Color(0xff283744),
-                height: (size.height - size.width) / 2),
+                color: Color(0xff283744), height: (size.height - size.width) / 2),
             model.drawText != null
                 ? AnimatedPositioned(
                     bottom: widget.side == DisplaySide.second
-                        ? model.popped == Popped.second ? menuHeight : -30.0
+                        ? model.popped == Popped.second
+                            ? (size.height - size.width) / 4
+                            : -30.0
                         : null,
                     left: 0.0,
                     right: 0.0,
@@ -320,35 +322,18 @@ class PopupGridViewState extends State<PopupGridView> {
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(50.0),
                                     topRight: Radius.circular(50.0))),
-                            height: size.height * .1,
+                            height: (size.height - size.width) / 4,
                             child: highlightedButtonItem !=
                                     'assets/menu/giraffe.png'
-                                ? Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0),
-                                    child: GridView.count(
-                                        crossAxisCount: 1,
-                                        scrollDirection: Axis.horizontal,
-                                        children: widget
-                                            .menuItems[highlightedButtonItem]
-                                            .map((itemName) => Container(
-                                                  child: InkWell(
-                                                      onTap: () => setState(() {
-                                                            widget.onUserPress(
-                                                                itemName.data);
-                                                            highlightedPopUpItem =
-                                                                itemName.data;
-                                                          }),
-                                                      child: widget.buildItem(
-                                                          context,
-                                                          itemName,
-                                                          true)),
-                                                  color: itemName.data ==
-                                                          highlightedPopUpItem
-                                                      ? Colors.blue
-                                                      : Colors.transparent,
-                                                ))
-                                            .toList(growable: false)))
+                                ? StickerPicker(
+                                    orientation: orientation,
+                                    model: model,
+                                    buildItem: widget.buildItem,
+                                    onUserPress: widget.onUserPress,
+                                    menuItems: widget.menuItems,
+                                    highlightedButtonItem:
+                                        highlightedButtonItem,
+                                  )
                                 : SizedBox(
                                     height: (size.height - size.width) * .1,
                                     width: size.width,
@@ -427,7 +412,7 @@ class PopupGridViewState extends State<PopupGridView> {
                 left: 0.0,
                 right: 0.0,
                 child: Container(
-                  height: menuHeight,
+                  height: (size.height - size.width) / 4,
                   color: model.drawText != null
                       ? Colors.orange
                       : Colors.transparent,
