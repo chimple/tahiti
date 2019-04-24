@@ -70,6 +70,18 @@ class ActivityModel extends Model {
     _saveAndNotifyListeners();
   }
 
+  String get drawText => paintData.drawText;
+  set drawText(String t) {
+    paintData.drawText = t;
+    _saveAndNotifyListeners();
+  }
+
+  get textClr => paintData.textColor;
+  set textClr(Color t) {
+    paintData.textColor = t;
+    _saveAndNotifyListeners();
+  }
+
   // TODO:// onTap and pass id of selected thing here
   String get selectedThingId => _selectedThingId;
   set selectedThingId(String id) {
@@ -321,7 +333,6 @@ class ActivityModel extends Model {
   }
 
   void _addThing(Map<String, dynamic> thing) {
-    print('_addThing: $thing');
     thing['op'] = 'add';
     if (thing['type'] != 'drawing') paintData.things.add(thing);
     _undoStack.add(Map.from(thing));
@@ -436,11 +447,20 @@ int _intFromBlurStyle(BlurStyle blurStyle) => blurStyle.index;
 
 @JsonSerializable()
 class PaintData {
-  PaintData({this.id, this.things, this.template, this.pathHistory});
+  PaintData(
+      {this.id,
+      this.things,
+      this.template,
+      this.pathHistory,
+      this.textColor,
+      this.drawText});
   String id;
   List<Map<String, dynamic>> things;
   String template;
   PathHistory pathHistory;
+  @JsonKey(fromJson: _colorFromInt, toJson: _intFromColor)
+  Color textColor;
+  String drawText;
 
   factory PaintData.fromJson(Map<String, dynamic> json) =>
       _$PaintDataFromJson(json);

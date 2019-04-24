@@ -54,7 +54,6 @@ class _TransformWrapperState extends State<TransformWrapper>
   RenderBox _parentRenderBox;
 
   void onScaleStart(rotate.ScaleStartDetails details) {
-    print('NIKKKKKKK    d   ${widget.thing['type']}  ');
     setState(() {
       //||widget.model.things['type']=='drawing'
       if (!widget.model.userTouch) {
@@ -77,24 +76,36 @@ class _TransformWrapperState extends State<TransformWrapper>
     if (widget.model.selectedThingId == widget.thing['id'] &&
         widget.model.userTouch) {
       if (details.focalPoint.dx >
-              (orientation == Orientation.portrait ? (_size.height - _size.width)* .1 : (_size.width - _size.height)/2) &&
+              (orientation == Orientation.portrait
+                  ? (_size.height - _size.width) * .1
+                  : (_size.width - _size.height) / 2) &&
           details.focalPoint.dy >
-              (orientation == Orientation.portrait ? (_size.height - _size.width)/2 : (_size.width - _size.height)*.1) &&
+              (orientation == Orientation.portrait
+                  ? (_size.height - _size.width) / 2
+                  : (_size.width - _size.height) * .1) &&
           (details.focalPoint.dy <
               (orientation == Orientation.portrait
-                  ? widget.constraints.maxHeight + (_size.height - _size.width)/2
-                  : widget.constraints.maxHeight- (_size.width - _size.height)*.1)) &&
+                  ? widget.constraints.maxHeight +
+                      (_size.height - _size.width) / 2
+                  : widget.constraints.maxHeight -
+                      (_size.width - _size.height) * .1)) &&
           (details.focalPoint.dx <
               (orientation == Orientation.portrait
-                  ? widget.constraints.maxWidth - (_size.height - _size.width)* .1
-                  : widget.constraints.maxWidth + (_size.width - _size.height)/2))) {
+                  ? widget.constraints.maxWidth -
+                      (_size.height - _size.width) * .1
+                  : widget.constraints.maxWidth +
+                      (_size.width - _size.height) / 2))) {
         setState(() {
           Offset pos = _parentRenderBox.globalToLocal(details.focalPoint);
           _translate = _translateAtStart + pos - _focalPointAtStart;
-          _scale = ((_scaleAtStart * details.scale) <= 1.0)
-              ? _scaleAtStart * details.scale
-              : 1.0;
-          _rotate = _rotateAtStart + details.rotation;
+          _scale = widget.model.drawText != null
+              ? _scaleAtStart
+              : ((_scaleAtStart * details.scale) <= 1.0)
+                  ? _scaleAtStart * details.scale
+                  : 1.0;
+          _rotate = widget.model.drawText != null
+              ? _rotateAtStart
+              : _rotateAtStart + details.rotation;
         });
       }
     }
@@ -161,7 +172,6 @@ class _TransformWrapperState extends State<TransformWrapper>
   @override
   void didUpdateWidget(TransformWrapper oldWidget) {
     super.didUpdateWidget(oldWidget);
-    print('${oldWidget.thing} ${widget.thing}');
     if (oldWidget.thing != widget.thing) {
       _initProps();
     }
@@ -192,6 +202,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
 
   @override
   Widget build(BuildContext context) {
+    customWidth = widget.model.drawText != null ? 60.0 : 500.0;
     var matrix = Matrix4.identity()
       ..scale(widget.scale)
       ..rotateZ(widget.rotate);
@@ -216,7 +227,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                           model.recorder.stopAudio();
                         },
                       )),
-                  widget.thing['type'] != 'video'
+                  widget.thing['type'] != 'video' && model.drawText == null
                       ? Positioned(
                           left: 0.0,
                           top: 50.0,
@@ -258,7 +269,7 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                       ),
                                       blendMode: BlendMode
                                           .values[widget.thing['blendMode']]);
-                               } else if (widget.thing['type'] == 'nima') {
+                                } else if (widget.thing['type'] == 'nima') {
                                   _editingScreen(model,
                                       type: widget.thing['type'],
                                       path: widget.thing['audioPath']);
@@ -400,7 +411,6 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
 
 //Pan Controller
   void onPanUpdate(DragUpdateDetails details) {
-    print("onPanUpdate $details");
     setState(() {
       customWidth += details.delta.dx;
       customHeight += details.delta.dy;

@@ -36,7 +36,16 @@ class Masking extends StatefulWidget {
     'assets/masking/pattern_28.png',
     'assets/masking/pattern_29.png',
     'assets/masking/pattern_30.png',
+    'assets/masking/pattern_31.png',
     'assets/masking/pattern_32.png',
+    'assets/masking/pattern_33.png',
+    'assets/masking/pattern_34.png',
+    'assets/masking/pattern_35.png',
+    'assets/masking/pattern_36.png',
+    'assets/masking/pattern_37.png',
+    'assets/masking/pattern_38.png',
+    'assets/masking/pattern_39.png',
+    'assets/masking/pattern_40.png',
   ];
 
   @override
@@ -56,28 +65,30 @@ class MaskingState extends State<Masking> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Text('Roller',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.w500)),
-          ),
-          Expanded(
-            flex: 1,
-            child: GridView.count(
-              crossAxisCount: 5,
-              children: Masking.listOfImage
-                  .map((t) => _buildTile(context, t))
-                  .toList(growable: false),
+    return Container(
+      color: Colors.transparent,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Text('Roller',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.w500)),
             ),
-          ),
-        ]);
+            Expanded(
+              flex: 1,
+              child: GridView.count(
+                crossAxisCount: 5,
+                children: Masking.listOfImage
+                    .map((t) => _buildTile(context, t))
+                    .toList(growable: false),
+              ),
+            ),
+          ]),
+    );
   }
 
   Widget _buildTile(BuildContext context, String text) {

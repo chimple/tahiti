@@ -40,15 +40,12 @@ class Recorder {
     try {
       if (await AudioRecorder.hasPermissions) {
         recordingState = RecordingState.recording;
-        print('state in recording issssssssss $playerState');
         String path = "recorder.m4a";
         Directory appDocDirectory = await getExternalStorageDirectory();
         String filePath = appDocDirectory.path + '/' + path;
-        print("Start recording: $filePath");
         File file = new File(filePath);
         try {
           if (file.exists() != null) {
-            print("Deleted the file in the path");
             await file.delete();
           }
         } catch (e) {
@@ -72,10 +69,8 @@ class Recorder {
 
   void stop() async {
     var record = await AudioRecorder.stop();
-    print("Stop recording: ${record.path}");
     bool isRecord = await AudioRecorder.isRecording;
     File file = new File(record.path);
-    print(" File length: ${await file.length()}");
     isRecorded = true;
     recording = record;
     isRecording = isRecord;
@@ -86,7 +81,6 @@ class Recorder {
   Future playAudio(
     Function onComplete,
   ) async {
-    print('file path is $filePath');
     await audioPlayer.play(filePath, isLocal: true);
     isRecorded = false;
     audioPlayer.completionHandler = () {

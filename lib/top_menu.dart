@@ -47,8 +47,8 @@ class TopMenu extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border(
                             bottom: BorderSide(
-                                color: Colors.black,
-                                width: (size.height - size.width) * .01)),
+                                color: Colors.white,
+                                width: (size.height - size.width) * .005)),
                       ),
                       alignment: Alignment.center,
                       height: (size.height - size.width) * .2,

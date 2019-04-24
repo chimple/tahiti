@@ -123,7 +123,7 @@ class _DotSketchState extends State<DotSketch> {
     lastPos = pos;
     if (isDrawing) {
       dotPainter.updateStroke(pos);
-      if ((pos - nextDot).distanceSquared < 50) {
+      if ((pos - nextDot).distanceSquared < 100) {
         final currentIndex = dotData['c'].indexWhere((c) => c == 0);
         final nextIndex =
             (currentIndex + 2 >= dotData['c'].length) ? 0 : currentIndex + 2;
@@ -193,7 +193,6 @@ class _DotSketchState extends State<DotSketch> {
 
   @override
   Widget build(BuildContext context) {
-    print('dot_sketch: isInteractive $isInteractive');
     touch = new GestureDetector(
       onPanStart: panStart,
       onPanUpdate: panUpdate,
