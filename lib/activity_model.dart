@@ -49,6 +49,9 @@ class ActivityModel extends Model {
   String maskImageName;
   String extStorageDir;
 
+  bool _audioEdit = false;
+  String _audioEditPath;
+
   ActivityModel({@required this.paintData, @required this.extStorageDir}) {
     _painterController =
         new PainterController(pathHistory: this.paintData.pathHistory);
@@ -63,6 +66,18 @@ class ActivityModel extends Model {
 
   List<Map<String, dynamic>> get things => paintData.things;
   PathHistory get pathHistory => paintData.pathHistory;
+
+  String get audioEditPath => _audioEditPath;
+  set audioEditPath(String t) {
+    _audioEditPath = t;
+    _saveAndNotifyListeners();
+  }
+
+  bool get audioEdit => _audioEdit;
+  set audioEdit(bool t) {
+    _audioEdit = t;
+    _saveAndNotifyListeners();
+  }
 
   String get template => paintData.template;
   set template(String t) {
@@ -330,6 +345,12 @@ class ActivityModel extends Model {
   void addThing(Map<String, dynamic> thing) {
     _addThing(thing);
     _redoStack.clear();
+
+    selectedThingId = (thing['id']);
+    if (thing['type'] == 'nima') {
+      editSelectedThing = true;
+      audioEdit = true;
+    }
   }
 
   void _addThing(Map<String, dynamic> thing) {

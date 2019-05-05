@@ -140,8 +140,8 @@ class ColorPickerState extends State<ColorPicker> {
             }
           });
           try {
-            if (widget.model.selectedIcon == 'assets/menu/stickers.png' ||
-                widget.model.selectedIcon == 'assets/menu/text.png')
+            if (widget.model.selectedIcon == 'assets/menu/svg/stickers' ||
+                widget.model.selectedIcon == 'assets/menu/svg/text')
               widget.getColor(color);
             else if (false) {}
           } catch (exception, e) {
