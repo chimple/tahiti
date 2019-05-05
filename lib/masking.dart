@@ -55,7 +55,15 @@ class Masking extends StatefulWidget {
 }
 
 class MaskingState extends State<Masking> {
+
+ 
   double selectedWidth = 3.0;
+
+    @override
+  void initState() {
+    super.initState();
+     widget.model.addMaskImage('assets/masking/pattern_01.png');
+  }
   @override
   void didChangeDependencies() {
     selectedWidth = widget.model.painterController.thickness;
@@ -65,29 +73,12 @@ class MaskingState extends State<Masking> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Text('Roller',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 35.0,
-                      fontWeight: FontWeight.w500)),
-            ),
-            Expanded(
-              flex: 1,
-              child: GridView.count(
-                crossAxisCount: 5,
-                children: Masking.listOfImage
-                    .map((t) => _buildTile(context, t))
-                    .toList(growable: false),
-              ),
-            ),
-          ]),
+    return GridView.count(
+      crossAxisCount: 1,
+      scrollDirection: Axis.horizontal,
+      children: Masking.listOfImage
+          .map((t) => _buildTile(context, t))
+          .toList(growable: false),
     );
   }
 
@@ -95,10 +86,10 @@ class MaskingState extends State<Masking> {
     return new InkWell(
       onTap: () {
         widget.model.addMaskImage(text);
-        Navigator.pop(context);
+        // Navigator.pop(context);
       },
       child: Padding(
-        padding: const EdgeInsets.all(38.0),
+        padding: const EdgeInsets.all(10.0),
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(

@@ -57,7 +57,7 @@ class TextEditorState extends State<TextEditor> {
   void initState() {
     color = widget.color;
     userTyped = widget.userTyped;
-   _textEditingController = new TextEditingController(text:userTyped);
+    _textEditingController = new TextEditingController(text: userTyped);
     super.initState();
   }
 
@@ -91,6 +91,7 @@ class TextEditorState extends State<TextEditor> {
               child: Center(
                 child: TextField(
                   controller: _textEditingController,
+                  textInputAction: TextInputAction.send,
                   autofocus: true,
                   maxLines: null,
                   focusNode: myFocusNode,

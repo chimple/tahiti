@@ -13,7 +13,7 @@ class BottomMenu extends StatelessWidget {
 
     return Container(
         height: orientation == Orientation.portrait
-            ? (size.height - size.width) / 1.5
+            ? (size.height - size.width)
             : size.height,
         width: orientation == Orientation.portrait
             ? size.width

@@ -1,12 +1,14 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tahiti/activity_model.dart';
 import 'package:tahiti/camera.dart';
 import 'package:tahiti/components/custom_bottom_sheet.dart';
 import 'package:tahiti/display_sticker.dart';
+import 'package:tahiti/drawing.dart';
 import 'package:tahiti/image_editor.dart';
+import 'package:tahiti/masking.dart';
 import 'package:tahiti/popup_grid_view.dart';
 import 'package:tahiti/recorder.dart';
 import 'package:tahiti/transform_wrapper.dart';
@@ -165,16 +167,35 @@ class TopStickers {
     Iconf(type: ItemType.png, data: 'assets/mic/play.png')
   ];
   final Map<String, List<Iconf>> firstStickers = {
-    'assets/menu/stickers.png': [],
-    'assets/menu/text.png': [
-      // Iconf(type: ItemType.png, data: 'assets/menu/text.png'),
+    'assets/menu/svg/geometry': [],
+    'assets/menu/svg/pencil': [
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/pencil'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/freegeometry'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/geometry'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/roll'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/eraser'),
     ],
-    'assets/menu/camera.png': [
+    'assets/menu/svg/stickers': [],
+    'assets/menu/svg/camera': [
       Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
       Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
     ],
-    'assets/menu/mic.png': [],
+    'assets/menu/svg/mic': [],
+    'assets/menu/svg/text': [
+      Iconf(type: ItemType.text, data: 'Bungee'),
+      Iconf(type: ItemType.text, data: 'Chela one'),
+      Iconf(type: ItemType.text, data: 'Gloria Hallelujah'),
+      Iconf(type: ItemType.text, data: 'Great vibes'),
+      Iconf(type: ItemType.text, data: 'Homemade apple'),
+      Iconf(type: ItemType.text, data: 'Indie Flower'),
+      Iconf(type: ItemType.text, data: 'Kirang Haerang'),
+      Iconf(type: ItemType.text, data: 'Pacifico'),
+      Iconf(type: ItemType.text, data: 'Patrick Hand'),
+      Iconf(type: ItemType.text, data: 'Roboto'),
+      Iconf(type: ItemType.text, data: 'Rock salt'),
+      Iconf(type: ItemType.text, data: 'Shadows into light'),
+    ],
   };
 }
 
@@ -225,6 +246,39 @@ class SelectStickerState extends State<SelectSticker> {
                   case 'assets/drawing/size5.png':
                     model.painterController.thickness = 15.0;
                     break;
+                  case 'assets/menu/svg/pencil':
+                    model.painterController.paintOption = PaintOption.paint;
+                    model.painterController.drawingType =
+                        DrawingType.freeDrawing;
+                    model.painterController.blurStyle = BlurStyle.normal;
+                    model.painterController.sigma = 0.0;
+                    model.isDrawing = true;
+                    break;
+                  case 'assets/menu/svg/freegeometry':
+                    model.painterController.paintOption = PaintOption.paint;
+                    model.painterController.drawingType =
+                        DrawingType.lineDrawing;
+                    model.painterController.blurStyle = BlurStyle.normal;
+                    model.painterController.sigma = 0.0;
+                    model.isDrawing = true;
+                    break;
+                  case 'assets/menu/svg/eraser':
+                    model.painterController.paintOption = PaintOption.erase;
+                    model.painterController.drawingType =
+                        DrawingType.freeDrawing;
+                    model.isDrawing = true;
+                    break;
+                  case 'assets/menu/svg/geometry':
+                    model.painterController.paintOption = PaintOption.paint;
+                    model.painterController.drawingType =
+                        DrawingType.geometricDrawing;
+                    model.isDrawing = true;
+                    break;
+                  case 'assets/menu/svg/roll':
+                    // return Masking(
+                    //   model: model,
+                    // );
+                    break;
                   case 'assets/mic/stop.png':
                     SelectSticker.recorder.stop();
                     setState(() {
@@ -244,7 +298,7 @@ class SelectStickerState extends State<SelectSticker> {
                       });
                     }
                     break;
-                  case 'assets/menu/camera.png':
+                  case 'assets/camera/camera1.png':
                     new Camera().openCamera().then((p) {
                       // if (p != null) model.addImage(p);
 
@@ -280,7 +334,9 @@ class SelectStickerState extends State<SelectSticker> {
                 }
               },
               menuItems: widget.side == DisplaySide.second
-                  ? model.drawText != null ? monsterStickers : secondStickers
+                  ? model.drawText != null
+                      ? monsterStickers
+                      : TopStickers().firstStickers
                   : TopStickers().firstStickers,
               numFixedItems: widget.side == DisplaySide.second ? 1 : 0,
               itemCrossAxisCount: 2,
@@ -298,19 +354,19 @@ class SelectStickerState extends State<SelectSticker> {
           style: TextStyle(
             fontFamily: conf.data,
             fontSize: 30.0,
-            color: ActivityModel.of(context).textColor,
+            color: Colors.red,
           ),
         )),
-        color: Colors.blueAccent[100],
+        color: Colors.transparent,
       );
     else if (conf.type == ItemType.sticker) {
       return ScopedModelDescendant<ActivityModel>(
-          builder: (context, child, model) => DisplaySticker(
-                blendmode: model.blendMode == BlendMode.dst
-                    ? model.blendMode
-                    : BlendMode.srcOver,
-                primary: conf.data,
-                color: ActivityModel.of(context).stickerColor,
+          builder: (context, child, model) => AspectRatio(
+                aspectRatio: 1.0,
+                child: new SvgPicture.asset(
+                  '${conf.data}.svg',
+                  package: 'tahiti',
+                ),
               ));
     } else
       return Image.asset(
@@ -322,11 +378,18 @@ class SelectStickerState extends State<SelectSticker> {
   Widget buildIndexItem(BuildContext context, Iconf conf, bool enabled) {
     ActivityModel model = ActivityModel.of(context);
     if (conf.data.startsWith('assets/menu/svg')) {
-      return DisplaySticker(
-        primary: conf.data,
-        color: conf.data == model.highlighted
-            ? model.selectedColor == null ? Colors.red : model.selectedColor
-            : Colors.transparent,
+      // return DisplaySticker(
+      //   primary: conf.data,
+      //   color: conf.data == model.highlighted
+      //       ? model.selectedColor == null ? Colors.red : model.selectedColor
+      //       : Colors.transparent,
+      // );
+      return AspectRatio(
+        aspectRatio: 1.0,
+        child: new SvgPicture.asset(
+          '${conf.data}.svg',
+          package: 'tahiti',
+        ),
       );
     } else
       return SizedBox(
