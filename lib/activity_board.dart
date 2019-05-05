@@ -26,6 +26,7 @@ class ActivityBoard extends StatefulWidget {
   final String title;
   final String extStorageDir;
   final String drawText;
+  final List<String> rewardImageList;
   final Color textColor;
 
   ActivityBoard(
@@ -35,6 +36,7 @@ class ActivityBoard extends StatefulWidget {
       this.template,
       this.json,
       this.extStorageDir,
+      this.rewardImageList,
       this.textColor,
       this.drawText,
       this.title})
