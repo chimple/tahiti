@@ -65,101 +65,204 @@ class CategoryScreenState extends State<CategoryScreen> {
   BlendMode blendMode = BlendMode.dst;
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
     Size size = MediaQuery.of(context).size;
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all((size.height - size.width) * .05),
-          child: SizedBox(
-            height: (size.height - size.width) * .1,
-            width: size.width,
-            child: Center(
-              child: ColorPicker(
-                orientation: Orientation.portrait,
-                model: widget.model,
-                getColor: (color) {
-                  setColor(color);
-                },
+    return orientation == Orientation.portrait
+        ? Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all((size.height - size.width) * .05),
+                child: SizedBox(
+                  height: (size.height - size.width) * .1,
+                  width: size.width,
+                  child: Center(
+                    child: ColorPicker(
+                      orientation: Orientation.portrait,
+                      model: widget.model,
+                      getColor: (color) {
+                        setColor(color);
+                      },
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
-        Container(
-          height: (size.height - size.width) * .2,
-          child: CustomScrollView(
-              controller: _scrollController,
-              scrollDirection: Axis.horizontal,
-              slivers: widget.items.keys
-                  .map((e) => FutureBuilder(
-                        builder: (context, asyn) {
-                          if (e != 'divider')
-                            return SliverGrid(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 1),
-                              delegate: SliverChildBuilderDelegate(
-                                  (BuildContext context, int index) {
-                                return InkWell(
-                                    onTap: () {
-                                      widget.model.addSticker(
-                                          widget.items[e][index].data,
-                                          color,
-                                          blendMode);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.only(right: 10.0),
-                                      child: buildItem(context,
-                                          widget.items[e][index], true),
-                                    ));
-                              }, childCount: widget.items[e].length),
-                            );
-                          else {
-                            return SliverGrid(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 1),
-                              delegate: SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                                  return Divider(color: Colors.white);
-                                },
-                              ),
-                            );
-                          }
-                        },
-                      ))
-                  .toList(growable: false)),
-        ),
-        _divider,
-        Container(
-          height: (size.height - size.width) * .2,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: _scrollController1,
-            child: Row(
-              children: _itemRange
-                  .map((e) => Container(
-                        child: InkWell(
-                            onTap: () {
-                              final offset =
-                                  (_scrollController.position.maxScrollExtent +
-                                          _scrollController
-                                              .position.viewportDimension) *
-                                      e.item2 /
-                                      _itemCount;
-                              _scrollController.jumpTo(offset);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: buildIndexItem(
-                                  context, e.item1, e.item1 == highlightedItem),
-                            )),
-                      ))
-                  .toList(growable: false),
-            ),
-          ),
-        ),
-      ],
-    );
+              Container(
+                height: (size.height - size.width) * .2,
+                child: CustomScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    slivers: widget.items.keys
+                        .map((e) => FutureBuilder(
+                              builder: (context, asyn) {
+                                if (e != 'divider')
+                                  return SliverGrid(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 1),
+                                    delegate: SliverChildBuilderDelegate(
+                                        (BuildContext context, int index) {
+                                      return InkWell(
+                                          onTap: () {
+                                            widget.model.addSticker(
+                                                widget.items[e][index].data,
+                                                color,
+                                                blendMode);
+                                          },
+                                          child: Container(
+                                            padding:
+                                                EdgeInsets.only(right: 10.0),
+                                            child: buildItem(context,
+                                                widget.items[e][index], true),
+                                          ));
+                                    }, childCount: widget.items[e].length),
+                                  );
+                                else {
+                                  return SliverGrid(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 1),
+                                    delegate: SliverChildBuilderDelegate(
+                                      (BuildContext context, int index) {
+                                        return Divider(color: Colors.white);
+                                      },
+                                    ),
+                                  );
+                                }
+                              },
+                            ))
+                        .toList(growable: false)),
+              ),
+              _divider,
+              Container(
+                height: (size.height - size.width) * .2,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: _scrollController1,
+                  child: Row(
+                    children: _itemRange
+                        .map((e) => Container(
+                              child: InkWell(
+                                  onTap: () {
+                                    final offset = (_scrollController
+                                                .position.maxScrollExtent +
+                                            _scrollController
+                                                .position.viewportDimension) *
+                                        e.item2 /
+                                        _itemCount;
+                                    _scrollController.jumpTo(offset);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: buildIndexItem(context, e.item1,
+                                        e.item1 == highlightedItem),
+                                  )),
+                            ))
+                        .toList(growable: false),
+                  ),
+                ),
+              ),
+            ],
+          )
+        : Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all((size.width - size.height) * .05),
+                child: SizedBox(
+                  height: size.height,
+                  width: (size.width - size.height) * .1,
+                  child: Center(
+                    child: ColorPicker(
+                      orientation: Orientation.landscape,
+                      model: widget.model,
+                      getColor: (color) {
+                        setColor(color);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: size.height,
+                width: (size.width - size.height) * .2,
+                child: CustomScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.vertical,
+                    slivers: widget.items.keys
+                        .map((e) => FutureBuilder(
+                              builder: (context, asyn) {
+                                if (e != 'divider')
+                                  return SliverGrid(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 1),
+                                    delegate: SliverChildBuilderDelegate(
+                                        (BuildContext context, int index) {
+                                      return InkWell(
+                                          onTap: () {
+                                            widget.model.addSticker(
+                                                widget.items[e][index].data,
+                                                color,
+                                                blendMode);
+                                          },
+                                          child: Container(
+                                            padding:
+                                                EdgeInsets.only(right: 10.0),
+                                            child: buildItem(context,
+                                                widget.items[e][index], true),
+                                          ));
+                                    }, childCount: widget.items[e].length),
+                                  );
+                                else {
+                                  return SliverGrid(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 1),
+                                    delegate: SliverChildBuilderDelegate(
+                                      (BuildContext context, int index) {
+                                        return Divider(color: Colors.white);
+                                      },
+                                    ),
+                                  );
+                                }
+                              },
+                            ))
+                        .toList(growable: false)),
+              ),
+              Container(
+                color: Colors.white,
+                width: 2.0,
+              ),
+              Container(
+                width: (size.width - size.height) * .22,
+                height: size.height,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  controller: _scrollController1,
+                  child: Column(
+                    children: _itemRange
+                        .map((e) => Container(
+                              child: InkWell(
+                                  onTap: () {
+                                    final offset = (_scrollController
+                                                .position.maxScrollExtent +
+                                            _scrollController
+                                                .position.viewportDimension) *
+                                        e.item2 /
+                                        _itemCount;
+                                    _scrollController.jumpTo(offset);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: buildIndexItem(context, e.item1,
+                                        e.item1 == highlightedItem),
+                                  )),
+                            ))
+                        .toList(growable: false),
+                  ),
+                ),
+              ),
+            ],
+          );
   }
 
   void setColor(Color c) {

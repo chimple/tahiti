@@ -91,7 +91,25 @@ class TextEditorState extends State<TextEditor> {
               child: Center(
                 child: TextField(
                   controller: _textEditingController,
-                  textInputAction: TextInputAction.send,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (str) {
+                    if (str != '') {
+                      if (widget.id == null) {
+                        widget.model.textColor = widget.model.selectedColor;
+                        widget.model.addText(_textEditingController.text,
+                            font: textType[typeIndex]);
+                      } else {
+                        widget.model.textColor = widget.model.selectedColor;
+                        widget.model.selectedThing(
+                            id: widget.id,
+                            color: color,
+                            text: _textEditingController.text,
+                            type: 'text',
+                            font: textType[typeIndex]);
+                      }
+                    }
+                    Navigator.pop(context);
+                  },
                   autofocus: true,
                   maxLines: null,
                   focusNode: myFocusNode,
@@ -176,18 +194,23 @@ class TextEditorState extends State<TextEditor> {
                         icon: Icon(Icons.done),
                         onPressed: () {
                           setState(() {
-                            if (widget.id == null) {
-                              widget.model.textColor = color;
-                              widget.model.addText(_textEditingController.text,
-                                  font: textType[typeIndex]);
-                            } else {
-                              widget.model.textColor = color;
-                              widget.model.selectedThing(
-                                  id: widget.id,
-                                  color: color,
-                                  text: _textEditingController.text,
-                                  type: 'text',
-                                  font: textType[typeIndex]);
+                            if (_textEditingController.text != '') {
+                              if (widget.id == null) {
+                                widget.model.textColor =
+                                    widget.model.selectedColor;
+                                widget.model.addText(
+                                    _textEditingController.text,
+                                    font: textType[typeIndex]);
+                              } else {
+                                widget.model.textColor =
+                                    widget.model.selectedColor;
+                                widget.model.selectedThing(
+                                    id: widget.id,
+                                    color: color,
+                                    text: _textEditingController.text,
+                                    type: 'text',
+                                    font: textType[typeIndex]);
+                              }
                             }
                             Navigator.pop(context);
                           });

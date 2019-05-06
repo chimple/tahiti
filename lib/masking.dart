@@ -55,15 +55,14 @@ class Masking extends StatefulWidget {
 }
 
 class MaskingState extends State<Masking> {
-
- 
   double selectedWidth = 3.0;
 
-    @override
+  @override
   void initState() {
     super.initState();
-     widget.model.addMaskImage('assets/masking/pattern_01.png');
+    widget.model.addMaskImage('assets/masking/pattern_01.png');
   }
+
   @override
   void didChangeDependencies() {
     selectedWidth = widget.model.painterController.thickness;
@@ -73,9 +72,11 @@ class MaskingState extends State<Masking> {
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
     return GridView.count(
       crossAxisCount: 1,
-      scrollDirection: Axis.horizontal,
+      scrollDirection:
+          orientation == Orientation.portrait ? Axis.horizontal : Axis.vertical,
       children: Masking.listOfImage
           .map((t) => _buildTile(context, t))
           .toList(growable: false),
