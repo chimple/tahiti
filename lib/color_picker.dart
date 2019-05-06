@@ -135,6 +135,7 @@ class ColorPickerState extends State<ColorPicker> {
           setState(() {
             selectedColor = color;
             widget.model.selectedColor = color;
+            widget.model.textColor = color;
             if (widget.model.drawText != null) {
               widget.model.textClr = color;
             }

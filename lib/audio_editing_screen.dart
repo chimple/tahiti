@@ -96,13 +96,21 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
     int i = 0;
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: (size.height - size.width) * .22,
+      height: orientation == Orientation.portrait
+          ? (size.height - size.width) * .22
+          : size.height,
+      width: orientation == Orientation.portrait
+          ? size.width
+          : (size.width - size.height) * .22,
       child: recordCompleted
           ? GridView.count(
-              scrollDirection: Axis.horizontal,
+              scrollDirection: orientation == Orientation.portrait
+                  ? Axis.horizontal
+                  : Axis.vertical,
               crossAxisCount: 1,
               children: listOfNima
                   .map((p) => _showNima(p, i++))

@@ -137,9 +137,11 @@ class ActivityBoardState extends State<ActivityBoard> {
         ),
         Positioned(
             top: null,
-            bottom: 0.0,
+            bottom:orientation == Orientation.portrait
+              ? 0.0 : null,
             left: null,
-            right: null,
+            right:orientation == Orientation.portrait
+              ? null :0.0,
             child: BottomMenu()),
         Positioned(
           top: orientation == Orientation.portrait
