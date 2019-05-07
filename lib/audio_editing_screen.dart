@@ -22,26 +22,25 @@ class AudioEditingScreen extends StatefulWidget {
 class _AudioEditingScreenState extends State<AudioEditingScreen>
     with SingleTickerProviderStateMixin {
   List<String> listOfNima = [
-    "assets/nima_animation/round",
-    "assets/nima_animation/lips",
-    "assets/nima_animation/line",
-    "assets/nima_animation/outline",
-    "assets/nima_animation/pig",
-    "assets/nima_animation/pink",
-    "assets/nima_animation/red",
-    "assets/nima_animation/round",
-    "assets/nima_animation/monster",
-    "assets/nima_animation/line",
-    "assets/nima_animation/outline",
-    "assets/nima_animation/baby",
-    "assets/nima_animation/cartoon",
-    "assets/nima_animation/robot",
-    "assets/nima_animation/monster",
-    "assets/nima_animation/line",
-    "assets/nima_animation/cartoon",
-    "assets/nima_animation/robot",
-    "assets/nima_animation/monster",
-    "assets/nima_animation/line",
+    "assets/nima_animation/round.nima",
+    "assets/nima_animation/lips.nima",
+    "assets/nima_animation/line.nima",
+    "assets/nima_animation/outline.nima",
+    "assets/nima_animation/pig.nima",
+    "assets/nima_animation/pink.nima",
+    "assets/nima_animation/round.nima",
+    "assets/nima_animation/monster.nima",
+    "assets/nima_animation/line.nima",
+    "assets/nima_animation/outline.nima",
+    "assets/nima_animation/baby.nima",
+    "assets/nima_animation/cartoon.nima",
+    "assets/nima_animation/robot.nima",
+    "assets/nima_animation/monster.nima",
+    "assets/nima_animation/line.nima",
+    "assets/nima_animation/cartoon.nima",
+    "assets/nima_animation/robot.nima",
+    "assets/nima_animation/monster.nima",
+    "assets/nima_animation/line.nima",
   ];
   List<bool> listOfPause = [];
   List<bool> listOfanimationStatus = [];
@@ -166,6 +165,8 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
     return InkWell(
       onTap: playerState != PlayerState.shownima
           ? () {
+              widget.model.audioEdit = true;
+              widget.model.audioEditPath = recorder.filePath;
               if (widget.editingMode == EditingMode.doNothing) {
                 _lastNima = t;
                 widget.model.nimaController(false, true);

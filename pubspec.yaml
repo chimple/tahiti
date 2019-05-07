@@ -36,116 +36,26 @@ flutter:
     pluginClass: TahitiPlugin
   assets:
     - assets/menu/giraffe.png
-    - assets/stickers/giraffe/8.png
-    - assets/stickers/giraffe/9.png  
-    - assets/stickers/giraffe/14.png
-    - assets/stickers/giraffe/15.png
-    - assets/stickers/giraffe/16.png
-    - assets/stickers/giraffe/12.png
-    - assets/stickers/giraffe/13.png
-    - assets/stickers/giraffe/11.png
-    - assets/stickers/giraffe/10.png
-    - assets/stickers/giraffe/4.png
-    - assets/stickers/giraffe/5.png
-    - assets/stickers/giraffe/7.png
-    - assets/stickers/giraffe/6.png
-    - assets/stickers/giraffe/2.png
-    - assets/stickers/giraffe/3.png
-    - assets/stickers/giraffe/1.png
+    - assets/stickers/giraffe/
     - assets/menu/monkey.png
-    - assets/stickers/monkey/8.png
-    - assets/stickers/monkey/9.png
-    - assets/stickers/monkey/14.png
-    - assets/stickers/monkey/15.png
-    - assets/stickers/monkey/16.png
-    - assets/stickers/monkey/12.png
-    - assets/stickers/monkey/13.png
-    - assets/stickers/monkey/11.png
-    - assets/stickers/monkey/10.png
-    - assets/stickers/monkey/4.png
-    - assets/stickers/monkey/5.png
-    - assets/stickers/monkey/7.png
-    - assets/stickers/monkey/6.png
-    - assets/stickers/monkey/2.png
-    - assets/stickers/monkey/3.png
-    - assets/stickers/monkey/1.png
+    - assets/stickers/monkey/
     - assets/menu/doggie.png
-    - assets/stickers/doggie/8.png
-    - assets/stickers/doggie/9.png
-    - assets/stickers/doggie/14.png
-    - assets/stickers/doggie/15.png
-    - assets/stickers/doggie/16.png
-    - assets/stickers/doggie/12.png
-    - assets/stickers/doggie/13.png
-    - assets/stickers/doggie/11.png
-    - assets/stickers/doggie/10.png
-    - assets/stickers/doggie/4.png
-    - assets/stickers/doggie/5.png
-    - assets/stickers/doggie/7.png
-    - assets/stickers/doggie/6.png
-    - assets/stickers/doggie/2.png
-    - assets/stickers/doggie/3.png
-    - assets/stickers/doggie/1.png
+    - assets/stickers/doggie/
     - assets/menu/carpie.png
-    - assets/stickers/carpie/8.png
-    - assets/stickers/carpie/9.png
-    - assets/stickers/carpie/14.png
-    - assets/stickers/carpie/15.png
-    - assets/stickers/carpie/16.png
-    - assets/stickers/carpie/12.png
-    - assets/stickers/carpie/13.png
-    - assets/stickers/carpie/11.png
-    - assets/stickers/carpie/10.png
-    - assets/stickers/carpie/4.png
-    - assets/stickers/carpie/5.png
-    - assets/stickers/carpie/7.png
-    - assets/stickers/carpie/6.png
-    - assets/stickers/carpie/2.png
-    - assets/stickers/carpie/3.png
-    - assets/stickers/carpie/1.png
+    - assets/stickers/carpie/
     - assets/menu/happy.png
-    - assets/stickers/emoguy/angry.gif
-    - assets/stickers/emoguy/cold.gif
-    - assets/stickers/emoguy/cry.gif
-    - assets/stickers/emoguy/happy.gif
-    - assets/stickers/emoguy/irritated.gif
-    - assets/stickers/emoguy/laughing.gif
-    - assets/stickers/emoguy/love.gif
-    - assets/stickers/emoguy/playing.gif
-    - assets/stickers/emoguy/relaxed.gif
-    - assets/stickers/emoguy/sad.gif
-    - assets/stickers/emoguy/scared.gif
-    - assets/stickers/emoguy/sleeping.gif
-    - assets/stickers/emoguy/thumbsdown.gif
-    - assets/stickers/emoguy/thumbup.gif
-    - assets/stickers/emoguy/workingout.gif
-    - assets/stickers/emoguy/yummy.gif
+    - assets/stickers/emoguy/
     - assets/camera/camera1.png
     - assets/camera/gallery.png 
     - assets/camera/video.png
     - assets/menu/
     - assets/menu/svg/
-    - assets/drawing/size1.png  
-    - assets/drawing/size2.png
-    - assets/drawing/size3.png
-    - assets/drawing/size4.png
-    - assets/drawing/size5.png
+    - assets/drawing/
     - assets/menu/stickers.png
-    - assets/mic/mic.png
-    - assets/mic/play.png
-    - assets/mic/stop.png
+    - assets/mic/
     - assets/filter_icon.jpg
-    - assets/roller_image/sample1.jpg
-    - assets/roller_image/sample2.jpg
-    - assets/roller_image/sample3.jpg
-    - assets/roller_image/sample4.jpg
-    - assets/roller_image/sample5.jpg
-    - assets/filter_image/filterImage1.png
-    - assets/filter_image/filterImage2.png
-    - assets/filter_image/filterImage3.png
-    - assets/filter_image/filterImage4.png
-    - assets/filter_image/filterImage5.png
-    - assets/filter_image/filterImage6.png
+    - assets/roller_image/
+    - assets/filter_image/
     - assets/svgimage/bodyparts/
     - assets/svgimage/fooditem/
     - assets/svgimage/clothes/
@@ -167,6 +77,7 @@ flutter:
     - assets/svgimage/tools/
     - assets/svgimage/zodiac/
     - assets/nima_animation/
+
   fonts:
     - family: Bungee
       fonts:
