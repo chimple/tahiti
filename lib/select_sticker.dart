@@ -177,9 +177,9 @@ class TopStickers {
     ],
     'assets/menu/svg/stickers': [],
     'assets/menu/svg/camera': [
-      Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
-      Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
-      Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/camera2'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/gallery'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/video'),
     ],
     'assets/menu/svg/mic': [],
     'assets/menu/svg/text': [
@@ -272,6 +272,7 @@ class SelectStickerState extends State<SelectSticker> {
                     model.painterController.paintOption = PaintOption.paint;
                     model.painterController.drawingType =
                         DrawingType.geometricDrawing;
+                    model.painterController.sigma = 0.0;
                     model.isDrawing = true;
                     break;
                   case 'assets/menu/svg/roll':
@@ -298,7 +299,7 @@ class SelectStickerState extends State<SelectSticker> {
                       });
                     }
                     break;
-                  case 'assets/camera/camera1.png':
+                  case 'assets/menu/svg/camera2':
                     new Camera().openCamera().then((p) {
                       // if (p != null) model.addImage(p);
 
@@ -307,7 +308,7 @@ class SelectStickerState extends State<SelectSticker> {
                       }
                     });
                     break;
-                  case 'assets/camera/gallery.png':
+                  case 'assets/menu/svg/gallery':
                     new Camera().pickImage().then((p) {
                       //if (p != null) model.addImage(p);
                       if (p != null) {
@@ -315,7 +316,7 @@ class SelectStickerState extends State<SelectSticker> {
                       }
                     });
                     break;
-                  case 'assets/camera/video.png':
+                  case 'assets/menu/svg/video':
                     new Camera().videoRecorder().then((p) {
                       if (p != null) model.addVideo(p.path);
                     });

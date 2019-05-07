@@ -56,6 +56,7 @@ class Masking extends StatefulWidget {
 
 class MaskingState extends State<Masking> {
   double selectedWidth = 3.0;
+  String selectedMask = 'assets/masking/pattern_01.png';
 
   @override
   void initState() {
@@ -78,26 +79,35 @@ class MaskingState extends State<Masking> {
       scrollDirection:
           orientation == Orientation.portrait ? Axis.horizontal : Axis.vertical,
       children: Masking.listOfImage
-          .map((t) => _buildTile(context, t))
+          .map((t) => _buildTile(context, t, orientation))
           .toList(growable: false),
     );
   }
 
-  Widget _buildTile(BuildContext context, String text) {
+  Widget _buildTile(
+      BuildContext context, String text, Orientation orientation) {
     return new InkWell(
       onTap: () {
         widget.model.addMaskImage(text);
+        setState(() {
+          selectedMask = text;
+        });
         // Navigator.pop(context);
       },
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: orientation == Orientation.portrait
+            ? const EdgeInsets.all(8.0)
+            : const EdgeInsets.all(15.0),
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(
-                    text,
-                  ),
-                  repeat: ImageRepeat.repeat),
+                image: AssetImage(
+                  text,
+                ),
+                repeat: selectedMask == text
+                    ? ImageRepeat.repeat
+                    : ImageRepeat.noRepeat,
+              ),
               borderRadius: BorderRadius.all(new Radius.circular(15.0))),
         ),
       ),

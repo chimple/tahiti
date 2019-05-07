@@ -80,7 +80,9 @@ class PopupGridViewState extends State<PopupGridView> {
     super.initState();
     ActivityModel model = ActivityModel.of(context);
     model.isDrawing = model.drawText != null ? false : true;
-    highlightedButtonItem = 'assets/menu/svg/pencil';
+    highlightedButtonItem = model.drawText != null
+        ? 'assets/menu/carpie.png'
+        : 'assets/menu/svg/pencil';
     _textEditingController = new TextEditingController(text: userTyped);
   }
 
@@ -127,63 +129,7 @@ class PopupGridViewState extends State<PopupGridView> {
                           model.selectedIcon = title;
                           if (title.startsWith('assets/menu/svg/pencil')) {
                             model.highlighted = title;
-                            model.painterController.paintOption =
-                                PaintOption.paint;
-                            model.painterController.drawingType =
-                                DrawingType.freeDrawing;
-                            model.painterController.blurStyle =
-                                BlurStyle.normal;
-                            model.painterController.sigma = 0.0;
-                            model.isDrawing = true;
-                          } else if (title
-                              .startsWith('assets/menu/brush1.png')) {
-                            model.highlighted = title;
-                            model.painterController.paintOption =
-                                PaintOption.paint;
-                            model.painterController.blurStyle =
-                                BlurStyle.normal;
-                            model.painterController.sigma = 15.5;
-                            model.isDrawing = true;
-                          } else if (title
-                              .startsWith('assets/menu/svg/geometry')) {
-                            model.highlighted = title;
-                            model.painterController.paintOption =
-                                PaintOption.paint;
-                            model.painterController.drawingType =
-                                DrawingType.geometricDrawing;
-                            model.painterController.blurStyle =
-                                BlurStyle.normal;
-                            model.painterController.sigma = 0.0;
-                            model.isDrawing = true;
-                          } else if (title
-                              .startsWith('assets/menu/svg/freegeometry')) {
-                            model.highlighted = title;
-                            model.painterController.paintOption =
-                                PaintOption.paint;
-                            model.painterController.drawingType =
-                                DrawingType.lineDrawing;
-                            model.painterController.blurStyle =
-                                BlurStyle.normal;
-                            model.painterController.sigma = 0.0;
-                            model.isDrawing = true;
-                          } else if (title
-                              .startsWith('assets/menu/brush.png')) {
-                            model.highlighted = title;
-                            model.painterController.paintOption =
-                                PaintOption.paint;
-                            model.painterController.blurStyle = BlurStyle.inner;
-                            model.painterController.sigma = 15.5;
-                            model.isDrawing = true;
-                          } else if (title.startsWith('assets/menu/svg/roll')) {
-                            model.highlighted = title;
-                            model.isDrawing = false;
-                          } else if (title
-                              .startsWith('assets/menu/svg/eraser')) {
-                            model.highlighted = title;
-                            model.painterController.paintOption =
-                                PaintOption.erase;
-                            model.painterController.drawingType =
-                                DrawingType.freeDrawing;
+                            highlightedPopUpItem = 'assets/menu/svg/pencil';
                             model.isDrawing = true;
                           } else {
                             model.highlighted = null;
@@ -366,16 +312,10 @@ class PopupGridViewState extends State<PopupGridView> {
             Container(
                 color: Color(0xff242942), height: (size.height - size.width)),
             model.drawText != null
-                ? AnimatedPositioned(
-                    bottom: widget.side == DisplaySide.second
-                        ? model.popped == Popped.second
-                            ? (size.height - size.width) / 4
-                            : -30.0
-                        : null,
+                ? Positioned(
+                    bottom: (size.height - size.width) / 3,
                     left: 0.0,
                     right: 0.0,
-                    duration: Duration(milliseconds: 1000),
-                    curve: Curves.elasticOut,
                     child: SizedBox(
                       // height: menuHeight,
                       child: Column(
@@ -383,35 +323,26 @@ class PopupGridViewState extends State<PopupGridView> {
                             ? VerticalDirection.down
                             : VerticalDirection.up,
                         children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.all(
+                                  (size.height - size.width) * .05),
+                              child: SizedBox(
+                                height: (size.height - size.width) * .1,
+                                width: size.width,
+                                child: ColorPicker(
+                                    orientation: Orientation.portrait,
+                                    model: model),
+                              )),
                           Container(
-                            decoration: BoxDecoration(
-                                color: Colors.orange,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(50.0),
-                                    topRight: Radius.circular(50.0))),
-                            height: (size.height - size.width) / 4,
-                            child: highlightedButtonItem !=
-                                    'assets/menu/giraffe.png'
-                                // proper color button icon name in drawText need here
-                                ? StickerPicker(
-                                    orientation: orientation,
-                                    model: model,
-                                    buildItem: widget.buildItem,
-                                    onUserPress: widget.onUserPress,
-                                    menuItems: widget.menuItems,
-                                    highlightedButtonItem:
-                                        highlightedButtonItem,
-                                  )
-                                : SizedBox(
-                                    height: (size.height - size.width) * .1,
-                                    width: size.width,
-                                    child: Center(
-                                      child: ColorPicker(
-                                          orientation: Orientation.portrait,
-                                          model: model),
-                                    ),
-                                  ),
-                          )
+                              height: (size.height - size.width) * .4,
+                              child: StickerPicker(
+                                orientation: orientation,
+                                model: model,
+                                buildItem: widget.buildItem,
+                                onUserPress: widget.onUserPress,
+                                menuItems: widget.menuItems,
+                                highlightedButtonItem: highlightedButtonItem,
+                              ))
                         ],
                       ),
                     ),
@@ -629,109 +560,149 @@ class PopupGridViewState extends State<PopupGridView> {
               width: (size.width - size.height),
               height: size.height,
             ),
-            Positioned(
-                right: (size.width - size.height) / 3,
-                // left: null,
-                top: 0.0,
-                bottom: 0.0,
-                child: Container(
-                  child: Row(
-                    children: <Widget>[
-                      //width buttons are here
-                      highlightedButtonItem == 'assets/menu/svg/stickers'
-                          ? Container()
-                          : Padding(
+            model.drawText != null
+                ? Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: (size.width - size.height) / 3,
+                    child: Container(
+                      child: Row(
+                        // verticalDirection: VerticalDirection.down,
+                        children: <Widget>[
+                          Padding(
                               padding: EdgeInsets.all(
                                   (size.width - size.height) * .05),
                               child: SizedBox(
                                 height: size.height,
-                                width: (size.width - size.height) * .1,
+                                width: (size.width - size.height)*.1,
                                 child: ColorPicker(
                                     orientation: Orientation.landscape,
                                     model: model),
                               )),
-                      Container(
-                        width: (size.width - size.height) * .2,
-                        height: size.height,
-                        child: highlightedButtonItem == 'assets/menu/svg/pencil'
-                            ? highlightedPopUpItem == 'assets/menu/svg/roll'
-                                ? Masking(
-                                    model: model,
-                                  )
-                                : FittedBox(
-                                    fit: BoxFit.fitWidth,
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: width_val
-                                          .map((widthValue) => Center(
-                                                  child: RawMaterialButton(
-                                                onPressed: () {
-                                                  model.painterController
-                                                      .thickness = widthValue;
-                                                  setState(() {
-                                                    selectedWidth = widthValue;
-                                                  });
-                                                },
-                                                constraints:
-                                                    new BoxConstraints.tightFor(
-                                                  width: widthValue +
-                                                      (size.width -
-                                                              size.height) *
-                                                          .02,
-                                                  height: widthValue +
-                                                      (size.width -
-                                                              size.height) *
-                                                          .02,
-                                                ),
-                                                fillColor:
-                                                    new Color(0xffffffff),
-                                                shape: new CircleBorder(
-                                                  side: new BorderSide(
-                                                    color: widthValue ==
-                                                            selectedWidth
-                                                        ? Colors.red
-                                                        : Color(0xffffffff),
-                                                    width: 2.0,
-                                                  ),
-                                                ),
-                                              )))
-                                          .toList(growable: false),
-                                    ),
-                                  )
-                            : highlightedButtonItem == 'assets/menu/svg/text'
-                                ? Stack(children: [])
-                                : Container(),
+                          Container(
+                              width: (size.width - size.height) * .4,
+                              height: size.height,
+                              child: StickerPicker(
+                                orientation: orientation,
+                                model: model,
+                                buildItem: widget.buildItem,
+                                onUserPress: widget.onUserPress,
+                                menuItems: widget.menuItems,
+                                highlightedButtonItem: highlightedButtonItem,
+                              )
+                              )
+                        ],
                       ),
+                    ),
+                  )
+                : Positioned(
+                    right: (size.width - size.height) / 3,
+                    // left: null,
+                    top: 0.0,
+                    bottom: 0.0,
+                    child: Container(
+                      child: Row(
+                        children: <Widget>[
+                          //width buttons are here
+                          highlightedButtonItem == 'assets/menu/svg/stickers'
+                              ? Container()
+                              : Padding(
+                                  padding: EdgeInsets.all(
+                                      (size.width - size.height) * .05),
+                                  child: SizedBox(
+                                    height: size.height,
+                                    width: (size.width - size.height) * .1,
+                                    child: ColorPicker(
+                                        orientation: Orientation.landscape,
+                                        model: model),
+                                  )),
+                          Container(
+                            width: (size.width - size.height) * .2,
+                            height: size.height,
+                            child: highlightedButtonItem ==
+                                    'assets/menu/svg/pencil'
+                                ? highlightedPopUpItem == 'assets/menu/svg/roll'
+                                    ? Masking(
+                                        model: model,
+                                      )
+                                    : FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: new Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: width_val
+                                              .map((widthValue) => Center(
+                                                      child: RawMaterialButton(
+                                                    onPressed: () {
+                                                      model.painterController
+                                                              .thickness =
+                                                          widthValue;
+                                                      setState(() {
+                                                        selectedWidth =
+                                                            widthValue;
+                                                      });
+                                                    },
+                                                    constraints:
+                                                        new BoxConstraints
+                                                            .tightFor(
+                                                      width: widthValue +
+                                                          (size.width -
+                                                                  size.height) *
+                                                              .02,
+                                                      height: widthValue +
+                                                          (size.width -
+                                                                  size.height) *
+                                                              .02,
+                                                    ),
+                                                    fillColor:
+                                                        new Color(0xffffffff),
+                                                    shape: new CircleBorder(
+                                                      side: new BorderSide(
+                                                        color: widthValue ==
+                                                                selectedWidth
+                                                            ? Colors.red
+                                                            : Color(0xffffffff),
+                                                        width: 2.0,
+                                                      ),
+                                                    ),
+                                                  )))
+                                              .toList(growable: false),
+                                        ),
+                                      )
+                                : highlightedButtonItem ==
+                                        'assets/menu/svg/text'
+                                    ? Stack(children: [])
+                                    : Container(),
+                          ),
 
-                      highlightedButtonItem == 'assets/menu/svg/stickers'
-                          ? CategoryScreen(
-                              itemCrossAxisCount: 6,
-                              items: Sticker.allStickers,
-                              model: model,
-                            )
-                          : highlightedButtonItem == 'assets/menu/svg/mic'
-                              ? model.audioEdit
-                                  ? AudioEditingScreen(
-                                      model: model,
-                                      editingMode: EditingMode.editAudio,
-                                      audioPath: model.audioEditPath)
-                                  : AudioEditingScreen(model: model)
-                              : Row(
-                                  children: <Widget>[
-                                    Container(
-                                      color: Colors.white,
-                                      width: 2.0,
-                                    ),
-                                    highlightedButtonItem ==
-                                            'assets/menu/svg/text'
-                                        ? _textOptions(orientation)
-                                        : _otherOptions(orientation),
-                                  ],
+                          highlightedButtonItem == 'assets/menu/svg/stickers'
+                              ? CategoryScreen(
+                                  itemCrossAxisCount: 6,
+                                  items: Sticker.allStickers,
+                                  model: model,
                                 )
-                    ],
-                  ),
-                )),
+                              : highlightedButtonItem == 'assets/menu/svg/mic'
+                                  ? model.audioEdit
+                                      ? AudioEditingScreen(
+                                          model: model,
+                                          editingMode: EditingMode.editAudio,
+                                          audioPath: model.audioEditPath)
+                                      : AudioEditingScreen(model: model)
+                                  : Row(
+                                      children: <Widget>[
+                                        Container(
+                                          color: Colors.white,
+                                          width: 2.0,
+                                        ),
+                                        highlightedButtonItem ==
+                                                'assets/menu/svg/text'
+                                            ? _textOptions(orientation)
+                                            : _otherOptions(orientation),
+                                      ],
+                                    )
+                        ],
+                      ),
+                    )),
             Positioned(
                 right: 0.0,
                 left: null,
