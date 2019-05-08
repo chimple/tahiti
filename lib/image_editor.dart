@@ -135,29 +135,19 @@ class ImageEditorState extends State<ImageEditor> {
               ),
             ]),
       ),
-
-      // Material(
-
-      // Image.file(File(thing['path'])),
-      // ),
       Divider(
         height: 6.0,
         color: Colors.white,
       ),
       widget.imagePath != null
           ? Expanded(
-              flex: 7,
-              child: SizedBox(
-                  height: size.height * .59,
-                  width: size.width,
-                  child: Image.file(
-                    File(_imagePath),
-                    color: selectedColor,
-                    colorBlendMode: selectedBlendMode,
-                  )),
+              child: Image.file(
+                File(_imagePath),
+                color: selectedColor,
+                colorBlendMode: selectedBlendMode,
+              ),
             )
           : Expanded(
-              flex: 7,
               child: Container(
                 color: Colors.white70,
               ),
@@ -167,8 +157,7 @@ class ImageEditorState extends State<ImageEditor> {
         height: 6.0,
       ),
       new Container(
-          height: size.height * .178,
-          // flex: 2,
+          height: size.height * .2,
           child: new ListView(
             scrollDirection: Axis.horizontal,
             children: _nameOfFilters
@@ -184,8 +173,8 @@ class ImageEditorState extends State<ImageEditor> {
                               listBlendMode[_nameOfFilters.indexOf(count)]);
                         },
                         constraints: new BoxConstraints.tightFor(
-                          width: size.width * .14,
-                          height: size.height * .159,
+                          width: size.width * .15,
+                          height: size.height * .15,
                         ),
                         child: widget.imagePath != null
                             ? Padding(
