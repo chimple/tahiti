@@ -193,7 +193,6 @@ class _AudioEditingScreenState extends State<AudioEditingScreen>
                 });
 
                 widget.model.selectedThing(text: _lastNima);
-                // widget.model.nimaController(false, true);
               }
             }
           : null,
