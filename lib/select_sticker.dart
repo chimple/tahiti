@@ -59,101 +59,111 @@ final Map<String, List<Iconf>> secondStickers = {
   ],
 };
 final Map<String, List<Iconf>> monsterStickers = {
-  'assets/menu/brush.png': [],
-  'assets/menu/giraffe.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/giraffe/9.png'),
+  'assets/menu/svg/monster_menu/eye1': [],
+  'assets/menu/svg/monster_menu/bow1': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow1'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow2'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow3'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow4'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow5'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow6'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow7'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow8'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow9'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/bow/bow10'),
   ],
-  'assets/menu/monkey.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/monkey/9.png'),
+  'assets/menu/svg/monster_menu/eye1': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye1'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye2'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye3'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye4'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye5'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye6'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye7'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye8'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye9'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/eye/eye10'),
   ],
-  'assets/menu/carpie.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/carpie/9.png'),
+  'assets/menu/svg/monster_menu/hat1': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat1'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat2'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat3'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat4'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat5'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat6'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat7'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat8'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat9'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/hat/hat10'),
   ],
-  'assets/menu/doggie.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/1.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/10.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/11.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/12.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/13.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/14.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/15.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/16.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/2.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/3.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/4.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/5.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/6.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/7.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/8.png'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/doggie/9.png'),
+  'assets/menu/svg/monster_menu/horn1': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn1'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn2'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn3'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn4'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn5'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn6'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn7'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn8'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn9'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/horn/horn10'),
   ],
-  'assets/menu/happy.png': [
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/angry.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/cold.gif'),
+  'assets/menu/svg/monster_menu/moustache1': [
     Iconf(
-      type: ItemType.png,
-      data: 'assets/stickers/emoguy/cry.gif',
-    ),
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache1'),
     Iconf(
-      type: ItemType.png,
-      data: 'assets/stickers/emoguy/happy.gif',
-    ),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/laughing.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/love.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/playing.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/relaxed.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/sad.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/scared.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/sleeping.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/thumbsdown.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/thumbup.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/workingout.gif'),
-    Iconf(type: ItemType.png, data: 'assets/stickers/emoguy/yummy.gif'),
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache2'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache3'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache4'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache5'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache6'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache7'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache8'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache9'),
+    Iconf(
+        type: ItemType.sticker,
+        data: 'assets/svgimage/monster/moustache/moustache10'),
+  ],
+  'assets/menu/svg/monster_menu/mouth1': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth1'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth2'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth3'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth4'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth5'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth6'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth7'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth8'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth9'),
+    Iconf(
+        type: ItemType.sticker, data: 'assets/svgimage/monster/mouth/mouth10'),
+  ],
+  'assets/menu/svg/monster_menu/nose1': [
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose1'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose2'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose3'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose4'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose5'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose6'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose7'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose8'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose9'),
+    Iconf(type: ItemType.sticker, data: 'assets/svgimage/monster/nose/nose10'),
   ],
 };
 
@@ -177,9 +187,9 @@ class TopStickers {
     ],
     'assets/menu/svg/stickers': [],
     'assets/menu/svg/camera': [
-      Iconf(type: ItemType.png, data: 'assets/camera/camera1.png'),
-      Iconf(type: ItemType.png, data: 'assets/camera/gallery.png'),
-      Iconf(type: ItemType.png, data: 'assets/camera/video.png'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/camera2'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/gallery'),
+      Iconf(type: ItemType.sticker, data: 'assets/menu/svg/video'),
     ],
     'assets/menu/svg/mic': [],
     'assets/menu/svg/text': [
@@ -272,6 +282,7 @@ class SelectStickerState extends State<SelectSticker> {
                     model.painterController.paintOption = PaintOption.paint;
                     model.painterController.drawingType =
                         DrawingType.geometricDrawing;
+                    model.painterController.sigma = 0.0;
                     model.isDrawing = true;
                     break;
                   case 'assets/menu/svg/roll':
@@ -298,7 +309,7 @@ class SelectStickerState extends State<SelectSticker> {
                       });
                     }
                     break;
-                  case 'assets/camera/camera1.png':
+                  case 'assets/menu/svg/camera2':
                     new Camera().openCamera().then((p) {
                       // if (p != null) model.addImage(p);
 
@@ -307,7 +318,7 @@ class SelectStickerState extends State<SelectSticker> {
                       }
                     });
                     break;
-                  case 'assets/camera/gallery.png':
+                  case 'assets/menu/svg/gallery':
                     new Camera().pickImage().then((p) {
                       //if (p != null) model.addImage(p);
                       if (p != null) {
@@ -315,14 +326,13 @@ class SelectStickerState extends State<SelectSticker> {
                       }
                     });
                     break;
-                  case 'assets/camera/video.png':
+                  case 'assets/menu/svg/video':
                     new Camera().videoRecorder().then((p) {
                       if (p != null) model.addVideo(p.path);
                     });
                     break;
                   default:
-                    if (text.startsWith('assets/stickers') ||
-                        text.startsWith('assets/svgimage')) {
+                    if (text.startsWith('assets/svgimage/monster/')) {
                       model.addSticker(text, Colors.white, BlendMode.dst);
                     }
                     if (text.startsWith('assets/nima_animation')) {
@@ -378,12 +388,6 @@ class SelectStickerState extends State<SelectSticker> {
   Widget buildIndexItem(BuildContext context, Iconf conf, bool enabled) {
     ActivityModel model = ActivityModel.of(context);
     if (conf.data.startsWith('assets/menu/svg')) {
-      // return DisplaySticker(
-      //   primary: conf.data,
-      //   color: conf.data == model.highlighted
-      //       ? model.selectedColor == null ? Colors.red : model.selectedColor
-      //       : Colors.transparent,
-      // );
       return AspectRatio(
         aspectRatio: 1.0,
         child: new SvgPicture.asset(

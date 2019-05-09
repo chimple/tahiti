@@ -269,7 +269,8 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                   //     type: widget.thing['type'],
                                   //     path: widget.thing['audioPath']);
                                   model.audioEdit = true;
-                                  model.audioEditPath = widget.thing['audioPath'];
+                                  model.audioEditPath =
+                                      widget.thing['audioPath'];
                                   // AudioEditingScreen(
                                   //     model: model,
                                   //     editingMode: EditingMode.editAudio,

@@ -72,7 +72,7 @@ class _StickerPickerState extends State<StickerPicker> {
   Widget build(BuildContext context) {
     List<Widget> colorItems = [];
     colorItems.add(Expanded(
-        flex: 2,
+        flex: 1,
         child: new InkWell(
           onTap: () => _backwardButtonBehaviour(),
           child: new FittedBox(
@@ -93,7 +93,7 @@ class _StickerPickerState extends State<StickerPicker> {
                 : Column(children: _stickers(context)))));
     colorItems.add(
       new Expanded(
-          flex: 2,
+          flex: 1,
           child: new InkWell(
             onTap: () => _forwardButtonBehaviour(),
             child: new FittedBox(
