@@ -40,7 +40,7 @@ class Recorder {
     try {
       if (await AudioRecorder.hasPermissions) {
         recordingState = RecordingState.recording;
-        String path = "recorder.m4a + ${DateTime.now()}";
+        String path = "record${DateTime.now()}.m4a";
         Directory appDocDirectory = await getExternalStorageDirectory();
         String filePath = appDocDirectory.path + '/' + path;
         File file = new File(filePath);

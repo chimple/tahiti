@@ -81,7 +81,7 @@ class PopupGridViewState extends State<PopupGridView> {
     ActivityModel model = ActivityModel.of(context);
     model.isDrawing = model.drawText != null ? false : true;
     highlightedButtonItem = model.drawText != null
-        ? 'assets/menu/carpie.png'
+        ? 'assets/menu/svg/monster_menu/bow1'
         : 'assets/menu/svg/pencil';
     _textEditingController = new TextEditingController(text: userTyped);
   }

@@ -21,26 +21,34 @@ class DisplaySticker extends StatelessWidget {
         //     builder: (context, child, model) =>
         Container(
       // height: size,
-      child: new Stack(
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 1.0,
-            child: new SvgPicture.asset(
-              '${primary}1.svg',
-              color: color,
-              colorBlendMode: blendmode,
-              package: 'tahiti',
+      child: primary.startsWith('assets/svgimage/monster/')
+          ? AspectRatio(
+              aspectRatio: 1.0,
+              child: new SvgPicture.asset(
+                '$primary.svg',
+                package: 'tahiti',
+              ),
+            )
+          : new Stack(
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 1.0,
+                  child: new SvgPicture.asset(
+                    '${primary}1.svg',
+                    color: color,
+                    colorBlendMode: blendmode,
+                    package: 'tahiti',
+                  ),
+                ),
+                AspectRatio(
+                  aspectRatio: 1.0,
+                  child: new SvgPicture.asset(
+                    '${primary}2.svg',
+                    package: 'tahiti',
+                  ),
+                ),
+              ],
             ),
-          ),
-          AspectRatio(
-            aspectRatio: 1.0,
-            child: new SvgPicture.asset(
-              '${primary}2.svg',
-              package: 'tahiti',
-            ),
-          ),
-        ],
-      ),
     );
     // );
   }

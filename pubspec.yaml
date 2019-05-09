@@ -50,12 +50,20 @@ flutter:
     - assets/camera/video.png
     - assets/menu/
     - assets/menu/svg/
+    - assets/menu/svg/monster_menu/
     - assets/drawing/
     - assets/menu/stickers.png
     - assets/mic/
     - assets/filter_icon.jpg
     - assets/roller_image/
     - assets/filter_image/
+    - assets/svgimage/monster/bow/
+    - assets/svgimage/monster/eye/
+    - assets/svgimage/monster/hat/  
+    - assets/svgimage/monster/horn/
+    - assets/svgimage/monster/moustache/
+    - assets/svgimage/monster/mouth/
+    - assets/svgimage/monster/nose/
     - assets/svgimage/bodyparts/
     - assets/svgimage/fooditem/
     - assets/svgimage/clothes/
