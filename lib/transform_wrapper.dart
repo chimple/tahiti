@@ -143,11 +143,6 @@ class _TransformWrapperState extends State<TransformWrapper>
   Widget build(BuildContext context) {
     orientation = MediaQuery.of(context).orientation;
     _size = MediaQuery.of(context).size;
-//        >
-//            MediaQuery.of(context).size.height
-//        ? MediaQuery.of(context).size.width - MediaQuery.of(context).size.height
-//        : MediaQuery.of(context).size.height -
-//            MediaQuery.of(context).size.width;
     final model = ActivityModel.of(context);
     return Positioned(
       left: _translate.dx,
@@ -270,9 +265,15 @@ class WidgetTransformDelegateState extends State<WidgetTransformDelegate> {
                                       blendMode: BlendMode
                                           .values[widget.thing['blendMode']]);
                                 } else if (widget.thing['type'] == 'nima') {
-                                  _editingScreen(model,
-                                      type: widget.thing['type'],
-                                      path: widget.thing['audioPath']);
+                                  // _editingScreen(model,
+                                  //     type: widget.thing['type'],
+                                  //     path: widget.thing['audioPath']);
+                                  model.audioEdit = true;
+                                  model.audioEditPath = widget.thing['audioPath'];
+                                  // AudioEditingScreen(
+                                  //     model: model,
+                                  //     editingMode: EditingMode.editAudio,
+                                  //     audioPath: widget.thing['audioPath']);
                                 }
                                 // if (model.editSelectedThing) {
                                 //   (widget.thing['type'] == 'text')

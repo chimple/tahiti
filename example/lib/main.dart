@@ -264,17 +264,19 @@ class DrawingWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ActivityBoard(
-        json: jsonMap,
-        template: jsonMap == null ? template : null,
-        drawText: jsonMap == null ? drawText : null,
-        title: 'Test',
-        extStorageDir: extStorageDir,
-        saveCallback: ({Map<String, dynamic> jsonMap}) async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString(jsonMap['id'], json.encode(jsonMap));
-        },
-        backCallback: () => Navigator.of(context).pop(),
+      body: SafeArea(
+              child: ActivityBoard(
+            json: jsonMap,
+            template: jsonMap == null ? template : null,
+            drawText: jsonMap == null ? drawText : null,
+            title: 'Test',
+            extStorageDir: extStorageDir,
+            saveCallback: ({Map<String, dynamic> jsonMap}) async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString(jsonMap['id'], json.encode(jsonMap));
+            },
+            backCallback: () => Navigator.of(context).pop(),
+          ),
       ),
     );
   }

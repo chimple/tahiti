@@ -135,13 +135,14 @@ class ColorPickerState extends State<ColorPicker> {
           setState(() {
             selectedColor = color;
             widget.model.selectedColor = color;
+            widget.model.textColor = color;
             if (widget.model.drawText != null) {
               widget.model.textClr = color;
             }
           });
           try {
-            if (widget.model.selectedIcon == 'assets/menu/stickers.png' ||
-                widget.model.selectedIcon == 'assets/menu/text.png')
+            if (widget.model.selectedIcon == 'assets/menu/svg/stickers' ||
+                widget.model.selectedIcon == 'assets/menu/svg/text')
               widget.getColor(color);
             else if (false) {}
           } catch (exception, e) {

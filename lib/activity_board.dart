@@ -119,7 +119,8 @@ class ActivityBoardState extends State<ActivityBoard> {
 
     Widget drawingScreen = Stack(
       children: <Widget>[
-        Center(
+        Positioned(
+          top: 0.0,
           child: Container(
             height:
                 orientation == Orientation.portrait ? size.width : size.height,
@@ -134,19 +135,13 @@ class ActivityBoardState extends State<ActivityBoard> {
             ),
           ),
         ),
-        widget.drawText != null
-            ? Container()
-            : Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: orientation == Orientation.portrait ? 0.0 : null,
-                bottom: orientation == Orientation.portrait ? null : 0.0,
-                child: TopMenu(widget.title)),
         Positioned(
-            top: orientation == Orientation.portrait ? null : 0.0,
-            bottom: 0.0,
-            left: orientation == Orientation.portrait ? 0.0 : null,
-            right: 0.0,
+            top: null,
+            bottom:orientation == Orientation.portrait
+              ? 0.0 : null,
+            left: null,
+            right:orientation == Orientation.portrait
+              ? null :0.0,
             child: BottomMenu()),
         Positioned(
           top: orientation == Orientation.portrait

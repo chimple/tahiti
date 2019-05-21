@@ -32,7 +32,7 @@ class PaperActionsState extends State<PaperActions> {
                   MediaQuery.of(context).orientation == Orientation.portrait
                       ? size.width * .04
                       : size.width * .04,
-              color: Colors.white,
+              color: Colors.black45,
               onPressed: model.backCallback),
         );
       } else if (widget.action == "saveAction") {
@@ -43,7 +43,7 @@ class PaperActionsState extends State<PaperActions> {
             iconSize: MediaQuery.of(context).orientation == Orientation.portrait
                 ? size.width * .05
                 : size.width * .04,
-            color: Colors.white,
+            color: Colors.black45,
             onPressed: () {
               setState(() {
                 share_image = share_image ? false : true;
@@ -69,7 +69,7 @@ class PaperActionsState extends State<PaperActions> {
                     MediaQuery.of(context).orientation == Orientation.portrait
                         ? size.height * .04
                         : size.height * .06,
-                color: Colors.white,
+                color: Colors.black45,
                 onPressed: model.canUndo() ? () => model.undo() : null),
             IconButton(
                 icon: Icon(Icons.redo),
@@ -77,7 +77,7 @@ class PaperActionsState extends State<PaperActions> {
                     MediaQuery.of(context).orientation == Orientation.portrait
                         ? size.height * .04
                         : size.height * .06,
-                color: Colors.white,
+                color: Colors.black45,
                 onPressed: model.canRedo() ? () => model.redo() : null),
           ],
         );

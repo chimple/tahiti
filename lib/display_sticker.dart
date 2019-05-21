@@ -20,7 +20,7 @@ class DisplaySticker extends StatelessWidget {
         // ScopedModelDescendant<ActivityModel>(
         //     builder: (context, child, model) =>
         Container(
-      height: size,
+      // height: size,
       child: new Stack(
         children: <Widget>[
           AspectRatio(

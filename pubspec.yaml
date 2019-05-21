@@ -14,12 +14,12 @@ dependencies:
   audio_recorder:
     git:
       url: git://github.com/chimple/audio_recorder.git
-  audioplayers: ^0.8.2
+  audioplayers: ^0.11.0
   path_provider: ^0.5.0
   scoped_model: ^0.3.0
   image_picker: ^0.4.10
   video_player: ^0.7.2
-  uuid: ^1.0.3
+  uuid: ^2.0.1
   tuple: ^1.0.2
   nima: ^1.0.1
   json_annotation: ^2.0.0
@@ -37,7 +37,7 @@ flutter:
   assets:
     - assets/menu/giraffe.png
     - assets/stickers/giraffe/8.png
-    - assets/stickers/giraffe/9.png
+    - assets/stickers/giraffe/9.png  
     - assets/stickers/giraffe/14.png
     - assets/stickers/giraffe/15.png
     - assets/stickers/giraffe/16.png
@@ -125,7 +125,7 @@ flutter:
     - assets/camera/video.png
     - assets/menu/
     - assets/menu/svg/
-    - assets/drawing/size1.png
+    - assets/drawing/size1.png  
     - assets/drawing/size2.png
     - assets/drawing/size3.png
     - assets/drawing/size4.png
@@ -158,7 +158,7 @@ flutter:
     - assets/svgimage/grains/
     - assets/svgimage/alphabet/
     - assets/svgimage/animals/
-    - assets/svgimage/electronics/
+    - assets/svgimage/electronics/     
     - assets/svgimage/homeutility/
     - assets/svgimage/housebuilding/
     - assets/svgimage/occupation_men/

@@ -13,11 +13,11 @@ class BottomMenu extends StatelessWidget {
 
     return Container(
         height: orientation == Orientation.portrait
-            ? (size.height - size.width) / 1.5
+            ? (size.height - size.width)
             : size.height,
         width: orientation == Orientation.portrait
             ? size.width
-            : (size.width - size.height) / 1.5,
+            : (size.width - size.height),
         child: SelectSticker(side: DisplaySide.second));
   }
 }
